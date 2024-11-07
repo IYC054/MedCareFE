@@ -3,10 +3,13 @@ import DropdownMenu from "./DropdownMenu";
 
 const Header = () => {
   return (
-    <div className="bg-gray-50 flex px-48">
+   <div className="">
+    <div className="bg-gray-50 flex px-48 ">
+      {/* Phần 1 */}
       <div className="w-1/6 flex items-center">
         <img src="https://medpro.vn/_next/image?url=https%3A%2F%2Fbo-api.medpro.com.vn%2Fstatic%2Fimages%2Fmedpro%2Fweb%2Fheader_logo.svg&w=2048&q=75" width={120}></img>
       </div>
+      {/* Phần 2 */}
       <div className="w-5/6">
         <div className="flex justify-between  border-b-[1px] py-4">
           <div className="flex text-[12px] font-semibold items-center">
@@ -139,7 +142,7 @@ const Header = () => {
           </div>
         </div>
         {/* phan menu dịch vu */}
-        <div className="flex items-center justify-between py-2">
+        <div className="flex items-center justify-between py-2 ">
           <div className="flex items-center gap-1 px-2 ">
             <div>
               <img src="https://medpro.vn/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhp.a16c51cc.svg&w=2048&q=75" width={30} height={30}/>
@@ -234,7 +237,34 @@ const Header = () => {
           </div>
         </div>
       </div>
+    
+    
     </div>
+
+    <div className="bg-[#ffb340] gap-10 h-9 w-full flex items-center overflow-hidden font-semibold text-white text-[13px]">
+      <span className="scrolling-text">
+        Đặt khám liền tay - nhận ngay ưu đãi hoàn tiền lên đến 5%! 💥
+      </span>
+      <span className="scrolling-text">
+        Đặt khám liền tay - nhận ngay ưu đãi hoàn tiền lên đến 5%! 💥
+      </span>
+      <span className="scrolling-text">
+        Đặt khám liền tay - nhận ngay ưu đãi hoàn tiền lên đến 5%! 💥
+      </span>
+      <span className="scrolling-text">
+        Đặt khám liền tay - nhận ngay ưu đãi hoàn tiền lên đến 5%! 💥
+      </span>
+      <span className="scrolling-text">
+        Đặt khám liền tay - nhận ngay ưu đãi hoàn tiền lên đến 5%! 💥
+      </span>
+      <span className="scrolling-text">
+        Đặt khám liền tay - nhận ngay ưu đãi hoàn tiền lên đến 5%! 💥
+      </span>
+      <span className="scrolling-text">
+        Đặt khám liền tay - nhận ngay ưu đãi hoàn tiền lên đến 5%! 💥
+      </span>
+    </div>
+   </div>
   );
 };
 

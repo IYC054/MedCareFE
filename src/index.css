@@ -1,3 +1,26 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+/* phần chạy chư */
+.scrolling-text {
+    display: inline-block;
+    white-space: nowrap;
+    animation: scroll-left 10s linear infinite;
+  }
+  body{
+    box-sizing: border-box;
+  }
+  
+  @keyframes scroll-left {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+  input::placeholder {
+    font-size: 16px;
+    color: #999;
+  }
