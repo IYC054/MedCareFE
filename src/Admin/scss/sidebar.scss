@@ -1,0 +1,377 @@
+.app-sidebar-wrapper {
+    position: fixed;
+    left: 30px;
+    top: 30px;
+    height: calc(100% - 60px);
+    z-index: 14;
+    width: 300px; 
+    overflow: hidden;
+    transition: width 0.3s ease;
+
+}
+
+.app-sidebar-wrapper-close {
+    position: fixed;
+    left: 30px;
+    top: 30px;
+    width: 80px;
+    overflow: hidden;
+    transition: width 0.3s ease;
+
+    .childmenu .fa-rocket {
+        margin-right: 20px;
+        padding: 0 20px;
+        font-size: 25px;
+    }
+
+    .childmenu .fa-file-lines {
+        margin-right: 20px;
+        padding: 0 20px;
+        font-size: 25px;
+    }
+
+    .hamburger {
+        padding: 0;
+        margin-left: 0px;
+        display: inline-block;
+        cursor: pointer;
+        background-color: transparent;
+        border: 0;
+        outline: none;
+        position: relative;
+        width: 30px;
+        height: 24px;
+        z-index: 15;
+
+        .bar {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: #da624a;
+            margin: 5px 0;
+            transition: transform 0.2s cubic-bezier(1, -1, 0.5, 2), opacity 0.3s ease-in-out, width 0.3s ease-in-out;
+        }
+
+        &.open .bar:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 5px);
+            width: 100%;
+        }
+
+        &.open .bar:nth-child(2) {
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        &.open .bar:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -5px);
+            width: 100%;
+        }
+    }
+
+
+
+
+    .mm-show {
+        max-height: 0px;
+        transition: max-height 0.5s ease-in-out;
+        overflow: hidden;
+
+       
+    }
+
+    .logo-src {
+        width: 0px;
+        opacity: 0;
+        transition: width 0.3s ease, opacity 0.3s ease; // Thêm transition
+    }
+    .app-sidebar__heading{
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        height: 50px; 
+        border-bottom: 1px solid #da624a; 
+        transition: opacity 0.3s ease;
+    }
+    &:hover {
+        width: 300px;
+        .app-sidebar__heading {
+            text-transform: uppercase;
+            font-size: .7438rem;
+            margin: 1rem 0;
+            color: #da624a;
+            opacity: .6;
+            white-space: nowrap;
+            border: 0; 
+            display: block; 
+            justify-content: none; 
+            align-items: none; 
+            height: auto;
+          
+        }
+        .mm-show {
+            max-height: 300px;
+            transition: max-height 0.5s ease-in-out;
+            overflow: hidden;
+        }
+
+        .mm-show li a {
+            color: #6c757d;
+            &.mm-active {
+                color: #da624a;
+                background: #fcf1ef;
+              
+                &::before {
+                    background: #da624a;
+                }
+            }
+        }
+         
+       
+        .mm-show li a:hover {
+            background-color: #fcf1ef;
+          
+        }
+
+        .logo-src {
+            width: 68px;
+            opacity: 1;
+        }
+
+        .hamburger {
+            margin-left: 150px; // Để hamburger vẫn hiển thị ở vị trí chính xác
+        }
+
+        .childmenu .fa-rocket {
+            margin-right: 8px;
+            padding: 0px;
+            font-size: 16px;
+        }
+
+        .childmenu .fa-file-lines {
+            margin-right: 8px;
+            font-size: 16px;
+            padding: 0px;
+        }
+    }
+
+
+}
+
+
+.app-header__logo {
+    width: 100%;
+    min-width: 45px;
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: rgba(0, 0, 0, 0.04) solid 1px;
+    background: rgba(0, 0, 0, 0.01);
+}
+
+.logo-src {
+    background: url(https://as1.ftcdn.net/v2/jpg/00/07/32/48/1000_F_7324855_mx4CEBWTr81XLOrlQccCROtP2uNR7xbk.jpg) 50% 50% no-repeat;
+    height: 17px;
+    width: 68px;
+
+    overflow: hidden;
+}
+
+.hamburger {
+    padding: 0;
+    margin-left: 150px;
+    display: inline-block;
+    cursor: pointer;
+    background-color: transparent;
+    border: 0;
+    outline: none;
+    position: relative;
+    width: 30px;
+    height: 24px;
+    z-index: 15;
+
+    .bar {
+        display: block;
+        width: 100%;
+        height: 3px;
+        background-color: #da624a;
+        margin: 5px 0;
+        transition: transform 0.2s cubic-bezier(1, -1, 0.5, 2), opacity 0.3s ease-in-out, width 0.3s ease-in-out;
+    }
+
+    &.open .bar:nth-child(1) {
+        transform: rotate(45deg) translate(6px, 5px);
+        width: 100%;
+    }
+
+    &.open .bar:nth-child(2) {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    &.open .bar:nth-child(3) {
+        transform: rotate(-45deg) translate(6px, -5px);
+        width: 100%;
+    }
+}
+
+.vertical-nav-menu {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    list-style: none;
+
+
+    .app-sidebar__heading {
+        text-align: left;
+    }
+
+    li {
+        display: list-item;
+        text-align: -webkit-match-parent;
+        unicode-bidi: isolate;
+        position: relative;
+    }
+
+    .childmenu:hover {
+        color: inherit;
+        background: transparent;
+    }
+
+    ul {
+        padding-left: 1.5rem;
+        display: none;
+        position: relative;
+        height: auto;
+        overflow: hidden;
+        transition: height 0.5s ease-in-out;
+
+        &.mm-show {
+            display: block;
+        }
+
+        li {
+            text-decoration: none;
+            list-style: none;
+
+            a {
+
+                display: flex;
+                align-items: center;
+                line-height: 2.5rem;
+                height: 2.5rem;
+                padding: 0 1rem;
+                position: relative;
+                border-radius: 2rem;
+                color: #6c757d;
+                white-space: nowrap;
+                transition: all .2s;
+                margin: .1rem 0;
+
+                &:hover {
+                    background: #fcf1ef;
+                }
+
+                &::before {
+                    content: '';
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50%;
+                    background: transparent;
+                    margin-right: 10px;
+                    transition: background 0.2s;
+                }
+
+                &:hover::before {
+                    background: #da624a;
+                }
+
+
+                &:hover {
+                    color: #da624a;
+                    background: #fcf1ef;
+
+                }
+
+                &.mm-active {
+                    color: #fff;
+                    background: #da624a;
+
+                    &::before {
+                        background: #da624a;
+                    }
+                }
+
+            }
+        }
+    }
+}
+
+.mm-show {
+    max-height: 300px;
+    transition: max-height 0.5s ease-in-out;
+    overflow: hidden;
+}
+
+.mm-collapse {
+    max-height: 0;
+    transition: max-height 0.5s ease-in-out;
+    overflow: hidden;
+}
+
+.mm-show li a {
+    color: #333;
+    /* Màu chữ */
+}
+
+.mm-show li a:hover {
+    background-color: #f0f0f0;
+    /* Màu nền khi hover */
+}
+
+
+
+
+.childmenu {
+    display: flex;
+
+    align-items: center;
+
+    padding: 10px;
+
+    color: #6c757d;
+
+}
+
+.childmenu .fa-rocket {
+    margin-right: 8px;
+
+}
+
+.childmenu .fa-file-lines {
+    margin-right: 8px;
+
+}
+
+.childmenu .metismenu-state-icon {
+    margin-left: auto;
+    font-size: 12px;
+}
+
+.app-sidebar__heading {
+    text-transform: uppercase;
+    font-size: .7438rem;
+    margin: 1rem 0;
+    color: #da624a;
+    opacity: .6;
+    white-space: nowrap;
+}
+
+.vertical-nav-menu ul {
+    transition: padding 300ms;
+    padding: 0 .5rem;
+}
+
+.vertical-nav-menu ul>li>a.mm-active {
+    color: #da624a;
+    background: #fcf1ef;
+}
