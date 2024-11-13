@@ -1,12 +1,13 @@
-import { createRoot } from 'react-dom/client';
-import './index.css';
-import Home from './page/Home';
-import About from './page/About';
-import New from './page/New';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import RootLayout from './page/RootLayout';
-import RootLayoutAdmin from './Admin/RootLayoutAdmin';
-import Dashboard from './Admin/page/Dashboard';
+
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import Home from './page/Home'
+import About from './page/About'
+import New from './page/New'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import RootLayout from './page/RootLayout'
+import RootLayoutAdmin from './page/RootLayoutAdmin'
+import Dashboard from './Admin/page/Dashboard'
 
 const router = createBrowserRouter([
   {
@@ -14,7 +15,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home />
+        element: <Home/>
       },
       {
         path: "/about",
@@ -27,11 +28,11 @@ const router = createBrowserRouter([
     ]
   },
   {
-    element: <RootLayoutAdmin />,
+    element: <RootLayoutAdmin />, // cấu hình các component chung
     children: [
       {
         path: "/admin",
-        element: <Dashboard />
+        element: <Dashboard/>
       },
     ]
   }

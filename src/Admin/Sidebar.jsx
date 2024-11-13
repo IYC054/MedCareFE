@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRocket, faChevronUp, faChevronDown,faFileLines } from '@fortawesome/free-solid-svg-icons';
-import './sidebar.scss';
-function Sidebar(props) {
-    const [isOpen, setIsOpen] = useState(false);
-    const [activeMenu, setActiveMenu] = useState('Analytics');
-    const [isSubMenuOpen, setIsSubMenuOpen] = useState(false); 
-    const [isSubMenuOpen1, setIsSubMenuOpen1] = useState(false);
-    const [menu, setMenu] = useState(false);
-    const toggleMenu = () => {
-        setIsOpen(!isOpen);
-        setMenu(!menu);
-    };
+import { faRocket, faChevronUp, faChevronDown, faFileLines } from '@fortawesome/free-solid-svg-icons';
+import './scss/sidebar.scss';
 
+function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
+    const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
+    const [isSubMenuOpen1, setIsSubMenuOpen1] = useState(false);
+
+    // Remove the local useState for isOpen
+    const toggleMenu = () => {
+        setIsOpen(!isOpen); // Now this uses the passed down setIsOpen
+    };
 
     const handleMenuClick = (menu) => {
         setActiveMenu(menu);
@@ -25,8 +23,9 @@ function Sidebar(props) {
     const toggleSubMenu1 = () => {
         setIsSubMenuOpen1(!isSubMenuOpen1);
     };
+
     return (
-        <div className={menu ? 'app-sidebar-wrapper-close' : 'app-sidebar-wrapper'}>
+        <div className={isOpen ? 'app-sidebar-wrapper-open' : 'app-sidebar-wrapper'}>
             <div className='app-header__logo'>
                 <div href='' className='logo-src'></div>
                 <button className={`hamburger ${isOpen ? 'open' : ''}`} onClick={toggleMenu}>
@@ -37,6 +36,7 @@ function Sidebar(props) {
             </div>
             <div className='scrollbar-sidebar'>
                 <div className='app-sidebar__inner'>
+                    {/* Dashboards Menu */}
                     <ul className='vertical-nav-menu metismenu'>
                         <li className='app-sidebar__heading'>Menu</li>
                         <li className='mm-active'>
@@ -68,6 +68,7 @@ function Sidebar(props) {
                             </ul>
                         </li>
                     </ul>
+                    {/* Pages Menu */}
                     <ul className='vertical-nav-menu metismenu'>
                         <li className='mm-active'>
                             <a className='childmenu' onClick={toggleSubMenu1}>
@@ -98,9 +99,6 @@ function Sidebar(props) {
                             </ul>
                         </li>
                     </ul>
-                </div>
-                <div className='ps__rail-y'>
-                    <div className='ps__thumb-y'></div>
                 </div>
             </div>
         </div>
