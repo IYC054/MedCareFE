@@ -4,8 +4,8 @@ import { faRocket, faChevronUp, faChevronDown, faFileLines } from '@fortawesome/
 import './scss/sidebar.scss';
 
 function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
-    const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
-    const [isSubMenuOpen1, setIsSubMenuOpen1] = useState(false);
+    const [isSubMenuOpen, setIsSubMenuOpen] = useState(true);
+    const [isSubMenuOpen1, setIsSubMenuOpen1] = useState(true);
 
     // Remove the local useState for isOpen
     const toggleMenu = () => {
@@ -18,14 +18,16 @@ function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
 
     const toggleSubMenu = () => {
         setIsSubMenuOpen(!isSubMenuOpen);
+        console.log("sub",isSubMenuOpen);
     };
-
+   
     const toggleSubMenu1 = () => {
         setIsSubMenuOpen1(!isSubMenuOpen1);
+        console.log("sub1",isSubMenuOpen1);
     };
 
     return (
-        <div className={isOpen ? 'app-sidebar-wrapper-open' : 'app-sidebar-wrapper'}>
+        <div className={isOpen ? 'app-sidebar-wrapper-close' : 'app-sidebar-wrapper'}>
             <div className='app-header__logo'>
                 <div href='' className='logo-src'></div>
                 <button className={`hamburger ${isOpen ? 'open' : ''}`} onClick={toggleMenu}>

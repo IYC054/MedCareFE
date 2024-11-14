@@ -1,35 +1,36 @@
 .root-layout-admin {
-    display: flex;
-    min-height: 100vh;
-    background-color: #f7fafc; // Equivalent of bg-gray-100 in Tailwind
-  
-    /* Sidebar */
-    .sidebar-open .sidebar {
-      width: 250px; // Expanded width
-      transition: width 0.3s ease;
-    }
-  
-    .sidebar-closed .sidebar {
-      width: 60px; // Collapsed width
-      transition: width 0.3s ease;
-    }
-  
-    /* Content area */
-    .content-area {
-      flex-grow: 1;
-      margin-left: 250px; // Default margin for the expanded sidebar
-  
-      .content {
-        padding-top: 20px;
-        padding-left: 30px;
-        padding-right: 30px;
-        transition: margin-left 0.3s ease;
-      }
-    }
-  
-    /* Adjust the content area when sidebar is collapsed */
-    .sidebar-closed .content-area {
-      margin-left: 60px; // Adjust for the collapsed sidebar
-    }
+  display: flex;
+  min-height: 100vh;
+  background-color: #f7fafc; // Equivalent of bg-gray-100 in Tailwind
+
+  z-index: 12;
+
+  .sidebar-open .sidebar {
+    width: 250px; // Expanded width
+    transition: width 0.3s ease;
   }
-  
+
+  .sidebar-closed .sidebar {
+    width: 60px; // Collapsed width
+    transition: width 0.3s ease;
+  }
+
+  /* Content area */
+  .content-area {
+    flex-grow: 1;
+    margin-left: 300px;
+    transition: margin-left 0.3s ease; // Move transition here to apply on margin change
+
+    &.content-expanded {
+      margin-left: 100px;
+    }
+
+    .content {
+      padding-top: 20px;
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+
+  }
+
+}
