@@ -7,6 +7,7 @@ const Home = () => {
     "  Tìm kiếm chuyên khoa",
     "  Tìm kiếm bác sĩ",
     "  Tìm kiếm phòng khám",
+    "  Tìm Em trong bóng đêm",
   ];
   const [currentPlaceholderIndex, setCurrentPlaceholderIndex] = useState(0); // plahoder thứ mấy
   let index = 0; // xác định chữ đầu

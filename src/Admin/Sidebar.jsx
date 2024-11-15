@@ -27,7 +27,7 @@ function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
     };
 
     return (
-        <div className={isOpen ? 'app-sidebar-wrapper-close' : 'app-sidebar-wrapper'}>
+        <div className={isOpen ? 'app-sidebar-wrapper-close' : 'app-sidebar-wrapper'} id="style-1">
             <div className='app-header__logo'>
                 <div href='' className='logo-src'></div>
                 <button className={`hamburger ${isOpen ? 'open' : ''}`} onClick={toggleMenu}>
@@ -71,6 +71,96 @@ function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
                         </li>
                     </ul>
                     {/* Pages Menu */}
+                    <ul className='vertical-nav-menu metismenu'>
+                        <li className='mm-active'>
+                            <a className='childmenu' onClick={toggleSubMenu1}>
+                                <FontAwesomeIcon icon={faFileLines} /> Pages
+                                <FontAwesomeIcon icon={isSubMenuOpen1 ? faChevronUp : faChevronDown} className='metismenu-state-icon' />
+                            </a>
+                            <ul className={isSubMenuOpen1 ? 'mm-show' : 'mm-collapse'}>
+                                <li>
+                                    <a className={activeMenu === 'c' ? 'mm-active' : ''} onClick={() => handleMenuClick('c')}>
+                                        Analytics
+                                    </a>
+                                </li>
+                                <li>
+                                    <a className={activeMenu === 'a' ? 'mm-active' : ''} onClick={() => handleMenuClick('a')}>
+                                        Management
+                                    </a>
+                                </li>
+                                <li>
+                                    <a className={activeMenu === 's' ? 'mm-active' : ''} onClick={() => handleMenuClick('s')}>
+                                        Advertisement
+                                    </a>
+                                </li>
+                                <li>
+                                    <a className={activeMenu === 'd' ? 'mm-active' : ''} onClick={() => handleMenuClick('d')}>
+                                        Helpdesk
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul className='vertical-nav-menu metismenu'>
+                        <li className='mm-active'>
+                            <a className='childmenu' onClick={toggleSubMenu1}>
+                                <FontAwesomeIcon icon={faFileLines} /> Pages
+                                <FontAwesomeIcon icon={isSubMenuOpen1 ? faChevronUp : faChevronDown} className='metismenu-state-icon' />
+                            </a>
+                            <ul className={isSubMenuOpen1 ? 'mm-show' : 'mm-collapse'}>
+                                <li>
+                                    <a className={activeMenu === 'c' ? 'mm-active' : ''} onClick={() => handleMenuClick('c')}>
+                                        Analytics
+                                    </a>
+                                </li>
+                                <li>
+                                    <a className={activeMenu === 'a' ? 'mm-active' : ''} onClick={() => handleMenuClick('a')}>
+                                        Management
+                                    </a>
+                                </li>
+                                <li>
+                                    <a className={activeMenu === 's' ? 'mm-active' : ''} onClick={() => handleMenuClick('s')}>
+                                        Advertisement
+                                    </a>
+                                </li>
+                                <li>
+                                    <a className={activeMenu === 'd' ? 'mm-active' : ''} onClick={() => handleMenuClick('d')}>
+                                        Helpdesk
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul className='vertical-nav-menu metismenu'>
+                        <li className='mm-active'>
+                            <a className='childmenu' onClick={toggleSubMenu1}>
+                                <FontAwesomeIcon icon={faFileLines} /> Pages
+                                <FontAwesomeIcon icon={isSubMenuOpen1 ? faChevronUp : faChevronDown} className='metismenu-state-icon' />
+                            </a>
+                            <ul className={isSubMenuOpen1 ? 'mm-show' : 'mm-collapse'}>
+                                <li>
+                                    <a className={activeMenu === 'c' ? 'mm-active' : ''} onClick={() => handleMenuClick('c')}>
+                                        Analytics
+                                    </a>
+                                </li>
+                                <li>
+                                    <a className={activeMenu === 'a' ? 'mm-active' : ''} onClick={() => handleMenuClick('a')}>
+                                        Management
+                                    </a>
+                                </li>
+                                <li>
+                                    <a className={activeMenu === 's' ? 'mm-active' : ''} onClick={() => handleMenuClick('s')}>
+                                        Advertisement
+                                    </a>
+                                </li>
+                                <li>
+                                    <a className={activeMenu === 'd' ? 'mm-active' : ''} onClick={() => handleMenuClick('d')}>
+                                        Helpdesk
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                     <ul className='vertical-nav-menu metismenu'>
                         <li className='mm-active'>
                             <a className='childmenu' onClick={toggleSubMenu1}>
