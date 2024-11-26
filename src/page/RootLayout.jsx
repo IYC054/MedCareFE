@@ -11,7 +11,7 @@ const RootLayout = () => {
         </div>
   
         {/* Thêm khoảng cách để tránh bị che khuất */}
-        <div className="mt-[140px]">
+        <div className="mt-[160px]">
           <Outlet /> {/* Đây là nơi hiển thị các component con */}
         </div>
       </div>

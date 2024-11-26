@@ -13,6 +13,7 @@ import AccountDoctor from './Admin/page/AccountDoctor'
 import Appointment from './Admin/page/Appointment'
 import Feedback from './Admin/page/FeedBack'
 
+import Hopsital from './components/Hospital'
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "/new",
         element: <New />
+      },
+      {
+        path: "/hospital",
+        element: <Hopsital />
       }
     ]
   },

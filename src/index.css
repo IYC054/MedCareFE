@@ -1,12 +1,20 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+body{
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  background-color: #e8f2f7;
+}
 
 /* phần chạy chư */
 .scrolling-text {
     display: inline-block;
     white-space: nowrap;
     animation: scroll-left 10s linear infinite;
+    
   }
   body{
     box-sizing: border-box;
