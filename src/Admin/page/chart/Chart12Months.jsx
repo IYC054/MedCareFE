@@ -41,12 +41,12 @@ const Chart12Months = () => {
     };
 
     return (
-        <div className="widget-chart p-0">
+        <div className="widget-chart border-2 p-0">
             <Chart
                 options={data.options}
                 series={data.series}
                 type="bar"
-                height="350"
+                height="330"
             />
         </div>
     );

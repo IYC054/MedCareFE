@@ -40,7 +40,7 @@ function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
     return (
         <div className={!isOpen && !isClosed ? 'app-sidebar-wrapper' : 'app-sidebar-wrapper-close'} id="style-1" >
             <div className='app-header__logo'>
-                <div href='' className='logo-src'></div>
+                <img src='https://medpro.vn/_next/image?url=https%3A%2F%2Fbo-api.medpro.com.vn%2Fstatic%2Fimages%2Fmedpro%2Fweb%2Fheader_logo.svg&w=2048&q=75' className='logo-src'/>
                 <button className={`hamburger ${isOpen ? 'open' : ''}`} onClick={toggleMenu}>
                     <span className='bar'></span>
                     <span className='bar'></span>
