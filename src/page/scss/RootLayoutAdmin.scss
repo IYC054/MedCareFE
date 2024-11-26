@@ -34,3 +34,125 @@
   }
 
 }
+
+.app-header {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  z-index: 10;
+  height: 100px;
+  width: 100%;
+  padding: 0 30px;
+
+  .page-title-heading {
+    font-size: 1.25rem;
+    font-weight: 500;
+    position: relative;
+    z-index: 5;
+  }
+
+  .page-title-subheading {
+    padding: 3px 0 0;
+    font-size: .9rem;
+    opacity: .6;
+    font-weight: 300;
+    display: block;
+  }
+}
+
+.app-header-right {
+  margin-left: auto;
+  align-items: center;
+  display: flex;
+  position: relative;
+  z-index: 6;
+  height: auto;
+
+  .header-btn-lg {
+    padding: 0 0 0 1.5rem;
+    margin-left: 1.5rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  .dropdown {
+    display: flex;
+    align-content: center;
+
+    .btn {
+      font-size: 1.75rem;
+      color: #000;
+
+      i {
+        font-style: italic;
+        padding: 0px 5px;
+      }
+    }
+  }
+
+  .header-btn-lg {
+    padding: 0 0 0 1.0rem;
+    margin-left: 0rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    .widget-content::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+  
+      transform: translateY(-50%);
+      
+      height: 40%;
+      width: 1px;
+      background-color: #e5dfdf;
+    }
+
+    .widget-content {
+      padding: 1rem;
+      flex-direction: row;
+      align-items: center;
+      position: relative;
+
+
+      .widget-content-wrapper {
+        display: flex;
+        flex: 1;
+        position: relative;
+        align-items: center;
+
+        .btn-group,
+        .btn-group-vertical {
+          position: relative;
+          display: inline-flex;
+          vertical-align: middle;
+
+          .ac {
+            display: flex;
+            align-items: center;
+
+          }
+
+          .rounded {
+            border-radius: .35rem !important;
+            width: 42px;
+            margin: 8px;
+          }
+
+          .img {
+            vertical-align: middle;
+            border-style: none;
+            width: 100px;
+          }
+        }
+      }
+
+    }
+  }
+
+
+
+}
