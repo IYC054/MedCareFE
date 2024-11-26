@@ -8,6 +8,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import RootLayout from './page/RootLayout'
 import RootLayoutAdmin from './page/RootLayoutAdmin'
 import Dashboard from './Admin/page/Dashboard'
+import Hopsital from './components/Hospital'
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: "/new",
         element: <New />
+      },
+      {
+        path: "/hospital",
+        element: <Hopsital />
       }
     ]
   },
