@@ -2,20 +2,24 @@ import React, { useState } from 'react';
 import '../scss/dashboard.scss';
 import ChartMonth from './chart/ChartMonth';
 import ChartWeek from './chart/ChartWeek';
+import Chart12Months from './chart/Chart12Months';
+import Chart1Week from './chart/Chart1Week';
 
 function Dashboard() {
     const [activeTab, setActiveTab] = useState('this month');
     const [activeTab2, setActiveTab2] = useState('tab1');
     const [activeChart, setActiveChart] = useState('this month');
+    const [activeChart2, setActiveChart2] = useState('tab1');
     const handleTabClick = (tab) => {
         setActiveTab(tab);
         setActiveChart(tab);
 
     };
     const handleTabClick1 = (tab) => {
-
         setActiveTab2(tab);
+        setActiveChart2(tab);
     };
+
     return (
         <div className='app-inner-layout__content'>
             <div className='tab-content'>
@@ -83,7 +87,7 @@ function Dashboard() {
                                                 className={`nav-link ${activeTab === 'whole year' ? 'active' : ''}`}
                                                 onClick={() => handleTabClick('whole year')}
                                             >
-                                                Whole Year
+                                                This Year
                                             </a>
                                         </li>
                                         <li className="nav-item">
@@ -91,7 +95,7 @@ function Dashboard() {
                                                 className={`nav-link ${activeTab === 'this month' ? 'active' : ''}`}
                                                 onClick={() => handleTabClick('this month')}
                                             >
-                                                This Month
+                                                This Week
                                             </a>
                                         </li>
                                     </ul>
@@ -243,19 +247,23 @@ function Dashboard() {
                                     <div className='card-header-tabr'>
                                         <div className='card-header-title'>
                                             <i className="bi bi-coin"></i>  Earning
-                                            </div>
-
+                                        </div>
                                     </div>
                                     <div className='btn-actions-pane-right'>
                                         <div className='nav'>
-                                            <a className={`border-0 btn-pill btn-wide btn-transition btn btn-outline-alternate ${activeTab2 === 'tab1' ? 'active' : ''}`} onClick={() => handleTabClick1('tab1')}>tab 1</a>
-                                            <a className={`ml-1 btn-pill btn-wide border-0 btn-transition btn btn-outline-alternate ${activeTab2 === 'tab2' ? 'active' : ''}`} onClick={() => handleTabClick1('tab2')}>tab 2</a>
+                                            <a className={`border-0 btn-pill btn-wide btn-transition btn btn-outline-alternate ${activeTab2 === 'tab1' ? 'active' : ''}`} onClick={() => handleTabClick1('tab1')}>This year</a>
+                                            <a className={`ml-1 btn-pill btn-wide border-0 btn-transition btn btn-outline-alternate ${activeTab2 === 'tab2' ? 'active' : ''}`} onClick={() => handleTabClick1('tab2')}>This Week</a>
                                         </div>
                                     </div>
                                 </div>
                                 <div className='tab-content'>
-
+                                    <div className='tab-pane fade active show'>
+                                        <div className='widget-chart p-0'>
+                                            {activeChart2 === 'tab1' ? <Chart12Months /> : <Chart1Week />}
+                                        </div>
+                                    </div>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>

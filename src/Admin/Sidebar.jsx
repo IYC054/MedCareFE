@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRocket, faChevronUp, faChevronDown, faFileLines } from '@fortawesome/free-solid-svg-icons';
 import './scss/sidebar.scss';
+import { Link } from 'react-router-dom';
 
 function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
     const [isSubMenuOpen, setIsSubMenuOpen] = useState(true);
@@ -58,24 +59,24 @@ function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
                             </a>
                             <ul className={isSubMenuOpen ? 'mm-show' : 'mm-collapse'}>
                                 <li>
-                                    <a className={activeMenu === 'Analytics' ? 'mm-active' : ''} onClick={() => handleMenuClick('Analytics')}>
-                                        Analytics
-                                    </a>
+                                    <Link to="/admin" className={activeMenu === 'Analytics' ? 'mm-active' : ''} onClick={() => handleMenuClick('Analytics')}>
+                                        Dashboard
+                                    </Link>
                                 </li>
                                 <li>
-                                    <a className={activeMenu === 'Management' ? 'mm-active' : ''} onClick={() => handleMenuClick('Management')}>
-                                        Management
-                                    </a>
+                                    <Link to="/admin/user" className={activeMenu === 'User' ? 'mm-active' : ''} onClick={() => handleMenuClick('User')}>
+                                        User
+                                    </Link>
                                 </li>
                                 <li>
-                                    <a className={activeMenu === 'Advertisement' ? 'mm-active' : ''} onClick={() => handleMenuClick('Advertisement')}>
-                                        Advertisement
-                                    </a>
+                                    <Link to="/admin/doctor" className={activeMenu === 'Doctor' ? 'mm-active' : ''} onClick={() => handleMenuClick('Doctor')}>
+                                        Doctor 
+                                    </Link>
                                 </li>
                                 <li>
-                                    <a className={activeMenu === 'Helpdesk' ? 'mm-active' : ''} onClick={() => handleMenuClick('Helpdesk')}>
-                                        Helpdesk
-                                    </a>
+                                    <Link to="/admin/feedback" className={activeMenu === 'FeedBack' ? 'mm-active' : ''} onClick={() => handleMenuClick('Feedback')}>
+                                        Feedback
+                                    </Link>
                                 </li>
                             </ul>
                         </li>
@@ -111,96 +112,7 @@ function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
                             </ul>
                         </li>
                     </ul>
-                    <ul className='vertical-nav-menu metismenu'>
-                        <li className='mm-active'>
-                            <a className='childmenu' onClick={toggleSubMenu1}>
-                                <FontAwesomeIcon icon={faFileLines} /> Pages
-                                <FontAwesomeIcon icon={isSubMenuOpen1 ? faChevronUp : faChevronDown} className='metismenu-state-icon' />
-                            </a>
-                            <ul className={isSubMenuOpen1 ? 'mm-show' : 'mm-collapse'}>
-                                <li>
-                                    <a className={activeMenu === 'c' ? 'mm-active' : ''} onClick={() => handleMenuClick('c')}>
-                                        Analytics
-                                    </a>
-                                </li>
-                                <li>
-                                    <a className={activeMenu === 'a' ? 'mm-active' : ''} onClick={() => handleMenuClick('a')}>
-                                        Management
-                                    </a>
-                                </li>
-                                <li>
-                                    <a className={activeMenu === 's' ? 'mm-active' : ''} onClick={() => handleMenuClick('s')}>
-                                        Advertisement
-                                    </a>
-                                </li>
-                                <li>
-                                    <a className={activeMenu === 'd' ? 'mm-active' : ''} onClick={() => handleMenuClick('d')}>
-                                        Helpdesk
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <ul className='vertical-nav-menu metismenu'>
-                        <li className='mm-active'>
-                            <a className='childmenu' onClick={toggleSubMenu1}>
-                                <FontAwesomeIcon icon={faFileLines} /> Pages
-                                <FontAwesomeIcon icon={isSubMenuOpen1 ? faChevronUp : faChevronDown} className='metismenu-state-icon' />
-                            </a>
-                            <ul className={isSubMenuOpen1 ? 'mm-show' : 'mm-collapse'}>
-                                <li>
-                                    <a className={activeMenu === 'c' ? 'mm-active' : ''} onClick={() => handleMenuClick('c')}>
-                                        Analytics
-                                    </a>
-                                </li>
-                                <li>
-                                    <a className={activeMenu === 'a' ? 'mm-active' : ''} onClick={() => handleMenuClick('a')}>
-                                        Management
-                                    </a>
-                                </li>
-                                <li>
-                                    <a className={activeMenu === 's' ? 'mm-active' : ''} onClick={() => handleMenuClick('s')}>
-                                        Advertisement
-                                    </a>
-                                </li>
-                                <li>
-                                    <a className={activeMenu === 'd' ? 'mm-active' : ''} onClick={() => handleMenuClick('d')}>
-                                        Helpdesk
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <ul className='vertical-nav-menu metismenu'>
-                        <li className='mm-active'>
-                            <a className='childmenu' onClick={toggleSubMenu1}>
-                                <FontAwesomeIcon icon={faFileLines} /> Pages
-                                <FontAwesomeIcon icon={isSubMenuOpen1 ? faChevronUp : faChevronDown} className='metismenu-state-icon' />
-                            </a>
-                            <ul className={isSubMenuOpen1 ? 'mm-show' : 'mm-collapse'}>
-                                <li>
-                                    <a className={activeMenu === 'c' ? 'mm-active' : ''} onClick={() => handleMenuClick('c')}>
-                                        Analytics
-                                    </a>
-                                </li>
-                                <li>
-                                    <a className={activeMenu === 'a' ? 'mm-active' : ''} onClick={() => handleMenuClick('a')}>
-                                        Management
-                                    </a>
-                                </li>
-                                <li>
-                                    <a className={activeMenu === 's' ? 'mm-active' : ''} onClick={() => handleMenuClick('s')}>
-                                        Advertisement
-                                    </a>
-                                </li>
-                                <li>
-                                    <a className={activeMenu === 'd' ? 'mm-active' : ''} onClick={() => handleMenuClick('d')}>
-                                        Helpdesk
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+                 
                 </div>
             </div>
         </div>
