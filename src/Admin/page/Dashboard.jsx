@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import '../scss/dashboard.scss';
-import 'bootstrap/dist/css/bootstrap.min.css'
 import ChartMonth from './chart/ChartMonth';
 import ChartWeek from './chart/ChartWeek';
 

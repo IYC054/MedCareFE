@@ -6,7 +6,7 @@ import "./hospital.scss";
 function Hopsital() {
   return (
     <div className="container flex justify-center py-5">
-      <div className="w-4/5  h-screen">
+      <div className="w-4/5 ">
         <div className="w-full">
           <p className="font-medium text-[17px]">
             Trang chủ <span className="mx-2">{">"}</span>{" "}
@@ -236,7 +236,6 @@ function Hopsital() {
               </span>
             </div>
           </div>
-          <div className="h-screen"></div>
         </div>
       </div>
     </div>
