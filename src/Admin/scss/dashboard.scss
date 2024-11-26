@@ -1,0 +1,244 @@
+.bg-night-fade {
+    background-image: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%) !important;
+}
+
+.bg-happy-green {
+    background-image: linear-gradient(to bottom, #00b09b, #96c93d) !important;
+}
+
+.bg-arielle-smile {
+    background-image: radial-gradient(circle 248px at center, #16d9e3 0%, #30c7ec 47%, #46aef7 100%) !important;
+}
+
+.widget-content-wrapper {
+    padding: 1rem;
+    flex-direction: row;
+    align-items: center;
+
+    .widget-heading {
+        opacity: .8;
+        font-weight: bold;
+
+    }
+
+    .widget-subheading {
+        opacity: .5;
+    }
+
+    .widget-content-right {
+        margin-left: auto;
+
+        .widget-numbers {
+            font-weight: bold;
+            font-size: 1.8rem;
+            display: block;
+        }
+    }
+}
+
+.card-header:first-child {
+    border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    border-bottom-width: 1px;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-right: .625rem;
+    height: 3.5rem;
+}
+
+.card-header,
+.card-title {
+    text-transform: none;
+    color: rgba(31, 10, 6, 0.6);
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+
+    .bi {
+        font-size: large;
+    }
+}
+
+.card-header {
+    font-weight: bold;
+    font-size: .8rem;
+}
+
+.card-header {
+    padding: .75rem 1.25rem;
+    margin-bottom: 0;
+    color: inherit;
+    background-color: #fff;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.nav {
+    margin-left: auto;
+
+    .nav-link {
+        text-transform: none;
+        width: 100%;
+        display: block;
+        color: #495057;
+        position: relative; // Để hỗ trợ pseudo-element (::after)
+        text-decoration: none;
+        padding: 0.5rem 0;
+        padding: 17px 5px;
+
+
+        &::after {
+            content: ''; // Nội dung trống
+            position: absolute;
+            left: 50%; // Bắt đầu từ giữa liên kết
+            bottom: 0; // Canh dưới của liên kết
+            width: 0; // Ban đầu không có độ rộng
+            height: 4px; // Chiều dày của đường kẻ
+            border-radius: 30px;
+            background-color: #da624a;
+            transform: translateX(-50%); // Canh chỉnh giữa
+            transition: width 0.3s ease-in-out; // Hiệu ứng mượt
+        }
+
+        &:hover {
+            color: #da624a; // Đổi màu liên kết
+
+            &::after {
+                width: 100%; // Đường kẻ mở rộng hết chiều rộng liên kết
+            }
+        }
+
+        &.active {
+            color: #da624a;
+
+            &::after {
+                width: 100%; // Khi active, đường kẻ luôn hiện đầy đủ
+                left: 50%; // Bắt đầu từ giữa
+                transform: translateX(-50%);
+            }
+        }
+    }
+}
+
+.widget-chart-flex {
+    padding: 20px;
+    display: flex;
+
+    .widget-numbers {
+
+        font-weight: normal;
+        font-size: 2.5rem;
+        display: block;
+        line-height: 1;
+
+    }
+
+    .widget-title {
+        margin-top: auto;
+        font-size: 1.1rem;
+        color: #6c757d !important;
+        opacity: .6;
+    }
+}
+
+.text-muted {
+    opacity: .5;
+}
+
+.widget-content-wrapper {
+    display: flex;
+}
+
+.scroll-area-sm {
+    max-height: 200px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #888 #e0e0e0;
+    padding-right: 10px;
+}
+
+.card-header-tabr .card-header-title {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    font-size: large;
+
+    .bi{
+        margin-right: 5px;
+    }
+}
+
+
+.card-header {
+    font-weight: bold;
+    font-size: .9rem;
+}
+
+.btn-actions-pane-right {
+    margin-left: auto;
+    white-space: nowrap;
+
+    .nav {
+        width: auto;
+        margin-left: auto;
+        display: flex;
+        flex-wrap: wrap;
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+    }
+
+    .border-0 {
+        color: #5a2b72;
+
+        border-top-left-radius: 50px;
+        border-bottom-left-radius: 50px;
+        border-top-right-radius: 50px;
+        border-bottom-right-radius: 50px;
+        border-color: #794c8a;
+        cursor: pointer;
+        padding: .375rem 1.5rem;
+        font-size: .81818rem;
+        line-height: 1.5;
+        border-radius: .25rem;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    /* Khi hover */
+    .border-0:hover {
+        background-color: #6a3483;
+        color: #fff;
+        /* Màu nền khi hover */
+        transform: scale(1.05);
+        /* Phóng to một chút khi hover */
+    }
+
+    /* Khi active */
+    .border-0.active {
+        background-color: #5a2b72;
+        /* Màu nền khi active */
+        border-color: #5a2b72;
+        color: #fff;
+    }
+
+    /* Cấu hình cho tab thứ hai */
+    .second-tab-toggle-alt:hover {
+        background-color: #6a3483;
+        /* Màu nền khi hover */
+        transform: scale(1.05);
+        /* Phóng to khi hover */
+        color: #fff;
+    }
+
+    .second-tab-toggle-alt.active {
+
+        /* Màu nền khi active */
+        border-color: #5a2b72;
+        color: #fff;
+    }
+
+
+}

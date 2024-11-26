@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRocket, faChevronUp, faChevronDown, faFileLines } from '@fortawesome/free-solid-svg-icons';
 import './scss/sidebar.scss';
@@ -6,7 +6,7 @@ import './scss/sidebar.scss';
 function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
     const [isSubMenuOpen, setIsSubMenuOpen] = useState(true);
     const [isSubMenuOpen1, setIsSubMenuOpen1] = useState(true);
-
+    const [isClosed, setIsClosed] = useState(window.innerWidth <= 768);
     // Remove the local useState for isOpen
     const toggleMenu = () => {
         setIsOpen(!isOpen); // Now this uses the passed down setIsOpen
@@ -25,9 +25,19 @@ function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
         setIsSubMenuOpen1(!isSubMenuOpen1);
         console.log("sub1",isSubMenuOpen1);
     };
+    useEffect(() => {
+        const handleResize = () => {
+            setIsClosed(window.innerWidth <= 768);
+        };
 
+        window.addEventListener('resize', handleResize);
+        
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
     return (
-        <div className={isOpen ? 'app-sidebar-wrapper-close' : 'app-sidebar-wrapper'} id="style-1">
+        <div className={!isOpen && !isClosed ? 'app-sidebar-wrapper' : 'app-sidebar-wrapper-close'} id="style-1" >
             <div className='app-header__logo'>
                 <div href='' className='logo-src'></div>
                 <button className={`hamburger ${isOpen ? 'open' : ''}`} onClick={toggleMenu}>
