@@ -3,18 +3,16 @@ import { BiPhone } from "react-icons/bi";
 import { FaRegClock, FaStar } from "react-icons/fa";
 import { GrLocation } from "react-icons/gr";
 import "./hospital.scss";
+import { Link, useLocation } from "react-router-dom";
+import Breadcrumbs from "./Breadcrumbs";
 function Hopsital() {
+  const location = useLocation();
   return (
     <div className="container flex justify-center py-5">
       <div className="w-4/5 ">
-        <div className="w-full">
-          <p className="font-medium text-[17px]">
-            Trang chủ <span className="mx-2">{">"}</span>{" "}
-            <span className="text-[#00b5f1] cursor-pointer">
-              Bệnh Viện Chợ Rẫy
-            </span>
-          </p>
-        </div>
+        {/* breadcrumbs */}
+        <Breadcrumbs />
+        {/* breadcrumbs */}
         <div className="grid grid-cols-3 gap-4 my-2">
           <div className="col-span-1 w-full   ">
             {/* start hospital */}
@@ -73,7 +71,7 @@ function Hopsital() {
               </div>
               <div className="w-full my-3">
                 <button className="w-full h-[50px] text-[#fff] font-medium rounded-full bg-gradient-to-r from-[#00b5f1] to-[#00e0ff]">
-                  Đặt Khám Ngay
+                  <Link to={`${location.pathname}/booking`}>Đặt Khám Ngay</Link>
                 </button>
               </div>
             </div>

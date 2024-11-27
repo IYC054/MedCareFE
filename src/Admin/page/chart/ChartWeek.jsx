@@ -44,7 +44,7 @@ const ChartWeek = () => {
 
   return (
     <div className="chart">
-      <Chart options={options} series={series} type="area" height={200} />
+      <Chart options={options} series={series} type="area" height={280} />
     </div>
   );
 };

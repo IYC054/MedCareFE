@@ -10,15 +10,22 @@
     background-image: radial-gradient(circle 248px at center, #16d9e3 0%, #30c7ec 47%, #46aef7 100%) !important;
 }
 
+.card-header{
+    .justify-between{
+
+        display: flex;
+        justify-content: space-between;
+        width: 100%; 
+    }
+}
 .widget-content-wrapper {
+    display: flex;
     padding: 1rem;
     flex-direction: row;
     align-items: center;
-
     .widget-heading {
         opacity: .8;
         font-weight: bold;
-
     }
 
     .widget-subheading {
@@ -27,7 +34,6 @@
 
     .widget-content-right {
         margin-left: auto;
-
         .widget-numbers {
             font-weight: bold;
             font-size: 1.8rem;
@@ -36,87 +42,62 @@
     }
 }
 
-.card-header:first-child {
-    border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
-}
-
 .card-header {
     display: flex;
     align-items: center;
-    border-bottom-width: 1px;
-    padding-top: 0;
-    padding-bottom: 0;
-    padding-right: .625rem;
+    padding: 0.75rem 1.25rem;
     height: 3.5rem;
-}
-
-.card-header,
-.card-title {
-    text-transform: none;
+    font-weight: bold;
+    font-size: .9rem;
     color: rgba(31, 10, 6, 0.6);
-    display: flex;
-    align-items: center;
+    background-color: #fff;
+  
+    text-transform: none;
     white-space: nowrap;
-
     .bi {
         font-size: large;
     }
-}
 
-.card-header {
-    font-weight: bold;
-    font-size: .8rem;
-}
-
-.card-header {
-    padding: .75rem 1.25rem;
-    margin-bottom: 0;
-    color: inherit;
-    background-color: #fff;
-    border-bottom: 1px solid #dee2e6;
+    &:first-child {
+        border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+    }
 }
 
 .nav {
     margin-left: auto;
-
     .nav-link {
-        text-transform: none;
-        width: 100%;
         display: block;
         color: #495057;
-        position: relative; // Để hỗ trợ pseudo-element (::after)
-        text-decoration: none;
-        padding: 0.5rem 0;
         padding: 17px 5px;
-
+        text-decoration: none;
+        position: relative;
+        text-transform: none;
 
         &::after {
-            content: ''; // Nội dung trống
+            content: '';
             position: absolute;
-            left: 50%; // Bắt đầu từ giữa liên kết
-            bottom: 0; // Canh dưới của liên kết
-            width: 0; // Ban đầu không có độ rộng
-            height: 4px; // Chiều dày của đường kẻ
+            left: 50%;
+            bottom: 0;
+            width: 0;
+            height: 4px;
             border-radius: 30px;
             background-color: #da624a;
-            transform: translateX(-50%); // Canh chỉnh giữa
-            transition: width 0.3s ease-in-out; // Hiệu ứng mượt
+            transform: translateX(-50%);
+            transition: width 0.3s ease-in-out;
         }
 
         &:hover {
-            color: #da624a; // Đổi màu liên kết
-
+            color: #da624a;
             &::after {
-                width: 100%; // Đường kẻ mở rộng hết chiều rộng liên kết
+                width: 100%;
             }
         }
 
         &.active {
             color: #da624a;
-
             &::after {
-                width: 100%; // Khi active, đường kẻ luôn hiện đầy đủ
-                left: 50%; // Bắt đầu từ giữa
+                width: 100%;
+                left: 50%;
                 transform: translateX(-50%);
             }
         }
@@ -124,16 +105,13 @@
 }
 
 .widget-chart-flex {
-    padding: 20px;
     display: flex;
-
+    padding: 20px;
     .widget-numbers {
-
         font-weight: normal;
         font-size: 2.5rem;
         display: block;
         line-height: 1;
-
     }
 
     .widget-title {
@@ -148,10 +126,6 @@
     opacity: .5;
 }
 
-.widget-content-wrapper {
-    display: flex;
-}
-
 .scroll-area-sm {
     max-height: 200px;
     overflow-y: auto;
@@ -160,21 +134,14 @@
     padding-right: 10px;
 }
 
-.card-header-tabr .card-header-title {
+.card-header-tab .card-header-title {
     display: flex;
     align-items: center;
-    white-space: nowrap;
     font-size: large;
-
-    .bi{
+    white-space: nowrap;
+    .bi {
         margin-right: 5px;
     }
-}
-
-
-.card-header {
-    font-weight: bold;
-    font-size: .9rem;
 }
 
 .btn-actions-pane-right {
@@ -193,52 +160,35 @@
 
     .border-0 {
         color: #5a2b72;
-
-        border-top-left-radius: 50px;
-        border-bottom-left-radius: 50px;
-        border-top-right-radius: 50px;
-        border-bottom-right-radius: 50px;
+        border-radius: 50px;
         border-color: #794c8a;
         cursor: pointer;
         padding: .375rem 1.5rem;
         font-size: .81818rem;
         line-height: 1.5;
-        border-radius: .25rem;
         transition: background-color 0.3s ease, transform 0.3s ease;
     }
 
-    /* Khi hover */
     .border-0:hover {
         background-color: #6a3483;
         color: #fff;
-        /* Màu nền khi hover */
         transform: scale(1.05);
-        /* Phóng to một chút khi hover */
     }
 
-    /* Khi active */
     .border-0.active {
         background-color: #5a2b72;
-        /* Màu nền khi active */
         border-color: #5a2b72;
         color: #fff;
     }
 
-    /* Cấu hình cho tab thứ hai */
     .second-tab-toggle-alt:hover {
         background-color: #6a3483;
-        /* Màu nền khi hover */
         transform: scale(1.05);
-        /* Phóng to khi hover */
         color: #fff;
     }
 
     .second-tab-toggle-alt.active {
-
-        /* Màu nền khi active */
         border-color: #5a2b72;
         color: #fff;
     }
-
-
 }

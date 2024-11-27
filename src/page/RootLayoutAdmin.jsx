@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from '../Admin/Sidebar';
 import './scss/rootLayoutAdmin.scss';
-// import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 // import 'bootstrap/dist/css/bootstrap.min.css'
 const RootLayoutAdmin = () => {
   const [isOpen, setIsOpen] = useState(true)
@@ -30,7 +30,7 @@ const RootLayoutAdmin = () => {
     title = 'Patient Account';
     description = 'Manage and view details of patient accounts, including history and current status.';
   } else if (location.pathname === '/admin/doctor') {
-    title = 'Doctor Account';
+    title = 'Doctor Account'; 
     description = 'Manage doctor accounts and track their appointments and performance.';
   } else if (location.pathname === '/admin/appointment') {
     title = 'Appointment';
@@ -79,8 +79,7 @@ const RootLayoutAdmin = () => {
                       <a className='ac'>
                         <img
                           className='rounded'
-                          src='https://scontent.fhan4-1.fna.fbcdn.net/v/t39.30808-1/455463154_1827211994432428_961288039233308800_n.jpg?stp=dst-jpg_s200x200&_nc_cat=105&ccb=1-7&_nc_sid=0ecb9b&_nc_ohc=lcvkZ3R8cnYQ7kNvgE7dgJL&_nc_zt=24&_nc_ht=scontent.fhan4-1.fna&_nc_gid=AROohsOLtWJdjednim--XfX&oh=00_AYCy8f5-HHSpshP_GA7dEsFhNlAQabpZ8NBe5MSU8FEtlQ&oe=6744CDFA'
-                        />
+                          src='https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/332258329_1185557622321869_3673154378989835580_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=hXxYVct6phgQ7kNvgEhwFuw&_nc_zt=23&_nc_ht=scontent.fsgn2-7.fna&_nc_gid=Ar-aWuczzMRvDRGtyq-95GV&oh=00_AYCOR3L4dHDYN8TQiO0hRc5zb7rPJlTGZLiXt1HyWGKuTg&oe=674B0CD4' />
                         <i className='bi bi-chevron-compact-down'></i>
                       </a>
                     </div>
@@ -97,7 +96,9 @@ const RootLayoutAdmin = () => {
         </div>
       </div>
     </div>
+    
   );
 };
+
 
 export default RootLayoutAdmin;
