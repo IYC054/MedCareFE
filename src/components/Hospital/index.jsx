@@ -8,13 +8,13 @@ import Breadcrumbs from "./Breadcrumbs";
 function Hopsital() {
   const location = useLocation();
   return (
-    <div className="container flex justify-center py-5">
+    <div className="flex justify-center py-5">
       <div className="w-4/5 ">
         {/* breadcrumbs */}
         <Breadcrumbs />
         {/* breadcrumbs */}
         <div className="grid grid-cols-3 gap-4 my-2">
-          <div className="col-span-1 w-full   ">
+          <div className="col-span-1 w-full ">
             {/* start hospital */}
             <div className="shadow-lg rounded-xl p-4 bg-[#fff] w-full mb-5">
               <div className="w-full  border-b-2 border-solid border-b-[#c2c2c2]">

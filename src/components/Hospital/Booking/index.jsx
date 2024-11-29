@@ -15,7 +15,7 @@ const fake = [
   { id: 4, name: "Nguyễn Anh Tuấn", gender: "Male" },
 ];
 function Booking() {
-  const [title, setTitle] = useState("Thông tin cơ sở y tế")
+  const [title, setTitle] = useState("Thông tin cơ sở y tế");
   const [ChooseDoctor, setChooseDoctor] = useState(true);
   const [selectName, setSelectName] = useState();
   const [selectBHYT, setSelectBHYT] = useState(false);
@@ -36,9 +36,9 @@ function Booking() {
     setSelectBHYT(true);
   };
   const handleSelectDate = () => {
-    setSelectDate(false)
-    setTitle("Vui lòng chọn ngày khám")
-  }
+    setSelectDate(false);
+    setTitle("Vui lòng chọn ngày khám");
+  };
   useEffect(() => {
     console.log(title);
   }, [title]);
@@ -53,8 +53,7 @@ function Booking() {
             <div className="w-full  bg-[#fff] rounded-lg " id="goup">
               <div className="w-full h-[50px] bg-gradient-to-r from-[#00b5f1] to-[#00e0ff] rounded-t-lg text-[#fff] py-1 px-4 flex items-center">
                 <span className="font-medium text-[20px]">
-                Thông tin cơ sở y tế
-
+                  Thông tin cơ sở y tế
                 </span>
               </div>
               <div className="w-full rounded-b-lg p-2 list-none ">
@@ -88,9 +87,7 @@ function Booking() {
           <div className="col-span-3 py-4 w-full ">
             <div className="w-full h-full ">
               <div className="w-full h-[50px] bg-gradient-to-r from-[#00b5f1] to-[#00e0ff] rounded-t-lg text-[#fff] py-1 px-4 flex items-center justify-center">
-                <span className="font-medium text-[20px]">
-                  {title}
-                </span>
+                <span className="font-medium text-[20px]">{title}</span>
               </div>
               {ChooseDoctor ? (
                 <div className="w-full h-[435px] bg-[#fff] px-4 pt-10 rounded-lg">
@@ -185,11 +182,21 @@ function Booking() {
                             Bạn có đăng ký BHYT
                           </span>
                           <div className="mr-10">
-                            <input type="radio" id="yes" name="bhyt" onClick={handleSelectDate}/>
+                            <input
+                              type="radio"
+                              id="yes"
+                              name="bhyt"
+                              onClick={handleSelectDate}
+                            />
                             <label htmlFor="yes" className="mx-2">
                               Có
                             </label>
-                            <input type="radio" id="no" name="bhyt" onClick={handleSelectDate}/>
+                            <input
+                              type="radio"
+                              id="no"
+                              name="bhyt"
+                              onClick={handleSelectDate}
+                            />
                             <label htmlFor="no" className="mx-2">
                               Không
                             </label>
@@ -211,8 +218,8 @@ function Booking() {
                 </Fragment>
               ) : (
                 <Fragment>
-                  <div className="w-full  bg-[#fff] px-4 pt-5 rounded-lg ">
-                    <div className="w-full  text-center  text-[24px] font-medium">
+                  <div className="w-full bg-[#fff] px-4 pt-5 rounded-lg mb-10 flex flex-col">
+                    <div className="w-full text-center text-[24px] font-medium mb-10">
                       <Calender />
                     </div>
                   </div>

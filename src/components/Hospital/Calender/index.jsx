@@ -16,12 +16,13 @@ function Calender() {
     console.log(formartDate)
   };
   return (
-    <div className="w-full h-full">
+    <div className="w-full ">
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
         locale={viLocale}
         selectable={true}
+        height={"auto"}
         validRange={{
             start: new Date().toISOString().split("T")[0], 
         }}
