@@ -6,6 +6,8 @@ import { BsGenderAmbiguous } from "react-icons/bs";
 import { MdAttachMoney } from "react-icons/md";
 import "./booking.scss";
 import { IoReturnDownBack } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
+import Calender from "../Calender";
 const fake = [
   { id: 1, name: "Trần Thanh Phong", gender: "Male" },
   { id: 2, name: "Cho In Yeong", gender: "Female" },
@@ -13,8 +15,15 @@ const fake = [
   { id: 4, name: "Nguyễn Anh Tuấn", gender: "Male" },
 ];
 function Booking() {
+  const [title, setTitle] = useState("Thông tin cơ sở y tế")
   const [ChooseDoctor, setChooseDoctor] = useState(true);
   const [selectName, setSelectName] = useState();
+  const [selectBHYT, setSelectBHYT] = useState(false);
+  const [selectDate, setSelectDate] = useState(true);
+  const navigate = useNavigate();
+  const handlegoBackHospital = () => {
+    navigate("/hospital");
+  };
   const HandleChooseDoctor = (name) => {
     setChooseDoctor(false);
     setSelectName(name);
@@ -23,10 +32,16 @@ function Booking() {
     setChooseDoctor(true);
     setSelectName(null);
   };
+  const handleBHYT = () => {
+    setSelectBHYT(true);
+  };
+  const handleSelectDate = () => {
+    setSelectDate(false)
+    setTitle("Vui lòng chọn ngày khám")
+  }
   useEffect(() => {
-    console.log(selectName);
-    console.log(ChooseDoctor);
-  }, [ChooseDoctor, selectName]);
+    console.log(title);
+  }, [title]);
   return (
     <div className="container flex justify-center py-5">
       <div className="w-4/5 ">
@@ -35,10 +50,11 @@ function Booking() {
         <div className="grid grid-cols-4 gap-4">
           {/* start col 1 */}
           <div className="col-span-1 w-full  py-4">
-            <div className="w-full  bg-[#fff] rounded-lg ">
+            <div className="w-full  bg-[#fff] rounded-lg " id="goup">
               <div className="w-full h-[50px] bg-gradient-to-r from-[#00b5f1] to-[#00e0ff] rounded-t-lg text-[#fff] py-1 px-4 flex items-center">
                 <span className="font-medium text-[20px]">
-                  Thông tin cơ sở y tế
+                Thông tin cơ sở y tế
+
                 </span>
               </div>
               <div className="w-full rounded-b-lg p-2 list-none ">
@@ -73,12 +89,12 @@ function Booking() {
             <div className="w-full h-full ">
               <div className="w-full h-[50px] bg-gradient-to-r from-[#00b5f1] to-[#00e0ff] rounded-t-lg text-[#fff] py-1 px-4 flex items-center justify-center">
                 <span className="font-medium text-[20px]">
-                  Thông tin cơ sở y tế
+                  {title}
                 </span>
               </div>
               {ChooseDoctor ? (
                 <div className="w-full h-[435px] bg-[#fff] px-4 pt-10 rounded-lg">
-                  <div className="w-full h-[40px] relative mb-5">
+                  <div className="w-full h-[40px] relative mb-5" id="goup">
                     <input
                       className="w-full h-full rounded-md px-4 boder-[#00e0ff] border-solid border-[#c2c2c2] border-[1px] focus:border-[#00e0ff] shadow-xl focus:outline-none"
                       placeholder="Tìm bác sĩ"
@@ -132,10 +148,10 @@ function Booking() {
                     ))}
                   </div>
                 </div>
-              ) : (
+              ) : selectDate ? (
                 <Fragment>
                   <div className="w-full bg-[#fff] rounded-lg">
-                    <div className="w-full h-full py-2 px-4 ">
+                    <div className="w-full h-full py-2 px-4 " id="goup-2">
                       <table className="table text-[#003553] mb-10">
                         <thead className="border-solid border-b-2 border-[#f2f2f2]">
                           <th className="w-10 py-5">#</th>
@@ -153,22 +169,65 @@ function Booking() {
                             </td>
                             <td className="pt-5">Thanh toán tại Bệnh viện</td>
                             <td className="pt-5">
-                              <button className="px-2 py-2 bg-gradient-to-r from-[#00b5f1] to-[#00e0ff] text-[#fff] rounded-xl whitespace-nowrap">
+                              <button
+                                onClick={handleBHYT}
+                                className="px-2 py-2 bg-gradient-to-r from-[#00b5f1] to-[#00e0ff] text-[#fff] rounded-xl whitespace-nowrap"
+                              >
                                 Đặt khám ngay
                               </button>
                             </td>
                           </tr>
                         </tbody>
                       </table>
+                      {selectBHYT ? (
+                        <div className="w-full h-[40px] bg-[#f2f2f2]/60 px-14 flex justify-between items-center text-[#003553]">
+                          <span className="text-[17px] font-medium ">
+                            Bạn có đăng ký BHYT
+                          </span>
+                          <div className="mr-10">
+                            <input type="radio" id="yes" name="bhyt" onClick={handleSelectDate}/>
+                            <label htmlFor="yes" className="mx-2">
+                              Có
+                            </label>
+                            <input type="radio" id="no" name="bhyt" onClick={handleSelectDate}/>
+                            <label htmlFor="no" className="mx-2">
+                              Không
+                            </label>
+                          </div>
+                        </div>
+                      ) : (
+                        <Fragment></Fragment>
+                      )}
                     </div>
                   </div>
+                  {/* back từ đặt khám */}
                   <button
                     className="flex text-[#003553] gap-2 items-center hover:bg-[#c2c2c2]/20 mt-4 rounded-lg"
                     onClick={handlegoBack}
                   >
                     Quay lại <IoReturnDownBack className="text-[30px]" />
                   </button>
+                  {/* back từ đặt khám */}
                 </Fragment>
+              ) : (
+                <Fragment>
+                  <div className="w-full  bg-[#fff] px-4 pt-5 rounded-lg ">
+                    <div className="w-full  text-center  text-[24px] font-medium">
+                      <Calender />
+                    </div>
+                  </div>
+                </Fragment>
+              )}
+              {ChooseDoctor ? (
+                // back từ chọn bác sĩ
+                <button
+                  className="flex text-[#003553] gap-2 items-center hover:bg-[#c2c2c2]/20 mt-4 rounded-lg"
+                  onClick={handlegoBackHospital}
+                >
+                  Quay lại <IoReturnDownBack className="text-[30px]" />
+                </button>
+              ) : (
+                <Fragment></Fragment>
               )}
             </div>
           </div>

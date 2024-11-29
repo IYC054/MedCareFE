@@ -70,9 +70,11 @@ function Hopsital() {
                 </ul>
               </div>
               <div className="w-full my-3">
-                <button className="w-full h-[50px] text-[#fff] font-medium rounded-full bg-gradient-to-r from-[#00b5f1] to-[#00e0ff]">
-                  <Link to={`${location.pathname}/booking`}>Đặt Khám Ngay</Link>
-                </button>
+                <Link to={`${location.pathname}/booking`}>
+                  <button className="w-full h-[50px] text-[#fff] font-medium rounded-full bg-gradient-to-r from-[#00b5f1] to-[#00e0ff]">
+                    Đặt Khám Ngay
+                  </button>
+                </Link>
               </div>
             </div>
             {/* end hospital */}
