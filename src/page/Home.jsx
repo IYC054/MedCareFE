@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import CustomCarousel from "../components/CustomCarousel";
-import Carousel from "../components/Home/carosel";
 import DoctorCarouselowl from "../components/doctorCarouselowl";
+import Carousel from "../components/Home/Carosel";
+import HealthCheckupCarouselwl from "../components/HealthCheckupCarouselwl";
 
 const Home = () => {
   const ExaminationServices = [
@@ -206,6 +207,88 @@ const Home = () => {
       avatar: "https://via.placeholder.com/80",
     },
   ];
+  const healthcheck = [
+    {
+      name: "Gói Khám Sức Khỏe Tổng Quát Tại Nhà",
+      address: "Trung tâm xét nghiệm Medlatec Bình Phước",
+      price: "200.000",
+
+      avatar:
+        "https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn.medpro.vn%2Fprod-partner%2F59939419-43d4-4d42-b1ec-081bf56f248d-khaam_saaa(c)c_khaaae_taaoai_nhaa_.jpg&w=384&q=75",
+    },
+    {
+      name: "Gói Khám Sức Khỏe Tổng Quát Tại Nhà",
+      address: "Trung tâm xét nghiệm Medlatec Bình Phước",
+      price: "200.000",
+
+      avatar:
+        "https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn.medpro.vn%2Fprod-partner%2F59939419-43d4-4d42-b1ec-081bf56f248d-khaam_saaa(c)c_khaaae_taaoai_nhaa_.jpg&w=384&q=75",
+    },
+    {
+      name: "Gói Khám Sức Khỏe Tổng Quát Tại Nhà",
+      address: "Trung tâm xét nghiệm Medlatec Bình Phước",
+      price: "200.000",
+
+      avatar:
+        "https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn.medpro.vn%2Fprod-partner%2F59939419-43d4-4d42-b1ec-081bf56f248d-khaam_saaa(c)c_khaaae_taaoai_nhaa_.jpg&w=384&q=75",
+    },
+    {
+      name: "Gói Khám Sức Khỏe Tổng Quát Tại Nhà",
+      address: "Trung tâm xét nghiệm Medlatec Bình Phước",
+      price: "200.000",
+
+      avatar:
+        "https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn.medpro.vn%2Fprod-partner%2F59939419-43d4-4d42-b1ec-081bf56f248d-khaam_saaa(c)c_khaaae_taaoai_nhaa_.jpg&w=384&q=75",
+    },
+    {
+      name: "Gói Khám Sức Khỏe Tổng Quát Tại Nhà",
+      address: "Trung tâm xét nghiệm Medlatec Bình Phước",
+      price: "200.000",
+
+      avatar:
+        "https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn.medpro.vn%2Fprod-partner%2F59939419-43d4-4d42-b1ec-081bf56f248d-khaam_saaa(c)c_khaaae_taaoai_nhaa_.jpg&w=384&q=75",
+    },
+    {
+      name: "Gói Khám Sức Khỏe Tổng Quát Tại Nhà",
+      address: "Trung tâm xét nghiệm Medlatec Bình Phước",
+      price: "200.000",
+
+      avatar:
+        "https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn.medpro.vn%2Fprod-partner%2F59939419-43d4-4d42-b1ec-081bf56f248d-khaam_saaa(c)c_khaaae_taaoai_nhaa_.jpg&w=384&q=75",
+    },
+    {
+      name: "Gói Khám Sức Khỏe Tổng Quát Tại Nhà",
+      address: "Trung tâm xét nghiệm Medlatec Bình Phước",
+      price: "200.000",
+
+      avatar:
+        "https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn.medpro.vn%2Fprod-partner%2F59939419-43d4-4d42-b1ec-081bf56f248d-khaam_saaa(c)c_khaaae_taaoai_nhaa_.jpg&w=384&q=75",
+    },
+    {
+      name: "Gói Khám Sức Khỏe Tổng Quát Tại Nhà",
+      address: "Trung tâm xét nghiệm Medlatec Bình Phước",
+      price: "200.000",
+
+      avatar:
+        "https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn.medpro.vn%2Fprod-partner%2F59939419-43d4-4d42-b1ec-081bf56f248d-khaam_saaa(c)c_khaaae_taaoai_nhaa_.jpg&w=384&q=75",
+    },
+    {
+      name: "Gói Khám Sức Khỏe Tổng Quát Tại Nhà",
+      address: "Trung tâm xét nghiệm Medlatec Bình Phước",
+      price: "200.000",
+
+      avatar:
+        "https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn.medpro.vn%2Fprod-partner%2F59939419-43d4-4d42-b1ec-081bf56f248d-khaam_saaa(c)c_khaaae_taaoai_nhaa_.jpg&w=384&q=75",
+    },
+    {
+      name: "Gói Khám Sức Khỏe Tổng Quát Tại Nhà",
+      address: "Trung tâm xét nghiệm Medlatec Bình Phước",
+      price: "200.000",
+
+      avatar:
+        "https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn.medpro.vn%2Fprod-partner%2F59939419-43d4-4d42-b1ec-081bf56f248d-khaam_saaa(c)c_khaaae_taaoai_nhaa_.jpg&w=384&q=75",
+    },
+  ];
   const [placeholderText, setPlaceholderText] = useState("");
   const fullPlaceholders = [
     "  Tìm kiếm chuyên khoa",
@@ -307,6 +390,112 @@ const Home = () => {
             BÁC SĨ TƯ VẤN KHÁM QUA VIDEO
           </p>
           <DoctorCarouselowl items={doctors} w={"w-[216px]"} />
+          <div className="w-full flex justify-center mt-2">
+            <button class="inline-flex items-center justify-center bg-transparent border p-0 border-transparent hover:border-[#00b5f1] px-2 py-2 rounded-lg">
+              <p class="flex items-center m-0 text-[#00b5f1]">
+                Xem Tất Cả
+                <img
+                  src="https://medpro.vn/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdirection-left.35ddaa32.svg&w=48&q=75"
+                  alt="icon"
+                  class="ml-2 h-5"
+                />
+              </p>
+            </button>
+          </div>
+        </div>
+        <div className="mt-3">
+          <p className="text-center font-bold text-xl">
+            CHĂM SÓC SỨC KHỎE TOÀN DIỆN
+          </p>
+          <div className="text-[13px] font-bold flex justify-center gap-3 text-[#00b5f1] mt-2">
+            <button className="px-4 py-1 bg-[#00b5f1] text-white rounded-lg">
+              Sức Khỏe
+            </button>
+            <button>Xét Nghiệm</button>
+            <button>Tiêm Chủng</button>
+          </div>
+          <HealthCheckupCarouselwl items={healthcheck} w={"w-[216px]"} />
+          <div className="w-full flex justify-center mt-2">
+            <button class="inline-flex items-center justify-center bg-transparent border p-0 border-transparent hover:border-[#00b5f1] px-2 py-2 rounded-lg">
+              <p class="flex items-center m-0 text-[#00b5f1]">
+                Xem Tất Cả
+                <img
+                  src="https://medpro.vn/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdirection-left.35ddaa32.svg&w=48&q=75"
+                  alt="icon"
+                  class="ml-2 h-5"
+                />
+              </p>
+            </button>
+          </div>
+        </div>
+        <div className="mt-3 bg-white">
+          <p className="text-center font-bold text-xl mb-4">CHUYÊN KHOA</p>
+          <div className=" gap-1 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-8 text-center">
+            <div>
+              <img className="mx-auto" src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2FChuyenKhoa.png&w=96&q=75" width={70} height={70} />{" "}
+              <p>Bác sĩ gia đình </p>
+            </div>
+            <div>
+              <img  className="mx-auto" src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fumc%2Fsubjects%2F1655710722460-TIEU_HOA_GAN_MAT.png&w=96&q=75" width={70} height={70}/>{" "}
+              <p>Tiêu Hóa Gan Mật</p>
+            </div>
+            <div>
+              <img className="mx-auto" src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2Fsubjects%2Fnoi_tong_quat.png&w=96&q=75" width={70} height={70} />{" "}
+              <p>Nội Tổng Quát</p>
+            </div>
+            <div>
+              <img className="mx-auto" src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2Fsubjects%2Fnoi_tiet.png&w=96&q=75" width={70} height={70} />{" "}
+              <p>Nội Tiết</p>
+            </div>
+            <div>
+              <img className="mx-auto" src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2Fsubjects%2Fda_lieu.png&w=96&q=75" width={70} height={70} />{" "}
+              <p>Da Liễu</p>
+            </div>
+            <div>
+              <img src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2FChuyenKhoa.png&w=96&q=75" />{" "}
+              <p>Nội Tim Mạch</p>
+            </div>
+            <div>
+              <img src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2FChuyenKhoa.png&w=96&q=75" />{" "}
+              <p>Nội Thần Kinh</p>
+            </div>
+            <div>
+              <img src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2FChuyenKhoa.png&w=96&q=75" />{" "}
+              <p>Nội Cơ Xương Khớp</p>
+            </div>
+            <div>
+              <img src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2FChuyenKhoa.png&w=96&q=75" />{" "}
+              <p>Tai Mũi Họng</p>
+            </div>
+            <div>
+              <img src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2FChuyenKhoa.png&w=96&q=75" />{" "}
+              <p>Mắt</p>
+            </div>
+            <div>
+              <img src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2FChuyenKhoa.png&w=96&q=75" />{" "}
+              <p>Nội Tiêu Hóa</p>
+            </div>
+            <div>
+              <img src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2FChuyenKhoa.png&w=96&q=75" />{" "}
+              <p>Nội Truyền Nhiễm</p>
+            </div>
+            <div>
+              <img src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2FChuyenKhoa.png&w=96&q=75" />{" "}
+              <p>Nội Hô Hấp</p>
+            </div>
+            <div>
+              <img src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2FChuyenKhoa.png&w=96&q=75" />{" "}
+              <p>Nội Tiết Niệm</p>
+            </div>
+            <div>
+              <img src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2FChuyenKhoa.png&w=96&q=75" />{" "}
+              <p>Ngoại Cơ Xương Khớp</p>
+            </div>
+            <div>
+              <img src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2FChuyenKhoa.png&w=96&q=75" />{" "}
+              <p>Sản-Phụ Khoa</p>
+            </div>
+          </div>
           <div className="w-full flex justify-center mt-2">
             <button class="inline-flex items-center justify-center bg-transparent border p-0 border-transparent hover:border-[#00b5f1] px-2 py-2 rounded-lg">
               <p class="flex items-center m-0 text-[#00b5f1]">
