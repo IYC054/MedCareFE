@@ -15,6 +15,7 @@ import Feedback from './Admin/page/FeedBack'
 
 import Hopsital from './components/Hospital'
 import Booking from './components/Hospital/Booking'
+import AddProfile from './components/PatientProfile/AddProfile'
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "/hospital/booking",
         element: <Booking />
+      },
+      {
+        path: "/profile/add",
+        element: <AddProfile />
       }
     ]
   },

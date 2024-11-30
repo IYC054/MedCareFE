@@ -3,36 +3,31 @@ import { Link, useLocation } from "react-router-dom";
 
 function Breadcrumbs(props) {
   const location = useLocation();
-  console.log(location.pathname);
+  
+  // Lấy pathname từ URL hiện tại
+  const pathParts = location.pathname.split('/').filter(Boolean);
+
+  let breadcrumb = [
+    { name: 'Trang chủ ', link: '/' }
+  ];
+
+  if (pathParts.includes('profile')) {
+    breadcrumb.push({ name: 'Cập nhật thông tin', link: '/profile/add' });
+  } else if (pathParts.includes('hospital')) {
+    breadcrumb.push({ name: 'Bệnh viện', link: '/hospital' });
+  }
+
   return (
-    <div className="w-full">
-      <span className="font-medium text-[17px] flex">
-        <Link to={"/"}>Trang chủ</Link> <span className="mx-2">{">"}</span>{" "}
-        <span
-          className={`${
-            location.pathname == "/hospital" ? "text-[#00b5f1]" : ""
-          } cursor-pointer`}
-        >
-          <Link to={"/hospital"}>Bệnh Viện Chợ Rẫy</Link>{" "}
-          {location.pathname == "/hospital/booking" ? (
-            <Fragment>
-              <span className="mx-2">{">"}</span>
-              <span
-                className={`${
-                  location.pathname == "/hospital/booking"
-                    ? "text-[#00b5f1]"
-                    : ""
-                } cursor-pointer`}
-              >
-                Chọn bác sĩ
-              </span>
-            </Fragment>
-          ) : (
-            <Fragment></Fragment>
-          )}
-        </span>
-      </span>
-    </div>
+    <nav aria-label="breadcrumb">
+      <ol className="breadcrumb flex">
+        {breadcrumb.map((item, index) => (
+          <li key={index} className="breadcrumb-item">
+            {location.pathname == item.link ? <Link to={item.link} className="text-[#00b5f1]">{item.name} <span className="text-[#000] mx-2">{">"}</span></Link> : 
+            <Link to={item.link}>{item.name} <span className="text-[#000] mx-2">{">"}</span></Link>}
+          </li>
+        ))}
+      </ol>
+    </nav>
   );
 }
 

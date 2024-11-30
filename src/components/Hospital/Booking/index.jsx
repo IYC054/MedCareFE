@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import Breadcrumbs from "../Breadcrumbs";
 import { FaBuilding, FaRegCalendarAlt, FaStethoscope } from "react-icons/fa";
 import { FaMagnifyingGlass, FaUserDoctor } from "react-icons/fa6";
-import { BsGenderAmbiguous } from "react-icons/bs";
+import { BsCalendar2DateFill, BsGenderAmbiguous } from "react-icons/bs";
 import { MdAttachMoney } from "react-icons/md";
 import "./booking.scss";
 import { IoReturnDownBack } from "react-icons/io5";
@@ -20,6 +20,14 @@ function Booking() {
   const [selectName, setSelectName] = useState();
   const [selectBHYT, setSelectBHYT] = useState(false);
   const [selectDate, setSelectDate] = useState(true);
+  // start chọn ngày
+  const [chooseDate, setChooseDate] = useState(null);
+
+  const handleSelectedDate = (date) => {
+    setChooseDate(date);
+  };
+  // end chọn ngày
+
   const navigate = useNavigate();
   const handlegoBackHospital = () => {
     navigate("/hospital");
@@ -27,6 +35,11 @@ function Booking() {
   const HandleChooseDoctor = (name) => {
     setChooseDoctor(false);
     setSelectName(name);
+  };
+  const handlegoBackDoctor = () => {
+    setSelectBHYT(false);
+    setSelectDate(true);
+    setChooseDate("");
   };
   const handlegoBack = () => {
     setChooseDoctor(true);
@@ -43,7 +56,7 @@ function Booking() {
     console.log(title);
   }, [title]);
   return (
-    <div className="container flex justify-center py-5">
+    <div className="flex justify-center py-5">
       <div className="w-4/5 ">
         <Breadcrumbs />
         {/* end bread */}
@@ -73,6 +86,22 @@ function Booking() {
                     <Fragment>
                       <FaStethoscope className="text-[#c2c2c2] text-[30px]" />
                       <span>Bác Sĩ : {selectName}</span>
+                    </Fragment>
+                  ) : (
+                    <Fragment></Fragment>
+                  )}
+                </li>
+                <li className="flex gap-2 mb-10">
+                  {chooseDate ? (
+                    <Fragment>
+                      <BsCalendar2DateFill className="text-[#c2c2c2] text-[30px]" />
+                      <span className="text-[#003553]">
+                        Ngày khám
+                        <br />
+                        <span className="text-[15px] text-[#c2c2c2]">
+                          {chooseDate}
+                        </span>
+                      </span>
                     </Fragment>
                   ) : (
                     <Fragment></Fragment>
@@ -149,14 +178,14 @@ function Booking() {
                 <Fragment>
                   <div className="w-full bg-[#fff] rounded-lg">
                     <div className="w-full h-full py-2 px-4 " id="goup-2">
-                      <table className="table text-[#003553] mb-10">
-                        <thead className="border-solid border-b-2 border-[#f2f2f2]">
+                      <table className="table text-[#003553] mb-10 w-full">
+                        <thead className="border-solid border-b-2 border-[#f2f2f2] w-full">
                           <th className="w-10 py-5">#</th>
                           <th className="py-5">Tên dịch vụ</th>
                           <th className="py-5">Giá tiền</th>
                           <th className="py-5 "></th>
                         </thead>
-                        <tbody>
+                        <tbody className="w-full text-center">
                           <tr className="my-2">
                             <td className="text-center pt-5">1</td>
                             <td className="w-[550px] px-4 pt-5">
@@ -220,8 +249,51 @@ function Booking() {
                 <Fragment>
                   <div className="w-full bg-[#fff] px-4 pt-5 rounded-lg mb-10 flex flex-col">
                     <div className="w-full text-center text-[24px] font-medium mb-10">
-                      <Calender />
+                      <Calender onDateSelect={handleSelectedDate} />
                     </div>
+                    {chooseDate ? (
+                      <Fragment>
+                        <hr className="w-full h-[2px] border-[1px]  bg-gradient-to-r from-[#00b5f1] to-[#00e0ff] border-none" />
+                        <div className="w-full text-[20px] my-5">
+                          <span>Buổi sáng</span>
+                        </div>
+                        <div className="w-full my-2 flex gap-5 flex-wrap ">
+                          <div className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]">
+                            7:30 - 8:30
+                          </div>
+                          <div className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]">
+                            9:30 - 10:30
+                          </div>
+                          <div className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]">
+                            11:30 - 12:30
+                          </div>
+                        </div>
+                        <div className="w-full text-[20px] my-5">
+                          <span>Buổi Trưa</span>
+                        </div>
+                        <div className="w-full my-2 flex gap-5 flex-wrap ">
+                          <div className="py-2 px-4 border-[1px] cursor-pointer hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] border-[#00b5f1] rounded-lg border-solid text-[20px]">
+                            13:30 - 14:30
+                          </div>
+                          <div className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]">
+                            15:30 - 16:30
+                          </div>
+                          <div className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]">
+                            16:30 - 17:30
+                          </div>
+                        </div>
+                        <div className="w-full mt-4">
+                          <span className="text-[#d98634] text-[16px]">
+                            Tất cả thời gian theo múi giờ Việt Nam GMT +7
+                          </span>
+                        </div>
+                        <div className="w-full h-[170px] bg-black my-4">
+                          <img src="https://medpro.vn/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FBanner-Telemed.1ae88663.png&w=828&q=75" alt="banner" className="w-full h-full object-cover" />
+                        </div>
+                      </Fragment>
+                    ) : (
+                      <Fragment></Fragment>
+                    )}
                   </div>
                 </Fragment>
               )}
@@ -235,6 +307,19 @@ function Booking() {
                 </button>
               ) : (
                 <Fragment></Fragment>
+              )}
+              {/* back từ chọn date */}
+              {selectDate ? (
+                <Fragment></Fragment>
+              ) : (
+                <Fragment>
+                  <button
+                    className="flex text-[#003553] gap-2 items-center hover:bg-[#c2c2c2]/20 mt-4 rounded-lg"
+                    onClick={handlegoBackDoctor}
+                  >
+                    Quay lại <IoReturnDownBack className="text-[30px]" />
+                  </button>
+                </Fragment>
               )}
             </div>
           </div>
