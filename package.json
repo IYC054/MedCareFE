@@ -17,6 +17,7 @@
     "@fullcalendar/interaction": "^6.1.15",
     "@fullcalendar/react": "^6.1.15",
     "@fullcalendar/timegrid": "^6.1.15",
+    "antd": "^5.22.2",
     "apexcharts": "^4.1.0",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
