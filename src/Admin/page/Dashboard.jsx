@@ -27,7 +27,7 @@ function Dashboard() {
             <div className='tab-content'>
                 <div className='container-fluid'>
                     <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6'>
-                        <div className='card mb-3 bg-night-fade text-white'>
+                        <div className='card mb-3 bg-night-fade text-white rounded'>
                             <div className='p-4 flex justify-between items-center'>
                                 <div>
                                     <div className='text-xl font-semibold'>User</div>
@@ -38,7 +38,7 @@ function Dashboard() {
                                 </div>
                             </div>
                         </div>
-                        <div className='card mb-3 bg-arielle-smile text-white'>
+                        <div className='card mb-3 bg-arielle-smile text-white rounded'>
                             <div className='p-4 flex justify-between items-center'>
                                 <div>
                                     <div className='text-xl font-semibold'>Booking</div>
@@ -49,7 +49,7 @@ function Dashboard() {
                                 </div>
                             </div>
                         </div>
-                        <div className='card mb-3 bg-happy-green text-white'>
+                        <div className='card mb-3 bg-happy-green text-white rounded'>
                             <div className='p-4 flex justify-between items-center'>
                                 <div>
                                     <div className='text-xl font-semibold'>Income</div>
@@ -170,48 +170,48 @@ function Dashboard() {
                                         <div className='widget-chart p-3'>
                                             {activeChart2 === 'tab1' ? <Chart12Months /> : <Chart1Week />}
                                         </div>
-                                        <div class="pt-2 card-body">
-                                            <div class="grid grid-cols-2 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+                                        <div className="pt-2 card-body">
+                                            <div className="grid grid-cols-2 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
 
-                                                <div class="widget-content">
-                                                    <div class="widget-content-outer">
-                                                        <div class="widget-content-wrapper flex items-center justify-between">
-                                                            <div class="widget-content-left">
-                                                                <div class="widget-numbers text-3xl text-gray-500">
+                                                <div className="widget-content">
+                                                    <div className="widget-content-outer">
+                                                        <div className="widget-content-wrapper flex items-center justify-between">
+                                                            <div className="widget-content-left">
+                                                                <div className="widget-numbers text-3xl text-gray-500">
                                                                     63%
                                                                 </div>
                                                             </div>
-                                                            <div class="widget-content-right">
-                                                                <div class="text-gray-500 opacity-60">
+                                                            <div className="widget-content-right">
+                                                                <div className="text-gray-500 opacity-60">
                                                                     Generated Leads
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="widget-progress-wrapper mt-2">
-                                                            <div class="progress-bar-sm progress-bar-animated-alt">
-                                                                <div class="progress-bar bg-red-600" role="progressbar" aria-valuenow="63" aria-valuemin="0" aria-valuemax="100" style={{width: 63}}></div>
+                                                        <div className="widget-progress-wrapper mt-2">
+                                                            <div className="progress-bar-sm progress-bar-animated-alt">
+                                                                <div className="progress-bar bg-red-600" role="progressbar" aria-valuenow="63" aria-valuemin="0" aria-valuemax="100" style={{width: 63}}></div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <div class="widget-content">
-                                                    <div class="widget-content-outer">
-                                                        <div class="widget-content-wrapper flex items-center justify-between">
-                                                            <div class="widget-content-left">
-                                                                <div class="widget-numbers text-3xl text-gray-500">
+                                                <div className="widget-content">
+                                                    <div className="widget-content-outer">
+                                                        <div className="widget-content-wrapper flex items-center justify-between">
+                                                            <div className="widget-content-left">
+                                                                <div className="widget-numbers text-3xl text-gray-500">
                                                                     32%
                                                                 </div>
                                                             </div>
-                                                            <div class="widget-content-right">
-                                                                <div class="text-gray-500 opacity-60">
+                                                            <div className="widget-content-right">
+                                                                <div className="text-gray-500 opacity-60">
                                                                     Submitted Tickers
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="widget-progress-wrapper mt-2">
-                                                            <div class="progress-bar-sm progress-bar-animated-alt">
-                                                                <div class="progress-bar bg-green-600" role="progressbar" aria-valuenow="32" aria-valuemin="0" aria-valuemax="100" style={{width: 32}}></div>
+                                                        <div className="widget-progress-wrapper mt-2">
+                                                            <div className="progress-bar-sm progress-bar-animated-alt">
+                                                                <div className="progress-bar bg-green-600" role="progressbar" aria-valuenow="32" aria-valuemin="0" aria-valuemax="100" style={{width: 32}}></div>
                                                             </div>
                                                         </div>
                                                     </div>
