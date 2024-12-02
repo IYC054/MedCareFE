@@ -19,12 +19,12 @@ function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
 
     const toggleSubMenu = () => {
         setIsSubMenuOpen(!isSubMenuOpen);
-        console.log("sub",isSubMenuOpen);
+        console.log("sub", isSubMenuOpen);
     };
-   
+
     const toggleSubMenu1 = () => {
         setIsSubMenuOpen1(!isSubMenuOpen1);
-        console.log("sub1",isSubMenuOpen1);
+        console.log("sub1", isSubMenuOpen1);
     };
     useEffect(() => {
         const handleResize = () => {
@@ -32,7 +32,7 @@ function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
         };
 
         window.addEventListener('resize', handleResize);
-        
+
         return () => {
             window.removeEventListener('resize', handleResize);
         };
@@ -40,7 +40,7 @@ function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
     return (
         <div className={!isOpen && !isClosed ? 'app-sidebar-wrapper' : 'app-sidebar-wrapper-close'} id="style-1" >
             <div className='app-header__logo'>
-                <img src='https://medpro.vn/_next/image?url=https%3A%2F%2Fbo-api.medpro.com.vn%2Fstatic%2Fimages%2Fmedpro%2Fweb%2Fheader_logo.svg&w=2048&q=75' className='logo-src'/>
+                <img src='https://medpro.vn/_next/image?url=https%3A%2F%2Fbo-api.medpro.com.vn%2Fstatic%2Fimages%2Fmedpro%2Fweb%2Fheader_logo.svg&w=2048&q=75' className='logo-src' />
                 <button className={`hamburger ${isOpen ? 'open' : ''}`} onClick={toggleMenu}>
                     <span className='bar'></span>
                     <span className='bar'></span>
@@ -70,12 +70,17 @@ function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
                                 </li>
                                 <li>
                                     <Link to="/admin/doctor" className={activeMenu === 'Doctor' ? 'mm-active' : ''} onClick={() => handleMenuClick('Doctor')}>
-                                        Doctor 
+                                        Doctor
                                     </Link>
                                 </li>
                                 <li>
                                     <Link to="/admin/feedback" className={activeMenu === 'FeedBack' ? 'mm-active' : ''} onClick={() => handleMenuClick('Feedback')}>
                                         Feedback
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/admin/appointment" className={activeMenu === 'Appointment' ? 'mm-active' : ''} onClick={() => handleMenuClick('Appointment')}>
+                                        Appointment
                                     </Link>
                                 </li>
                             </ul>
@@ -112,7 +117,7 @@ function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
                             </ul>
                         </li>
                     </ul>
-                 
+
                 </div>
             </div>
         </div>
