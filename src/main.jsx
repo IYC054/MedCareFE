@@ -16,6 +16,7 @@ import Feedback from './Admin/page/FeedBack'
 import Hopsital from './components/Hospital'
 import Booking from './components/Hospital/Booking'
 import AddProfile from './components/PatientProfile/AddProfile'
+import PatientProfile from './components/PatientProfile/Profile'
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: "/profile/add",
         element: <AddProfile />
+      },
+      {
+        path: "/profile",
+        element: <PatientProfile />
       }
     ]
   },
