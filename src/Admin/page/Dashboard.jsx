@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import '../scss/dashboard.scss';
-
 import ChartMonth from './chart/ChartMonth';
 import ChartWeek from './chart/ChartWeek';
 import Chart12Months from './chart/Chart12Months';

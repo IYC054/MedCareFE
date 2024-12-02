@@ -1,6 +1,7 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 import Header from '../components/Header'
+import Footer from './Footer'
 
 const RootLayout = () => {
     return (
@@ -14,6 +15,7 @@ const RootLayout = () => {
         <div className="mt-[160px]">
           <Outlet /> {/* Đây là nơi hiển thị các component con */}
         </div>
+        <Footer />
       </div>
     )
 }
