@@ -73,6 +73,7 @@ function Appointment() {
                             </label>
                         </div>
                     </li>
+
                     {/* Nút tìm kiếm */}
                     <li>
                         <button
@@ -99,7 +100,7 @@ function Appointment() {
 
                 </div>
 
-                <div className="max-h-96 overflow-y-auto border border-gray-300 rounded" id="goup">
+                <div className="max-h-96 overflow-y-auto border border-gray-300 rounded">
                     <table className="w-full border-collapse">
                         <thead>
                             <tr className="bg-gray-100">
