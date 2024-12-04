@@ -74,7 +74,7 @@ function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to="/admin/feedback" className={activeMenu === 'FeedBack' ? 'mm-active' : ''} onClick={() => handleMenuClick('Feedback')}>
+                                    <Link to="/admin/feedback" className={activeMenu === 'Feedback' ? 'mm-active' : ''} onClick={() => handleMenuClick('Feedback')}>
                                         Feedback
                                     </Link>
                                 </li>

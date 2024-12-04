@@ -5,7 +5,7 @@ import './scss/rootLayoutAdmin.scss';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 // import 'bootstrap/dist/css/bootstrap.min.css'
 const RootLayoutAdmin = () => {
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
   const [activeMenu, setActiveMenu] = useState('Analytics');
   const [isClosed, setIsClosed] = useState(window.innerWidth <= 780);
 
