@@ -85,7 +85,7 @@ function Feedback(props) {
                 </div>
 
             </div>
-            <div className="boxmail">
+            <div className="boxmail " id="goup">
                 <div className="app-inner-layout__top-pane flex justify-between border-b-2">
                     <div className="pane-left">
                         <div className="mobile-app-menu-inline-flex tracking-wide  px-4 py-6  text-2xl tracking-normal font-medium rounded-md  font-bold ">
@@ -103,7 +103,7 @@ function Feedback(props) {
                         </div>
                     </div>
                 </div>
-                <div className="bg-white w-full">
+                <div className="bg-white w-full"  >
                     <div className="max-h-96 overflow-y-auto">
                         <table className="table-auto w-full border-separate border-spacing-y-3">
                             <thead>
