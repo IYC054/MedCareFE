@@ -511,23 +511,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div>Nguywen van nghi</div>
-      <div>Nguywen van nghi</div>
-      <div>Nguywen van nghi</div>
-      <div>Nguywen van nghi</div>
-      <div>Nguywen van nghi</div>
-      <div>Nguywen van nghi</div>
-      <div>Nguywen van nghi</div>
-      <div>Nguywen van nghi</div>
-      <div>Nguywen van nghi</div>
-      <div>Nguywen van nghi</div>
-      <div>Nguywen van nghi</div>
-      <div>Nguywen van nghi</div>
-      <div>Nguywen van nghi</div>
-      <div>Nguywen van nghi</div>
-      <div>Nguywen van nghi</div>
-      <div>Nguywen van nghi</div>
-      <div>Nguywen van nghi</div>
+      
     </div>
   );
 };

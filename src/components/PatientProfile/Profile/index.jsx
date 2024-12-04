@@ -28,7 +28,7 @@ function PatientProfile(props) {
             </div>
             <div className="w-full  mb-5">
               <ul className="list-none text-center py-2 my-2">
-                <li className="my-4 flex justify-center hover:bg-[#fff] active cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium">
+                <li className="my-4 flex justify-center hover:bg-[#fff] isactive cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium">
                   <FaFileMedical className="text-[20px]" />
                   Hồ sơ bệnh nhân
                 </li>

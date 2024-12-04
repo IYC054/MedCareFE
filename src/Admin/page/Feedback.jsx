@@ -108,7 +108,7 @@ function Feedback(props) {
                         <table className="table-auto w-full border-separate border-spacing-y-3">
                             <thead>
                                 <tr>
-                                    <th className="w-[5%]">
+                                    <th className="">
                                         <input
                                             type="checkbox"
                                             checked={selectedAll}
@@ -117,17 +117,12 @@ function Feedback(props) {
                                         />
 
                                     </th>
-                                    <th className="w-[5%]">
+                                    <th className="">
                                         <i
                                             className={`bi bi-trash2 text-gray-400 transition-opacity duration-300 ${selectedRows.length > 0 && !selectedAll ? "opacity-100" : "opacity-0"
                                                 }`}
                                         ></i>
                                     </th>
-
-                                    <th className="w-[25%]"></th>
-                                    <th className="w-[40%]"></th>
-                                    <th className="w-[10%]"></th>
-                                    <th className="w-[15%]"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -149,7 +144,7 @@ function Feedback(props) {
                                         </td>
 
                                         {/* Star */}
-                                        <td className="pb-5">
+                                        <td className="pb-5 px-4">
                                             <div className="flex items-center justify-center">
                                                 <i className="bi bi-star-fill text-yellow-500"></i>
                                             </div>
