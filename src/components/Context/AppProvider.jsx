@@ -4,7 +4,6 @@ export const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
     const [isShow, setisShow] = useState(false);
-    console.log(isShow);  
    
     return (
         <AppContext.Provider value={{ isShow, setisShow }}>

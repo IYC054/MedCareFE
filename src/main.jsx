@@ -20,6 +20,7 @@ import AddProfile from './components/PatientProfile/AddProfile'
 import PatientProfile from './components/PatientProfile/Profile'
 import ConfirmInfo from "./components/Hospital/Confirm_information";
 import ProfileChoose from "./components/Hospital/ProfileChoose";
+import ChoosePayment from "./components/Hospital/ChoosePayment";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,7 @@ const router = createBrowserRouter([
       { path: "/profile", element: <PatientProfile /> },
       { path: "/choose-profile", element: <ProfileChoose /> },
       { path: "/confirm-information", element: <ConfirmInfo /> },
+      { path: "/choose-payment", element: <ChoosePayment /> },
     ],
   },
   {
