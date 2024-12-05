@@ -12,3 +12,17 @@
         opacity: 1;
     }
 }
+#goup-2{
+    animation: moveup2 0.5s ease-in-out forwards;
+}
+
+@keyframes moveup2 {
+    0% {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

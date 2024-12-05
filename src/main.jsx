@@ -14,8 +14,14 @@ import Appointment from './Admin/page/Appointment'
 import Feedback from './Admin/page/FeedBack'
 
 import Hopsital from './components/Hospital'
+import CreateApp from './Admin/page/createPage/CreateApp'
 import Booking from './components/Hospital/Booking'
+<<<<<<< HEAD
 import AppProvider from './components/Context/AppProvider'
+=======
+import AddProfile from './components/PatientProfile/AddProfile'
+import PatientProfile from './components/PatientProfile/Profile'
+>>>>>>> bf9e942e490f90207744965fe69a12d904b3b072
 
 const router = createBrowserRouter([
   {
@@ -40,6 +46,14 @@ const router = createBrowserRouter([
       {
         path: "/hospital/booking",
         element: <Booking />
+      },
+      {
+        path: "/profile/add",
+        element: <AddProfile />
+      },
+      {
+        path: "/profile",
+        element: <PatientProfile />
       }
     ]
   },
@@ -61,6 +75,10 @@ const router = createBrowserRouter([
       {
         path: "/admin/appointment",
         element: <Appointment/>
+      },
+      {
+        path: "/admin/appointment/createApp",
+        element: <CreateApp/>
       },
       {
         path: "/admin/feedback",

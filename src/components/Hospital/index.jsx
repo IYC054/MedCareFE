@@ -8,13 +8,13 @@ import Breadcrumbs from "./Breadcrumbs";
 function Hopsital() {
   const location = useLocation();
   return (
-    <div className="container flex justify-center py-5">
+    <div className="flex justify-center py-5">
       <div className="w-4/5 ">
         {/* breadcrumbs */}
         <Breadcrumbs />
         {/* breadcrumbs */}
         <div className="grid grid-cols-3 gap-4 my-2">
-          <div className="col-span-1 w-full   ">
+          <div className="col-span-1 w-full ">
             {/* start hospital */}
             <div className="shadow-lg rounded-xl p-4 bg-[#fff] w-full mb-5">
               <div className="w-full  border-b-2 border-solid border-b-[#c2c2c2]">
@@ -70,9 +70,11 @@ function Hopsital() {
                 </ul>
               </div>
               <div className="w-full my-3">
-                <button className="w-full h-[50px] text-[#fff] font-medium rounded-full bg-gradient-to-r from-[#00b5f1] to-[#00e0ff]">
-                  <Link to={`${location.pathname}/booking`}>Đặt Khám Ngay</Link>
-                </button>
+                <Link to={`${location.pathname}/booking`}>
+                  <button className="w-full h-[50px] text-[#fff] font-medium rounded-full bg-gradient-to-r from-[#00b5f1] to-[#00e0ff]">
+                    Đặt Khám Ngay
+                  </button>
+                </Link>
               </div>
             </div>
             {/* end hospital */}

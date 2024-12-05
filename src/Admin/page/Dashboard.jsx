@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import '../scss/dashboard.scss';
+
 import ChartMonth from './chart/ChartMonth';
 import ChartWeek from './chart/ChartWeek';
 import Chart12Months from './chart/Chart12Months';
 import Chart1Week from './chart/Chart1Week';
+import ChartMess from './chart/ChartMess';
+import ChartMessSent from './chart/ChartMessSent';
+import ChartMessInbox from './chart/ChartMessInbox';
 
 function Dashboard() {
     const [activeTab, setActiveTab] = useState('this month');
@@ -25,8 +29,8 @@ function Dashboard() {
         <div className='app-inner-layout__content pb-10'>
             <div className='tab-content'>
                 <div className='container-fluid'>
-                    <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6'>
-                        <div className='card mb-3 bg-night-fade text-white'>
+                    <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 '>
+                        <div className='card mb-3 bg-night-fade text-white rounded-md '>
                             <div className='p-4 flex justify-between items-center'>
                                 <div>
                                     <div className='text-xl font-semibold'>User</div>
@@ -37,7 +41,7 @@ function Dashboard() {
                                 </div>
                             </div>
                         </div>
-                        <div className='card mb-3 bg-arielle-smile text-white'>
+                        <div className='card mb-3 bg-arielle-smile text-white rounded-md  '>
                             <div className='p-4 flex justify-between items-center'>
                                 <div>
                                     <div className='text-xl font-semibold'>Booking</div>
@@ -48,14 +52,14 @@ function Dashboard() {
                                 </div>
                             </div>
                         </div>
-                        <div className='card mb-3 bg-happy-green text-white'>
+                        <div className='card mb-3 bg-happy-green text-white rounded-md '>
                             <div className='p-4 flex justify-between items-center'>
                                 <div>
                                     <div className='text-xl font-semibold'>Income</div>
                                     <div className='text-sm'>This month</div>
                                 </div>
                                 <div>
-                                    <div className='text-2xl font-bold'>$589</div>
+                                    <div className='text-2xl font-bold'>50,225,000 VNĐ</div>
                                 </div>
                             </div>
                         </div>
@@ -63,7 +67,7 @@ function Dashboard() {
 
                     <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
                         <div className='card flex-1 bg-white border-2 p-3'>
-                            <div className='card-header'>
+                            <div className='items-center mb-2 md:p-2 border-b-2 border-gray-300 font-bold text-sm text-[rgba(31,10,6,0.6)] bg-white whitespace-nowrap'>
                                 <div className='flex justify-between'>
                                     <div className='text-xl'>
                                         <i className='bi bi-people'></i> User Book
@@ -71,7 +75,7 @@ function Dashboard() {
                                     <ul className="flex space-x-2">
                                         <li>
                                             <button
-                                                className={`px-4 py-2 rounded-md ${activeTab === 'whole year' ? 'bg-blue-600 text-white' : 'text-gray-500'}`}
+                                                className={`px-4 py-2 rounded-md ${activeTab === 'whole year' ? 'border-b-4 rounded-sm border-[#da624a] text-[#da624a]' : 'text-gray-500  hover:border-b-4 hover:rounded-sm hover:border-[#da624a] hover:text-[#da624a] transition-all duration-300'}`}
                                                 onClick={() => handleTabClick('whole year')}
                                             >
                                                 This Year
@@ -79,7 +83,7 @@ function Dashboard() {
                                         </li>
                                         <li>
                                             <button
-                                                className={`px-4 py-2 rounded-md ${activeTab === 'this month' ? 'bg-blue-600 text-white' : 'text-gray-500'}`}
+                                                className={`px-4 py-2 rounded-md ${activeTab === 'this month' ? 'border-b-4  rounded-sm border-[#da624a] text-[#da624a]' : 'text-gray-500  hover:border-b-4 hover:rounded-sm hover:border-[#da624a] hover:text-[#da624a]  transition-all duration-300'}`}
                                                 onClick={() => handleTabClick('this month')}
                                             >
                                                 This Week
@@ -88,6 +92,7 @@ function Dashboard() {
                                     </ul>
                                 </div>
                             </div>
+
                             <div className='card-body'>
                                 <div className='tab-content'>
                                     <div className='tab-pane fade active show' id="tabs-eg-77">
@@ -169,55 +174,117 @@ function Dashboard() {
                                         <div className='widget-chart p-3'>
                                             {activeChart2 === 'tab1' ? <Chart12Months /> : <Chart1Week />}
                                         </div>
-                                        <div class="pt-2 card-body">
-                                            <div class="grid grid-cols-2 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
-
-                                                <div class="widget-content">
-                                                    <div class="widget-content-outer">
-                                                        <div class="widget-content-wrapper flex items-center justify-between">
-                                                            <div class="widget-content-left">
-                                                                <div class="widget-numbers text-3xl text-gray-500">
-                                                                    63%
+                                        <div className="pt-2 card-body">
+                                            <div className="grid grid-cols-2 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 px-4">
+                                                {/* Monthly Income Progress Bar */}
+                                                <div className="widget-content">
+                                                    <div className="widget-content-outer">
+                                                        <div className="widget-content-wrapper flex items-center justify-between">
+                                                            <div className="widget-content-left mr-6 pb-2">
+                                                                <div className="widget-numbers text-2xl text-gray-500 font-bold">
+                                                                    45%
                                                                 </div>
                                                             </div>
-                                                            <div class="widget-content-right">
-                                                                <div class="text-gray-500 opacity-60">
-                                                                    Generated Leads
+                                                            <div className="content-right">
+                                                                <div className="text-gray-500 text-xs opacity-60">
+                                                                    Income This Month
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="widget-progress-wrapper mt-2">
-                                                            <div class="progress-bar-sm progress-bar-animated-alt">
-                                                                <div class="progress-bar bg-red-600" role="progressbar" aria-valuenow="63" aria-valuemin="0" aria-valuemax="100" style={{width: 63}}></div>
+                                                        <div className="widget-progress-wrapper">
+                                                            <div className="w-full bg-gray-200 rounded-full h-2 relative overflow-hidden">
+                                                                <div
+                                                                    className="bg-blue-600 h-2 rounded-full transition-all duration-500"
+                                                                    style={{ width: '45%' }}
+                                                                ></div>
+                                                                {/* Continuous Glowing Effect */}
+                                                                <div className="progress-glow"></div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <div class="widget-content">
-                                                    <div class="widget-content-outer">
-                                                        <div class="widget-content-wrapper flex items-center justify-between">
-                                                            <div class="widget-content-left">
-                                                                <div class="widget-numbers text-3xl text-gray-500">
-                                                                    32%
+                                                {/* Yearly Income Progress Bar */}
+                                                <div className="widget-content">
+                                                    <div className="widget-content-outer">
+                                                        <div className="widget-content-wrapper flex items-center justify-between">
+                                                            <div className="widget-content-left mr-6 pb-2">
+                                                                <div className="widget-numbers text-2xl text-gray-500 font-bold">
+                                                                    75%
                                                                 </div>
                                                             </div>
-                                                            <div class="widget-content-right">
-                                                                <div class="text-gray-500 opacity-60">
-                                                                    Submitted Tickers
+                                                            <div className="content-right">
+                                                                <div className="text-gray-500 text-xs opacity-60">
+                                                                    Income This Year
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="widget-progress-wrapper mt-2">
-                                                            <div class="progress-bar-sm progress-bar-animated-alt">
-                                                                <div class="progress-bar bg-green-600" role="progressbar" aria-valuenow="32" aria-valuemin="0" aria-valuemax="100" style={{width: 32}}></div>
+                                                        <div className="widget-progress-wrapper">
+                                                            <div className="w-full bg-gray-200 rounded-full h-2 relative overflow-hidden">
+                                                                <div
+                                                                    className="bg-purple-600 h-2 rounded-full transition-all duration-500"
+                                                                    style={{ width: '75%' }}
+                                                                ></div>
+                                                                {/* Continuous Glowing Effect */}
+                                                                <div className="progress-glow"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="widget-content">
+                                                    <div className="widget-content-outer">
+                                                        <div className="widget-content-wrapper flex items-center justify-between">
+                                                            <div className="widget-content-left mr-6 pb-2">
+                                                                <div className="widget-numbers text-2xl text-gray-500 font-bold">
+                                                                    25%
+                                                                </div>
+                                                            </div>
+                                                            <div className="content-right">
+                                                                <div className="text-gray-500 text-xs opacity-60">
+                                                                    Income This Year
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="widget-progress-wrapper">
+                                                            <div className="w-full bg-gray-200 rounded-full h-2 relative overflow-hidden">
+                                                                <div
+                                                                    className="bg-green-600 h-2 rounded-full transition-all duration-500"
+                                                                    style={{ width: '25%' }}
+                                                                ></div>
+                                                                {/* Continuous Glowing Effect */}
+                                                                <div className="progress-glow"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="widget-content">
+                                                    <div className="widget-content-outer">
+                                                        <div className="widget-content-wrapper flex items-center justify-between">
+                                                            <div className="widget-content-left mr-6 pb-2">
+                                                                <div className="widget-numbers text-2xl text-gray-500 font-bold">
+                                                                    60%
+                                                                </div>
+                                                            </div>
+                                                            <div className="content-right">
+                                                                <div className="text-gray-500 text-xs opacity-60">
+                                                                    Income This Year
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="widget-progress-wrapper">
+                                                            <div className="w-full bg-gray-200 rounded-full h-2 relative overflow-hidden">
+                                                                <div
+                                                                    className="bg-red-600 h-2 rounded-full transition-all duration-500"
+                                                                    style={{ width: '60%' }}
+                                                                ></div>
+                                                                {/* Continuous Glowing Effect */}
+                                                                <div className="progress-glow"></div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
 
@@ -225,9 +292,39 @@ function Dashboard() {
                         </div>
                     </div>
 
+                    <div className='card-body mx-auto flex py-4 h-[300px] '>
+                        <div className='w-full border-2 bg-white text-green-400  mr-4 pt-6 hover:drop-shadow-2xl'>
+                            <div class="chart-title font-extrabold pl-6">
+                                Received Messages
+                            </div>
+                            <div class="chart-placeholder ">
+                                <ChartMess />
+                            </div>
+                        </div>
+                        <div className='w-full border-2 bg-white text-red-400   mx-4 pt-6 hover:drop-shadow-2xl'>
+                            <div class="chart-title  font-extrabold pl-6">
+                                Sent Messages
+
+                            </div>
+                            
+                            <div class="chart-placeholder">
+                                <ChartMessSent />
+                            </div>
+                        </div>
+                        <div className='w-full border-2 bg-[#343a40] text-yellow-400  ml-4 pt-6 hover:drop-shadow-2xl'>
+                            <div class="chart-title  font-extrabold pl-6">
+                                Inbox Total
+
+                            </div>
+                          
+                            <div class="chart-placeholder">
+                                <ChartMessInbox />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
 

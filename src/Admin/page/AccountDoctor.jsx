@@ -4,6 +4,32 @@ import '../scss/AccountDoctor.scss';
 function AccountDoctor(props) {
     return (
         <div className="tab-content">
+            <div className='tool pb-10 flex justify-between '>
+                <div className='place-content-center'>
+                    <button className="w-full flex items-center justify-center px-4 py-2 text-base font-medium text-white bg-primary border-primary rounded-md hover:bg-gray-100 transition"
+                    >
+                        Create New Account
+                    </button>
+                </div>
+                <div className='flex'>
+                    <div className='place-content-center'>
+                        <select className="form-select px-5 py-3  border rounded-md ">
+                            <option>departments</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>
+                    </div>
+                    <div className='input-group px-4 py-6 flex' >
+                        <button className='input-group-prepend  border px-3 py-2 rounded-l-md bg-[#faeae7]'>
+                            <div className='input-group-text'>
+                                <i className='bi bi-search '></i>
+                            </div>
+                        </button>
+                        <input placeholder="Search..." type="text" className="form-control px-3 border rounded-r-md  	" />
+                    </div>
+                </div>
+            </div>
             <div className="container-fluid">
                 <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {/* Repeat for each card */}
