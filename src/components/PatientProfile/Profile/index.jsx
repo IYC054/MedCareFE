@@ -1,6 +1,6 @@
 import React from "react";
 import Breadcrumbs from "../../Hospital/Breadcrumbs";
-import Avatar from "../../../../asset/avatar.jpg";
+import Avatar from "../../../../asset/avatar_2.jpeg";
 import {
   FaBirthdayCake,
   FaEdit,
@@ -21,7 +21,7 @@ function PatientProfile() {
         <div className="w-full mt-4 grid grid-cols-4 gap-3">
           <div className="col-span-1">
             <div className="w-full bg-[#fff] border border-solid border-[#eaeaea] rounded-lg shadow-xl mb-5">
-              <div className="w-full h-[200px] my-4  flex justify-center">
+              <div className="w-full h-[240px] my-4  flex justify-center">
                 <div className="w-56 h-full  rounded-full">
                   <img
                     src={Avatar}
@@ -110,7 +110,7 @@ function PatientProfile() {
                   </li>
                 </ul>
                 <div className="w-full h-[50px] rounded-bl-xl rounded-br-xl bg-[#f5f5f5] flex items-center justify-end px-5">
-                  <div className="flex items-center justify-end text-[#00b5f1] gap-2">
+                  <div className="flex items-center justify-end text-[#00b5f1] gap-2 cursor-pointer">
                     <FaEdit />
                     <span className="font-medium">Sửa hồ sơ</span>
                   </div>
