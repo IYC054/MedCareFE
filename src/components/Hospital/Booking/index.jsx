@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import Breadcrumbs from "../Breadcrumbs";
 import { FaBuilding, FaRegCalendarAlt, FaStethoscope } from "react-icons/fa";
 import { FaMagnifyingGlass, FaUserDoctor } from "react-icons/fa6";
@@ -8,6 +8,7 @@ import "./booking.scss";
 import { IoReturnDownBack } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import Calender from "../Calender";
+import { AppContext } from "../../Context/AppProvider";
 const fake = [
   { id: 1, name: "Trần Thanh Phong", gender: "Male" },
   { id: 2, name: "Cho In Yeong", gender: "Female" },
@@ -22,6 +23,7 @@ function Booking() {
   const [selectDate, setSelectDate] = useState(true);
   // start chọn ngày
   const [chooseDate, setChooseDate] = useState(null);
+  const {  } = useContext(AppContext);
 
   const handleSelectedDate = (date) => {
     setChooseDate(date);
