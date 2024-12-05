@@ -1,89 +1,71 @@
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import Home from "./page/Home";
+import About from "./page/About";
+import New from "./page/New";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import RootLayout from "./page/RootLayout";
+import RootLayoutAdmin from "./page/RootLayoutAdmin";
+import Dashboard from "./Admin/page/Dashboard";
+import AccountUser from "./Admin/page/AccountUser";
+import AccountDoctor from "./Admin/page/AccountDoctor";
+import Appointment from "./Admin/page/Appointment";
+import Feedback from "./Admin/page/FeedBack";
 
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import Home from './page/Home'
-import About from './page/About'
-import New from './page/New'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import RootLayout from './page/RootLayout'
-import RootLayoutAdmin from './page/RootLayoutAdmin'
-import Dashboard from './Admin/page/Dashboard'
-import AccountUser from './Admin/page/AccountUser'
-import AccountDoctor from './Admin/page/AccountDoctor'
-import Appointment from './Admin/page/Appointment'
-import Feedback from './Admin/page/FeedBack'
-
-import Hopsital from './components/Hospital'
-import CreateApp from './Admin/page/createPage/CreateApp'
-import Booking from './components/Hospital/Booking'
-import AddProfile from './components/PatientProfile/AddProfile'
-import PatientProfile from './components/PatientProfile/Profile'
+import Hopsital from "./components/Hospital";
+import CreateApp from "./Admin/page/createPage/CreateApp";
+import Booking from "./components/Hospital/Booking";
+import AddProfile from "./components/PatientProfile/AddProfile";
+import PatientProfile from "./components/PatientProfile/Profile";
+import ListProfile from "./components/Hospital/ProfileChoose";
+import ConfirmInfo from "./components/Hospital/Confirm_information";
 
 const router = createBrowserRouter([
   {
     element: <RootLayout />,
     children: [
-      {
-        path: "/",
-        element: <Home/>
-      },
-      {
-        path: "/about",
-        element: <About />
-      },
-      {
-        path: "/new",
-        element: <New />
-      },
-      {
-        path: "/hospital",
-        element: <Hopsital />
-      },
-      {
-        path: "/hospital/booking",
-        element: <Booking />
-      },
-      {
-        path: "/profile/add",
-        element: <AddProfile />
-      },
-      {
-        path: "/profile",
-        element: <PatientProfile />
-      }
-    ]
+      { path: "/", element: <Home /> },
+      { path: "/about", element: <About /> },
+      { path: "/new", element: <New /> },
+      { path: "/hospital", element: <Hopsital /> },
+      { path: "/hospital/booking", element: <Booking /> },
+      { path: "/profile/add", element: <AddProfile /> },
+      { path: "/profile", element: <PatientProfile /> },
+      { path: "/choose-profile", element: <ListProfile /> },
+      { path: "/confirm-information", element: <ConfirmInfo /> },
+    ],
   },
   {
     element: <RootLayoutAdmin />, // cấu hình các component chung
     children: [
       {
         path: "/admin",
-        element: <Dashboard/>
+        element: <Dashboard />,
       },
       {
         path: "/admin/user",
-        element: <AccountUser/>
+        element: <AccountUser />,
       },
       {
         path: "/admin/doctor",
-        element: <AccountDoctor/>
+        element: <AccountDoctor />,
       },
       {
         path: "/admin/appointment",
-        element: <Appointment/>
+        element: <Appointment />,
       },
       {
         path: "/admin/appointment/createApp",
-        element: <CreateApp/>
+        element: <CreateApp />,
       },
       {
         path: "/admin/feedback",
-        element: <Feedback/>
+        element: <Feedback />,
       },
-    ]
-  }
+    ],
+  },
 ]);
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
   <RouterProvider router={router} />
 );

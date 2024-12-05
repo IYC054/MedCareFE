@@ -272,7 +272,7 @@ function Booking() {
                           <span>Buổi Trưa</span>
                         </div>
                         <div className="w-full my-2 flex gap-5 flex-wrap ">
-                          <div className="py-2 px-4 border-[1px] cursor-pointer hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] border-[#00b5f1] rounded-lg border-solid text-[20px]">
+                          <div className="py-2 px-4 border-[1px] cursor-pointer isactivetime  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff]  rounded-lg border-solid text-[20px]">
                             13:30 - 14:30
                           </div>
                           <div className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]">
@@ -288,7 +288,11 @@ function Booking() {
                           </span>
                         </div>
                         <div className="w-full h-[170px] bg-black my-4">
-                          <img src="https://medpro.vn/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FBanner-Telemed.1ae88663.png&w=828&q=75" alt="banner" className="w-full h-full object-cover" />
+                          <img
+                            src="https://medpro.vn/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FBanner-Telemed.1ae88663.png&w=828&q=75"
+                            alt="banner"
+                            className="w-full h-full object-cover"
+                          />
                         </div>
                       </Fragment>
                     ) : (

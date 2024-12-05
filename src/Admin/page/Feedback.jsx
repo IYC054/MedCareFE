@@ -105,7 +105,7 @@ function Feedback(props) {
                 </div>
                 <div className="bg-white w-full">
                     <div className="max-h-96 overflow-y-auto">
-                        <table className="table-auto w-full border-separate border-spacing-y-3">
+                        <table className="table-auto w-full border-separate border-spacing-y-3" >
                             <thead>
                                 <tr>
                                     <th className="">
@@ -129,7 +129,7 @@ function Feedback(props) {
                                 {[...Array(10)].map((_, index) => (
                                     <tr
                                         key={index}
-                                        className={`w-full bg-white hover:bg-gray-100 transition duration-300 group relative ${selectedRows.includes(index) ? "bg-blue-100" : ""
+                                        className={`w-full  bg-white hover:bg-gray-100 transition duration-300 group relative ${selectedRows.includes(index) ? "bg-blue-100" : ""
                                             }`}  >
                                         {/* Checkbox */}
                                         <td className="pb-5">

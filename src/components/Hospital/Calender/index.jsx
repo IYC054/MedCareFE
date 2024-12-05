@@ -32,11 +32,9 @@ function Calender({ onDateSelect }) {
     onDateSelect(formattedDate);
   };
 
-  // Hàm thêm lớp CSS vào các ngày cần ẩn
   const handleDayCellClassNames = (info) => {
-    const day = info.date.getDate().toString(); // Lấy ngày
-    const month = (info.date.getMonth() + 1).toString(); // Lấy tháng
-
+    const day = info.date.getDate().toString(); 
+    const month = (info.date.getMonth() + 1).toString(); 
     const isDisabled = disabledDates.some(
       (d) => d.day === day && d.month === month
     );
