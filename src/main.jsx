@@ -10,7 +10,6 @@ import Dashboard from "./Admin/page/Dashboard";
 import AccountUser from "./Admin/page/AccountUser";
 import AccountDoctor from "./Admin/page/AccountDoctor";
 import Appointment from "./Admin/page/Appointment";
-import Feedback from "./Admin/page/FeedBack";
 
 import Hopsital from './components/Hospital'
 import CreateApp from './Admin/page/createPage/CreateApp'
@@ -18,6 +17,8 @@ import Booking from './components/Hospital/Booking'
 import AppProvider from './components/Context/AppProvider'
 import AddProfile from './components/PatientProfile/AddProfile'
 import PatientProfile from './components/PatientProfile/Profile'
+import CreateAccountDoctor from './Admin/page/createPage/createAccountDoctor'
+import Feedback from './Admin/page/Feedback'
 import ConfirmInfo from "./components/Hospital/Confirm_information";
 import ProfileChoose from "./components/Hospital/ProfileChoose";
 import ChoosePayment from "./components/Hospital/ChoosePayment";
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
       {
         path: "/admin/doctor",
         element: <AccountDoctor />,
+      },
+      {
+        path: "/admin/doctor/CreateDoctor",
+        element: <CreateAccountDoctor/>
       },
       {
         path: "/admin/appointment",

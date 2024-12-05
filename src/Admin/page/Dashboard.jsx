@@ -306,7 +306,7 @@ function Dashboard() {
                                 Sent Messages
 
                             </div>
-                            
+
                             <div class="chart-placeholder">
                                 <ChartMessSent />
                             </div>
@@ -316,7 +316,7 @@ function Dashboard() {
                                 Inbox Total
 
                             </div>
-                          
+
                             <div class="chart-placeholder">
                                 <ChartMessInbox />
                             </div>

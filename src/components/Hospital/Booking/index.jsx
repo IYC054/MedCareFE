@@ -240,7 +240,7 @@ function Booking() {
                   </div>
                   {/* back từ đặt khám */}
                   <button
-                    className="flex text-[#003553] gap-2 items-center hover:bg-[#c2c2c2]/20 mt-4 rounded-lg"
+                    className="flex text-[#003553] gap-2 items-center  hover:bg-[#c2c2c2]/20 mt-4 rounded-lg"
                     onClick={handlegoBack}
                   >
                     Quay lại <IoReturnDownBack className="text-[30px]" />

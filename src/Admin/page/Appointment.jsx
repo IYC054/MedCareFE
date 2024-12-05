@@ -31,13 +31,13 @@ function Appointment() {
     return (
         <div className="flex">
             {/* Sidebar */}
-            <div className="w-1/4 p-4 bg-gray-100 border-r border-gray-300">
+            <div className="w-1/4 p-4  bg-white border-r rounded-md border-1 border-gray-300 drop-shadow-2xl">
                 <h2 className="text-lg font-bold mb-4">Actions</h2>
-                <ul className="space-y-2 flex flex-col items-center">
-                    <li>
+                <ul className="space-y-2 flex flex-col ">
+                    <li className='my-2'>
                         <Link
                             to="/admin/appointment/createApp"
-                            className="bg-[#da624a] text-white px-6 py-2 rounded hover:bg-[#b2503c] flex items-center justify-center"
+                            className="bg-[#da624a] text-white px-6 py-2 rounded hover:bg-[#b2503c] "
                         >
                             Create Room
                         </Link>
@@ -46,7 +46,7 @@ function Appointment() {
                     {/* Tìm phòng theo khoa */}
                     <li className="w-full">
                         <label htmlFor="specialty" className="text-sm text-gray-700">Select Specialty</label>
-                        <div className="mt-2 space-y-2">
+                        <div className="mt-2 grid grid-cols-2 gap-4 col-span-2">
                             <label className="flex items-center">
                                 <input type="checkbox" className="mr-2" /> Cardiology
                             </label>
@@ -73,14 +73,13 @@ function Appointment() {
                             </label>
                         </div>
                     </li>
-
                     {/* Nút tìm kiếm */}
                     <li>
                         <button
                             type="button"
                             className="mt-4 bg-[#da624a] text-white px-6 py-2 rounded hover:bg-[#b2503c] flex items-center justify-center"
                         >
-                            Search
+                            Filter
                         </button>
                     </li>
                 </ul>
@@ -100,7 +99,7 @@ function Appointment() {
 
                 </div>
 
-                <div className="max-h-96 overflow-y-auto border border-gray-300 rounded">
+                <div className="max-h-screen overflow-y-auto border bg-white border-gray-300 rounded">
                     <table className="w-full border-collapse">
                         <thead>
                             <tr className="bg-gray-100">

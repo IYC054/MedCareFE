@@ -1,11 +1,22 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-function CreateApp(props) {
 
+function CreateApp(props) {
     const [selectedSpecialty, setSelectedSpecialty] = useState('');
     const [filteredDoctors, setFilteredDoctors] = useState([]);
     const [selectedDoctor, setSelectedDoctor] = useState(null);
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+    const [shift, setShift] = useState('');
+    const [credits, setCredits] = useState(0); // Bắt đầu từ 0 đồng
+
+    const specialties = ["Cardiology", "Neurology", "Orthopedics"];
+    const doctors = [
+        { id: 1, name: "Dr. John", specialty: "Cardiology", image: "https://s120-ava-talk.zadn.vn/7/8/0/d/13/120/14c84001a633168678760689e3880fc1.jpg" },
+        { id: 2, name: "Dr. Jane", specialty: "Neurology", image: "https://s120-ava-talk.zadn.vn/7/8/0/d/13/120/14c84001a633168678760689e3880fc1.jpg" },
+        { id: 3, name: "Dr. Smith", specialty: "Orthopedics", image: "https://s120-ava-talk.zadn.vn/7/8/0/d/13/120/14c84001a633168678760689e3880fc1.jpg" },
+    ];
 
     const handleSpecialtyChange = (e) => {
         const specialty = e.target.value;
@@ -20,35 +31,31 @@ function CreateApp(props) {
         const doctor = doctors.find((doc) => doc.id === parseInt(doctorId, 10));
         setSelectedDoctor(doctor);
     };
-    const specialties = ["Cardiology", "Neurology", "Orthopedics"];
-    const doctors = [
-        { id: 1, name: "Dr. John", specialty: "Cardiology", image: "https://s120-ava-talk.zadn.vn/7/8/0/d/13/120/14c84001a633168678760689e3880fc1.jpg" },
-        { id: 2, name: "Dr. Jane", specialty: "Neurology", image: "https://s120-ava-talk.zadn.vn/7/8/0/d/13/120/14c84001a633168678760689e3880fc1.jpg" },
-        { id: 3, name: "Dr. Smith", specialty: "Orthopedics", image: "https://s120-ava-talk.zadn.vn/7/8/0/d/13/120/14c84001a633168678760689e3880fc1.jpg" },
-    ];
-
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
-    const [shift, setShift] = useState('');
 
     const handleShiftSelection = (selectedShift) => {
         setShift(selectedShift);
     };
-    const [credits, setCredits] = useState(0); // Bắt đầu với 8 triệu đồng
 
     const handleSliderChange = (event) => {
-        // Chuyển giá trị từ 0-10 (tương ứng với 0-10 triệu) sang tiền (0 - 10 triệu đồng)
-        setCredits(event.target.value * 100000);
+        let newCredits = event.target.value * 50000; // max 5 triệu = 100 * 50000
+        if (newCredits > 5000000) newCredits = 5000000; // Giới hạn ở 5 triệu
+        setCredits(newCredits);
     };
+
     const handleChange = (e) => {
-        const value = e.target.value.replace(/[^0-9]/g, ''); // Loại bỏ ký tự không phải số
-        setCredits(Number(value));
+        let rawValue = e.target.value.replace(/[^\d]/g, ''); // Loại bỏ tất cả ký tự không phải số
+        if (rawValue === '') rawValue = '0'; // Trường hợp nhập rỗng
+        let numericValue = parseInt(rawValue, 10);
+
+        if (numericValue < 0) numericValue = 0; // Không cho giá trị âm
+        if (numericValue > 5000000) numericValue = 5000000; // Giới hạn ở 5 triệu
+
+        setCredits(numericValue); // Cập nhật giá trị
     };
     return (
-        <div className="max-h-full pb-3 flex max-w-screen " id="goup">
+        <div className="max-h-full pb-3 flex max-w-screen" id="goup">
             <div className="w-full bg-white shadow-lg rounded-lg p-5 border-2 border-[#da624a]">
-
-                <div className="mt-5 ">
+                <div className="mt-5">
                     <div className="step-pane active max-w-screen flex items-center justify-center">
                         <form className="space-y-4 w-fit sm:px-96">
                             <div>
@@ -120,7 +127,6 @@ function CreateApp(props) {
 
                             {/* Chọn từ ngày */}
                             <div className="flex space-x-4">
-                                {/* Chọn từ ngày */}
                                 <div className="w-1/2">
                                     <label className="block text-sm font-medium text-gray-700">From Date</label>
                                     <DatePicker
@@ -135,7 +141,6 @@ function CreateApp(props) {
                                     />
                                 </div>
 
-                                {/* Chọn đến ngày */}
                                 <div className="w-1/2">
                                     <label className="block text-sm font-medium text-gray-700">To Date</label>
                                     <DatePicker
@@ -152,31 +157,27 @@ function CreateApp(props) {
                                 </div>
                             </div>
 
-
                             {/* Chọn giờ làm */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Select Shift</label>
                                 <div className="flex space-x-4 mt-2">
                                     <button
                                         type="button"
-                                        className={`py-2 px-4 rounded-md ${shift === 'morning' ? 'bg-[#da624a] text-white' : 'bg-gray-300 text-gray-700'
-                                            }`}
+                                        className={`py-2 px-4 rounded-md ${shift === 'morning' ? 'bg-[#da624a] text-white' : 'bg-gray-300 text-gray-700'}`}
                                         onClick={() => handleShiftSelection('morning')}
                                     >
                                         Morning (8:00 - 12:00)
                                     </button>
                                     <button
                                         type="button"
-                                        className={`py-2 px-4 rounded-md ${shift === 'afternoon' ? 'bg-[#da624a] text-white' : 'bg-gray-300 text-gray-700'
-                                            }`}
+                                        className={`py-2 px-4 rounded-md ${shift === 'afternoon' ? 'bg-[#da624a] text-white' : 'bg-gray-300 text-gray-700'}`}
                                         onClick={() => handleShiftSelection('afternoon')}
                                     >
                                         Afternoon (13:00 - 17:00)
                                     </button>
                                     <button
                                         type="button"
-                                        className={`py-2 px-4 rounded-md ${shift === 'fulltime' ? 'bg-[#da624a] text-white' : 'bg-gray-300 text-gray-700'
-                                            }`}
+                                        className={`py-2 px-4 rounded-md ${shift === 'fulltime' ? 'bg-[#da624a] text-white' : 'bg-gray-300 text-gray-700'}`}
                                         onClick={() => handleShiftSelection('fulltime')}
                                     >
                                         Fulltime (8:00 - 12:00) & (13:00 - 17:00)
@@ -187,50 +188,40 @@ function CreateApp(props) {
                                 <h3 className="text-xl font-semibold text-[#da624a]">Amount</h3>
                             </div>
                             <div className="mt-5">
-                                <label className="block text-sm font-medium text-gray-700">Price (VND)</label>
+                                <label htmlFor="credits" className="block text-sm font-medium text-gray-700">
+                                    Credits
+                                </label>
+                                <div className="relative mt-2">
+                                    <input
+                                        id="credits"
+                                        className="w-full p-2 border border-[#da624a] rounded-md"
+                                        type="text"
+                                        value={credits.toLocaleString()}
+                                        onChange={handleChange}
+                                        placeholder="Enter amount"
+                                    />
+                                    <span className="absolute top-3 right-3 text-sm text-gray-500">VND</span>
+                                </div>
                                 <input
                                     type="range"
-                                    className="w-full mt-2"
-                                    min="0"
-                                    max="10"
-                                    value={credits / 100000}  // Giá trị là từ 0 đến 10
-                                    step="0.01"  // Đặt bước nhảy là nhỏ nhất, 0.01 để có sự thay đổi mượt mà
+                                    min="1"
+                                    max="100"
+                                    value={credits / 50000}
                                     onChange={handleSliderChange}
+                                    className="w-full mt-2"
                                 />
-                                <div className="mt-2 text-sm text-gray-600">
-                                    <input
-                                        className="mt-2 w-full p-2 border border-[#da624a] rounded-md focus:ring-2 focus:ring-[#da624a]"
-                                        type="number"
-                                        placeholder="Price (VND)"
-                                        value={credits.toLocaleString() }  
-                                        onChange={handleChange} 
-                                    /> 
-                                
-                                     
-
-                                </div>
                             </div>
 
-                            <div className="mt-5">
-                                <label className="block text-sm font-medium text-gray-700">Change Plan</label>
-                                <select className="w-full mt-2 p-2 border border-[#da624a] rounded-md focus:ring-2 focus:ring-[#da624a]">
-                                    <option>Basic</option>
-                                    <option>Medium</option>
-                                    <option>Standard</option>
-                                    <option>Silver</option>
-                                    <option>Gold</option>
-                                </select>
-                            </div>
-                            <div className="flex justify-between mt-5">
-                                <div></div>
-                                <button type="submit" className="bg-[#da624a] text-white py-2 px-4 rounded-md hover:bg-[#c25a4a]">
+                            <div className="flex items-center justify-between mt-6">
+                                <button
+                                    type="button"
+                                    className="px-6 py-2 bg-[#da624a] text-white rounded-md"
+                                >
                                     Submit
                                 </button>
                             </div>
                         </form>
                     </div>
-
-
                 </div>
             </div>
         </div>
