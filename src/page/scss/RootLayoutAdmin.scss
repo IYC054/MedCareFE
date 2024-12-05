@@ -1,8 +1,8 @@
 .root-layout-admin {
   display: flex;
   min-height: 100vh;
-  background-color: #f7fafc; // Equivalent of bg-gray-100 in Tailwind
-
+  background-color: #f5f5f5; // Equivalent of bg-gray-100 in Tailwind
+  
   z-index: 12;
 
   .sidebar-open .sidebar {

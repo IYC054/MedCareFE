@@ -41,12 +41,12 @@ const RootLayoutAdmin = () => {
   } else if (location.pathname === '/admin') {
     title = 'Dashboard';
     description = 'This is an example dashboard created using built-in elements and components.';
-  }else if (location.pathname === '/admin/appointment/createApp') {
+  } else if (location.pathname === '/admin/appointment/createApp') {
     title = 'Create Room';
     description = '';
   }
   return (
-    <div className={`root-layout-admin ${!isOpen && !isClosed ? 'sidebar-closed' : 'sidebar-open'}`}>
+    <div className={`root-layout-admin  ${!isOpen && !isClosed ? 'sidebar-closed' : 'sidebar-open'}`}>
       <Sidebar
         isOpen={isOpen}
         setIsOpen={setIsOpen}
@@ -99,7 +99,11 @@ const RootLayoutAdmin = () => {
         {/* Content Area for Outlet */}
         <div className="content">
           <Outlet />
+          {/* <div className='w-full bg-[#fff] p-4 mb-2 rounded-lg drop-shadow-xl'>
+            footer
+          </div> */}
         </div>
+
       </div>
     </div>
 

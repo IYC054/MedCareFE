@@ -1,15 +1,16 @@
 import React from 'react';
 import '../scss/AccountDoctor.scss';
+import { Link } from 'react-router-dom';
 
 function AccountDoctor(props) {
     return (
         <div className="tab-content">
             <div className='tool pb-10 flex justify-between '>
                 <div className='place-content-center'>
-                    <button className="w-full flex items-center justify-center px-4 py-2 text-base font-medium text-white bg-primary border-primary rounded-md hover:bg-gray-100 transition"
+                    <Link to="/admin/doctor/CreateDoctor" className="w-full flex items-center justify-center px-4 py-2 text-base font-medium text-white bg-primary border-primary rounded-md hover:bg-gray-100 transition"
                     >
                         Create New Account
-                    </button>
+                    </Link>
                 </div>
                 <div className='flex'>
                     <div className='place-content-center'>
