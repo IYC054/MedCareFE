@@ -107,23 +107,7 @@ function Feedback(props) {
                     <div className="max-h-screen overflow-y-auto">
                         <table className="table-auto w-full border-separate border-spacing-y-3">
                             <thead>
-                                <tr>
-                                    <th className="">
-                                        <input
-                                            type="checkbox"
-                                            checked={selectedAll}
-                                            onChange={handleSelectAll}
-                                            className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                                        />
-
-                                    </th>
-                                    <th className="">
-                                        <i
-                                            className={`bi bi-trash2 text-gray-400 transition-opacity duration-300 ${selectedRows.length > 0 && !selectedAll ? "opacity-100" : "opacity-0"
-                                                }`}
-                                        ></i>
-                                    </th>
-                                </tr>
+                               
                             </thead>
                             <tbody>
                                 {[...Array(10)].map((_, index) => (
@@ -132,26 +116,10 @@ function Feedback(props) {
                                         className={`w-full bg-white hover:bg-gray-100 transition duration-300 group relative ${selectedRows.includes(index) ? "bg-blue-100" : ""
                                             }`}  >
                                         {/* Checkbox */}
-                                        <td className="pb-5">
-                                            <div className="flex items-center justify-center">
-                                                <input
-                                                    type="checkbox"
-                                                    checked={selectedRows.includes(index)}
-                                                    onChange={() => handleRowSelect(index)}
-                                                    className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                                                />
-                                            </div>
-                                        </td>
-
-                                        {/* Star */}
-                                        <td className="pb-5 px-4">
-                                            <div className="flex items-center justify-center">
-                                                <i className="bi bi-star-fill text-yellow-500"></i>
-                                            </div>
-                                        </td>
+                                       
 
                                         {/* User Info */}
-                                        <td className="pb-5">
+                                        <td className="py-3 pl-4">
                                             <div className="flex items-center">
                                                 <img
                                                     src="https://via.placeholder.com/40"
@@ -170,21 +138,16 @@ function Feedback(props) {
                                         </td>
 
                                         {/* Message */}
-                                        <td className="px-10 pb-5">
+                                        <td className="px-10 py-3">
                                             Nullam dictum felis eu pede mollis pretium.
                                         </td>
 
                                         {/* Actions */}
                                         <td className="w-fit pb-5 relative">
                                             <div className="hidden group-hover:flex space-x-2 absolute right-0">
-                                                <button className="hover:text-blue-500">
-                                                    <i className="bi bi-tags-fill text-gray-400"></i>
-                                                </button>
-                                                <button className="hover:text-blue-500">
-                                                    <i className="bi bi-calendar3 text-gray-400"></i>
-                                                </button>
+                                               
                                                 <button className="hover:text-red-500">
-                                                    <i className="bi bi-trash2 text-gray-400"></i>
+                                                    <i className="bi bi-trash2 text-gray-400 right-4 text-xl relative"></i>
                                                 </button>
                                             </div>
                                         </td>
