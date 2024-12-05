@@ -12,13 +12,14 @@ import AccountDoctor from "./Admin/page/AccountDoctor";
 import Appointment from "./Admin/page/Appointment";
 import Feedback from "./Admin/page/FeedBack";
 
-import Hopsital from "./components/Hospital";
-import CreateApp from "./Admin/page/createPage/CreateApp";
-import Booking from "./components/Hospital/Booking";
-import AddProfile from "./components/PatientProfile/AddProfile";
-import PatientProfile from "./components/PatientProfile/Profile";
-import ListProfile from "./components/Hospital/ProfileChoose";
+import Hopsital from './components/Hospital'
+import CreateApp from './Admin/page/createPage/CreateApp'
+import Booking from './components/Hospital/Booking'
+import AppProvider from './components/Context/AppProvider'
+import AddProfile from './components/PatientProfile/AddProfile'
+import PatientProfile from './components/PatientProfile/Profile'
 import ConfirmInfo from "./components/Hospital/Confirm_information";
+import ProfileChoose from "./components/Hospital/ProfileChoose";
 
 const router = createBrowserRouter([
   {
@@ -31,7 +32,7 @@ const router = createBrowserRouter([
       { path: "/hospital/booking", element: <Booking /> },
       { path: "/profile/add", element: <AddProfile /> },
       { path: "/profile", element: <PatientProfile /> },
-      { path: "/choose-profile", element: <ListProfile /> },
+      { path: "/choose-profile", element: <ProfileChoose /> },
       { path: "/confirm-information", element: <ConfirmInfo /> },
     ],
   },
@@ -66,6 +67,8 @@ const router = createBrowserRouter([
   },
 ]);
 
-createRoot(document.getElementById("root")).render(
-  <RouterProvider router={router} />
+createRoot(document.getElementById('root')).render(
+    <AppProvider>
+      <RouterProvider router={router} />
+    </AppProvider>
 );

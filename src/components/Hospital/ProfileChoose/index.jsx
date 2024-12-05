@@ -14,7 +14,7 @@ import { MdGroups } from "react-icons/md";
 import "./Profilechoose.scss";
 import { Link } from "react-router-dom";
 const fakedata = [{ id: 1 }, { id: 2 }];
-function ListProfile(props) {
+function ProfileChoose(props) {
   const [selectProfileId, setSelectProfileId] = useState(null);
   const handleSelectProfile = (e) => {
     setSelectProfileId(e);
@@ -124,4 +124,4 @@ function ListProfile(props) {
   );
 }
 
-export default ListProfile;
+export default ProfileChoose;

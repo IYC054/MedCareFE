@@ -5,7 +5,7 @@ import './scss/rootLayoutAdmin.scss';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 // import 'bootstrap/dist/css/bootstrap.min.css'
 const RootLayoutAdmin = () => {
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
   const [activeMenu, setActiveMenu] = useState('Analytics');
   const [isClosed, setIsClosed] = useState(window.innerWidth <= 780);
 
@@ -23,14 +23,14 @@ const RootLayoutAdmin = () => {
   }, []);
   const location = useLocation();
 
-  let title = 'Dashboard';
-  let description = 'This is an example dashboard created using built-in elements and components.';
+  let title = '';
+  let description = '';
 
   if (location.pathname === '/admin/user') {
     title = 'Patient Account';
     description = 'Manage and view details of patient accounts, including history and current status.';
   } else if (location.pathname === '/admin/doctor') {
-    title = 'Doctor Account'; 
+    title = 'Doctor Account';
     description = 'Manage doctor accounts and track their appointments and performance.';
   } else if (location.pathname === '/admin/appointment') {
     title = 'Appointment';
@@ -38,6 +38,12 @@ const RootLayoutAdmin = () => {
   } else if (location.pathname === '/admin/feedback') {
     title = 'Feedback';
     description = 'View and manage feedback from patients and clients to improve services.';
+  } else if (location.pathname === '/admin') {
+    title = 'Dashboard';
+    description = 'This is an example dashboard created using built-in elements and components.';
+  }else if (location.pathname === '/admin/appointment/createApp') {
+    title = 'Create Room';
+    description = '';
   }
   return (
     <div className={`root-layout-admin ${!isOpen && !isClosed ? 'sidebar-closed' : 'sidebar-open'}`}>
@@ -96,7 +102,7 @@ const RootLayoutAdmin = () => {
         </div>
       </div>
     </div>
-    
+
   );
 };
 

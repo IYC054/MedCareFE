@@ -4,7 +4,11 @@ import { Link } from 'react-router-dom';
 function Appointment() {
     const rooms = Array.from({ length: 25 }, (_, index) => ({
         id: index + 1,
-        name: `Room ${index + 1}`
+        image: `https://s120-ava-talk.zadn.vn/7/8/0/d/13/120/14c84001a633168678760689e3880fc1.jpg`,
+        name: `Room ${index + 1}`,
+        docname: `Nghị ${index + 1}`,
+        specialty: `specialty ${index + 1}`
+
     }));
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -31,17 +35,57 @@ function Appointment() {
                 <h2 className="text-lg font-bold mb-4">Actions</h2>
                 <ul className="space-y-2 flex flex-col items-center">
                     <li>
-                        <Link to="/admin/appointment/createApp"
+                        <Link
+                            to="/admin/appointment/createApp"
                             className="bg-[#da624a] text-white px-6 py-2 rounded hover:bg-[#b2503c] flex items-center justify-center"
-                           
                         >
                             Create Room
                         </Link>
                     </li>
-                   
-                </ul>
 
+                    {/* Tìm phòng theo khoa */}
+                    <li className="w-full">
+                        <label htmlFor="specialty" className="text-sm text-gray-700">Select Specialty</label>
+                        <div className="mt-2 space-y-2">
+                            <label className="flex items-center">
+                                <input type="checkbox" className="mr-2" /> Cardiology
+                            </label>
+                            <label className="flex items-center">
+                                <input type="checkbox" className="mr-2" /> Neurology
+                            </label>
+                            <label className="flex items-center">
+                                <input type="checkbox" className="mr-2" /> Pediatrics
+                            </label>
+                            <label className="flex items-center">
+                                <input type="checkbox" className="mr-2" /> Orthopedics
+                            </label>
+                            <label className="flex items-center">
+                                <input type="checkbox" className="mr-2" /> Pediatrics
+                            </label>
+                            <label className="flex items-center">
+                                <input type="checkbox" className="mr-2" /> Orthopedics
+                            </label>
+                            <label className="flex items-center">
+                                <input type="checkbox" className="mr-2" /> Pediatrics
+                            </label>
+                            <label className="flex items-center">
+                                <input type="checkbox" className="mr-2" /> Orthopedics
+                            </label>
+                        </div>
+                    </li>
+
+                    {/* Nút tìm kiếm */}
+                    <li>
+                        <button
+                            type="button"
+                            className="mt-4 bg-[#da624a] text-white px-6 py-2 rounded hover:bg-[#b2503c] flex items-center justify-center"
+                        >
+                            Search
+                        </button>
+                    </li>
+                </ul>
             </div>
+
 
             {/* Main Content */}
             <div className="flex-1 p-6">
@@ -60,21 +104,33 @@ function Appointment() {
                     <table className="w-full border-collapse">
                         <thead>
                             <tr className="bg-gray-100">
+                                <th className="border border-gray-300 p-2">Doctor</th>
                                 <th className="border border-gray-300 p-2">Room Name</th>
+                                <th className="border border-gray-300 p-2">Specialty</th>
                                 <th className="border border-gray-300 p-2">Action</th>
+
                             </tr>
                         </thead>
                         <tbody>
                             {currentRooms.map((room) => (
                                 <tr key={room.id}>
+                                    <td className="border border-gray-300 p-2">
+                                        <div className='flex items-center justify-center'>
+                                            <img
+                                                src={room.image}
+                                                className="w-10 h-10 rounded-full mr-4"
+                                            />
+                                            {room.docname}
+                                        </div>
+
+                                    </td>
                                     <td className="border border-gray-300 p-2">{room.name}</td>
+                                    <td className="border border-gray-300 p-2">{room.specialty}</td>
                                     <td className="border border-gray-300 p-2">
                                         <button className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">
                                             Edit
                                         </button>
-                                        <button className="bg-green-500 text-white px-3 py-1 ml-2 rounded hover:bg-green-600">
-                                            Add Doctor
-                                        </button>
+
                                     </td>
                                 </tr>
                             ))}
