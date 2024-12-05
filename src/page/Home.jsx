@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CustomCarousel from "../components/CustomCarousel";
 import DoctorCarouselowl from "../components/doctorCarouselowl";
 import Carousel from "../components/Home/Carosel";
 import HealthCheckupCarouselwl from "../components/HealthCheckupCarouselwl";
+import { AppContext } from "../components/Context/AppProvider";
+
 
 const Home = () => {
   const ExaminationServices = [
@@ -289,6 +291,11 @@ const Home = () => {
         "https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn.medpro.vn%2Fprod-partner%2F59939419-43d4-4d42-b1ec-081bf56f248d-khaam_saaa(c)c_khaaae_taaoai_nhaa_.jpg&w=384&q=75",
     },
   ];
+
+  const { isShow,setisShow } = useContext(AppContext)
+
+
+
   const [placeholderText, setPlaceholderText] = useState("");
   const fullPlaceholders = [
     "  Tìm kiếm chuyên khoa",
@@ -428,71 +435,151 @@ const Home = () => {
             </button>
           </div>
         </div>
-        <div className="mt-3 bg-white">
-          <p className="text-center font-bold text-xl mb-4">CHUYÊN KHOA</p>
-          <div className=" gap-1 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-8 text-center">
+        <div className="mt-3 bg-white p-4">
+          <p className="text-center font-bold text-xl mb-8">CHUYÊN KHOA</p>
+          <div className="gap-1 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-8 text-center">
             <div>
-              <img className="mx-auto" src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2FChuyenKhoa.png&w=96&q=75" width={70} height={70} />{" "}
+              <img
+                className="mx-auto"
+                src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2FChuyenKhoa.png&w=96&q=75"
+                width={70}
+                height={70}
+              />{" "}
               <p>Bác sĩ gia đình </p>
             </div>
             <div>
-              <img  className="mx-auto" src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fumc%2Fsubjects%2F1655710722460-TIEU_HOA_GAN_MAT.png&w=96&q=75" width={70} height={70}/>{" "}
+              <img
+                className="mx-auto"
+                src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fumc%2Fsubjects%2F1655710722460-TIEU_HOA_GAN_MAT.png&w=96&q=75"
+                width={70}
+                height={70}
+              />{" "}
               <p>Tiêu Hóa Gan Mật</p>
             </div>
             <div>
-              <img className="mx-auto" src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2Fsubjects%2Fnoi_tong_quat.png&w=96&q=75" width={70} height={70} />{" "}
+              <img
+                className="mx-auto"
+                src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2Fsubjects%2Fnoi_tong_quat.png&w=96&q=75"
+                width={70}
+                height={70}
+              />{" "}
               <p>Nội Tổng Quát</p>
             </div>
             <div>
-              <img className="mx-auto" src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2Fsubjects%2Fnoi_tiet.png&w=96&q=75" width={70} height={70} />{" "}
+              <img
+                className="mx-auto"
+                src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2Fsubjects%2Fnoi_tiet.png&w=96&q=75"
+                width={70}
+                height={70}
+              />{" "}
               <p>Nội Tiết</p>
             </div>
             <div>
-              <img className="mx-auto" src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2Fsubjects%2Fda_lieu.png&w=96&q=75" width={70} height={70} />{" "}
+              <img
+                className="mx-auto"
+                src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2Fsubjects%2Fda_lieu.png&w=96&q=75"
+                width={70}
+                height={70}
+              />{" "}
               <p>Da Liễu</p>
             </div>
             <div>
-              <img src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2FChuyenKhoa.png&w=96&q=75" />{" "}
+              <img
+                className="mx-auto"
+                src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2Fsubjects%2Ftim_mach.png&w=96&q=75"
+                width={70}
+                height={70}
+              />{" "}
               <p>Nội Tim Mạch</p>
             </div>
             <div>
-              <img src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2FChuyenKhoa.png&w=96&q=75" />{" "}
+              <img
+                className="mx-auto"
+                src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2Fsubjects%2Fthan_kinh.png&w=96&q=75"
+                width={70}
+                height={70}
+              />{" "}
               <p>Nội Thần Kinh</p>
             </div>
             <div>
-              <img src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2FChuyenKhoa.png&w=96&q=75" />{" "}
+              <img
+                className="mx-auto"
+                src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2Fsubjects%2Fnoi_co_xuong_khop.png&w=96&q=75"
+                width={70}
+                height={70}
+              />{" "}
               <p>Nội Cơ Xương Khớp</p>
             </div>
             <div>
-              <img src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2FChuyenKhoa.png&w=96&q=75" />{" "}
+              <img
+                className="mx-auto"
+                src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2Fsubjects%2Ftai_mui_hong.png&w=96&q=75"
+                width={70}
+                height={70}
+              />
               <p>Tai Mũi Họng</p>
             </div>
             <div>
-              <img src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2FChuyenKhoa.png&w=96&q=75" />{" "}
+              <img
+                className="mx-auto"
+                src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2Fsubjects%2Fmat.png&w=96&q=75"
+                width={70}
+                height={70}
+              />{" "}
               <p>Mắt</p>
             </div>
             <div>
-              <img src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2FChuyenKhoa.png&w=96&q=75" />{" "}
+              <img
+                className="mx-auto"
+                src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2Fsubjects%2Ftieu_hoa.png&w=96&q=75"
+                width={70}
+                height={70}
+              />{" "}
               <p>Nội Tiêu Hóa</p>
             </div>
             <div>
-              <img src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2FChuyenKhoa.png&w=96&q=75" />{" "}
+              <img
+                className="mx-auto"
+                src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fumc%2Fsubjects%2FPG%2F1651821563777-VIEM_GAN.png&w=96&q=75"
+                width={70}
+                height={70}
+              />{" "}
               <p>Nội Truyền Nhiễm</p>
             </div>
             <div>
-              <img src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2FChuyenKhoa.png&w=96&q=75" />{" "}
+              <img
+                className="mx-auto"
+                src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2Fsubjects%2Fho_hap.png&w=96&q=75"
+                width={70}
+                height={70}
+              />{" "}
               <p>Nội Hô Hấp</p>
             </div>
             <div>
-              <img src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2FChuyenKhoa.png&w=96&q=75" />{" "}
+              <img
+                className="mx-auto"
+                src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2Fsubjects%2Ftiet_nieu.png&w=96&q=75"
+                width={70}
+                height={70}
+              />{" "}
               <p>Nội Tiết Niệm</p>
             </div>
             <div>
-              <img src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2FChuyenKhoa.png&w=96&q=75" />{" "}
+              <img
+                className="mx-auto"
+                src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2Fsubjects%2Fxuong_khop_chinh_hinh.png&w=96&q=75"
+                width={70}
+                height={70}
+              />{" "}
               <p>Ngoại Cơ Xương Khớp</p>
             </div>
             <div>
-              <img src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2FChuyenKhoa.png&w=96&q=75" />{" "}
+              <img
+                className="mx-auto"
+                src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2Fsubjects%2Fsan_phu_khoa.png&w=96&q=75"
+                width={70}
+                height={70}
+              />{" "}
               <p>Sản-Phụ Khoa</p>
             </div>
           </div>
@@ -509,9 +596,119 @@ const Home = () => {
             </button>
           </div>
         </div>
+        <div className="mt-3 bg-white px-4">
+          <p className="text-center font-bold text-xl mb-4">
+            TẢI ỨNG DỤNG ĐẶT KHÁM NHANH
+            <span className="text-[#00b5f1]">MEDPRO</span>
+          </p>
+          <div className="flex gap-4 justify-center">
+            <div>
+              <img
+                className="w-32"
+                src="https://medpro.vn/_next/image?url=https%3A%2F%2Fbo-api.medpro.com.vn%2Fstatic%2Fimages%2Fmedpro%2Fweb%2Ficon_ios.svg&w=1920&q=75"
+              />
+            </div>
+            <div>
+              <img
+                className="w-32"
+                src="https://medpro.vn/_next/image?url=https%3A%2F%2Fbo-api.medpro.com.vn%2Fstatic%2Fimages%2Fmedpro%2Fweb%2Ficon_google_play.svg&w=1920&q=75"
+              />
+            </div>
+          </div>
+          <div className="p-2"></div>
+          
+
+          <div className="relative flex w-full">
+            <div className=" w-1/3 absolute left-0 bg-green-200">
+              <ul>
+                <li className="flex">
+                  <div> 
+                    <p>Lấy số thứ tự khám nhanh trực tuyến</p>
+                    <p>Đăng ký khám / tái khám nhanh theo ngày</p>
+                    <p>Đăng ký khám theo bác sĩ chuyên khoa.Tái khám theo lịch hẹn</p>
+                  </div>
+                  <div>
+                    <img className="w-36" src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fprod-partner%2Fbae71420-d9ef-48b7-91a9-0151c50c73da-fcf47d13-a9c5-4be8-aa6c-4d4e9b162c19-icon_dang_ky.svg.svg&w=1920&q=75"/>
+                  </div>
+                </li>
+                <li className="flex">
+                  <div> 
+                    <p>Lấy số thứ tự khám nhanh trực tuyến</p>
+                    <p>Đăng ký khám / tái khám nhanh theo ngày</p>
+                    <p>Đăng ký khám theo bác sĩ chuyên khoa.Tái khám theo lịch hẹn</p>
+                  </div>
+                  <div>
+                    <img className="w-36" src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fprod-partner%2Fbae71420-d9ef-48b7-91a9-0151c50c73da-fcf47d13-a9c5-4be8-aa6c-4d4e9b162c19-icon_dang_ky.svg.svg&w=1920&q=75"/>
+                  </div>
+                </li>
+                <li className="flex">
+                  <div> 
+                    <p>Lấy số thứ tự khám nhanh trực tuyến</p>
+                    <p>Đăng ký khám / tái khám nhanh theo ngày</p>
+                    <p>Đăng ký khám theo bác sĩ chuyên khoa.Tái khám theo lịch hẹn</p>
+                  </div>
+                  <div>
+                    <img className="w-36" src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fprod-partner%2Fbae71420-d9ef-48b7-91a9-0151c50c73da-fcf47d13-a9c5-4be8-aa6c-4d4e9b162c19-icon_dang_ky.svg.svg&w=1920&q=75"/>
+                  </div>
+                </li>
+                
+              </ul>
+            </div>
+            <div className="absolute top-10 left-1/2 transform -translate-x-1/2">
+              <img
+                className="w-80 mx-auto"
+                src="https://medpro.vn/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fellipse.a457aed3.png&w=1920&q=75"
+              />
+            </div>
+            <div className="absolute  left-1/2 transform -translate-x-1/2">
+              <img
+                className="w-60"
+                src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn.medpro.vn%2Fprod-partner%2F858c322c-7f26-48d3-a5df-e633e9a3592e-20240325-095443.png&w=1920&q=75"
+              />
+            </div>
+            <div className="w-1/3 absolute right-0 bg-green-500">
+              <ul>
+                <li className="flex ">
+                <div>
+                    <img className="w-36" src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fprod-partner%2Fbae71420-d9ef-48b7-91a9-0151c50c73da-fcf47d13-a9c5-4be8-aa6c-4d4e9b162c19-icon_dang_ky.svg.svg&w=1920&q=75"/>
+                  </div>
+                  <div> 
+                    <p>Lấy số thứ tự khám nhanh trực tuyến</p>
+                    <p>Đăng ký khám / tái khám nhanh theo ngày</p>
+                    <p>Đăng ký khám theo bác sĩ chuyên khoa.Tái khám theo lịch hẹn</p>
+                  </div>
+                 
+                </li>
+                <li className="flex">
+                <div>
+                    <img className="w-36" src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fprod-partner%2Fbae71420-d9ef-48b7-91a9-0151c50c73da-fcf47d13-a9c5-4be8-aa6c-4d4e9b162c19-icon_dang_ky.svg.svg&w=1920&q=75"/>
+                  </div>
+                  <div> 
+                    <p>Lấy số thứ tự khám nhanh trực tuyến</p>
+                    <p>Đăng ký khám / tái khám nhanh theo ngày</p>
+                    <p>Đăng ký khám theo bác sĩ chuyên khoa.Tái khám theo lịch hẹn</p>
+                  </div>
+                  
+                </li>
+                <li className="flex">
+                <div>
+                    <img className="w-36" src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fprod-partner%2Fbae71420-d9ef-48b7-91a9-0151c50c73da-fcf47d13-a9c5-4be8-aa6c-4d4e9b162c19-icon_dang_ky.svg.svg&w=1920&q=75"/>
+                  </div>
+                  <div> 
+                    <p>Lấy số thứ tự khám nhanh trực tuyến</p>
+                    <p>Đăng ký khám / tái khám nhanh theo ngày</p>
+                    <p>Đăng ký khám theo bác sĩ chuyên khoa.Tái khám theo lịch hẹn</p>
+                  </div>
+                 
+                </li>
+                
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div>Nguywen van nghi</div>
+      <div onClick={()=>setisShow(!isShow)}>Nguywen van nghi</div>
       <div>Nguywen van nghi</div>
       <div>Nguywen van nghi</div>
       <div>Nguywen van nghi</div>

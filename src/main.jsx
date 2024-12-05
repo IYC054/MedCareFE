@@ -15,6 +15,7 @@ import Feedback from './Admin/page/FeedBack'
 
 import Hopsital from './components/Hospital'
 import Booking from './components/Hospital/Booking'
+import AppProvider from './components/Context/AppProvider'
 
 const router = createBrowserRouter([
   {
@@ -70,5 +71,7 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById('root')).render(
-  <RouterProvider router={router} />
+    <AppProvider>
+      <RouterProvider router={router} />
+    </AppProvider>
 );
