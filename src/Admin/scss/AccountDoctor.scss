@@ -1,79 +1,76 @@
 .card > .dropdown-menu-header {
-    margin: 0;
+  margin: 0;
 }
 
 .dropdown-menu-header {
-    color: #fff;
-    margin-top: -.65rem;
-    margin-bottom: .65rem;
-    position: relative;
-    z-index: 6;
+  color: #fff;
+  margin-top: -0.65rem;
+  margin-bottom: 0.65rem;
+  position: relative;
+  z-index: 6;
 }
 
 .dropdown-menu-header .dropdown-menu-header-inner {
-    margin: -1px -1px 0;
-    padding: 1.5rem .5rem;
-    position: relative;
+  margin: -1px -1px 0;
+  padding: 1.5rem 0.5rem;
+  position: relative;
 }
 
 .bg-primary {
-    background-color: #da624a !important;
+  background-color: #da624a !important;
 }
 
-.inset-0 {
-    background-image: url('https://demo.dashboardpack.com/kero-html-sidebar-pro/assets/images/dropdown-header/city2.jpg'); 
-    height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    z-index: 8;
-    opacity: .25;
-    filter: grayscale(80%);
-    background-size: cover;
+.insetxx {
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 8;
+  opacity: 0.25;
+  filter: grayscale(80%);
+  background-size: cover;
 }
 
 .dropdown-menu-header .menu-header-content {
-    text-align: center;
-    position: relative;
-    z-index: 10;
+  text-align: center;
+  position: relative;
+  z-index: 10;
 }
 
 .avatar-icon-wrapper {
-    display: inline-block;
-    margin-right: .1rem;
-    position: relative;
-   
+  display: inline-block;
+  margin-right: 0.1rem;
+  position: relative;
 }
 .avatar-icon-lg .avatar-icon {
-    width: 54px;
-    height: 54px;
-    border: #fff solid 3px;
-    overflow: hidden;
+  width: 54px;
+  height: 54px;
+  border: #fff solid 3px;
+  overflow: hidden;
 }
 .avatar-icon.rounded {
-    border-radius: .52rem !important;
+  border-radius: 0.52rem !important;
 }
 .menu-header-title {
-    font-weight: 500;
-    font-size: 1.25rem;
-    margin: 0;
+  font-weight: 500;
+  font-size: 1.25rem;
+  margin: 0;
 }
 
 .dropdown-menu-header .menu-header-content .menu-header-btn-pane {
-    margin-top: 10px;
-    margin-bottom: 3px;
+  margin-top: 10px;
+  margin-bottom: 3px;
 }
 .list-group-item {
-    position: relative;
+  position: relative;
 }
 
 .widget-content-right {
-    opacity: 0; 
-    transition: opacity 0.3s ease; 
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .list-group-item:hover .widget-content-right {
-    opacity: 1;  
+  opacity: 1;
 }
-

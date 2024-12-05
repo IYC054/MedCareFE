@@ -3,7 +3,8 @@ import CustomCarousel from "../components/CustomCarousel";
 import DoctorCarouselowl from "../components/doctorCarouselowl";
 import Carousel from "../components/Home/Carosel";
 import HealthCheckupCarouselwl from "../components/HealthCheckupCarouselwl";
-import { AppContext } from "../components/Context/AppProvider";
+import AppProvider, { AppContext } from "../components/Context/AppProvider";
+import Advertisement from "../components/Home/Advertisement";
 
 const Home = () => {
   const ExaminationServices = [
@@ -291,7 +292,11 @@ const Home = () => {
     },
   ];
 
-  const { isShow, setisShow } = useContext(AppContext);
+  const { setisShow, setContent} = useContext(AppContext);
+  useEffect(() => {
+    setisShow(true);
+    setContent(<Advertisement/>);
+  }, [setContent,setContent]);
 
   const [placeholderText, setPlaceholderText] = useState("");
   const fullPlaceholders = [
@@ -327,7 +332,7 @@ const Home = () => {
   }, [currentPlaceholderIndex]);
   return (
     <div>
-      <div className="relative">
+       <div className="relative">
         <div>
           <img
             className="w-full"
@@ -342,10 +347,10 @@ const Home = () => {
             Kết nối người dân với Cơ sở - Dịch vụ Y tế
           </h1>
 
-          {/* input */}
+         
           <div className="rounded-lg p-3 w-1/2 mx-auto mt-4 bg-white">
             <form className="flex items-center gap-2">
-              {/* Căn giữa input */}
+            
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 512 512"
@@ -365,7 +370,7 @@ const Home = () => {
             Đặt khám nhanh - Lấy số thứ tự trực tuyến - Tư vấn sức khỏe từ xa
           </p>
         </div>
-        {/* phần cuoi */}
+       
         <div className="w-full  absolute bottom-[-70px]">
           <div className="w-[100%] mx-auto gap-1 text-[12px] text-center font-semibold text-[#003553]  ">
             <div className="w-[70%] flex justify-center mx-auto items-center">
@@ -373,7 +378,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> 
 
       <div className="w-[80%] mx-auto mt-24">
         <div className="w-100">
@@ -728,6 +733,11 @@ const Home = () => {
             </div>
           </div>
           <div className="p-9"></div>
+         
+        
+          <div onClick={()=>{setisShow(true);setContent(<Advertisement/>)}}>Nghi</div>
+      
+         
         </div>
       </div>
     </div>

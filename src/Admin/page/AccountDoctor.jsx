@@ -36,7 +36,7 @@ function AccountDoctor(props) {
                     {[1, 2, 3, 4, 5, 6, 7, 8].map((item, index) => (
                         <div key={index} className="shadow-lg border mb-3 p-0 rounded-md">
                             <div className="bg-primary p-4 rounded-t-md relative z-6">
-                                <div className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-25 filter grayscale-80" style={{ backgroundImage: "url('https://demo.dashboardpack.com/kero-html-sidebar-pro/assets/images/dropdown-header/city2.jpg')" }} />
+                                <div className="absolute insetxx bg-cover bg-center bg-no-repeat opacity-25 filter grayscale-80" style={{ backgroundImage: "url('https://demo.dashboardpack.com/kero-html-sidebar-pro/assets/images/dropdown-header/city2.jpg')" }} />
                                 <div className="relative z-10 text-center">
                                     <div className="inline-block mr-2">
                                         <div className="w-14 h-14 rounded-full border-4 border-white overflow-hidden">
