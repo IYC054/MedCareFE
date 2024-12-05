@@ -1,0 +1,50 @@
+.settingli {
+  display: flex;
+  align-items: flex-start; /* Đảm bảo văn bản nằm gọn */
+  gap: 8px; /* Khoảng cách giữa label và value */
+}
+
+.settingli span:first-child {
+  white-space: nowrap; /* Không cho label xuống dòng */
+}
+
+.settingli span:last-child {
+  word-wrap: break-word; /* Tự động xuống dòng nếu quá dài */
+}
+
+.settingli {
+  line-height: 0.9; /* Khoảng cách dòng thoáng hơn */
+}
+.selectprofile {
+  scale: 0.98;
+  transition: scale 0.2s ease-in-out;
+  &:hover {
+    border: 1px solid #00b5f1;
+    scale: 1;
+  }
+}
+.isactiveprofile {
+  scale: 1;
+  border: 1px solid #00b5f1;
+}
+#goright {
+  animation: movearrow 1.3s linear 0.2s infinite;
+}
+@keyframes movearrow {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  25% {
+    opacity: 0;
+    transform: translateX(10px) scale(0.9);
+  }
+  26% {
+    opacity: 0;
+    transform: translateX(-10px) scale(0.9);
+  }
+  55% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
