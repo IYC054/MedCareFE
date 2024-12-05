@@ -5,7 +5,6 @@ import Carousel from "../components/Home/Carosel";
 import HealthCheckupCarouselwl from "../components/HealthCheckupCarouselwl";
 import { AppContext } from "../components/Context/AppProvider";
 
-
 const Home = () => {
   const ExaminationServices = [
     {
@@ -292,9 +291,7 @@ const Home = () => {
     },
   ];
 
-  const { isShow,setisShow } = useContext(AppContext)
-
-
+  const { isShow, setisShow } = useContext(AppContext);
 
   const [placeholderText, setPlaceholderText] = useState("");
   const fullPlaceholders = [
@@ -615,99 +612,124 @@ const Home = () => {
               />
             </div>
           </div>
-          <div className="p-2"></div>
-          
+          <div className="p-10"></div>
 
-          <div className="relative flex w-full">
-            <div className=" w-1/3 absolute left-0 bg-green-200">
-              <ul>
-                <li className="flex">
-                  <div> 
-                    <p>Lấy số thứ tự khám nhanh trực tuyến</p>
-                    <p>Đăng ký khám / tái khám nhanh theo ngày</p>
-                    <p>Đăng ký khám theo bác sĩ chuyên khoa.Tái khám theo lịch hẹn</p>
+          <div className="relative flex w-full px-24">
+            {/* phan 1 */}
+            <div className=" w-1/3 ">
+              <ul >
+                <li className="flex gap-1 mt-3 -mr-10">
+                  <div className="text-sm">
+                    <p className=" font-bold text-lg">Lấy số thứ tự khám nhanh trực tuyến</p>
+                    <p >Đăng ký khám / tái khám nhanh theo ngày</p>
+                    <p>
+                      Đăng ký khám theo bác sĩ chuyên khoa.Tái khám theo lịch
+                      hẹn
+                    </p>
                   </div>
-                  <div>
-                    <img className="w-36" src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fprod-partner%2Fbae71420-d9ef-48b7-91a9-0151c50c73da-fcf47d13-a9c5-4be8-aa6c-4d4e9b162c19-icon_dang_ky.svg.svg&w=1920&q=75"/>
-                  </div>
-                </li>
-                <li className="flex">
-                  <div> 
-                    <p>Lấy số thứ tự khám nhanh trực tuyến</p>
-                    <p>Đăng ký khám / tái khám nhanh theo ngày</p>
-                    <p>Đăng ký khám theo bác sĩ chuyên khoa.Tái khám theo lịch hẹn</p>
-                  </div>
-                  <div>
-                    <img className="w-36" src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fprod-partner%2Fbae71420-d9ef-48b7-91a9-0151c50c73da-fcf47d13-a9c5-4be8-aa6c-4d4e9b162c19-icon_dang_ky.svg.svg&w=1920&q=75"/>
+                  <div >
+                    <img
+                      className="w-16"
+                      src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fprod-partner%2Fbae71420-d9ef-48b7-91a9-0151c50c73da-fcf47d13-a9c5-4be8-aa6c-4d4e9b162c19-icon_dang_ky.svg.svg&w=1920&q=75"
+                    />
                   </div>
                 </li>
-                <li className="flex">
-                  <div> 
-                    <p>Lấy số thứ tự khám nhanh trực tuyến</p>
-                    <p>Đăng ký khám / tái khám nhanh theo ngày</p>
-                    <p>Đăng ký khám theo bác sĩ chuyên khoa.Tái khám theo lịch hẹn</p>
+                <li className="flex gap-1 w-full mt-9 -ml-4">
+                  <div className="text-sm">
+                    <p className="font-bold text-lg">Tư vấn sức khỏe từ xa</p>
+                    <p>Tư vấn sức khỏe từ xa, cuộc gọi video với các bác sĩ chuyên môn</p>
+                    
                   </div>
                   <div>
-                    <img className="w-36" src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fprod-partner%2Fbae71420-d9ef-48b7-91a9-0151c50c73da-fcf47d13-a9c5-4be8-aa6c-4d4e9b162c19-icon_dang_ky.svg.svg&w=1920&q=75"/>
+                    <img
+                      className="w-20"
+                      src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fprod-partner%2Fbae71420-d9ef-48b7-91a9-0151c50c73da-fcf47d13-a9c5-4be8-aa6c-4d4e9b162c19-icon_dang_ky.svg.svg&w=1920&q=75"
+                    />
                   </div>
                 </li>
-                
+                <li className="flex gap-1 mt-20 -mr-3">
+                  <div>
+                    <p className="font-bold text-lg">Tra cứu kết quả cận lâm sàng</p>
+                    <p>Tra cứu kết quả cận lâm sàng trực tuyến dễ dàng và tiện lợi</p>
+                    
+                  </div>
+                  <div>
+                    <img
+                      className="w-20"
+                      src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fprod-partner%2Fbae71420-d9ef-48b7-91a9-0151c50c73da-fcf47d13-a9c5-4be8-aa6c-4d4e9b162c19-icon_dang_ky.svg.svg&w=1920&q=75"
+                    />
+                  </div>
+                </li>
               </ul>
             </div>
-            <div className="absolute top-10 left-1/2 transform -translate-x-1/2">
+
+            {/* phan 2 vòng trong */}
+            
+            <div className="flex justify-center items-center mx-auto">
               <img
-                className="w-80 mx-auto"
+                className="w-[400px] mx-auto"
                 src="https://medpro.vn/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fellipse.a457aed3.png&w=1920&q=75"
               />
             </div>
-            <div className="absolute  left-1/2 transform -translate-x-1/2">
+            {/* phan 3 dth */}
+            <div className="absolute -top-14 left-1/2 transform -translate-x-1/2">
               <img
                 className="w-60"
                 src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn.medpro.vn%2Fprod-partner%2F858c322c-7f26-48d3-a5df-e633e9a3592e-20240325-095443.png&w=1920&q=75"
               />
             </div>
-            <div className="w-1/3 absolute right-0 bg-green-500">
-              <ul>
-                <li className="flex ">
-                <div>
-                    <img className="w-36" src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fprod-partner%2Fbae71420-d9ef-48b7-91a9-0151c50c73da-fcf47d13-a9c5-4be8-aa6c-4d4e9b162c19-icon_dang_ky.svg.svg&w=1920&q=75"/>
+
+            {/* phan 4 */}
+            <div className="w-1/3  ">
+              <ul className="text-sm">
+                <li className="flex gap-1  mt-3 -ml-10 bg-green-300">
+                  <div>
+                    <img
+                      className="w-20"
+                      src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fprod-partner%2Fbae71420-d9ef-48b7-91a9-0151c50c73da-fcf47d13-a9c5-4be8-aa6c-4d4e9b162c19-icon_dang_ky.svg.svg&w=1920&q=75"
+                    />
                   </div>
-                  <div> 
-                    <p>Lấy số thứ tự khám nhanh trực tuyến</p>
-                    <p>Đăng ký khám / tái khám nhanh theo ngày</p>
-                    <p>Đăng ký khám theo bác sĩ chuyên khoa.Tái khám theo lịch hẹn</p>
+                  <div>
+                    <p className="font-bold text-lg ">Thanh toán viện phí</p>
+                    <p >Đăng ký khám / tái khám nhanh theo ngày</p>
+                    <p>
+                      Đăng ký khám theo bác sĩ chuyên khoa.Tái khám theo lịch
+                      hẹn
+                    </p>
                   </div>
-                 
                 </li>
-                <li className="flex">
-                <div>
-                    <img className="w-36" src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fprod-partner%2Fbae71420-d9ef-48b7-91a9-0151c50c73da-fcf47d13-a9c5-4be8-aa6c-4d4e9b162c19-icon_dang_ky.svg.svg&w=1920&q=75"/>
+                <li className="flex gap-5 w-full  mt-9 ml-2 bg-red-500">
+                <div className="w-40 h-auto bg-red-600 ">
+                    <img
+                     
+                      src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fprod-partner%2Fbae71420-d9ef-48b7-91a9-0151c50c73da-fcf47d13-a9c5-4be8-aa6c-4d4e9b162c19-icon_dang_ky.svg.svg&w=1920&q=75"
+                    />
                   </div>
-                  <div> 
-                    <p>Lấy số thứ tự khám nhanh trực tuyến</p>
-                    <p>Đăng ký khám / tái khám nhanh theo ngày</p>
-                    <p>Đăng ký khám theo bác sĩ chuyên khoa.Tái khám theo lịch hẹn</p>
+                  <div>
+                    <p className=" font-bold text-lg" > Chăm sóc Y tế tại nhà</p>
+                    <p>Dịch vụ Y tế tại nhà (điều dưỡng, xét nghiệm) chuyên nghiệp, đáp ứng các nhu cầu chăm sóc Y tế tại nhà phổ thông</p>
+                    
                   </div>
-                  
                 </li>
-                <li className="flex">
-                <div>
-                    <img className="w-36" src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fprod-partner%2Fbae71420-d9ef-48b7-91a9-0151c50c73da-fcf47d13-a9c5-4be8-aa6c-4d4e9b162c19-icon_dang_ky.svg.svg&w=1920&q=75"/>
+                <li className="flex gap-1 mt-16 -ml-6">
+                  <div className="w-40 h-auto bg-red-600 ">
+                    <img
+                      className="w-20"
+                      src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fprod-partner%2Fbae71420-d9ef-48b7-91a9-0151c50c73da-fcf47d13-a9c5-4be8-aa6c-4d4e9b162c19-icon_dang_ky.svg.svg&w=1920&q=75"
+                    />
                   </div>
-                  <div> 
-                    <p>Lấy số thứ tự khám nhanh trực tuyến</p>
-                    <p>Đăng ký khám / tái khám nhanh theo ngày</p>
-                    <p>Đăng ký khám theo bác sĩ chuyên khoa.Tái khám theo lịch hẹn</p>
+                  <div>
+                    <p  className=" font-bold text-lg" >Mạng lưới Cơ sở hợp tác</p>
+                    <p>Mạng lưới kết nối với các bệnh viện, phòng khám, phòng mạch rộng khắp phủ sóng toàn quốc</p>
+                   
                   </div>
-                 
                 </li>
-                
               </ul>
             </div>
           </div>
+          <div className="p-9"></div>
         </div>
       </div>
-      
     </div>
   );
 };
