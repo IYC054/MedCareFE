@@ -22,6 +22,7 @@ import Feedback from './Admin/page/Feedback'
 import ConfirmInfo from "./components/Hospital/Confirm_information";
 import ProfileChoose from "./components/Hospital/ProfileChoose";
 import ChoosePayment from "./components/Hospital/ChoosePayment";
+import CreatEmail from "./Admin/page/createPage/CreatEmail";
 
 const router = createBrowserRouter([
   {
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
       {
         path: "/admin/feedback",
         element: <Feedback />,
+      },
+      {
+        path: "/admin/feedback/sendfeedback",
+        element: <CreatEmail />,
       },
     ],
   },

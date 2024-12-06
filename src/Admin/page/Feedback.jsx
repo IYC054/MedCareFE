@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../scss/feedback.scss';
+import { Link } from 'react-router-dom';
 function Feedback(props) {
     const [selectedAll, setSelectedAll] = useState(false);
     const [selectedRows, setSelectedRows] = useState([]);
@@ -24,10 +25,10 @@ function Feedback(props) {
                     <ul className="flex flex-col">
                         {/* Write New Email Button */}
                         <li className="p-3">
-                            <button className="w-full flex items-center justify-center px-4 py-2 text-base font-medium text-white bg-primary border-primary rounded-md hover:bg-gray-100 transition"
+                            <Link to="/admin/feedback/sendfeedback" className="w-full flex items-center justify-center px-4 py-2 text-base font-medium text-white bg-primary border-primary rounded-md hover:bg-gray-100 transition"
                             >
                                 Write New Email
-                            </button>
+                            </Link>
 
 
                         </li>
