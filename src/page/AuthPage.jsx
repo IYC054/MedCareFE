@@ -1,6 +1,6 @@
 import React from "react";
 import CheckPhone from "../components/Authentication/Register/CheckPhone";
-import ImgAuth from "../../asset/img_auth.png";
+import ImgAuth from "../../asset/auth_img.png";
 function AuthPage() {
   return (
     <div className="items-center justify-center bg-gray-100">
@@ -15,12 +15,12 @@ function AuthPage() {
             alt="doctor"
            className="w-screen h-screen overflow-hidden "
           />
-          <p className="absolute left-3 top-5 text-center text-gray-700 italic text-lg">
+          {/* <p className="absolute left-3 top-5 text-center text-gray-700 italic text-lg">
             “Không còn: <br />
             <span className="line-through">xếp hàng</span> <br />
             <span className="line-through">chờ đợi</span> <br />
             Để lấy số khám bệnh”
-          </p>
+          </p> */}
         </div>
       </div>
     </div>
