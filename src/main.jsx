@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./page/RootLayout";
 import RootLayoutAdmin from "./page/RootLayoutAdmin";
 import Dashboard from "./Admin/page/Dashboard";
+import AuthPage from "./page/AuthPage";
 import AccountUser from "./Admin/page/AccountUser";
 import AccountDoctor from "./Admin/page/AccountDoctor";
 import Appointment from "./Admin/page/Appointment";
@@ -22,7 +23,8 @@ import Feedback from './Admin/page/Feedback'
 import ConfirmInfo from "./components/Hospital/Confirm_information";
 import ProfileChoose from "./components/Hospital/ProfileChoose";
 import ChoosePayment from "./components/Hospital/ChoosePayment";
-import CreatEmail from "./Admin/page/createPage/CreatEmail";
+import CheckPhone from "./components/Authentication/Register/CheckPhone";
+
 
 const router = createBrowserRouter([
   {
@@ -71,11 +73,24 @@ const router = createBrowserRouter([
         path: "/admin/feedback",
         element: <Feedback />,
       },
-      {
-        path: "/admin/feedback/sendfeedback",
-        element: <CreatEmail />,
-      },
     ],
+  },
+  {
+    element: <AuthPage/>,
+    children: [
+      {
+        path: "/auth/check-phone",
+        element: <CheckPhone/>,
+      },
+      // {
+      //   path: "/auth/check-otp",
+      //   element: <CheckOTP/>,
+      // },
+      // {
+      //   path: "/auth/register",
+      //   element: <Resgister/>,
+      // },
+    ]
   },
 ]);
 
