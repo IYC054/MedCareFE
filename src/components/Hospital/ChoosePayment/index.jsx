@@ -6,25 +6,17 @@ import {
   FaBuilding,
   FaClock,
   FaCreditCard,
+
 } from "react-icons/fa";
-import {
-  FaArrowRight,
-  FaBirthdayCake,
-  FaEdit,
-  FaFileMedical,
-  FaMale,
-  FaPhoneAlt,
-  FaUserCircle,
-} from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa";
 import { FaLocationDot, FaUserDoctor } from "react-icons/fa6";
-import {
-  MdGroups,
-  MdOutlineAttachMoney,
-  MdOutlineMedicalServices,
-} from "react-icons/md";
-import { IoCard } from "react-icons/io5";
+import { MdOutlineAttachMoney, MdOutlineMedicalServices } from "react-icons/md";
 import { BsCalendar2DateFill } from "react-icons/bs";
-function ChoosePayment(props) {
+import MomoPayment from "../../../api/Payment/momo";
+function ChoosePayment() {
+  const PayWithMomo = async () => {
+    MomoPayment();
+  };
   return (
     <div className="flex justify-center py-5">
       <div className="w-4/5 ">
@@ -154,8 +146,12 @@ function ChoosePayment(props) {
                       </ul>
                     </div>
                     <div className="flex justify-between items-center">
-                        <span className="text-[20px] text-[#003553] font-medium">Tổng Cộng:</span>
-                        <span className="text-[18px] text-[#00b5f1] font-medium">100 triệu đ</span>
+                      <span className="text-[20px] text-[#003553] font-medium">
+                        Tổng Cộng:
+                      </span>
+                      <span className="text-[18px] text-[#00b5f1] font-medium">
+                        100 triệu đ
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -163,7 +159,7 @@ function ChoosePayment(props) {
             </div>
 
             <div className="w-full h-[40px] flex items-center justify-end my-5">
-              <button
+              <button onClick={PayWithMomo}
                 className="py-2 flex items-center justify-center gap-2 px-6 bg-gradient-to-r from-[#00b5f1] to-[#00e0ff] rounded-lg text-[#fff]"
                 id="godown"
               >

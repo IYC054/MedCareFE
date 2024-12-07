@@ -13,6 +13,7 @@ import {
 import { FaLocationDot } from "react-icons/fa6";
 import { MdGroups } from "react-icons/md";
 import { IoCard } from "react-icons/io5";
+import { Link } from "react-router-dom";
 function ConfirmInfo(props) {
   return (
     <div className="flex justify-center py-5">
@@ -171,15 +172,17 @@ function ConfirmInfo(props) {
               </div>
             </div>
             <div className="w-full h-[40px] flex items-center justify-end my-5">
-              <button
-                className="py-2 flex items-center justify-center gap-2 px-6 bg-gradient-to-r from-[#00b5f1] to-[#00e0ff] rounded-lg text-[#fff]"
-                id="godown"
-              >
-                Xác nhận
-                <span>
-                  <FaArrowRight id="goright" />
-                </span>
-              </button>
+              <Link to={`/choose-payment`}>
+                <button
+                  className="py-2 flex items-center justify-center gap-2 px-6 bg-gradient-to-r from-[#00b5f1] to-[#00e0ff] rounded-lg text-[#fff]"
+                  id="godown"
+                >
+                  Xác nhận
+                  <span>
+                    <FaArrowRight id="goright" />
+                  </span>
+                </button>
+              </Link>
             </div>
           </div>
         </div>

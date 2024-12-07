@@ -6,7 +6,7 @@ import { BsCalendar2DateFill, BsGenderAmbiguous } from "react-icons/bs";
 import { MdAttachMoney } from "react-icons/md";
 import "./booking.scss";
 import { IoReturnDownBack } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Calender from "../Calender";
 import { AppContext } from "../../Context/AppProvider";
 const fake = [
@@ -14,6 +14,16 @@ const fake = [
   { id: 2, name: "Cho In Yeong", gender: "Female" },
   { id: 3, name: "Nguyễn Văn Nghị", gender: "Underfind" },
   { id: 4, name: "Nguyễn Anh Tuấn", gender: "Male" },
+];
+const faketime = [
+  { id: 1, settime: "7:30 - 8:30" },
+  { id: 2, settime: "9:30 - 10:30" },
+  { id: 3, settime: "11:30 - 12:30" },
+];
+const faketime2 = [
+  { id: 1, settime: "13:30 - 14:30" },
+  { id: 2, settime: "14:30 - 15:30" },
+  { id: 3, settime: "15:30 - 16:30" },
 ];
 function Booking() {
   const [title, setTitle] = useState("Thông tin cơ sở y tế");
@@ -23,7 +33,6 @@ function Booking() {
   const [selectDate, setSelectDate] = useState(true);
   // start chọn ngày
   const [chooseDate, setChooseDate] = useState(null);
-  const {  } = useContext(AppContext);
 
   const handleSelectedDate = (date) => {
     setChooseDate(date);
@@ -260,29 +269,29 @@ function Booking() {
                           <span>Buổi sáng</span>
                         </div>
                         <div className="w-full my-2 flex gap-5 flex-wrap ">
-                          <div className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]">
-                            7:30 - 8:30
-                          </div>
-                          <div className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]">
-                            9:30 - 10:30
-                          </div>
-                          <div className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]">
-                            11:30 - 12:30
-                          </div>
+                          {faketime.map((item, index) => (
+                            <Link key={index} to={`/choose-profile`}>
+                              <div
+                                className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]"
+                              >
+                                {item.settime}
+                              </div>
+                            </Link>
+                          ))}
                         </div>
                         <div className="w-full text-[20px] my-5">
                           <span>Buổi Trưa</span>
                         </div>
                         <div className="w-full my-2 flex gap-5 flex-wrap ">
-                          <div className="py-2 px-4 border-[1px] cursor-pointer isactivetime  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff]  rounded-lg border-solid text-[20px]">
-                            13:30 - 14:30
-                          </div>
-                          <div className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]">
-                            15:30 - 16:30
-                          </div>
-                          <div className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]">
-                            16:30 - 17:30
-                          </div>
+                        {faketime2.map((item, index) => (
+                            <Link key={index}>
+                              <div
+                                className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]"
+                              >
+                                {item.settime}
+                              </div>
+                            </Link>
+                          ))}
                         </div>
                         <div className="w-full mt-4">
                           <span className="text-[#d98634] text-[16px]">
