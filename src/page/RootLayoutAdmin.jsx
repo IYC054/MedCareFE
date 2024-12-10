@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import Sidebar from '../Admin/Sidebar';
 import './scss/rootLayoutAdmin.scss';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -8,12 +8,16 @@ const RootLayoutAdmin = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [activeMenu, setActiveMenu] = useState('Analytics');
   const [isClosed, setIsClosed] = useState(window.innerWidth <= 780);
+  const [profile, setProfife] = useState(false)
 
-
+  const showProfile = () => {
+    setProfife(!profile);
+  }
   useEffect(() => {
     const handleResize = () => {
       setIsClosed(window.innerWidth <= 780);
     };
+
 
     window.addEventListener('resize', handleResize);
 
@@ -43,6 +47,13 @@ const RootLayoutAdmin = () => {
     description = 'This is an example dashboard created using built-in elements and components.';
   } else if (location.pathname === '/admin/appointment/createApp') {
     title = 'Create Room';
+    description = '';
+  }
+  else if (location.pathname === '/admin/profileadmin') {
+    title = 'Profile Admin';
+    description = '';
+  } else {
+    title = '';
     description = '';
   }
   return (
@@ -81,15 +92,69 @@ const RootLayoutAdmin = () => {
               <div className='widget-content p-0'>
                 <div className='widget-content-wrapper'>
                   <div className='widget-content-left'>
-                    <div className='btn-group'>
-                      <a className='ac'>
+                    <div className='btn-group ' onClick={showProfile}>
+                      <a className='ac' >
                         <img
                           className='rounded'
-                          src='https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/332258329_1185557622321869_3673154378989835580_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=hXxYVct6phgQ7kNvgEhwFuw&_nc_zt=23&_nc_ht=scontent.fsgn2-7.fna&_nc_gid=Ar-aWuczzMRvDRGtyq-95GV&oh=00_AYCOR3L4dHDYN8TQiO0hRc5zb7rPJlTGZLiXt1HyWGKuTg&oe=674B0CD4' />
-                        <i className='bi bi-chevron-compact-down'></i>
+                          src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDUWB51JwETzUH9_F2hZJzagg0LKEV6dYi8g&s' />
+                        <i className='bi bi-chevron-compact-down' ></i>
                       </a>
                     </div>
+                    {profile && (
+                      <div className="absolute top-14 right-0 w-96 bg-white border border-gray-200 rounded-md shadow-lg z-999">
+                        {/* Header với hình nền và thông tin người dùng */}
+                        <div
+                          className="flex items-center p-4 bg-[#da624a] text-white rounded-t-md"
+
+                        >
+                          <img
+                            className="w-12 h-12 rounded-full mr-4"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDUWB51JwETzUH9_F2hZJzagg0LKEV6dYi8g&s"
+                            alt="User Avatar"
+                          />
+                          <div>
+                            <p className="font-medium text-lg">Tuuannat</p>
+                            <p className="text-sm">Profile setting</p>
+                          </div>
+                          <button
+                            className="ml-auto bg-gray-800 text-white px-4 py-2 rounded-full hover:bg-gray-700"
+                            onClick={() => console.log('Logout Clicked')}
+                          >
+                            Logout
+                          </button>
+                        </div>
+
+                        <div className="p-4">
+                          <div className="text-gray-800 font-medium">My Account</div>
+                          <ul className="list-none space-y-3 mt-2">
+                            <li>
+                              <a href="#" className="text-gray-500">Recover Password</a>
+                            </li>
+                            <li>
+                              <Link to="/admin/profileadmin" className="text-gray-500 flex justify-between items-center">
+                                Settings
+                                <span className="text-xs bg-green-500 text-white py-1 px-2 rounded-full ml-2">NEW</span>
+                              </Link>
+                            </li>
+                            <li>
+                              <a href="#" className="text-gray-500 flex justify-between items-center">
+                                Messages
+                                <span className="text-xs bg-yellow-500 text-white py-1 px-2 rounded-full ml-2">512</span>
+                              </a>
+                            </li>
+                          </ul>
+
+                          {/* Các nút */}
+                          <div className="mt-4">
+                            <button className="bg-orange-500 text-white py-2 px-4 w-full rounded-full hover:bg-orange-600">
+                              Open Messages
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
+
                 </div>
               </div>
             </div>
@@ -105,7 +170,7 @@ const RootLayoutAdmin = () => {
         </div>
 
       </div>
-    </div>
+    </div >
 
   );
 };

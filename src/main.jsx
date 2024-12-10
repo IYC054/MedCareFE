@@ -27,6 +27,7 @@ import CheckPhone from "./components/Authentication/Register/CheckPhone";
 import CreatEmail from "./Admin/page/createPage/CreatEmail";
 import ResponseBackFeedback from "./Admin/page/createPage/ResponseBackFeedback";
 import ConfirmPayment from "./components/Hospital/ChoosePayment/ConfirmPayment";
+import ProfileAdmin from "./Admin/page/ProfileAdmin";
 
 
 const router = createBrowserRouter([
@@ -84,6 +85,10 @@ const router = createBrowserRouter([
       {
         path: "/admin/feedback/responsefeedback",
         element: <ResponseBackFeedback />,
+      },
+      {
+        path: "/admin/profileadmin",
+        element: <ProfileAdmin />,
       },
     ],
   },
