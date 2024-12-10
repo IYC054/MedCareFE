@@ -123,7 +123,7 @@ function Hopsital() {
             {/* start slider */}
             <div className="w-full h-[540px] mb-8">
               <img
-                src="https://lh3.googleusercontent.com/p/AF1QipMndh7L1UFZSbmeVHN16p6nf-4c-iy7y9qUvdK5=s1360-w1360-h1020"
+                src="https://lh3.googleusercontent.com/p/AF1QipM7smUjsBLlKx_EN9gEM0f5OfU5CUBJtVI1d8A9=s1360-w1360-h1020"
                 alt=""
                 className="w-full h-full object-cover rounded-xl shadow-xl"
               />
