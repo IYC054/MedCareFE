@@ -13,6 +13,7 @@ import { FaLocationDot, FaUserDoctor } from "react-icons/fa6";
 import { MdOutlineAttachMoney, MdOutlineMedicalServices } from "react-icons/md";
 import { BsCalendar2DateFill } from "react-icons/bs";
 import MomoPayment from "../../../api/Payment/momo";
+const image_bank = "https://img.vietqr.io/image/TCB-1308200200-compact2.png?amount=500"
 function ChoosePayment() {
   const PayWithMomo = async () => {
     MomoPayment();
@@ -58,17 +59,6 @@ function ChoosePayment() {
                       <li className="flex items-center gap-2 settingli mt-2 mb-6">
                         <input type="radio" id="momo" name="payment" />
                         <span>Ví Momo </span>
-                      </li>
-                      <li className="flex items-center gap-2 settingli mt-2 mb-6">
-                        <input type="radio" id="momo" name="payment" />
-                        <span>
-                          VNPAY - QR
-                          <p>
-                            <small className="text-[#c2c2c2]">
-                              Hỗ trợ nhiều ngân hàng
-                            </small>
-                          </p>
-                        </span>
                       </li>
                       <li className="flex items-center gap-2 settingli mt-2 mb-6">
                         <input type="radio" id="momo" name="payment" />
