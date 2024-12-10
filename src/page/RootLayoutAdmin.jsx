@@ -49,6 +49,13 @@ const RootLayoutAdmin = () => {
     title = 'Create Room';
     description = '';
   }
+  else if (location.pathname === '/admin/profileadmin') {
+    title = 'Profile Admin';
+    description = '';
+  } else {
+    title = '';
+    description = '';
+  }
   return (
     <div className={`root-layout-admin  ${!isOpen && !isClosed ? 'sidebar-closed' : 'sidebar-open'}`}>
       <Sidebar
