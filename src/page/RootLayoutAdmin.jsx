@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import Sidebar from '../Admin/Sidebar';
 import './scss/rootLayoutAdmin.scss';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -89,7 +89,7 @@ const RootLayoutAdmin = () => {
                       <a className='ac' >
                         <img
                           className='rounded'
-                          src='https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/332258329_1185557622321869_3673154378989835580_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=hXxYVct6phgQ7kNvgEhwFuw&_nc_zt=23&_nc_ht=scontent.fsgn2-7.fna&_nc_gid=Ar-aWuczzMRvDRGtyq-95GV&oh=00_AYCOR3L4dHDYN8TQiO0hRc5zb7rPJlTGZLiXt1HyWGKuTg&oe=674B0CD4' />
+                          src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDUWB51JwETzUH9_F2hZJzagg0LKEV6dYi8g&s' />
                         <i className='bi bi-chevron-compact-down' ></i>
                       </a>
                     </div>
@@ -102,7 +102,7 @@ const RootLayoutAdmin = () => {
                         >
                           <img
                             className="w-12 h-12 rounded-full mr-4"
-                            src="https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/332258329_1185557622321869_3673154378989835580_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=hXxYVct6phgQ7kNvgEhwFuw&_nc_zt=23&_nc_ht=scontent.fsgn2-7.fna&_nc_gid=Ar-aWuczzMRvDRGtyq-95GV&oh=00_AYCOR3L4dHDYN8TQiO0hRc5zb7rPJlTGZLiXt1HyWGKuTg&oe=674B0CD4"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDUWB51JwETzUH9_F2hZJzagg0LKEV6dYi8g&s"
                             alt="User Avatar"
                           />
                           <div>
@@ -124,10 +124,10 @@ const RootLayoutAdmin = () => {
                               <a href="#" className="text-gray-500">Recover Password</a>
                             </li>
                             <li>
-                              <a href="#" className="text-gray-500 flex justify-between items-center">
+                              <Link to="/admin/profileadmin" className="text-gray-500 flex justify-between items-center">
                                 Settings
                                 <span className="text-xs bg-green-500 text-white py-1 px-2 rounded-full ml-2">NEW</span>
-                              </a>
+                              </Link>
                             </li>
                             <li>
                               <a href="#" className="text-gray-500 flex justify-between items-center">
