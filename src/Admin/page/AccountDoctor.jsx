@@ -7,7 +7,7 @@ function AccountDoctor(props) {
         <div className="tab-content">
             <div className='tool pb-10 flex justify-between '>
                 <div className='place-content-center'>
-                    <Link to="/admin/doctor/CreateDoctor" className="w-full flex items-center justify-center px-4 py-2 text-base font-medium text-white bg-[#da624a] border-primary rounded-md hover:bg-gray-100 transition"
+                    <Link to="/admin/doctor/CreateDoctor" className="w-full flex items-center justify-center px-4 py-2 text-base font-medium text-white bg-[#da624a] border-primary rounded-md hover:bg-[#b2503c] transition"
                     >
                         Create New Account
                     </Link>

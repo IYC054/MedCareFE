@@ -25,12 +25,10 @@ function Feedback(props) {
                     <ul className="flex flex-col">
                         {/* Write New Email Button */}
                         <li className="p-3">
-                            <Link to="/admin/feedback/sendfeedback" className="w-full flex items-center justify-center px-4 py-2 text-base font-medium text-white bg-primary border-primary rounded-md hover:bg-gray-100 transition"
+                            <Link to="/admin/feedback/sendfeedback" className="w-full flex items-center justify-center px-4 py-2 text-base font-medium text-white bg-[#da624a] border-primary rounded-md hover:bg-[#b2503c] transition"
                             >
                                 Write New Email
                             </Link>
-
-
                         </li>
 
                         <li className="px-4 py-2 text-gray-600 font-semibold uppercase text-sm">
@@ -89,7 +87,7 @@ function Feedback(props) {
             <div className="boxmail " id="goup">
                 <div className="app-inner-layout__top-pane flex justify-between border-b-2">
                     <div className="pane-left">
-                        <div className="mobile-app-menu-inline-flex tracking-wide px-4 py-6  text-2xl tracking-normal font-medium rounded-md  font-bold ">
+                        <div className="mobile-app-menu-inline-flex tracking-wide  px-4 py-6  text-2xl tracking-normal font-medium rounded-md  font-bold ">
                             Inbox
                         </div>
                     </div>

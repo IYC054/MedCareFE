@@ -45,8 +45,14 @@ const RootLayoutAdmin = () => {
   } else if (location.pathname === '/admin') {
     title = 'Dashboard';
     description = 'This is an example dashboard created using built-in elements and components.';
+  } else if (location.pathname === '/admin/transaction') {
+    title = 'Transactions';
+    description = 'View and manage all transactions from patients';
   } else if (location.pathname === '/admin/appointment/createApp') {
     title = 'Create Room';
+    description = '';
+  }else if (location.pathname === '/admin/user/userDetail') {
+    title = 'Detail Patient';
     description = '';
   }
   else if (location.pathname === '/admin/profileadmin') {

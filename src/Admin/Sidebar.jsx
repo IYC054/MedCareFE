@@ -95,6 +95,11 @@ function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
                                         Doctor
                                     </Link>
                                 </li>
+                                <li>
+                                    <Link to="/admin/transaction" className={activeMenu === 'Transaction' ? 'mm-active' : ''} onClick={() => handleMenuClick('Transaction')}>
+                                        Transaction
+                                    </Link>
+                                </li>
                             </ul>
                         </li>
                     </ul>
