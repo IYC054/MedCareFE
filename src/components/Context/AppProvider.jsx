@@ -3,7 +3,7 @@ import React, { createContext, useEffect, useState } from 'react';
 export const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
-    const [isShow, setisShow] = useState(true);
+    const [isShow, setisShow] = useState(false);
     const [content, setContent] = useState();
     console.log(isShow, content);
 

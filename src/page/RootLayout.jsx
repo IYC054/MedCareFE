@@ -1,17 +1,9 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from './Footer';
-import { AppContext } from '../components/Context/AppProvider';
-import Advertisement from '../components/Home/Advertisement';
 
 const RootLayout = () => {
-    const { setisShow, setContent } = useContext(AppContext);
-
-    useEffect(() => {
-        setisShow(true);
-        setContent(<Advertisement />);
-    }, [setisShow, setContent]);
 
     return (
         <div>
