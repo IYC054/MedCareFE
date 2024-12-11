@@ -7,19 +7,19 @@ function Transactions() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
                     <div className="text-sm font-medium text-gray-900 border-1 bg-[#fcf1ef] rounded-lg p-3"><i className="bi bi-bank px-3 text-lg"></i>TOTAL REVENUE</div>
-                    <div className="text-2xl font-bold text-gray-900 mt-2">0<span className='text-sm'>₫</span></div>
+                    <div className="text-2xl font-bold text-gray-900 mt-2 pl-2">0<span className='text-sm pl-0.5'>₫</span></div>
                 </div>
                 <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
                     <div className="text-sm font-medium text-gray-900 border-1 bg-[#e7eeff] rounded-lg p-3"><i className="bi bi-bar-chart-fill  text-blue-700 px-3 text-lg"></i>NUMBER OF TRANSACTIONS</div>
-                    <div className="text-2xl font-bold text-gray-900 mt-2">0<span className='text-sm'>transaction</span> </div>
+                    <div className="text-2xl font-bold text-gray-900 mt-2 pl-2">0<span className='text-sm pl-0.5'>transaction</span> </div>
                 </div>
                 <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
                     <div className="text-sm font-medium text-gray-900 border-1 bg-[#f0ffe2] rounded-lg p-3"><i className="bi bi-check-circle text-green-700 px-3 text-lg"></i>SUCCESSFUL TRANSACTION</div>
-                    <div className="text-2xl font-bold text-gray-900 mt-2">0<span className='text-sm'>transaction</span> </div>
+                    <div className="text-2xl font-bold text-gray-900 mt-2 pl-2">0<span className='text-sm pl-0.5'>transaction</span> </div>
                 </div>
                 <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
                     <div className="text-sm font-medium text-gray-900 border-1 bg-[#ffebe9] rounded-lg p-3"><i className="bi bi-exclamation-circle px-3 text-red-700 text-lg"></i>TRANSACTION FAILED</div>
-                    <div className="text-2xl font-bold text-gray-900 mt-2">0<span className='text-sm'>transaction</span> </div>
+                    <div className="text-2xl font-bold text-gray-900 mt-2 pl-2">0<span className='text-sm pl-0.5'>transaction</span> </div>
                 </div>
             </div>
 

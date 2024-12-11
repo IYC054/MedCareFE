@@ -51,8 +51,11 @@ const RootLayoutAdmin = () => {
   } else if (location.pathname === '/admin/appointment/createApp') {
     title = 'Create Room';
     description = '';
-  }else if (location.pathname === '/admin/user/userDetail') {
+  } else if (location.pathname === '/admin/user/userDetail') {
     title = 'Detail Patient';
+    description = '';
+  } else if (location.pathname === '/admin/doctor/doctorDetail') {
+    title = 'Detail Doctor';
     description = '';
   }
   else if (location.pathname === '/admin/profileadmin') {

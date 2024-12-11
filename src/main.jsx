@@ -30,6 +30,7 @@ import ConfirmPayment from "./components/Hospital/ChoosePayment/ConfirmPayment";
 import ProfileAdmin from "./Admin/page/ProfileAdmin";
 import UserDetail from "./Admin/page/subPage/UserDetail";
 import Transactions from "./Admin/page/Transactions";
+import DoctorDetail from "./Admin/page/subPage/DoctorDetail";
 
 
 
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
       {
         path: "/admin/doctor",
         element: <AccountDoctor />,
+      },
+      {
+        path: "/admin/doctor/doctorDetail",
+        element: <DoctorDetail />,
       },
       {
         path: "/admin/doctor/CreateDoctor",
