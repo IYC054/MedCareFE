@@ -6,8 +6,8 @@ const MomoPayment = async () => {
     const response = await axios.post(
       "http://localhost:8080/api/payment/momo",
       {
-        amount: "50000",
-        orderInfo: "Khám móng chân 🤷‍♂️",
+        amount: "1000",
+        orderInfo: "Nghị mún con cá gì",
       }
     );
 

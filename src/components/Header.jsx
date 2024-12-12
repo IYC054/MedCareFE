@@ -125,7 +125,7 @@ const Header = () => {
             items={[
           { label:  <div className="flex items-center gap-1 p-2 rounded-lg  ">
           <img src="https://medpro.vn/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FVN.bda9ffec.svg&w=32&q=75" width={25}/>
-         <spa className="font-semibold">Tiếng Việt</spa>
+         <span className="font-semibold">Tiếng Việt</span>
           </div>, link: "#" },
           { label:  <div className="flex items-center gap-1 p-2 rounded-lg  ">
           <img src="https://medpro.vn/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FEN.d2d45dde.png&w=32&q=75" width={25}/>

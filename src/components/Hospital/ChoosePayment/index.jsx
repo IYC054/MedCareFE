@@ -1,22 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Breadcrumbs from "../Breadcrumbs";
+import bank from "../../../api/Bank/bank";
+
 import {
   FaAddressCard,
   FaBriefcaseMedical,
   FaBuilding,
   FaClock,
   FaCreditCard,
-
 } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
-import { FaLocationDot, FaUserDoctor } from "react-icons/fa6";
+import { FaLocationDot, FaRegPaste, FaUserDoctor } from "react-icons/fa6";
 import { MdOutlineAttachMoney, MdOutlineMedicalServices } from "react-icons/md";
 import { BsCalendar2DateFill } from "react-icons/bs";
 import MomoPayment from "../../../api/Payment/momo";
-const image_bank = "https://img.vietqr.io/image/TCB-1308200200-compact2.png?amount=500"
+import axios from "axios";
+import { Divider } from "antd";
+import { useNavigate } from "react-router-dom";
+
 function ChoosePayment() {
+  const [checkMethod, setCheckMethod] = useState();
+  const randomNumberInRange = () => {
+    return Math.floor(Math.random() * (99999999 - 11111111 + 1)) + 11111111;
+  };
+  const navigate = useNavigate();
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+  };
+
+  useEffect(() => {
+    axios
+      .get(
+        "https://script.googleusercontent.com/macros/echo?user_content_key=bS7YTOowzydjITcDQHtc1LuN4RKXKdLAZkMrtTyzb8JPePT14a4zLmxXxOf7i3tM-1RLc-VjbZYZxL6ZAXNHNBwfYidUJqsXm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnJtEfX59T8eOEQBMAyKvYeMy-4R8KMjjtMFSxav8DWBMaCsRUFzA1I7q5O3cvI4-2EPjNDusOx0tJm4NPCL5dKOutDRR1JtRKA&lib=M_gSwOHrgvf5DnR9tSLjeAN_Iq9KWg1kY"
+      )
+      .then((result) => console.log(result.data.data))
+      .catch((err) => console.log(err));
+  });
   const PayWithMomo = async () => {
-    MomoPayment();
+    if (checkMethod == "momo") {
+      MomoPayment();
+    } else if (checkMethod == "bank") {
+
+      navigate(`/confirm-payment?orderid=${randomNumberInRange()}`);
+    } else {
+      alert("Chưa chọn phương thức thanh toán");
+    }
   };
   return (
     <div className="flex justify-center py-5">
@@ -57,12 +85,24 @@ function ChoosePayment() {
                   <div className="w-full h-full  p-2">
                     <ul className="list-none">
                       <li className="flex items-center gap-2 settingli mt-2 mb-6">
-                        <input type="radio" id="momo" name="payment" />
+                        <input
+                          type="radio"
+                          id="momo"
+                          name="payment"
+                          value="momo"
+                          onClick={(e) => setCheckMethod(e.target.value)}
+                        />
                         <span>Ví Momo </span>
                       </li>
                       <li className="flex items-center gap-2 settingli mt-2 mb-6">
-                        <input type="radio" id="momo" name="payment" />
-                        <span>Thẻ ATM nội địa/Internet Banking</span>
+                        <input
+                          type="radio"
+                          id="momo"
+                          name="payment"
+                          value="bank"
+                          onClick={(e) => setCheckMethod(e.target.value)}
+                        />
+                        <span>Chuyển khoản qua ngân hàng/Internet Banking</span>
                       </li>
                     </ul>
                   </div>
@@ -136,10 +176,10 @@ function ChoosePayment() {
                       </ul>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-[20px] text-[#003553] font-medium">
+                      <span className="text-[20px] text-[#003553] font-medium whitespace-nowrap">
                         Tổng Cộng:
                       </span>
-                      <span className="text-[18px] text-[#00b5f1] font-medium">
+                      <span className="text-[18px] text-[#00b5f1] font-medium whitespace-nowrap">
                         100 triệu đ
                       </span>
                     </div>
@@ -147,9 +187,9 @@ function ChoosePayment() {
                 </div>
               </div>
             </div>
-
             <div className="w-full h-[40px] flex items-center justify-end my-5">
-              <button onClick={PayWithMomo}
+              <button
+                onClick={PayWithMomo}
                 className="py-2 flex items-center justify-center gap-2 px-6 bg-gradient-to-r from-[#00b5f1] to-[#00e0ff] rounded-lg text-[#fff]"
                 id="godown"
               >

@@ -23,6 +23,8 @@ function Breadcrumbs(props) {
       breadcrumb.push({ name: `Bệnh viện Chợ rẫy`, link: `/hospital` });
     }
     breadcrumb.push({ name: "Xác nhận thông tin", link: `/confirm-information?hospital=${hospitalName}` });
+  }else if (pathParts.includes("choose-payment")) {
+    breadcrumb.push({ name: "Chọn phương thức thanh toán", link: "/choose-payment" });
   }
 
   return (
