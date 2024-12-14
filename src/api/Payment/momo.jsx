@@ -3,11 +3,14 @@ import axios from "axios";
 
 const MomoPayment = async () => {
   try {
+    const randomNumberInRange = () => {
+      return Math.floor(Math.random() * (99999999 - 11111111 + 1)) + 11111111;
+    };
     const response = await axios.post(
       "http://localhost:8080/api/payment/momo",
       {
         amount: "1000",
-        orderInfo: "Nghị mún con cá gì",
+        orderInfo: `MedCare ${randomNumberInRange()}`,
       }
     );
 
@@ -19,8 +22,7 @@ const MomoPayment = async () => {
       alert("Thanh toán thất bại. Vui lòng thử lại.");
     }
   } catch (error) {
-    console.error("Error:", error);
-    alert("Có lỗi xảy ra. Vui lòng thử lại sau.");
+    alert(`${error.response.data}`);
   }
 };
 
