@@ -15,7 +15,6 @@ const MomoPayment = async () => {
     );
 
     if (response.data.payUrl) {
-      // Redirect to MoMo payment page
       window.location.href = response.data.payUrl;
     } else {
       console.error("Payment failed:", response.data);
