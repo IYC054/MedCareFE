@@ -3,18 +3,38 @@ import { Divider } from "antd";
 import { FaRegPaste } from "react-icons/fa6";
 import bank from "../../../api/Bank/bank";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 // https://script.googleusercontent.com/macros/echo?user_content_key=__ZBNLjzXF16sGbbYfxsPd9bkipAyDONUH5Gx89fr3BPKi89xkfktg6Zm8l-ZEE5DKZVbHMb02BR0GhXOW-gAbk9ZneuTrSGm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnKFSTgqWUC3IbRd9ct5YnsPGC9SeBer_DXjgG7tHWtkbwP2cF25Pi3tcAvwxiKaNVFwBhhEq5-m9Aa24UFt4HjrPmoFN7-tZYQ&lib=M_gSwOHrgvf5DnR9tSLjeAN_Iq9KWg1kY
 // url check lich su gia odich
 function ConfirmPayment(props) {
+  const [timeLeft, setTimeLeft] = useState(15 * 60);
+  const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const orderid = "MedCare " + queryParams.get("orderid");
   const [amount, setAmount] = useState(2000);
   const [checkorder, setCheckorder] = useState([]);
+  useEffect(() => {
+    if (timeLeft === 0){
+      navigate(-1);
+    }
+
+    const interval = setInterval(() => {
+      setTimeLeft((prevTime) => prevTime - 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [timeLeft]);
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
+  useEffect(() => {
+    console.log("Phút: " + minutes + " Giây: " + seconds);
+  });
+  
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
   };
+
   useEffect(() => {
     const getTrans = () => {
       axios
@@ -43,10 +63,7 @@ function ConfirmPayment(props) {
     // Dọn dẹp interval khi component bị unmount
     return () => clearInterval(interval);
   }, []);
-  useEffect(() => {
-    console.log(orderid);
-    console.log(amount);
-  }, []);
+
   return (
     <div className="flex justify-center py-5">
       <div className="w-[90%] border border-solid border-[#91caff] rounded-lg bg-[#e6f4ff]/60 p-4">
@@ -80,7 +97,7 @@ function ConfirmPayment(props) {
             Thông tin chuyển khoản
           </span>
         </div>
-        <div className="w-full h-36  list-none">
+        <div className="w-full   list-none">
           <li className="settingli my-2 text-[#00000073] text-[14px]">
             Ngân hàng :{" "}
             <span className="text-[#000] font-medium text-[15px]">
@@ -126,6 +143,9 @@ function ConfirmPayment(props) {
               </span>
             </span>
           </li>
+          <span className="text-[24px] text-[#D44333] font-semibold ">
+            Đơn hàng sẽ hết hạn sau: {minutes} phút {seconds} giây
+          </span>
         </div>
       </div>
     </div>
