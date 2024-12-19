@@ -12,9 +12,8 @@ function ConfirmPayment(props) {
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const orderid = "MedCare 0358227696";
+  const orderid = "MedCare 0337218288"
   const [amount, setAmount] = useState(2000);
-  const [checkorder, setCheckorder] = useState([]);
   useEffect(() => {
     if (timeLeft === 0) {
       navigate(-1);
@@ -44,31 +43,30 @@ function ConfirmPayment(props) {
         
         for (const item of data) {
           // Đợi kết quả từ GetPaymentCode
-          const paymentCode = await GetPaymentCode(item["Mã GD"]);
+          const paymentCode = (await GetPaymentCode(item["Mã GD"]));
+          console.log("tìm id trong db",paymentCode)
+      
+          if(paymentCode != 0){
+            console.log("giao dịch đã tồn tại");
+           
+          } else if (paymentCode.length === 0 &&item["Mô tả"].includes(orderid) && item["Giá trị"] >= amount){
+            console.log("Thanh toán thành công, cảm ơn bạn");
+            BankPayment(amount, "phong", "0358227696", orderid, item["Mã GD"].toString());
+                 clearInterval(interval);
+                 break;
+           }
           
-          if (paymentCode != null) {
-            console.log("Mã giao dịch: ", JSON.stringify(paymentCode)); 
-            
-            if (
-              item["Mô tả"].includes(orderid) &&
-              item["Giá trị"] <= amount &&
-              !checkorder.includes(item["Mã GD"])
-            ) {
-              // BankPayment(amount, "phong", "0358227696", orderid, item["Mã GD"].toString());
-              alert("Thanh toán thành công, cảm ơn bạn");
-              console.log(checkorder);
-            }
-          }else{
-            alert("Giao dich đã tồn tại");
-          }
         }
       } catch (err) {
         console.log(err);
       }
     };
-  
     getTrans();
-    const interval = setInterval(getTrans, 30000);
+    const interval = setInterval(getTrans, 5000);
+    setTimeout(() => {
+      clearInterval(interval); 
+      console.log("ngưng !!!!!");
+    }, 1000*60*5); //1 giây *60*=5 phút
   
     // Dọn dẹp interval khi component bị unmount
     return () => clearInterval(interval);
