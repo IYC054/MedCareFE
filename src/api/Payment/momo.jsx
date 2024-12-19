@@ -11,6 +11,8 @@ const MomoPayment = async () => {
       {
         amount: "1000",
         orderInfo: `MedCare ${randomNumberInRange()}`,
+        payer: `Phong`,
+        phone: "0358222444"
       }
     );
 

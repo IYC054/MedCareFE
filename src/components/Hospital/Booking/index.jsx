@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Calender from "../Calender";
 import { AppContext } from "../../Context/AppProvider";
 import doctorApi from "../../../api/Doctor/doctor";
+import { format } from "crypto-js";
 
 const fake = [
   { id: 1, name: "Trần Thanh Phong", gender: "Male" },
@@ -35,6 +36,7 @@ function Booking() {
   const [selectBHYT, setSelectBHYT] = useState(false);
   const [selectDate, setSelectDate] = useState(true);
   // start chọn ngày
+  
   const [chooseDate, setChooseDate] = useState(null);
 
   const handleSelectedDate = (date) => {

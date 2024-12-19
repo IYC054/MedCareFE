@@ -4,6 +4,7 @@ import { FaRegPaste } from "react-icons/fa6";
 import bank from "../../../api/Bank/bank";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
+import { BankPayment, GetPaymentCode } from "../../../api/Bank/payment";
 // https://script.googleusercontent.com/macros/echo?user_content_key=__ZBNLjzXF16sGbbYfxsPd9bkipAyDONUH5Gx89fr3BPKi89xkfktg6Zm8l-ZEE5DKZVbHMb02BR0GhXOW-gAbk9ZneuTrSGm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnKFSTgqWUC3IbRd9ct5YnsPGC9SeBer_DXjgG7tHWtkbwP2cF25Pi3tcAvwxiKaNVFwBhhEq5-m9Aa24UFt4HjrPmoFN7-tZYQ&lib=M_gSwOHrgvf5DnR9tSLjeAN_Iq9KWg1kY
 // url check lich su gia odich
 function ConfirmPayment(props) {
@@ -11,11 +12,11 @@ function ConfirmPayment(props) {
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const orderid = "MedCare " + queryParams.get("orderid");
+  const orderid = "MedCare 0358227696";
   const [amount, setAmount] = useState(2000);
   const [checkorder, setCheckorder] = useState([]);
   useEffect(() => {
-    if (timeLeft === 0){
+    if (timeLeft === 0) {
       navigate(-1);
     }
 
@@ -27,42 +28,52 @@ function ConfirmPayment(props) {
   }, [timeLeft]);
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
-  useEffect(() => {
-    console.log("Phút: " + minutes + " Giây: " + seconds);
-  });
-  
+
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
   };
-
   useEffect(() => {
-    const getTrans = () => {
-      axios
-        .get(
-          "https://script.googleusercontent.com/macros/echo?user_content_key=bu372JE3b-OEosJbxQP_2GPBKPUPj5zJIRvgBfwwToiVFHQNHE9IHGIoV_wLELkKSG_0FCzphYvo92tqx_DmfN-VDL5sHK5qm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnKFSTgqWUC3IbRd9ct5YnsPGC9SeBer_DXjgG7tHWtkbwP2cF25Pi3tcAvwxiKaNVFwBhhEq5-m9Aa24UFt4HjrPmoFN7-tZYQ&lib=M_gSwOHrgvf5DnR9tSLjeAN_Iq9KWg1kY"
-        )
-        .then((result) => {
-          const data = result.data.data;
-          data.map((item) => {
+    const getTrans = async () => {
+      try {
+        const result = await axios.get(
+          "https://script.googleusercontent.com/macros/echo?user_content_key=SwT55JguzVhYJZVNOjy_875iFMQoAKvo-SrAJ2UjrZBU-MDl0Ih8du-i_-3_ibtaKzz1eY83f6MyTLYOkxvOI6LBL-EDQbQ6m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnHmDzCyvqrH6g6K3uTlviLhPt4ZCpWztcL6A_cApFmaIR8LWVQztqdaZ0h4MVyhzPVgu2EDunFSjB5pd3pmUVnryn1Z4YyOlLg&lib=M_gSwOHrgvf5DnR9tSLjeAN_Iq9KWg1kY"
+        );
+        
+        const data = result.data.data;
+        console.log(data);
+        
+        for (const item of data) {
+          // Đợi kết quả từ GetPaymentCode
+          const paymentCode = await GetPaymentCode(item["Mã GD"]);
+          
+          if (paymentCode != null) {
+            console.log("Mã giao dịch: ", JSON.stringify(paymentCode)); 
+            
             if (
               item["Mô tả"].includes(orderid) &&
               item["Giá trị"] <= amount &&
               !checkorder.includes(item["Mã GD"])
             ) {
+              // BankPayment(amount, "phong", "0358227696", orderid, item["Mã GD"].toString());
               alert("Thanh toán thành công, cảm ơn bạn");
-              setCheckorder((prev) => [...prev, item["Mã GD"]]);
+              console.log(checkorder);
             }
-          });
-        })
-        .catch((err) => console.log(err));
+          }else{
+            alert("Giao dich đã tồn tại");
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
     };
-
+  
     getTrans();
     const interval = setInterval(getTrans, 30000);
-
+  
     // Dọn dẹp interval khi component bị unmount
     return () => clearInterval(interval);
   }, []);
+  
 
   return (
     <div className="flex justify-center py-5">
