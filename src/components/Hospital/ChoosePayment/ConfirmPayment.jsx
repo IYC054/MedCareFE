@@ -3,50 +3,76 @@ import { Divider } from "antd";
 import { FaRegPaste } from "react-icons/fa6";
 import bank from "../../../api/Bank/bank";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { BankPayment, GetPaymentCode } from "../../../api/Bank/payment";
 // https://script.googleusercontent.com/macros/echo?user_content_key=__ZBNLjzXF16sGbbYfxsPd9bkipAyDONUH5Gx89fr3BPKi89xkfktg6Zm8l-ZEE5DKZVbHMb02BR0GhXOW-gAbk9ZneuTrSGm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnKFSTgqWUC3IbRd9ct5YnsPGC9SeBer_DXjgG7tHWtkbwP2cF25Pi3tcAvwxiKaNVFwBhhEq5-m9Aa24UFt4HjrPmoFN7-tZYQ&lib=M_gSwOHrgvf5DnR9tSLjeAN_Iq9KWg1kY
 // url check lich su gia odich
 function ConfirmPayment(props) {
+  const [timeLeft, setTimeLeft] = useState(15 * 60);
+  const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const orderid = "MedCare " + queryParams.get("orderid");
+  const orderid = "MedCare 0337218288"
   const [amount, setAmount] = useState(2000);
-  const [checkorder, setCheckorder] = useState([]);
+  useEffect(() => {
+    if (timeLeft === 0) {
+      navigate(-1);
+    }
+
+    const interval = setInterval(() => {
+      setTimeLeft((prevTime) => prevTime - 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [timeLeft]);
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
+
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
   };
   useEffect(() => {
-    const getTrans = () => {
-      axios
-        .get(
-          "https://script.googleusercontent.com/macros/echo?user_content_key=bu372JE3b-OEosJbxQP_2GPBKPUPj5zJIRvgBfwwToiVFHQNHE9IHGIoV_wLELkKSG_0FCzphYvo92tqx_DmfN-VDL5sHK5qm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnKFSTgqWUC3IbRd9ct5YnsPGC9SeBer_DXjgG7tHWtkbwP2cF25Pi3tcAvwxiKaNVFwBhhEq5-m9Aa24UFt4HjrPmoFN7-tZYQ&lib=M_gSwOHrgvf5DnR9tSLjeAN_Iq9KWg1kY"
-        )
-        .then((result) => {
-          const data = result.data.data;
-          data.map((item) => {
-            if (
-              item["Mô tả"].includes(orderid) &&
-              item["Giá trị"] <= amount &&
-              !checkorder.includes(item["Mã GD"])
-            ) {
-              alert("Thanh toán thành công, cảm ơn bạn");
-              setCheckorder((prev) => [...prev, item["Mã GD"]]);
-            }
-          });
-        })
-        .catch((err) => console.log(err));
+    const getTrans = async () => {
+      try {
+        const result = await axios.get(
+          "https://script.googleusercontent.com/macros/echo?user_content_key=SwT55JguzVhYJZVNOjy_875iFMQoAKvo-SrAJ2UjrZBU-MDl0Ih8du-i_-3_ibtaKzz1eY83f6MyTLYOkxvOI6LBL-EDQbQ6m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnHmDzCyvqrH6g6K3uTlviLhPt4ZCpWztcL6A_cApFmaIR8LWVQztqdaZ0h4MVyhzPVgu2EDunFSjB5pd3pmUVnryn1Z4YyOlLg&lib=M_gSwOHrgvf5DnR9tSLjeAN_Iq9KWg1kY"
+        );
+        
+        const data = result.data.data;
+        console.log(data);
+        
+        for (const item of data) {
+          // Đợi kết quả từ GetPaymentCode
+          const paymentCode = (await GetPaymentCode(item["Mã GD"]));
+          console.log("tìm id trong db",paymentCode)
+      
+          if(paymentCode != 0){
+            console.log("giao dịch đã tồn tại");
+           
+          } else if (paymentCode.length === 0 &&item["Mô tả"].includes(orderid) && item["Giá trị"] >= amount){
+            console.log("Thanh toán thành công, cảm ơn bạn");
+            BankPayment(amount, "phong", "0358227696", orderid, item["Mã GD"].toString());
+                 clearInterval(interval);
+                 break;
+           }
+          
+        }
+      } catch (err) {
+        console.log(err);
+      }
     };
-
     getTrans();
-    const interval = setInterval(getTrans, 30000);
-
+    const interval = setInterval(getTrans, 5000);
+    setTimeout(() => {
+      clearInterval(interval); 
+      console.log("ngưng !!!!!");
+    }, 1000*60*5); //1 giây *60*=5 phút
+  
     // Dọn dẹp interval khi component bị unmount
     return () => clearInterval(interval);
   }, []);
-  useEffect(() => {
-    console.log(orderid);
-    console.log(amount);
-  }, []);
+  
+
   return (
     <div className="flex justify-center py-5">
       <div className="w-[90%] border border-solid border-[#91caff] rounded-lg bg-[#e6f4ff]/60 p-4">
@@ -80,7 +106,7 @@ function ConfirmPayment(props) {
             Thông tin chuyển khoản
           </span>
         </div>
-        <div className="w-full h-36  list-none">
+        <div className="w-full   list-none">
           <li className="settingli my-2 text-[#00000073] text-[14px]">
             Ngân hàng :{" "}
             <span className="text-[#000] font-medium text-[15px]">
@@ -126,6 +152,9 @@ function ConfirmPayment(props) {
               </span>
             </span>
           </li>
+          <span className="text-[24px] text-[#D44333] font-semibold ">
+            Đơn hàng sẽ hết hạn sau: {minutes} phút {seconds} giây
+          </span>
         </div>
       </div>
     </div>

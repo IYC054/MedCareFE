@@ -32,6 +32,7 @@ import UserDetail from "./Admin/page/subPage/UserDetail";
 import Transactions from "./Admin/page/Transactions";
 import DoctorDetail from "./Admin/page/subPage/DoctorDetail";
 import TransactionDetail from "./Admin/page/subPage/TransactionDetail";
+import PaymentSuccess from "./components/Hospital/PaymentSuccess";
 
 
 
@@ -50,6 +51,7 @@ const router = createBrowserRouter([
       { path: "/confirm-information", element: <ConfirmInfo /> },
       { path: "/choose-payment", element: <ChoosePayment /> },
       { path: "/confirm-payment", element: <ConfirmPayment /> },
+      { path: "/payment-success", element: <PaymentSuccess /> },
     ],
   },
   {

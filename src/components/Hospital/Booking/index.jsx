@@ -9,6 +9,9 @@ import { IoReturnDownBack } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import Calender from "../Calender";
 import { AppContext } from "../../Context/AppProvider";
+import doctorApi from "../../../api/Doctor/doctor";
+import { format } from "crypto-js";
+
 const fake = [
   { id: 1, name: "Trần Thanh Phong", gender: "Male" },
   { id: 2, name: "Cho In Yeong", gender: "Female" },
@@ -26,12 +29,14 @@ const faketime2 = [
   { id: 3, settime: "15:30 - 16:30" },
 ];
 function Booking() {
+  const [dataDoctor, setDataDoctor] = useState([]);
   const [title, setTitle] = useState("Thông tin cơ sở y tế");
   const [ChooseDoctor, setChooseDoctor] = useState(true);
   const [selectName, setSelectName] = useState();
   const [selectBHYT, setSelectBHYT] = useState(false);
   const [selectDate, setSelectDate] = useState(true);
   // start chọn ngày
+  
   const [chooseDate, setChooseDate] = useState(null);
 
   const handleSelectedDate = (date) => {
@@ -64,8 +69,13 @@ function Booking() {
     setTitle("Vui lòng chọn ngày khám");
   };
   useEffect(() => {
-    console.log(title);
-  }, [title]);
+    doctorApi.get().then((reuslt) => {
+      console.log(reuslt.data[0].account)
+      setDataDoctor(reuslt.data)
+    }).catch((err) => {
+      console.log(err)
+    });
+  }, [])
   return (
     <div className="flex justify-center py-5">
       <div className="w-4/5 ">
@@ -141,32 +151,32 @@ function Booking() {
                     </div>
                   </div>
                   <div className="w-full h-[335px] overflow-auto" id="style-5">
-                    {fake.map((item, index) => (
+                    {dataDoctor.map((item, index) => (
                       <div
                         key={index}
                         className="w-full bg-white p-4 list-none text-[#053353] mb-4 rounded-xl border-soid border-[1px] border-[#00e0ff] cursor-pointer"
                         id="goup"
-                        onClick={() => HandleChooseDoctor(item.name)}
+                        onClick={() => HandleChooseDoctor(item.account.name)}
                       >
                         <li className="w-full text-[#ffb54a] text-[20px] flex gap-2 items-center mb-2">
                           <FaUserDoctor />
                           <span className="font-medium text-[18px]">
-                            BS. {item.name}
+                            BS. {item.account.name}
                           </span>
                         </li>
                         <li className="w-full text-[18px] flex gap-2 items-center mb-2 ">
                           <BsGenderAmbiguous />
                           <span className="text-[14px]">
-                            Giới Tính : {item.gender}
+                            Giới Tính : {item.account.gender}
                           </span>
                         </li>
                         <li className="w-full text-[18px] flex gap-2 items-center mb-2 ">
                           <FaStethoscope />
                           <span className="text-[14px]">
-                            Chuyên khoa : Anh này chuyên khám tại nhà riêng{" "}
-                            <span className="text-[red] font-medium">
-                              ( lưu ý chị e phụ nữ nên dẫn theo chồng )
-                            </span>{" "}
+                            Chuyên khoa : {item.specialties.map((specialty, index) => (
+                              <span key={index}>{specialty.description}{index < item.specialties.length - 1 && ', '}</span>
+                            ))}
+                           
                           </span>
                         </li>
                         <li className="w-full text-[18px] flex gap-2 items-center mb-2 ">

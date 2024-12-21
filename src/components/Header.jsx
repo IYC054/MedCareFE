@@ -4,7 +4,7 @@ import DropdownMenu from "./DropdownMenu";
 const Header = () => {
   return (
    <div className="">
-    <div className="bg-gray-50 flex px-48">
+    <div className="bg-gray-50 flex px-48 h-[112px]">
       {/* Phần 1 */}
       <div className="w-1/6 flex items-center">
         <img src="https://medpro.vn/_next/image?url=https%3A%2F%2Fbo-api.medpro.com.vn%2Fstatic%2Fimages%2Fmedpro%2Fweb%2Fheader_logo.svg&w=2048&q=75" width={120}></img>
