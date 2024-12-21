@@ -97,7 +97,7 @@ function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
                                 </li>
                                 <li>
                                     <Link to="/admin/transaction" className={activeMenu === 'Transaction' ? 'mm-active' : ''} onClick={() => handleMenuClick('Transaction')}>
-                                        Transaction
+                                        Transaction Report
                                     </Link>
                                 </li>
                             </ul>

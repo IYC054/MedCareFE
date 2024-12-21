@@ -31,6 +31,7 @@ import ProfileAdmin from "./Admin/page/ProfileAdmin";
 import UserDetail from "./Admin/page/subPage/UserDetail";
 import Transactions from "./Admin/page/Transactions";
 import DoctorDetail from "./Admin/page/subPage/DoctorDetail";
+import TransactionDetail from "./Admin/page/subPage/TransactionDetail";
 
 
 
@@ -63,7 +64,7 @@ const router = createBrowserRouter([
         element: <AccountUser />,
       },
       {
-        path: "/admin/user/userDetail",
+        path: "/admin/user/userDetail/:id",
         element: <UserDetail />,
       },
       {
@@ -71,11 +72,15 @@ const router = createBrowserRouter([
         element: <Transactions />,
       },
       {
+        path: "/admin/transaction/Detail/:id",
+        element: <TransactionDetail />,
+      },
+      {
         path: "/admin/doctor",
         element: <AccountDoctor />,
       },
       {
-        path: "/admin/doctor/doctorDetail",
+        path: "/admin/doctor/doctorDetail/:id",
         element: <DoctorDetail />,
       },
       {
