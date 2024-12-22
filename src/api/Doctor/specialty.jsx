@@ -1,16 +1,14 @@
 import axios from "axios";
 
-const getWorkTimeDoctor = async (doctorid) => {
+const getSpecialtyByDoctor = async (doctorid) => {
   try {
-    await axios
-      .get(`http://localhost:8080/api/workinghours/doctor/${doctorid}`)
-      .then((res) => {
-        console.log("Working hours: " + JSON.stringify(res.data));
-      })
-      .catch((err) => console.log(err));
+    const res = await axios.get(`http://localhost:8080/api/specialty/doctor/${doctorid}`);
+    console.log("Specialty by doctor: ", res.data);
+    return res.data; 
   } catch (error) {
     console.error(error);
+    return []; 
   }
 };
 
-export default getWorkTimeDoctor;
+export default getSpecialtyByDoctor;

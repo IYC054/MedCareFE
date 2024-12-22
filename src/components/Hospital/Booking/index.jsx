@@ -13,6 +13,7 @@ import doctorApi from "../../../api/Doctor/doctor";
 import { format } from "crypto-js";
 import getWorkTimeDoctor from "../../../api/Doctor/workinghour";
 import { stringify } from "postcss";
+import getSpecialtyByDoctor from "../../../api/Doctor/specialty";
 
 const fake = [
   { id: 1, name: "Trần Thanh Phong", gender: "Male" },
@@ -32,6 +33,14 @@ const faketime2 = [
 ];
 
 function Booking() {
+  // chọn chuyên khoa của bác sĩ
+  const [specialtyDoctor, setSpecialtyDoctor] = useState([]);
+  const [WorkTimeDoctor, setWorkTimeDoctor] = useState([]);
+  // chọn các data
+  const [txnSpecialty, setTxnSpecialty] = useState();
+  const [txnIdWorkTime, setTxnIdWorkTime] = useState(0);
+  //
+
   const [doctorId, setdoctorId] = useState(0);
   const [dataDoctor, setDataDoctor] = useState([]);
   const [title, setTitle] = useState("Thông tin cơ sở y tế");
@@ -44,13 +53,18 @@ function Booking() {
   // start chọn ngày
 
   const [chooseDate, setChooseDate] = useState(null);
-  const handleShowSpecialty = () => {
+  // chọn chuyên khoa
+  const handleShowSpecialty = (e) => {
     setSelectSpecialty(false);
     setSelectDate(true);
+    setTxnSpecialty(e);
   };
   const handleSelectedDate = (date) => {
     setChooseDate(date);
   };
+  const handleSelectidByWorktime = (id) => {
+    setTxnIdWorkTime(id);
+  }
   // end chọn ngày
 
   // start điều hướng quay lại
@@ -86,29 +100,49 @@ function Booking() {
   };
 
   const handleBHYT = () => {
-    setSelectBHYT(true);
-  };
-  const handleSelectDate = () => {
     setSelectDate(false);
     setTitle("Vui lòng chọn ngày khám");
+    // bật nếu cần thêm bhyt
+    // setSelectBHYT(true);
   };
+  // bật nếu cần thêm bhyt
+  // const handleSelectDate = () => {
+  //   setSelectDate(false);
+  //   setTitle("Vui lòng chọn ngày khám");
+  // };
   useEffect(() => {
-    doctorApi
-      .get()
-      .then((reuslt) => {
-        // console.log(reuslt.data[0].account);
-        setDataDoctor(reuslt.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const fetchData = async () => {
+      try {
+        const result = await doctorApi.get();
+        setDataDoctor(result.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchData(); // Gọi hàm lấy dữ liệu khi component mount
   }, []);
   // lay chuyen khoa cua bac si
-  
+  useEffect(() => {
+    const fetchSpecialty = async () => {
+      const data = await getSpecialtyByDoctor(doctorId); // Chờ dữ liệu từ API
+      setSpecialtyDoctor(data); // Cập nhật state với dữ liệu nhận được
+    };
+
+    fetchSpecialty();
+  }, [doctorId]);
   // lay ngay lam viec cua bác sĩ
   useEffect(() => {
-    getWorkTimeDoctor(doctorId);
+    const fetchWorkTime = async () => {
+      const data = await getWorkTimeDoctor(doctorId);
+      setWorkTimeDoctor(data);
+    };
+
+    fetchWorkTime();
   }, [doctorId]);
+  useEffect(() => {
+    console.log("txnIdWorkTime: " + txnIdWorkTime);
+  }, [txnIdWorkTime])
   return (
     <div className="flex justify-center py-5">
       <div className="w-4/5 ">
@@ -247,22 +281,17 @@ function Booking() {
                         </div>
                       </div>
                       <hr className="h-[2px] border-[1.5px] mb-5" />
-                      <div className="w-full hover:text-[#00e0ff] mb-5  cursor-pointer" onClick={handleShowSpecialty}>
-                        <span
-                          className="text-[20px] font-medium"
-                          
+                      {specialtyDoctor.map((item, index) => (
+                        <div
+                          key={index}
+                          className="w-full hover:text-[#00e0ff] mb-5  cursor-pointer"
+                          onClick={() => handleShowSpecialty(item.name)}
                         >
-                          Khám nội tổng quát
-                        </span>
-                      </div>
-                      <div className="w-full hover:text-[#00e0ff] mb-5  cursor-pointer" onClick={handleShowSpecialty}>
-                        <span
-                          className="text-[20px] font-medium"
-                          
-                        >
-                          Khám nội địa
-                        </span>
-                      </div>
+                          <span className="text-[20px] font-medium">
+                            Khám {item.name}
+                          </span>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -281,9 +310,7 @@ function Booking() {
                           <tr className="my-2">
                             <td className="text-center pt-5">1</td>
                             <td className="w-[550px] px-4 pt-5">
-                              Lịch khám: Thứ 2, 3, 5, 7 (Phí Khám Khám Tự Chọn
-                              Yêu Cầu: 119,500 đ, sử dụng BHYT sẽ giảm trừ theo
-                              quy định.)
+                              Dịch vụ khám : {txnSpecialty}
                             </td>
                             <td className="pt-5">Thanh toán tại Bệnh viện</td>
                             <td className="pt-5">
@@ -297,7 +324,7 @@ function Booking() {
                           </tr>
                         </tbody>
                       </table>
-                      {selectBHYT ? (
+                      {/* {selectBHYT ? (
                         <div className="w-full h-[40px] bg-[#f2f2f2]/60 px-14 flex justify-between items-center text-[#003553]">
                           <span className="text-[17px] font-medium ">
                             Bạn có đăng ký BHYT
@@ -325,7 +352,7 @@ function Booking() {
                         </div>
                       ) : (
                         <Fragment></Fragment>
-                      )}
+                      )} */}
                     </div>
                   </div>
                   {/* back từ đặt khám */}
@@ -342,7 +369,10 @@ function Booking() {
                 <Fragment>
                   <div className="w-full bg-[#fff] px-4 pt-5 rounded-lg mb-10 flex flex-col">
                     <div className="w-full text-center text-[24px] font-medium mb-10">
-                      <Calender onDateSelect={handleSelectedDate} />
+                      <Calender
+                        onDateSelect={handleSelectedDate}
+                        doctorId={doctorId}
+                      />
                     </div>
                     {chooseDate ? (
                       <Fragment>
@@ -351,13 +381,48 @@ function Booking() {
                           <span>Buổi sáng</span>
                         </div>
                         <div className="w-full my-2 flex gap-5 flex-wrap ">
-                          {faketime.map((item, index) => (
-                            <Link key={index} to={`/choose-profile`}>
-                              <div className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]">
-                                {item.settime}
-                              </div>
-                            </Link>
-                          ))}
+                          {WorkTimeDoctor.map((item, index) => {
+                            const chooseDateParts = chooseDate.split("/");
+                            const formattedChooseDate = `${chooseDateParts[2]}-${chooseDateParts[1]}-${chooseDateParts[0]}`;
+
+                            const workDate = new Date(item.workDate);
+                            const chooseDateFormatted = new Date(
+                              formattedChooseDate
+                            );
+
+                            if (
+                              isNaN(workDate.getTime()) ||
+                              isNaN(chooseDateFormatted.getTime())
+                            ) {
+                              
+                              return null;
+                            }
+
+                            const formattedWorkDate =
+                              workDate.toLocaleDateString("vi-VN");
+                            const formattedChooseDates =
+                              chooseDateFormatted.toLocaleDateString("vi-VN");
+
+                              if (formattedWorkDate === formattedChooseDates) {
+                                const startTimeFormatted = new Date(`1970-01-01T${item.startTime}`).toLocaleTimeString('vi-VN', {
+                                  hour: '2-digit',
+                                  minute: '2-digit',
+                                });
+                                const endTimeFormatted = new Date(`1970-01-01T${item.endTime}`).toLocaleTimeString('vi-VN', {
+                                  hour: '2-digit',
+                                  minute: '2-digit',
+                                });
+                                return (
+                                  <Link key={index} to={`/choose-profile?doctor=${doctorId}&work=${item.id}`}>
+                                    <div className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]" key={index} onClick={() => handleSelectidByWorktime(item.id)}>
+                                      {startTimeFormatted} - {endTimeFormatted}
+                                    </div>
+                                  </Link>
+                                );
+                              }
+                            
+                              return null;
+                          })}
                         </div>
                         <div className="w-full text-[20px] my-5">
                           <span>Buổi Trưa</span>
