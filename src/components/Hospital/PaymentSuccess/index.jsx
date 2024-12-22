@@ -11,6 +11,7 @@ function PaymentSuccess() {
   const amount = queryParams.get("amount");
   const orderInfo = queryParams.get("orderInfo");
   const resultCode = queryParams.get("resultCode");
+  const orderId = queryParams.get("orderId");
   useEffect(() => {
     if (!amount || !orderInfo || !resultCode) {
       console.error("Thiếu tham số quan trọng:", { amount, orderInfo, resultCode });
@@ -25,6 +26,7 @@ function PaymentSuccess() {
     formData.append("resultCode", resultCode);
     formData.append("orderInfo", orderInfo);
     formData.append("amount", amount);
+    formData.append("trans_code", orderId);
     axios
       .post("http://localhost:8080/api/payments/confirm-payment", formData, {
         headers: {
@@ -39,7 +41,7 @@ function PaymentSuccess() {
         console.error("Lỗi xác nhận thanh toán:", error);
         setPaymentStatus("Đã xảy ra lỗi trong quá trình xác nhận thanh toán.");
       });
-  }, [amount, orderInfo, resultCode]);
+  }, [amount, orderId, orderInfo, resultCode]);
   return (
     <div>
       <section className="relative z-[1] py-28">

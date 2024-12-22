@@ -12,7 +12,7 @@ function ConfirmPayment(props) {
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const orderid = "MedCare 0337218288"
+  const orderid = "MedCare 0337218288";
   const [amount, setAmount] = useState(2000);
   useEffect(() => {
     if (timeLeft === 0) {
@@ -37,25 +37,27 @@ function ConfirmPayment(props) {
         const result = await axios.get(
           "https://script.googleusercontent.com/macros/echo?user_content_key=SwT55JguzVhYJZVNOjy_875iFMQoAKvo-SrAJ2UjrZBU-MDl0Ih8du-i_-3_ibtaKzz1eY83f6MyTLYOkxvOI6LBL-EDQbQ6m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnHmDzCyvqrH6g6K3uTlviLhPt4ZCpWztcL6A_cApFmaIR8LWVQztqdaZ0h4MVyhzPVgu2EDunFSjB5pd3pmUVnryn1Z4YyOlLg&lib=M_gSwOHrgvf5DnR9tSLjeAN_Iq9KWg1kY"
         );
-        
+
         const data = result.data.data;
         console.log(data);
-        
+
         for (const item of data) {
           // Đợi kết quả từ GetPaymentCode
-          const paymentCode = (await GetPaymentCode(item["Mã GD"]));
-          console.log("tìm id trong db",paymentCode)
-      
-          if(paymentCode != 0){
+          const paymentCode = await GetPaymentCode(item["Mã GD"]);
+          console.log("tìm id trong db", paymentCode);
+
+          if (paymentCode != 0) {
             console.log("giao dịch đã tồn tại");
-           
-          } else if (paymentCode.length === 0 &&item["Mô tả"].includes(orderid) && item["Giá trị"] >= amount){
+          } else if (
+            paymentCode.length === 0 &&
+            item["Mô tả"].includes(orderid) &&
+            item["Giá trị"] >= amount
+          ) {
             console.log("Thanh toán thành công, cảm ơn bạn");
-            BankPayment(amount, "phong", "0358227696", orderid, item["Mã GD"].toString());
-                 clearInterval(interval);
-                 break;
-           }
-          
+            // BankPayment(amount, orderid, item["Mã GD"].toString());
+            clearInterval(interval);
+            break;
+          }
         }
       } catch (err) {
         console.log(err);
@@ -64,14 +66,13 @@ function ConfirmPayment(props) {
     getTrans();
     const interval = setInterval(getTrans, 5000);
     setTimeout(() => {
-      clearInterval(interval); 
+      clearInterval(interval);
       console.log("ngưng !!!!!");
-    }, 1000*60*5); //1 giây *60*=5 phút
-  
+    }, 1000 * 60 * 5); //1 giây *60*=5 phút
+
     // Dọn dẹp interval khi component bị unmount
     return () => clearInterval(interval);
   }, []);
-  
 
   return (
     <div className="flex justify-center py-5">

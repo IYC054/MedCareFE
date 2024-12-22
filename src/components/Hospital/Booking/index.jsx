@@ -11,6 +11,8 @@ import Calender from "../Calender";
 import { AppContext } from "../../Context/AppProvider";
 import doctorApi from "../../../api/Doctor/doctor";
 import { format } from "crypto-js";
+import getWorkTimeDoctor from "../../../api/Doctor/workinghour";
+import { stringify } from "postcss";
 
 const fake = [
   { id: 1, name: "Trần Thanh Phong", gender: "Male" },
@@ -28,39 +30,61 @@ const faketime2 = [
   { id: 2, settime: "14:30 - 15:30" },
   { id: 3, settime: "15:30 - 16:30" },
 ];
+
 function Booking() {
+  const [doctorId, setdoctorId] = useState(0);
   const [dataDoctor, setDataDoctor] = useState([]);
   const [title, setTitle] = useState("Thông tin cơ sở y tế");
   const [ChooseDoctor, setChooseDoctor] = useState(true);
   const [selectName, setSelectName] = useState();
   const [selectBHYT, setSelectBHYT] = useState(false);
+  const [selectspecialty, setSelectSpecialty] = useState(false);
   const [selectDate, setSelectDate] = useState(true);
+  const navigate = useNavigate();
   // start chọn ngày
-  
-  const [chooseDate, setChooseDate] = useState(null);
 
+  const [chooseDate, setChooseDate] = useState(null);
+  const handleShowSpecialty = () => {
+    setSelectSpecialty(false);
+    setSelectDate(true);
+  };
   const handleSelectedDate = (date) => {
     setChooseDate(date);
   };
   // end chọn ngày
 
-  const navigate = useNavigate();
-  const handlegoBackHospital = () => {
-    navigate("/hospital");
-  };
-  const HandleChooseDoctor = (name) => {
-    setChooseDoctor(false);
-    setSelectName(name);
-  };
+  // start điều hướng quay lại
   const handlegoBackDoctor = () => {
     setSelectBHYT(false);
     setSelectDate(true);
     setChooseDate("");
   };
-  const handlegoBack = () => {
+  const handlegoBackSpec = () => {
     setChooseDoctor(true);
     setSelectName(null);
+    setSelectSpecialty(false);
+    setTitle("Vui lòng chọn bác sĩ");
   };
+  const handlegoBackHospital = () => {
+    navigate("/hospital");
+  };
+
+  const handlegoBack = () => {
+    setSelectSpecialty(true);
+    setTitle("Vui lòng chọn chuyên khoa");
+  };
+  //end điều hướng quay lại
+
+  //đã chọn bác sĩ
+  const HandleChooseDoctor = (name, id) => {
+    setChooseDoctor(false);
+    setSelectName(name);
+    setSelectSpecialty(true);
+    setTitle("Vui lòng chọn chuyên khoa");
+    setdoctorId(id);
+    console.log("ID bác sĩ" + id);
+  };
+
   const handleBHYT = () => {
     setSelectBHYT(true);
   };
@@ -69,13 +93,22 @@ function Booking() {
     setTitle("Vui lòng chọn ngày khám");
   };
   useEffect(() => {
-    doctorApi.get().then((reuslt) => {
-      console.log(reuslt.data[0].account)
-      setDataDoctor(reuslt.data)
-    }).catch((err) => {
-      console.log(err)
-    });
-  }, [])
+    doctorApi
+      .get()
+      .then((reuslt) => {
+        // console.log(reuslt.data[0].account);
+        setDataDoctor(reuslt.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  // lay chuyen khoa cua bac si
+  
+  // lay ngay lam viec cua bác sĩ
+  useEffect(() => {
+    getWorkTimeDoctor(doctorId);
+  }, [doctorId]);
   return (
     <div className="flex justify-center py-5">
       <div className="w-4/5 ">
@@ -156,7 +189,9 @@ function Booking() {
                         key={index}
                         className="w-full bg-white p-4 list-none text-[#053353] mb-4 rounded-xl border-soid border-[1px] border-[#00e0ff] cursor-pointer"
                         id="goup"
-                        onClick={() => HandleChooseDoctor(item.account.name)}
+                        onClick={() =>
+                          HandleChooseDoctor(item.account.name, item.id)
+                        }
                       >
                         <li className="w-full text-[#ffb54a] text-[20px] flex gap-2 items-center mb-2">
                           <FaUserDoctor />
@@ -173,26 +208,62 @@ function Booking() {
                         <li className="w-full text-[18px] flex gap-2 items-center mb-2 ">
                           <FaStethoscope />
                           <span className="text-[14px]">
-                            Chuyên khoa : {item.specialties.map((specialty, index) => (
-                              <span key={index}>{specialty.description}{index < item.specialties.length - 1 && ', '}</span>
+                            Chuyên khoa :{" "}
+                            {item.specialties.map((specialty, index) => (
+                              <span key={index}>
+                                {specialty.description}
+                                {index < item.specialties.length - 1 && ", "}
+                              </span>
                             ))}
-                           
                           </span>
                         </li>
-                        <li className="w-full text-[18px] flex gap-2 items-center mb-2 ">
+                        {/* <li className="w-full text-[18px] flex gap-2 items-center mb-2 ">
                           <FaRegCalendarAlt />
                           <span className="text-[14px]">
                             Lịch khám : Mọi ngày nhưng chỉ 11h tối
                           </span>
-                        </li>
+                        </li> */}
                         <li className="w-full text-[18px] flex gap-2 items-center mb-2 ">
                           <MdAttachMoney />
                           <span className="text-[14px]">
-                            Giá khám : Lấy giá tình cảm
+                            Giá khám : Thanh toán tại bệnh viện
                           </span>
                         </li>
                       </div>
                     ))}
+                  </div>
+                </div>
+              ) : selectspecialty ? (
+                <div>
+                  <div className="w-full  bg-[#fff] rounded-lg">
+                    <div className="w-full h-full py-2 px-4 " id="goup-2">
+                      <div className="w-full h-[40px] relative mb-5" id="goup">
+                        <input
+                          className="w-full h-full rounded-md px-4 boder-[#00e0ff] border-solid border-[#c2c2c2] border-[1px] focus:border-[#00e0ff] focus:outline-none"
+                          placeholder="Tìm theo chuyên khoa"
+                        />
+                        <div className="absolute w-[40px] h-full border-solid border-[#c2c2c2] border-[1px] top-0 right-0 rounded-tr-md rounded-br-md flex justify-center items-center">
+                          <FaMagnifyingGlass className="text-[#c2c2c2]/60" />
+                        </div>
+                      </div>
+                      <hr className="h-[2px] border-[1.5px] mb-5" />
+                      <div className="w-full hover:text-[#00e0ff] mb-5  cursor-pointer" onClick={handleShowSpecialty}>
+                        <span
+                          className="text-[20px] font-medium"
+                          
+                        >
+                          Khám nội tổng quát
+                        </span>
+                      </div>
+                      <div className="w-full hover:text-[#00e0ff] mb-5  cursor-pointer" onClick={handleShowSpecialty}>
+                        <span
+                          className="text-[20px] font-medium"
+                          
+                        >
+                          Khám nội địa
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               ) : selectDate ? (
@@ -262,7 +333,8 @@ function Booking() {
                     className="flex text-[#003553] gap-2 items-center  hover:bg-[#c2c2c2]/20 mt-4 rounded-lg"
                     onClick={handlegoBack}
                   >
-                    Quay lại <IoReturnDownBack className="text-[30px]" />
+                    Quay lại
+                    <IoReturnDownBack className="text-[30px]" />
                   </button>
                   {/* back từ đặt khám */}
                 </Fragment>
@@ -281,9 +353,7 @@ function Booking() {
                         <div className="w-full my-2 flex gap-5 flex-wrap ">
                           {faketime.map((item, index) => (
                             <Link key={index} to={`/choose-profile`}>
-                              <div
-                                className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]"
-                              >
+                              <div className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]">
                                 {item.settime}
                               </div>
                             </Link>
@@ -293,11 +363,9 @@ function Booking() {
                           <span>Buổi Trưa</span>
                         </div>
                         <div className="w-full my-2 flex gap-5 flex-wrap ">
-                        {faketime2.map((item, index) => (
+                          {faketime2.map((item, index) => (
                             <Link key={index}>
-                              <div
-                                className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]"
-                              >
+                              <div className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]">
                                 {item.settime}
                               </div>
                             </Link>
@@ -345,6 +413,18 @@ function Booking() {
                     Quay lại <IoReturnDownBack className="text-[30px]" />
                   </button>
                 </Fragment>
+              )}
+              {selectspecialty ? (
+                <Fragment>
+                  <button
+                    className="flex text-[#003553] gap-2 items-center hover:bg-[#c2c2c2]/20 mt-4 rounded-lg"
+                    onClick={handlegoBackSpec}
+                  >
+                    Quay lại <IoReturnDownBack className="text-[30px]" />
+                  </button>
+                </Fragment>
+              ) : (
+                <Fragment></Fragment>
               )}
             </div>
           </div>

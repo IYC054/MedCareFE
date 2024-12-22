@@ -1,14 +1,12 @@
 import React from "react";
 import axios from "axios";
 
-const BankPayment = async (amount, payer, phone, description , transactionCode ) => {
+const BankPayment = async (amount, description , transactionCode ) => {
   try {
     
    await axios.post("http://localhost:8080/api/payments", {
       amount: amount,
       paymentMethod: "Ngân hàng",
-      payer: payer,
-      phone: phone,
       transactionDescription: description,
       transactionCode: transactionCode,
       appointmentId: 1,
