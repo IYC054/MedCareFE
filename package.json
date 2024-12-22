@@ -25,11 +25,8 @@
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "crypto-js": "^4.2.0",
-<<<<<<< HEAD
     "date-fns": "^4.1.0",
-=======
     "firebase": "^11.1.0",
->>>>>>> 1c24f05228a17456990b3ab275567f4bfd21b82a
     "framer-motion": "^11.11.17",
     "owl.carousel": "^2.3.4",
     "quill": "^2.0.3",

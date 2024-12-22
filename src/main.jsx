@@ -33,6 +33,8 @@ import Transactions from "./Admin/page/Transactions";
 import DoctorDetail from "./Admin/page/subPage/DoctorDetail";
 import TransactionDetail from "./Admin/page/subPage/TransactionDetail";
 import PaymentSuccess from "./components/Hospital/PaymentSuccess";
+import Specialty from "./Admin/page/Specialty";
+import CreateSpecialty from "./Admin/page/createPage/CreateSpecialty";
 
 
 
@@ -112,6 +114,14 @@ const router = createBrowserRouter([
       {
         path: "/admin/profileadmin",
         element: <ProfileAdmin />,
+      },
+      {
+        path: "/admin/specialty",
+        element: <Specialty />,
+      },
+      {
+        path: "/admin/specialty/createSpecialty",
+        element: <CreateSpecialty />,
       },
     ],
   },

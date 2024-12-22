@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../scss/feedback.scss';
 import { Link } from 'react-router-dom';
+import { format } from 'date-fns';
+import axios from 'axios';
 function Feedback(props) {
-    const [selectedAll, setSelectedAll] = useState(false);
-    const [selectedRows, setSelectedRows] = useState([]);
+    const [feedback, setFeedback] = useState([])
 
-    const handleSelectAll = () => {
-        setSelectedAll(!selectedAll);
-        setSelectedRows(selectedAll ? [] : [...Array(20).keys()]);
-    };
+    useEffect(() => {
+        const fetchFeedback = async () => {
 
-    const handleRowSelect = (index) => {
-        setSelectedRows((prev) =>
-            prev.includes(index)
-                ? prev.filter((i) => i !== index)
-                : [...prev, index]
-        );
-    };
+            const response = await axios.get('http://localhost:8080/api/feedbacks/');
+
+            setFeedback(response.data);
+
+        };
+        fetchFeedback();
+    }, []);
+    console.log(feedback)
     return (
         <div className='flex'>
 
@@ -106,45 +106,37 @@ function Feedback(props) {
                     <div className="max-h-screen overflow-y-auto">
                         <table className="table-auto w-full border-separate border-spacing-y-3">
                             <thead>
-                               
+
                             </thead>
                             <tbody>
-                                {[...Array(10)].map((_, index) => (
+                                {feedback.map((item, index) => (
                                     <tr
                                         key={index}
-                                        className={`w-full bg-white hover:bg-gray-100 transition duration-300 group relative ${selectedRows.includes(index) ? "bg-blue-100" : ""
-                                            }`}  >
-                                        {/* Checkbox */}
-                                       
+                                        className={`w-full bg-white hover:bg-gray-100 transition duration-300 group relativebg-blue-100`}  >
 
-                                        {/* User Info */}
                                         <td className="py-3 pl-4">
                                             <div className="flex items-center">
                                                 <img
-                                                    src="https://via.placeholder.com/40"
+                                                    src={item.account.avatar}
                                                     alt="Avatar"
                                                     className="w-10 h-10 rounded-full"
                                                 />
                                                 <div className="ml-2">
                                                     <div className="font-semibold text-gray-600">
-                                                        Alina Mcloughlin
+                                                        {item.account.name}
                                                     </div>
                                                     <div className="text-sm text-gray-500">
-                                                        Last seen online 15 minutes ago
+                                                        {format(new Date(item.createdAt), 'dd/MM/yyyy HH:mm')}
                                                     </div>
                                                 </div>
                                             </div>
                                         </td>
-
-                                        {/* Message */}
                                         <td className="px-10 py-3">
-                                            Nullam dictum felis eu pede mollis pretium.
+                                            {item.message}
                                         </td>
-
-                                        {/* Actions */}
                                         <td className="w-fit pb-5 relative">
                                             <div className="hidden group-hover:flex space-x-2 absolute right-0">
-                                               
+
                                                 <button className="hover:text-red-500">
                                                     <i className="bi bi-trash2 text-gray-400 right-4 text-xl relative"></i>
                                                 </button>
