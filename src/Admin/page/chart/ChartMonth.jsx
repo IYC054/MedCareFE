@@ -1,7 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
+import axios from 'axios';
 
 const ChartMonth = () => {
+  const [chartData, setChartData] = useState(new Array(12).fill(0)); // Mảng 12 tháng, khởi tạo giá trị 0
+
+  useEffect(() => {
+    const fetchMonthlyData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/api/appointment');
+        const appointments = response.data;
+
+        // Lấy năm hiện tại
+        const currentYear = new Date().getFullYear();
+
+        // Tính tổng số liệu của từng tháng trong năm hiện tại
+        const monthlyData = new Array(12).fill(0);
+        appointments.forEach(appointment => {
+          const appointmentDate = new Date(appointment.date);
+          const appointmentYear = appointmentDate.getFullYear();
+
+          // Kiểm tra xem cuộc hẹn có thuộc năm hiện tại không
+          if (appointmentYear === currentYear) {
+            const monthIndex = appointmentDate.getMonth(); // Tháng từ 0 (Jan) đến 11 (Dec)
+            monthlyData[monthIndex]++;
+          }
+        });
+
+        setChartData(monthlyData);
+      } catch (error) {
+        console.error('Error fetching appointments:', error);
+      }
+    };
+
+    fetchMonthlyData();
+  }, []);
+
   const options = {
     chart: {
       type: 'area',
@@ -37,8 +71,8 @@ const ChartMonth = () => {
 
   const series = [
     {
-      name: 'Leads',
-      data: [30, 40, 35, 50, 49, 60, 70, 91, 125, 112, 130, 150],
+      name: 'Appointments',
+      data: chartData, // Sử dụng dữ liệu theo tháng
     },
   ];
 

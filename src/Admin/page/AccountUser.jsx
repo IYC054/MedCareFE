@@ -1,39 +1,36 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function AccountUser() {
-    const [users] = useState([
-        { id: 1, name: 'Nguyen Van A', email: 'nguyenvana@example.com', phone: '0123456789', status: 'Active' },
-        { id: 2, name: 'Tran Thi B', email: 'tranthib@example.com', phone: '0987654321', status: 'Inactive' },
-        { id: 3, name: 'Nguyen Van A', email: 'nguyenvana@example.com', phone: '0123456789', status: 'Active' },
-        { id: 4, name: 'Tran Thi B', email: 'tranthib@example.com', phone: '0987654321', status: 'Inactive' },
-        { id: 5, name: 'Nguyen Van A', email: 'nguyenvana@example.com', phone: '0123456789', status: 'Active' },
-        { id: 2, name: 'Tran Thi B', email: 'tranthib@example.com', phone: '0987654321', status: 'Inactive' },
+    const [user, setUser] = useState([])
 
-        { id: 6, name: 'Nguyen Van A', email: 'nguyenvana@example.com', phone: '0123456789', status: 'Active' },
-        { id: 7, name: 'Tran Thi B', email: 'tranthib@example.com', phone: '0987654321', status: 'Inactive' },
-        { id: 8, name: 'Nguyen Van A', email: 'nguyenvana@example.com', phone: '0123456789', status: 'Active' },
-        { id: 9, name: 'Tran Thi B', email: 'tranthib@example.com', phone: '0987654321', status: 'Inactive' },
-        { id: 10, name: 'Nguyen Van A', email: 'nguyenvana@example.com', phone: '0123456789', status: 'Active' },
-        { id: 11, name: 'Tran Thi B', email: 'tranthib@example.com', phone: '0987654321', status: 'Inactive' },
+    useEffect(() => {
+        const fetchUserAccounts = async () => {
 
-        { id: 12, name: 'Nguyen Van A', email: 'nguyenvana@example.com', phone: '0123456789', status: 'Active' },
-        { id: 13, name: 'Tran Thi B', email: 'tranthib@example.com', phone: '0987654321', status: 'Inactive' },
-        { id: 14, name: 'Nguyen Van A', email: 'nguyenvana@example.com', phone: '0123456789', status: 'Active' },
-        { id: 15, name: 'Tran Thi B', email: 'tranthib@example.com', phone: '0987654321', status: 'Inactive' },
+            const response = await axios.get('http://localhost:8080/api/account');
+            const filteredUsers = response.data.result.filter(u => u.role === 'Patients');
+            setUser(filteredUsers);
 
-        // Add more users as needed
-    ]);
+        };
+        fetchUserAccounts();
+    }, []);
+    const navigate = useNavigate();
 
+    const handleDetailClick = (id) => {
+        navigate(`/admin/user/userDetail/${id}`); 
+    };
+    console.log(user);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const usersPerPage = 10;
 
-    const filteredUsers = users.filter(user =>
+    const filteredUsers = user.filter(user =>
         user.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
-    const displayedUsers = filteredUsers.slice(
+    const displayuser = filteredUsers.slice(
         (currentPage - 1) * usersPerPage,
         currentPage * usersPerPage
     );
@@ -63,21 +60,20 @@ function AccountUser() {
                                 <th className="px-4 py-2 text-left">Name</th>
                                 <th className="px-4 py-2 text-left">Email</th>
                                 <th className="px-4 py-2 text-left">Phone</th>
-                                <th className="px-4 py-2 text-left">Status</th>
+                                <th className="px-4 py-2 text-left">Gender</th>
                                 <th className="px-4 py-2 text-left">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {displayedUsers.map((user, index) => (
+                            {displayuser.map((user, index) => (
                                 <tr key={user.id} className={`hover:bg-gray-100 ${index % 2 === 0 ? 'bg-gray-50' : ''}`}>
                                     <td className="border px-4 py-2">{(currentPage - 1) * usersPerPage + index + 1}</td>
                                     <td className="border px-4 py-2">{user.name}</td>
                                     <td className="border px-4 py-2">{user.email}</td>
                                     <td className="border px-4 py-2">{user.phone}</td>
-                                    <td className={`border px-4 py-2 ${user.status === 'Active' ? 'text-green-500' : 'text-red-500'}`}>{user.status}</td>
+                                    <td className='border px-4 py-2'>{user.gender}</td>
                                     <td className="border px-4 py-2">
-                                        <button className="bg-[#da624a] text-white px-4 py-2 rounded shadow hover:bg-[#c75240] transition">Detail</button>
-                                        <button className="bg-gray-500 text-white px-4 py-2 rounded shadow hover:bg-gray-600 ml-2 transition">Delete</button>
+                                        <button className="bg-[#da624a] text-white px-4 py-2 rounded shadow hover:bg-[#c75240] transition"  onClick={() => handleDetailClick(user.id)}>Detail</button>
                                     </td>
                                 </tr>
                             ))}

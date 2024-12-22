@@ -51,11 +51,14 @@ const RootLayoutAdmin = () => {
   } else if (location.pathname === '/admin/appointment/createApp') {
     title = 'Create Room';
     description = '';
-  } else if (location.pathname === '/admin/user/userDetail') {
+  } else if (location.pathname === '/admin/user/userDetail/:id') {
     title = 'Detail Patient';
     description = '';
-  } else if (location.pathname === '/admin/doctor/doctorDetail') {
+  } else if (location.pathname === '/admin/doctor/doctorDetail/:id') {
     title = 'Detail Doctor';
+    description = '';
+  } else if (location.pathname === '/admin/transaction/Detail/:id') {
+    title = '  Transaction report details';
     description = '';
   }
   else if (location.pathname === '/admin/profileadmin') {

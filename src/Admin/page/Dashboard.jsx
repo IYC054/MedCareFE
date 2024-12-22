@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../scss/dashboard.scss';
 
 import ChartMonth from './chart/ChartMonth';
@@ -8,6 +8,7 @@ import Chart1Week from './chart/Chart1Week';
 import ChartMess from './chart/ChartMess';
 import ChartMessSent from './chart/ChartMessSent';
 import ChartMessInbox from './chart/ChartMessInbox';
+import axios from 'axios';
 
 function Dashboard() {
     const [activeTab, setActiveTab] = useState('this month');
@@ -24,6 +25,81 @@ function Dashboard() {
         setActiveTab2(tab);
         setActiveChart2(tab);
     };
+    const [user, setUser] = useState([])
+    const [book, setBook] = useState([])
+    const [money, setMoney] = useState([])
+    useEffect(() => {
+        const fetch = async () => {
+
+            const responseUser = await axios.get('http://localhost:8080/api/account');
+            const filteredUsers = responseUser.data.result.filter(u => u.role === 'Patients');
+            setUser(filteredUsers);
+
+            const responseBook = await axios.get('http://localhost:8080/api/appointment');
+            setBook(responseBook.data);
+            const responseMoney = await axios.get('http://localhost:8080/api/payments');
+            const filteredMoney = responseMoney.data.filter(payment => payment.status === 'Hoàn thành');
+            const totalMoney = filteredMoney.reduce((sum, payment) => sum + payment.amount, 0);
+            setMoney(totalMoney);
+
+        };
+        fetch();
+    }, []);
+
+    const [thisMonthIncome, setThisMonthIncome] = useState(0);
+    const [lastMonthIncome, setLastMonthIncome] = useState(0);
+    const [thisYearIncome, setThisYearIncome] = useState(0);
+    const [lastYearIncome, setLastYearIncome] = useState(0);
+    const [monthPercentChange, setMonthPercentChange] = useState(0);
+    const [yearPercentChange, setYearPercentChange] = useState(0);
+
+    useEffect(() => {
+        const fetchIncomeData = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/payments');
+                const payments = response.data;
+
+                const currentDate = new Date();
+                const currentYear = currentDate.getFullYear();
+                const currentMonth = currentDate.getMonth();
+
+                let monthData = { thisMonth: 0, lastMonth: 0 };
+                let yearData = { thisYear: 0, lastYear: 0 };
+
+                payments.forEach((payment) => {
+                    const paymentDate = new Date(payment.transactionDate);
+                    const paymentMonth = paymentDate.getMonth();
+                    const paymentYear = paymentDate.getFullYear();
+
+                    if (paymentYear === currentYear) {
+                        if (paymentMonth === currentMonth) monthData.thisMonth += payment.amount;
+                        if (paymentMonth === currentMonth - 1) monthData.lastMonth += payment.amount;
+                        yearData.thisYear += payment.amount;
+                    } else if (paymentYear === currentYear - 1) {
+                        yearData.lastYear += payment.amount;
+                    }
+                });
+
+                setThisMonthIncome(monthData.thisMonth);
+                setLastMonthIncome(monthData.lastMonth);
+                setThisYearIncome(yearData.thisYear);
+                setLastYearIncome(yearData.lastYear);
+
+                // Tính phần trăm thay đổi tháng và năm
+                setMonthPercentChange(calculatePercentChange(monthData.thisMonth, monthData.lastMonth));
+                setYearPercentChange(calculatePercentChange(yearData.thisYear, yearData.lastYear));
+            } catch (error) {
+                console.error('Error fetching payments:', error);
+            }
+        };
+
+        fetchIncomeData();
+    }, []);
+
+    const calculatePercentChange = (thisAmount, lastAmount) => {
+        if (lastAmount === 0) return 0;
+        return ((thisAmount - lastAmount) / lastAmount) * 100;
+    };
 
     return (
         <div className='app-inner-layout__content pb-10'>
@@ -37,7 +113,7 @@ function Dashboard() {
                                     <div className='text-sm'>This month</div>
                                 </div>
                                 <div>
-                                    <div className='text-2xl font-bold'>189</div>
+                                    <div className='text-2xl font-bold'>{user.length}</div>
                                 </div>
                             </div>
                         </div>
@@ -48,7 +124,7 @@ function Dashboard() {
                                     <div className='text-sm'>medical appointments this month</div>
                                 </div>
                                 <div>
-                                    <div className='text-2xl font-bold'>249</div>
+                                    <div className='text-2xl font-bold'>{book.length}</div>
                                 </div>
                             </div>
                         </div>
@@ -59,7 +135,7 @@ function Dashboard() {
                                     <div className='text-sm'>This month</div>
                                 </div>
                                 <div>
-                                    <div className='text-2xl font-bold'>50,225,000 VNĐ</div>
+                                    <div className='text-2xl font-bold'>{money} VNĐ</div>
                                 </div>
                             </div>
                         </div>
@@ -98,14 +174,7 @@ function Dashboard() {
                                     <div className='tab-pane fade active show' id="tabs-eg-77">
                                         <div className='card mb-3 widget-chart text-left border-2'>
                                             <div className='p-3'>
-                                                <div className='flex items-center'>
-                                                    <div>
-                                                        <span>{activeTab === 'this month' ? '50' : '213'}</span>
-                                                    </div>
-                                                    <div className='ml-2 text-sm text-gray-500'>
-                                                        total
-                                                    </div>
-                                                </div>
+
                                             </div>
 
                                             <div className='m-0 '>
@@ -182,12 +251,12 @@ function Dashboard() {
                                                         <div className="widget-content-wrapper flex items-center justify-between">
                                                             <div className="widget-content-left mr-6 pb-2">
                                                                 <div className="widget-numbers text-2xl text-gray-500 font-bold">
-                                                                    45%
+                                                                    {monthPercentChange.toFixed(2)}%
                                                                 </div>
                                                             </div>
                                                             <div className="content-right">
                                                                 <div className="text-gray-500 text-xs opacity-60">
-                                                                    Income This Month
+                                                                    Income Change This Month vs Last Month
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -195,7 +264,7 @@ function Dashboard() {
                                                             <div className="w-full bg-gray-200 rounded-full h-2 relative overflow-hidden">
                                                                 <div
                                                                     className="bg-blue-600 h-2 rounded-full transition-all duration-500"
-                                                                    style={{ width: '45%' }}
+                                                                    style={{ width: `${Math.min(monthPercentChange, 100)}%` }}
                                                                 ></div>
                                                                 {/* Continuous Glowing Effect */}
                                                                 <div className="progress-glow"></div>
@@ -210,12 +279,12 @@ function Dashboard() {
                                                         <div className="widget-content-wrapper flex items-center justify-between">
                                                             <div className="widget-content-left mr-6 pb-2">
                                                                 <div className="widget-numbers text-2xl text-gray-500 font-bold">
-                                                                    75%
+                                                                {yearPercentChange.toFixed(2)}%
                                                                 </div>
                                                             </div>
                                                             <div className="content-right">
                                                                 <div className="text-gray-500 text-xs opacity-60">
-                                                                    Income This Year
+                                                                    Income This Year vs Last Year
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -223,7 +292,7 @@ function Dashboard() {
                                                             <div className="w-full bg-gray-200 rounded-full h-2 relative overflow-hidden">
                                                                 <div
                                                                     className="bg-purple-600 h-2 rounded-full transition-all duration-500"
-                                                                    style={{ width: '75%' }}
+                                                                    style={{ width: `${Math.min(yearPercentChange, 100)}%`  }}
                                                                 ></div>
                                                                 {/* Continuous Glowing Effect */}
                                                                 <div className="progress-glow"></div>
@@ -231,58 +300,7 @@ function Dashboard() {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="widget-content">
-                                                    <div className="widget-content-outer">
-                                                        <div className="widget-content-wrapper flex items-center justify-between">
-                                                            <div className="widget-content-left mr-6 pb-2">
-                                                                <div className="widget-numbers text-2xl text-gray-500 font-bold">
-                                                                    25%
-                                                                </div>
-                                                            </div>
-                                                            <div className="content-right">
-                                                                <div className="text-gray-500 text-xs opacity-60">
-                                                                    Income This Year
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="widget-progress-wrapper">
-                                                            <div className="w-full bg-gray-200 rounded-full h-2 relative overflow-hidden">
-                                                                <div
-                                                                    className="bg-green-600 h-2 rounded-full transition-all duration-500"
-                                                                    style={{ width: '25%' }}
-                                                                ></div>
-                                                                {/* Continuous Glowing Effect */}
-                                                                <div className="progress-glow"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="widget-content">
-                                                    <div className="widget-content-outer">
-                                                        <div className="widget-content-wrapper flex items-center justify-between">
-                                                            <div className="widget-content-left mr-6 pb-2">
-                                                                <div className="widget-numbers text-2xl text-gray-500 font-bold">
-                                                                    60%
-                                                                </div>
-                                                            </div>
-                                                            <div className="content-right">
-                                                                <div className="text-gray-500 text-xs opacity-60">
-                                                                    Income This Year
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="widget-progress-wrapper">
-                                                            <div className="w-full bg-gray-200 rounded-full h-2 relative overflow-hidden">
-                                                                <div
-                                                                    className="bg-red-600 h-2 rounded-full transition-all duration-500"
-                                                                    style={{ width: '60%' }}
-                                                                ></div>
-                                                                {/* Continuous Glowing Effect */}
-                                                                <div className="progress-glow"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                              
                                             </div>
                                         </div>
                                     </div>
@@ -294,30 +312,30 @@ function Dashboard() {
 
                     <div className='card-body mx-auto flex py-4 h-[300px] '>
                         <div className='w-full border-2 bg-white text-green-400  mr-4 pt-6 hover:drop-shadow-2xl'>
-                            <div class="chart-title font-extrabold pl-6">
+                            <div className="chart-title font-extrabold pl-6">
                                 Received Messages
                             </div>
-                            <div class="chart-placeholder ">
+                            <div className="chart-placeholder ">
                                 <ChartMess />
                             </div>
                         </div>
                         <div className='w-full border-2 bg-white text-red-400   mx-4 pt-6 hover:drop-shadow-2xl'>
-                            <div class="chart-title  font-extrabold pl-6">
+                            <div className="chart-title  font-extrabold pl-6">
                                 Sent Messages
 
                             </div>
 
-                            <div class="chart-placeholder">
+                            <div className="chart-placeholder">
                                 <ChartMessSent />
                             </div>
                         </div>
                         <div className='w-full border-2 bg-[#343a40] text-yellow-400  ml-4 pt-6 hover:drop-shadow-2xl'>
-                            <div class="chart-title  font-extrabold pl-6">
+                            <div className="chart-title  font-extrabold pl-6">
                                 Inbox Total
 
                             </div>
 
-                            <div class="chart-placeholder">
+                            <div className="chart-placeholder">
                                 <ChartMessInbox />
                             </div>
                         </div>
