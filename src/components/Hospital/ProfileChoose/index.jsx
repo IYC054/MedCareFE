@@ -13,12 +13,25 @@ import { FaLocationDot } from "react-icons/fa6";
 import { MdGroups } from "react-icons/md";
 import "./Profilechoose.scss";
 import { Link } from "react-router-dom";
+import profilebyaccount from "../../../api/Profile/profilebyaccount";
 const fakedata = [{ id: 1 }, { id: 2 }];
 function ProfileChoose(props) {
   const [selectProfileId, setSelectProfileId] = useState(null);
+  const [DataProfile, setDataProfile] = useState([]);
   const handleSelectProfile = (e) => {
     setSelectProfileId(e);
   };
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const data = await profilebyaccount(1); 
+      setDataProfile(data); 
+    };
+
+    fetchProfile();
+  }, []);
+  useEffect(() => {
+    console.log(selectProfileId);
+  }, [selectProfileId])
   return (
     <div className="flex justify-center py-5">
       <div className="w-4/5 max-lg:4/5 mb-10">
@@ -28,7 +41,7 @@ function ProfileChoose(props) {
             Chọn hồ sơ bệnh nhân
           </span>
         </div>
-        {fakedata.map((item, index) => (
+        {DataProfile.map((item, index) => (
           <div
             className="w-full flex justify-center items-center my-2"
             key={index}
@@ -46,7 +59,7 @@ function ProfileChoose(props) {
                     <span>Họ và tên :</span>
                   </span>
                   <span className="text-[18px] font-medium text-[#00b5f1]">
-                    Trần Văn Anh Yeong
+                    {item.fullname}
                   </span>
                 </li>
                 <li className="flex w-full items-center gap-2 text-[#003553] my-1 settingli">
@@ -55,7 +68,7 @@ function ProfileChoose(props) {
                     <span>Ngày Sinh :</span>
                   </span>
                   <span className="text-[14px] font-medium text-[#003553]">
-                    1/1/2004
+                    {item.birthdate}
                   </span>
                 </li>
                 <li className="flex w-full items-center gap-2 text-[#003553] my-1 settingli">
@@ -64,7 +77,7 @@ function ProfileChoose(props) {
                     <span>Số điện thoại :</span>
                   </span>
                   <span className="text-[14px] font-medium text-[#003553]">
-                    0362061339
+                    {item.phone}
                   </span>
                 </li>
                 <li className="flex w-full items-center gap-2 text-[#003553] my-1 settingli">
@@ -73,7 +86,7 @@ function ProfileChoose(props) {
                     <span>Giới tính :</span>
                   </span>
                   <span className="text-[14px] font-medium text-[#003553]">
-                    Trần Văn Anh Yeong
+                    {item.gender}
                   </span>
                 </li>
                 <li className="flex w-full items-center gap-2 text-[#003553] my-1 settingli">
@@ -82,8 +95,7 @@ function ProfileChoose(props) {
                     <span>Địa chỉ :</span>
                   </span>
                   <span className="text-[14px] font-medium text-[#003553]">
-                    177 khổng tử 254/11, Xã Bàu Trâm, Thành phố Long Khánh, Tỉnh
-                    Đồng Nai
+                    {item.address}
                   </span>
                 </li>
                 <li className="flex w-full items-center gap-2 text-[#003553] my-1 settingli">
@@ -92,7 +104,7 @@ function ProfileChoose(props) {
                     <span>Dân tộc :</span>
                   </span>
                   <span className="text-[14px] font-medium text-[#003553]">
-                    Kinh
+                    {item.nation}
                   </span>
                 </li>
               </ul>
