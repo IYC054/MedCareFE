@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 function Appointment() {
@@ -27,6 +28,18 @@ function Appointment() {
     const handleNextPage = () => {
         if (currentPage < totalPages) setCurrentPage(currentPage + 1);
     };
+    const [specialty, setSpecialty] = useState([])
+
+    useEffect(() => {
+        const fetchSpecialty = async () => {
+
+            const response = await axios.get('http://localhost:8080/api/specialty');
+
+            setSpecialty(response.data);
+
+        };
+        fetchSpecialty();
+    }, []);
 
     return (
         <div className="flex">
@@ -47,33 +60,13 @@ function Appointment() {
                     <li className="w-full">
                         <label htmlFor="specialty" className="text-sm text-gray-700">Select Specialty</label>
                         <div className="mt-2 grid grid-cols-2 gap-4 col-span-2">
-                            <label className="flex items-center">
-                                <input type="checkbox" className="mr-2" /> Cardiology
-                            </label>
-                            <label className="flex items-center">
-                                <input type="checkbox" className="mr-2" /> Neurology
-                            </label>
-                            <label className="flex items-center">
-                                <input type="checkbox" className="mr-2" /> Pediatrics
-                            </label>
-                            <label className="flex items-center">
-                                <input type="checkbox" className="mr-2" /> Orthopedics
-                            </label>
-                            <label className="flex items-center">
-                                <input type="checkbox" className="mr-2" /> Pediatrics
-                            </label>
-                            <label className="flex items-center">
-                                <input type="checkbox" className="mr-2" /> Orthopedics
-                            </label>
-                            <label className="flex items-center">
-                                <input type="checkbox" className="mr-2" /> Pediatrics
-                            </label>
-                            <label className="flex items-center">
-                                <input type="checkbox" className="mr-2" /> Orthopedics
-                            </label>
+                            {specialty.map((special, index) => (
+                                <label key={special.id} className="flex items-center">
+                                    <input type="checkbox" className="mr-2" /> {special.name}
+                                </label>
+                            ))}
                         </div>
                     </li>
-                    {/* Nút tìm kiếm */}
                     <li>
                         <button
                             type="button"

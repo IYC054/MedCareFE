@@ -36,11 +36,11 @@ function TransactionDetail() {
                 // Fetch patient information using the account ID from appointment
                 const patientResponse = await axios.get(`http://localhost:8080/api/account/${appointmentData.patient.account_id}`);
                 const patientData = patientResponse.data;
-              
+
 
                 setPatient(patientData);
                 console.log(patient);
-              
+
             } catch (err) {
                 setError(err.message || "An error occurred while fetching data.");
                 console.error(err);
@@ -92,7 +92,14 @@ function TransactionDetail() {
                         </div>
                         <div className="flex text-gray-500 py-2">
                             <span className="min-w-[250px]">Status :</span>
-                            <span className={`px-2 py-1 rounded text-sm ${tran.status === 'Hoàn thành' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>{tran.status}</span>
+                            <span className={`px-2 py-1 rounded text-sm ${tran.status === 'Hoàn thành'
+                                ? "bg-green-100 text-green-800"
+                                : tran.status === "Chờ xử lý"
+                                    ? "bg-yellow-100 text-yellow-800"
+                                    : tran.status === "Hoàn tiền"
+                                        ? "bg-orange-100 text-orange-800"
+                                        : "bg-red-100 text-red-800"
+                                }`}>{tran.status}</span>
                         </div>
                         <div className="flex text-gray-500">
                             <span className="min-w-[250px]">Description :</span>

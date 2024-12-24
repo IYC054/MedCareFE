@@ -35,6 +35,8 @@ import TransactionDetail from "./Admin/page/subPage/TransactionDetail";
 import PaymentSuccess from "./components/Hospital/PaymentSuccess";
 import Specialty from "./Admin/page/Specialty";
 import CreateSpecialty from "./Admin/page/createPage/CreateSpecialty";
+import LoginAdmin from "./Admin/page/LoginAdmin";
+
 
 
 
@@ -89,7 +91,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/admin/doctor/CreateDoctor",
-        element: <CreateAccountDoctor/>
+        element: <CreateAccountDoctor />
       },
       {
         path: "/admin/appointment",
@@ -119,6 +121,7 @@ const router = createBrowserRouter([
         path: "/admin/specialty",
         element: <Specialty />,
       },
+
       {
         path: "/admin/specialty/createSpecialty",
         element: <CreateSpecialty />,
@@ -126,11 +129,15 @@ const router = createBrowserRouter([
     ],
   },
   {
-    element: <AuthPage/>,
+    path: "/loginAdmin",
+    element: <LoginAdmin />,
+  },
+  {
+    element: <AuthPage />,
     children: [
       {
         path: "/auth/check-phone",
-        element: <CheckPhone/>,
+        element: <CheckPhone />,
       },
       // {
       //   path: "/auth/check-otp",
@@ -145,7 +152,7 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById('root')).render(
-    <AppProvider>
-      <RouterProvider router={router} />
-    </AppProvider>
+  <AppProvider>
+    <RouterProvider router={router} />
+  </AppProvider>
 );
