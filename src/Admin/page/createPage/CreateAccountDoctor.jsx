@@ -63,9 +63,9 @@ function CreateAccountDoctor() {
     };
 
     return (
-        <div className="max-h-full pb-3 flex max-w-screen" id="goup">
+        <div className="max-h-full pb-3 flex " id="goup">
             <div className="w-full bg-white shadow-lg rounded-lg p-5 border-2 border-[#da624a]">
-                <form className="space-y-4 w-fit sm:px-96" onSubmit={handleSubmit}>
+                <form className="space-y-4 w-full sm:px-96" onSubmit={handleSubmit}>
                     <h3 className="text-xl font-semibold text-[#da624a]">Create Doctor Account</h3>
 
                     {/* Email Field */}

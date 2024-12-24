@@ -38,7 +38,7 @@ function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
         };
     }, []);
     return (
-        <div className={ !isOpen && !isClosed ? 'app-sidebar-wrapper m-2 mb-6 border-1 rounded-lg drop-shadow-2xl' : 'app-sidebar-wrapper-close'} id="style-1" >
+        <div className={!isOpen && !isClosed ? 'app-sidebar-wrapper m-2 mb-6 border-1 rounded-lg drop-shadow-2xl' : 'app-sidebar-wrapper-close'} id="style-1" >
             <div className='app-header__logo'>
                 <img src='https://medpro.vn/_next/image?url=https%3A%2F%2Fbo-api.medpro.com.vn%2Fstatic%2Fimages%2Fmedpro%2Fweb%2Fheader_logo.svg&w=2048&q=75' className='logo-src' />
                 <button className={`hamburger ${isOpen ? 'open' : ''}`} onClick={toggleMenu}>
@@ -74,6 +74,11 @@ function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
                                         Appointment
                                     </Link>
                                 </li>
+                                <li>
+                                    <Link to="/admin/specialty" className={activeMenu === 'Specialty' ? 'mm-active' : ''} onClick={() => handleMenuClick('Specialty')}>
+                                        Specialty
+                                    </Link>
+                                </li>
                             </ul>
                         </li>
                     </ul>
@@ -81,7 +86,7 @@ function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
                     <ul className='vertical-nav-menu metismenu'>
                         <li className='mm-active'>
                             <a className='childmenu' onClick={toggleSubMenu1}>
-                                <FontAwesomeIcon  icon={faPeopleRoof} className='fa-people-roof pr-2' /> Manager
+                                <FontAwesomeIcon icon={faPeopleRoof} className='fa-people-roof pr-2' /> Manager
                                 <FontAwesomeIcon icon={isSubMenuOpen1 ? faChevronUp : faChevronDown} className='metismenu-state-icon' />
                             </a>
                             <ul className={isSubMenuOpen1 ? 'mm-show' : 'mm-collapse'}>

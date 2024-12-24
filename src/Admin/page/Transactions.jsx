@@ -143,7 +143,8 @@ function Transactions() {
 
     const [showForm, setShowForm] = useState(false);
     const resetFilters = () => {
-        setStartDate(new Date());
+        const today = new Date();
+        setStartDate(new Date(today.setHours(0, 0, 0, 0)));
         setEndDate(new Date());
 
         setTransactionCode("");
@@ -153,7 +154,10 @@ function Transactions() {
 
 
     const [option, setOption] = useState("today");
-    const [startDate, setStartDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(() => {
+        const today = new Date();
+        return new Date(today.setHours(0, 0, 0, 0));
+    });
     const [endDate, setEndDate] = useState(new Date());
 
     const today = new Date();
@@ -163,47 +167,47 @@ function Transactions() {
         setOption(selected);
 
 
-        const offset = 7 * 60; // Chênh lệch giờ của Việt Nam là GMT+7 (7 giờ so với UTC)
+        const offset = 7 * 60;
 
-        // Đặt thời gian là 12:00 AM hôm nay
         const todayStart = new Date(today);
-        todayStart.setHours(0, 0, 0, 0);
-        const formattedTodayStart = todayStart.toISOString().slice(0, 16);
+
+        const formattedTodayStart = new Date(todayStart.setHours(0, 0, 0, 0));
+
 
         // Đặt thời gian là 11:59 PM hôm nay
         const todayEnd = new Date(today);
-        todayEnd.setHours(23, 59, 59, 999);
-        const formattedTodayEnd = todayEnd.toISOString().slice(0, 16);
+
+        const formattedTodayEnd = todayEnd;
 
         // Ngày hôm qua (12:00 AM - 11:59 PM)
         const yesterday = new Date(today);
         yesterday.setDate(today.getDate() - 1);
         const yesterdayStart = new Date(yesterday);
         yesterdayStart.setHours(0, 0, 0, 0);
-        const formattedYesterdayStart = yesterdayStart.toISOString().slice(0, 16);
+        const formattedYesterdayStart = yesterdayStart;
         const yesterdayEnd = new Date(yesterday);
         yesterdayEnd.setHours(23, 59, 59, 999);
-        const formattedYesterdayEnd = yesterdayEnd.toISOString().slice(0, 16);
+        const formattedYesterdayEnd = yesterdayEnd;
 
         // 7 ngày trước (12:00 AM - 11:59 PM hôm nay)
         const last7Days = new Date(today);
         last7Days.setDate(today.getDate() - 6);
         const last7DaysStart = new Date(last7Days);
         last7DaysStart.setHours(0, 0, 0, 0);
-        const formattedLast7DaysStart = last7DaysStart.toISOString().slice(0, 16);
+        const formattedLast7DaysStart = last7DaysStart;
         const formattedLast7DaysEnd = formattedTodayEnd;
 
         // Tháng này (12:00 AM đầu tháng - 11:59 PM hôm nay)
         const firstDayThisMonth = new Date(today.getFullYear(), today.getMonth(), 1);
         firstDayThisMonth.setMinutes(firstDayThisMonth.getMinutes() + offset);
         firstDayThisMonth.setHours(0, 0, 0, 0);
-        const formattedFirstDayThisMonthStr = firstDayThisMonth.toISOString().slice(0, 16);
+        const formattedFirstDayThisMonthStr = firstDayThisMonth;
 
         // Tháng trước (12:00 AM đầu tháng trước - 11:59 PM cuối tháng trước)
         const firstDayLastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
         const lastDayLastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
-        const formattedFirstDayLastMonthStr = firstDayLastMonth.toISOString().slice(0, 16);
-        const formattedLastDayLastMonthStr = lastDayLastMonth.toISOString().slice(0, 16);
+        const formattedFirstDayLastMonthStr = firstDayLastMonth;
+        const formattedLastDayLastMonthStr = lastDayLastMonth;
 
         // Chọn theo trường hợp
         switch (selected) {
@@ -233,101 +237,80 @@ function Transactions() {
 
     }
     const applyFilters = () => {
-     
-       
-    
-        // Filter transactions with the given statuses
-        const filteredTransactions = transactions.filter(item =>
-            ["Hoàn thành", "Thất bại", "Chờ xử lý", "Hoàn tiền"].includes(item.status)
-        );
-    
-        // Slice to limit results to the first 50 items
-        const limitedTransactions = filteredTransactions.slice(0, 50);
-    
-        // Calculate metrics based on limited transactions
-        const totalRevenue = limitedTransactions.reduce(
-            (sum, item) => (item.status === 'Hoàn thành' ? sum + item.amount : sum),
-            0
-        );
-        const successfulTransactions = limitedTransactions.filter(
-            (item) => item.status === 'Hoàn thành'
-        ).length;
-    
-        const totalfail = limitedTransactions.reduce(
-            (sum, item) => (item.status === 'Thất bại' ? sum + item.amount : sum),
-            0
-        );
-        const failedTransactions = limitedTransactions.filter(
-            (item) => item.status === 'Thất bại'
-        ).length;
-    
-        const totalpending = limitedTransactions.reduce(
-            (sum, item) => (item.status === 'Chờ xử lý' ? sum + item.amount : sum),
-            0
-        );
-        const pendingTransactions = limitedTransactions.filter(
-            (item) => item.status === 'Chờ xử lý'
-        ).length;
-    
-        const totalcashback = limitedTransactions.reduce(
-            (sum, item) => (item.status === 'Hoàn tiền' ? sum + item.amount : sum),
-            0
-        );
-        const cashbackTransactions = limitedTransactions.filter(
-            (item) => item.status === 'Hoàn tiền'
-        ).length;
-    
-        // Update the state with the new metrics
-        setMetrics({
-            totalRevenue,
-            successfulTransactions,
-            pendingTransactions,
-            cashbackTransactions,
-            failedTransactions,
-            totalfail,
-            totalpending,
-            totalcashback,
-        });
-    
-        console.log("Metrics updated:", {
-            totalRevenue,
-            successfulTransactions,
-            pendingTransactions,
-            cashbackTransactions,
-            failedTransactions,
-            totalfail,
-            totalpending,
-            totalcashback,
-        });
-    
-        // Log parameters for debugging purposes
-        console.log({
-            startDate: formatDate(startDate),
-            endDate: formatDate(endDate),
-            transactionCode,
-            status,
-        });
-    
         // Create params for the API request
         const params = new URLSearchParams();
-    
+
         if (startDate) params.append('startDate', formatDate(startDate)); // Convert to 'YYYY-MM-DD'
         if (endDate) params.append('endDate', formatDate(endDate));       // Convert to 'YYYY-MM-DD'
-        if (transactionCode) params.append('paymentId', transactionCode);
-        if (status) params.append('status', status); // No need to encodeURIComponent
-    
+        if (transactionCode) params.append('transactionCode', transactionCode);
+        if (status) params.append('status', status);
+
         const apiUrl = `http://localhost:8080/api/payments/filter?${params.toString()}`;
 
         axios
             .get(apiUrl)
             .then((response) => {
-                setTransactions(response.data);  // Update state with new transaction data
-                console.log("Filtered transactions from API:", response.data);
+                const transactionsFromAPI = response.data; // Transactions from API
+                console.log("Filtered transactions from API:", transactionsFromAPI);
+
+                
+                const filteredTransactions = transactionsFromAPI.filter((item) =>
+                    ["Hoàn thành", "Thất bại", "Chờ xử lý", "Hoàn tiền"].includes(item.status)
+                );
+
+              
+                const limitedTransactions = filteredTransactions.slice(0, 50);
+
+             
+                const totalRevenue = limitedTransactions.reduce(
+                    (sum, item) => (item.status === "Hoàn thành" ? sum + item.amount : sum),
+                    0
+                );
+                const successfulTransactions = limitedTransactions.filter(
+                    (item) => item.status === "Hoàn thành"
+                ).length;
+
+                const totalfail = limitedTransactions.reduce(
+                    (sum, item) => (item.status === "Thất bại" ? sum + item.amount : sum),
+                    0
+                );
+                const failedTransactions = limitedTransactions.filter(
+                    (item) => item.status === "Thất bại"
+                ).length;
+
+                const totalpending = limitedTransactions.reduce(
+                    (sum, item) => (item.status === "Chờ xử lý" ? sum + item.amount : sum),
+                    0
+                );
+                const pendingTransactions = limitedTransactions.filter(
+                    (item) => item.status === "Chờ xử lý"
+                ).length;
+
+                const totalcashback = limitedTransactions.reduce(
+                    (sum, item) => (item.status === "Hoàn tiền" ? sum + item.amount : sum),
+                    0
+                );
+                const cashbackTransactions = limitedTransactions.filter(
+                    (item) => item.status === "Hoàn tiền"
+                ).length;
+
+                // Update state with new transaction data and metrics
+                setTransactions(limitedTransactions);
+                setMetrics({
+                    totalRevenue,
+                    successfulTransactions,
+                    pendingTransactions,
+                    cashbackTransactions,
+                    failedTransactions,
+                    totalfail,
+                    totalpending,
+                    totalcashback,
+                });
             })
             .catch((error) => console.error(error));
-            
     };
-    
+
+
 
 
     const navigate = useNavigate();
@@ -336,6 +319,7 @@ function Transactions() {
         navigate(`/admin/transaction/detail/${id}`);
     };
     console.log(transactions)
+
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
             <div className=" flex justify-between items-center bg-[#e5f6fd] py-2 px-4 rounded-md mb-2">
@@ -373,7 +357,6 @@ function Transactions() {
                             <div className='relative w-96'>
                                 {option === "custom" && (
                                     <div className="flex items-center ">
-
                                         <DatePicker
                                             selected={startDate}
                                             onChange={(date) => setStartDate(date)}
@@ -383,8 +366,7 @@ function Transactions() {
                                             endDate={endDate}
                                             maxDate={today}
                                             dateFormat="dd/MM/yyyy HH:mm"
-                                            className="w-full border-gray-300 rounded-md p-2 text-sm  border-2"
-
+                                            className="w-full border-gray-300 rounded-md p-2 text-sm border-2"
                                         />
                                         <span className="mx-2 text-gray-600">-</span>
                                         <DatePicker
@@ -397,16 +379,17 @@ function Transactions() {
                                             minDate={startDate || today}
                                             maxDate={today}
                                             dateFormat="dd/MM/yyyy HH:mm"
-                                            className="w-full border-gray-300 rounded-md p-2 text-sm  border-2"
+                                            className="w-full border-gray-300 rounded-md p-2 text-sm border-2"
                                         />
                                     </div>
                                 )}
                                 <div className="mt-4">
                                     <p className="text-sm text-gray-700">
-                                        <strong>Bắt đầu:</strong> {startDate.toLocaleString("vi-VN")}
+                                        <strong>Bắt đầu:</strong> {format(startDate, "HH:mm dd-MM-yyyy")}
+
                                     </p>
                                     <p className="text-sm text-gray-700">
-                                        <strong>Kết thúc:</strong> {endDate.toLocaleString("vi-VN")}
+                                        <strong>Kết thúc:</strong> {format(endDate, "HH:mm dd-MM-yyyy")}
                                     </p>
                                 </div>
                             </div>
@@ -436,6 +419,7 @@ function Transactions() {
                                 <option value="Hoàn thành">Hoàn thành</option>
                                 <option value="Chờ xử lý">Chờ xử lý</option>
                                 <option value="Thất bại">Thất bại</option>
+                                <option value="Hoàn tiền">Hoàn tiền</option>
                             </select>
                         </div>
 
@@ -486,7 +470,7 @@ function Transactions() {
                 </div>
                 <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
                     <div className="text-sm font-medium text-gray-900 border-1 bg-[#fff9e2] rounded-lg p-3">
-                        <i className="bi bi-arrow-counterclockwise text-yellow-700 px-3 text-lg"></i>CASHBACK TRANSACTIONS
+                        <i className="bi bi-arrow-counterclockwise text-orange-700 px-3 text-lg"></i>CASHBACK TRANSACTIONS
                     </div>
                     <div className='flex align-center justify-between'>
                         <div className="text-md text-gray-600 pl-4 pr-4 text-center py-3">
@@ -508,7 +492,7 @@ function Transactions() {
                 </div>
                 <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
                     <div className="text-sm font-medium text-gray-900 border-1 bg-[#ffefdd] rounded-lg p-3">
-                        <i className="bi bi-clock-history text-orange-700 px-3 text-lg"></i>PENDING TRANSACTION
+                        <i className="bi bi-clock-history text-yellow-700 px-3 text-lg"></i>PENDING TRANSACTION
                     </div>
                     <div className='flex align-center justify-between'>
                         <div className="text-md text-gray-600 pl-4 pr-4 text-center py-3">
@@ -594,7 +578,13 @@ function Transactions() {
                                             <td className="p-4 text-sm">{t.amount} ₫</td>
                                             <td className="p-4">
                                                 <span
-                                                    className={`px-2 py-1 rounded text-sm ${t.status === 'Hoàn thành' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                                                    className={`px-2 py-1 rounded text-sm ${t.status === 'Hoàn thành'
+                                                        ? "bg-green-100 text-green-800"
+                                                        : t.status === "Chờ xử lý"
+                                                            ? "bg-yellow-100 text-yellow-800"
+                                                            : t.status === "Hoàn tiền"
+                                                                ? "bg-orange-100 text-orange-800"
+                                                                : "bg-red-100 text-red-800"
                                                         }`}
                                                 >
                                                     {t.status}
