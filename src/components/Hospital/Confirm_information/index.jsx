@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Breadcrumbs from "../Breadcrumbs";
 import { FaAddressCard, FaBuilding } from "react-icons/fa";
 import {
@@ -13,8 +13,70 @@ import {
 import { FaLocationDot } from "react-icons/fa6";
 import { MdGroups } from "react-icons/md";
 import { IoCard } from "react-icons/io5";
-import { Link } from "react-router-dom";
-function ConfirmInfo(props) {
+import { Link, useLocation } from "react-router-dom";
+import { getDoctorbyId } from "../../../api/Doctor/doctor";
+import { getSpecialtyById } from "../../../api/Doctor/specialty";
+import { getWorkTimeDoctorbyId } from "../../../api/Doctor/workinghour";
+import { profilebyaccountId } from "../../../api/Profile/profilebyaccount";
+function ConfirmInfo() {
+  const location = useLocation();
+  const getParams = new URLSearchParams(location.search);
+  // data 
+  const [dataDoctor, setDataDoctor] = useState({});
+  const [dataWork, setdataWork] = useState({});
+  const [dataSpecialty, setdataSpecialty] = useState({});
+  const [dataProfile, setdataProfile] = useState({});
+  // 
+  const doctorid = getParams.get("doctor");
+  const workid = getParams.get("work");
+  const specialtyid = getParams.get("specialty");
+  const profileid = getParams.get("profile");
+
+  useEffect(() => {
+    const fetchDoctor = async () => {
+      const data = await getDoctorbyId(doctorid);
+      setDataDoctor(data);
+    };
+
+    fetchDoctor();
+  }, [doctorid]);
+  useEffect(() => {
+    const fetchSpecialty = async () => {
+      const data = await getSpecialtyById(specialtyid);
+      setdataSpecialty(data);
+    };
+
+    fetchSpecialty();
+  }, [specialtyid]);
+  useEffect(() => {
+    const fetchDoctor = async () => {
+      const data = await getWorkTimeDoctorbyId(workid);
+      setdataWork(data);
+    };
+
+    fetchDoctor();
+  }, [workid]);
+  useEffect(() => {
+    const fetchDoctor = async () => {
+      const data = await profilebyaccountId(profileid);
+      setdataProfile(data);
+    };
+
+    fetchDoctor();
+  }, [profileid]);
+  const TimeFormatted = (time) => new Date(
+    `1970-01-01T${time}`
+  ).toLocaleTimeString("vi-VN", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  const formartDate = (date) => {
+    const d = new Date(date);
+    const day = d.getDay();
+    const month = d.getMonth();
+    const year = d.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
   return (
     <div className="flex justify-center py-5">
       <div className="w-4/5 ">
@@ -63,12 +125,10 @@ function ConfirmInfo(props) {
                     <tbody className="w-full text-center">
                       <tr className="my-2">
                         <td className="text-center pt-5">1</td>
-                        <td className="px-2 pt-5">Khám Nội Tổng Quát</td>
-                        <td className="pt-5">
-                          Khám Tự Chọn Yêu Cầu (Tầng trệt, 1 Khu B)
-                        </td>
-                        <td className="pt-5">ÂU DƯƠNG BẢO TRÂN</td>
-                        <td className="pt-5">09:30 - 10:30 10/12/2024</td>
+                        <td className="px-2 pt-5">Khám {dataSpecialty.name}</td>
+                        <td className="pt-5">Khám Tự Chọn Yêu Cầu</td>
+                        <td className="pt-5">{dataDoctor.name}</td>
+                        <td className="pt-5">{TimeFormatted(dataWork.startTime)} - {TimeFormatted(dataWork.endTime)} <br /> {formartDate(dataWork.workDate)}</td>
                         <td className="pt-5">Thanh toán tại Bệnh viện</td>
                       </tr>
                     </tbody>
@@ -95,7 +155,7 @@ function ConfirmInfo(props) {
                           <span>Họ và tên :</span>
                         </span>
                         <span className="text-[14px] font-medium text-[#003553]">
-                          Trần Văn Anh Yeong
+                          {dataProfile.fullname}
                         </span>
                       </li>
                       <li className="flex w-full items-center gap-2 text-[#003553] my-1 settingli">
@@ -104,7 +164,7 @@ function ConfirmInfo(props) {
                           <span>Ngày Sinh :</span>
                         </span>
                         <span className="text-[14px] font-medium text-[#003553]">
-                          1/1/2004
+                          {formartDate(dataProfile.birthdate)}
                         </span>
                       </li>
                       <li className="flex w-full items-center gap-2 text-[#003553] my-1 settingli">
@@ -113,7 +173,7 @@ function ConfirmInfo(props) {
                           <span>Số điện thoại :</span>
                         </span>
                         <span className="text-[14px] font-medium text-[#003553]">
-                          0362061339
+                          {dataProfile.phone}
                         </span>
                       </li>
                       <li className="flex w-full items-center gap-2 text-[#003553] my-1 settingli">
@@ -122,7 +182,7 @@ function ConfirmInfo(props) {
                           <span>Giới tính :</span>
                         </span>
                         <span className="text-[14px] font-medium text-[#003553]">
-                          Nam Nữ
+                          {dataProfile.gender == "Male" ? "Nam" : "Nữ"}
                         </span>
                       </li>
                     </ul>
@@ -135,7 +195,7 @@ function ConfirmInfo(props) {
                           <span>Mã số BHYT :</span>
                         </span>
                         <span className="text-[14px] font-medium text-[#003553]">
-                          Chưa cập nhật
+                          {dataProfile.codeBhyt != null ? dataProfile.codeBhyt : "Chưa cập nhật"}
                         </span>
                       </li>
                       <li className="flex w-full items-center gap-2 text-[#003553] my-1 settingli">
@@ -144,7 +204,7 @@ function ConfirmInfo(props) {
                           <span>Dân tộc :</span>
                         </span>
                         <span className="text-[14px] font-medium text-[#003553]">
-                          Kinh
+                          {dataProfile.nation}
                         </span>
                       </li>
                       <li className="flex w-full items-center gap-2 text-[#003553] my-1 settingli">
@@ -153,7 +213,7 @@ function ConfirmInfo(props) {
                           <span>CMND :</span>
                         </span>
                         <span className="text-[14px] font-medium text-[#003553]">
-                          075201133477
+                          {dataProfile.identityCard}
                         </span>
                       </li>
                       <li className="flex w-full items-center gap-2 text-[#003553] my-1 settingli">
@@ -162,8 +222,7 @@ function ConfirmInfo(props) {
                           <span>Địa chỉ :</span>
                         </span>
                         <span className="text-[14px] font-medium text-[#003553]">
-                          cmt 8 quận 10 Thị trấn Tân Túc Huyện Bình Chánh Thành
-                          phố Hồ Chí Minh
+                          {dataProfile.address}
                         </span>
                       </li>
                     </ul>
@@ -172,7 +231,7 @@ function ConfirmInfo(props) {
               </div>
             </div>
             <div className="w-full h-[40px] flex items-center justify-end my-5">
-              <Link to={`/choose-payment`}>
+              <Link to={`/choose-payment?doctor=${doctorid}&work=${workid}&specialty=${specialtyid}&profile=${profileid}`}>
                 <button
                   className="py-2 flex items-center justify-center gap-2 px-6 bg-gradient-to-r from-[#00b5f1] to-[#00e0ff] rounded-lg text-[#fff]"
                   id="godown"

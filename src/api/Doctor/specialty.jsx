@@ -1,8 +1,27 @@
 import axios from "axios";
+import token from "../token";
 
 const getSpecialtyByDoctor = async (doctorid) => {
   try {
-    const res = await axios.get(`http://localhost:8080/api/specialty/doctor/${doctorid}`);
+    const res = await axios.get(`http://localhost:8080/api/specialty/doctor/${doctorid}`,{
+      headers: {
+        Authorization: `Bearer ${token}`  
+      }
+    });
+    console.log("Specialty by doctor: ", res.data);
+    return res.data; 
+  } catch (error) {
+    console.error(error);
+    return []; 
+  }
+};
+const getSpecialtyById = async (id) => {
+  try {
+    const res = await axios.get(`http://localhost:8080/api/specialty/${id}`,{
+      headers: {
+        Authorization: `Bearer ${token}`  
+      }
+    });
     console.log("Specialty by doctor: ", res.data);
     return res.data; 
   } catch (error) {
@@ -11,4 +30,4 @@ const getSpecialtyByDoctor = async (doctorid) => {
   }
 };
 
-export default getSpecialtyByDoctor;
+export {getSpecialtyByDoctor, getSpecialtyById};

@@ -9,23 +9,12 @@ import { IoReturnDownBack } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import Calender from "../Calender";
 import { AppContext } from "../../Context/AppProvider";
-import doctorApi from "../../../api/Doctor/doctor";
+import {doctorApi} from "../../../api/Doctor/doctor";
 import { format } from "crypto-js";
-import getWorkTimeDoctor from "../../../api/Doctor/workinghour";
+import {getWorkTimeDoctor} from "../../../api/Doctor/workinghour";
 import { stringify } from "postcss";
-import getSpecialtyByDoctor from "../../../api/Doctor/specialty";
+import {getSpecialtyByDoctor} from "../../../api/Doctor/specialty";
 
-const fake = [
-  { id: 1, name: "Trần Thanh Phong", gender: "Male" },
-  { id: 2, name: "Cho In Yeong", gender: "Female" },
-  { id: 3, name: "Nguyễn Văn Nghị", gender: "Underfind" },
-  { id: 4, name: "Nguyễn Anh Tuấn", gender: "Male" },
-];
-const faketime = [
-  { id: 1, settime: "7:30 - 8:30" },
-  { id: 2, settime: "9:30 - 10:30" },
-  { id: 3, settime: "11:30 - 12:30" },
-];
 const faketime2 = [
   { id: 1, settime: "13:30 - 14:30" },
   { id: 2, settime: "14:30 - 15:30" },
@@ -39,6 +28,7 @@ function Booking() {
   // chọn các data
   const [txnSpecialty, setTxnSpecialty] = useState();
   const [txnIdWorkTime, setTxnIdWorkTime] = useState(0);
+  const [txnSpecialtyId, setTxnSpecialtyId] = useState(0);
   //
 
   const [doctorId, setdoctorId] = useState(0);
@@ -64,7 +54,7 @@ function Booking() {
   };
   const handleSelectidByWorktime = (id) => {
     setTxnIdWorkTime(id);
-  }
+  };
   // end chọn ngày
 
   // start điều hướng quay lại
@@ -141,8 +131,8 @@ function Booking() {
     fetchWorkTime();
   }, [doctorId]);
   useEffect(() => {
-    console.log("txnIdWorkTime: " + txnIdWorkTime);
-  }, [txnIdWorkTime])
+    console.log("txnSpecialtyId: " + txnSpecialtyId);
+  }, [txnSpecialtyId]);
   return (
     <div className="flex justify-center py-5">
       <div className="w-4/5 ">
@@ -287,7 +277,12 @@ function Booking() {
                           className="w-full hover:text-[#00e0ff] mb-5  cursor-pointer"
                           onClick={() => handleShowSpecialty(item.name)}
                         >
-                          <span className="text-[20px] font-medium">
+                          <span
+                            className="text-[20px] font-medium"
+                            onClick={() => {
+                              setTxnSpecialtyId(item.id);
+                            }}
+                          >
                             Khám {item.name}
                           </span>
                         </div>
@@ -394,7 +389,6 @@ function Booking() {
                               isNaN(workDate.getTime()) ||
                               isNaN(chooseDateFormatted.getTime())
                             ) {
-                              
                               return null;
                             }
 
@@ -403,25 +397,38 @@ function Booking() {
                             const formattedChooseDates =
                               chooseDateFormatted.toLocaleDateString("vi-VN");
 
-                              if (formattedWorkDate === formattedChooseDates) {
-                                const startTimeFormatted = new Date(`1970-01-01T${item.startTime}`).toLocaleTimeString('vi-VN', {
-                                  hour: '2-digit',
-                                  minute: '2-digit',
-                                });
-                                const endTimeFormatted = new Date(`1970-01-01T${item.endTime}`).toLocaleTimeString('vi-VN', {
-                                  hour: '2-digit',
-                                  minute: '2-digit',
-                                });
-                                return (
-                                  <Link key={index} to={`/choose-profile?doctor=${doctorId}&work=${item.id}`}>
-                                    <div className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]" key={index} onClick={() => handleSelectidByWorktime(item.id)}>
-                                      {startTimeFormatted} - {endTimeFormatted}
-                                    </div>
-                                  </Link>
-                                );
-                              }
-                            
-                              return null;
+                            if (formattedWorkDate === formattedChooseDates) {
+                              const startTimeFormatted = new Date(
+                                `1970-01-01T${item.startTime}`
+                              ).toLocaleTimeString("vi-VN", {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              });
+                              const endTimeFormatted = new Date(
+                                `1970-01-01T${item.endTime}`
+                              ).toLocaleTimeString("vi-VN", {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              });
+                              return (
+                                <Link
+                                  key={index}
+                                  to={`/choose-profile?doctor=${doctorId}&work=${item.id}&specialty=${txnSpecialtyId}`}
+                                >
+                                  <div
+                                    className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]"
+                                    key={index}
+                                    onClick={() =>
+                                      handleSelectidByWorktime(item.id)
+                                    }
+                                  >
+                                    {startTimeFormatted} - {endTimeFormatted}
+                                  </div>
+                                </Link>
+                              );
+                            }
+
+                            return null;
                           })}
                         </div>
                         <div className="w-full text-[20px] my-5">

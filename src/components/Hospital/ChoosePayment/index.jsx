@@ -9,6 +9,10 @@ import {
   FaClock,
   FaCreditCard,
 } from "react-icons/fa";
+import { getDoctorbyId } from "../../../api/Doctor/doctor";
+import { getSpecialtyById } from "../../../api/Doctor/specialty";
+import { getWorkTimeDoctorbyId } from "../../../api/Doctor/workinghour";
+import { profilebyaccountId } from "../../../api/Profile/profilebyaccount";
 import { FaArrowRight } from "react-icons/fa";
 import { FaLocationDot, FaRegPaste, FaUserDoctor } from "react-icons/fa6";
 import { MdOutlineAttachMoney, MdOutlineMedicalServices } from "react-icons/md";
@@ -16,35 +20,90 @@ import { BsCalendar2DateFill } from "react-icons/bs";
 import MomoPayment from "../../../api/Payment/momo";
 import axios from "axios";
 import { Divider } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function ChoosePayment() {
+  const location = useLocation();
+  const getParams = new URLSearchParams(location.search);
+  // data 
+  const [dataDoctor, setDataDoctor] = useState({});
+  const [dataWork, setdataWork] = useState({});
+  const [dataSpecialty, setdataSpecialty] = useState({});
+  const [dataProfile, setdataProfile] = useState({});
+  const [fee, setFee] = useState(2000);
+  // 
+  const doctorid = getParams.get("doctor");
+  const workid = getParams.get("work");
+  const specialtyid = getParams.get("specialty");
+  const profileid = getParams.get("profile");
+
+  useEffect(() => {
+    const fetchDoctor = async () => {
+      const data = await getDoctorbyId(doctorid);
+      setDataDoctor(data);
+    };
+
+    fetchDoctor();
+  }, [doctorid]);
+  useEffect(() => {
+    const fetchSpecialty = async () => {
+      const data = await getSpecialtyById(specialtyid);
+      setdataSpecialty(data);
+    };
+
+    fetchSpecialty();
+  }, [specialtyid]);
+  useEffect(() => {
+    const fetchDoctor = async () => {
+      const data = await getWorkTimeDoctorbyId(workid);
+      setdataWork(data);
+    };
+
+    fetchDoctor();
+  }, [workid]);
+  useEffect(() => {
+    const fetchDoctor = async () => {
+      const data = await profilebyaccountId(profileid);
+      setdataProfile(data);
+    };
+
+    fetchDoctor();
+  }, [profileid]);
+  const TimeFormatted = (time) => new Date(
+    `1970-01-01T${time}`
+  ).toLocaleTimeString("vi-VN", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  const formartDate = (date) => {
+    const d = new Date(date);
+    const day = d.getDay();
+    const month = d.getMonth();
+    const year = d.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
   const [checkMethod, setCheckMethod] = useState();
   const randomNumberInRange = () => {
     return Math.floor(Math.random() * (99999999 - 11111111 + 1)) + 11111111;
   };
   const navigate = useNavigate();
-  const copyToClipboard = (text) => {
-    navigator.clipboard.writeText(text);
-  };
 
-  useEffect(() => {
-    axios
-      .get(
-        "https://script.googleusercontent.com/macros/echo?user_content_key=bS7YTOowzydjITcDQHtc1LuN4RKXKdLAZkMrtTyzb8JPePT14a4zLmxXxOf7i3tM-1RLc-VjbZYZxL6ZAXNHNBwfYidUJqsXm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnJtEfX59T8eOEQBMAyKvYeMy-4R8KMjjtMFSxav8DWBMaCsRUFzA1I7q5O3cvI4-2EPjNDusOx0tJm4NPCL5dKOutDRR1JtRKA&lib=M_gSwOHrgvf5DnR9tSLjeAN_Iq9KWg1kY"
-      )
-      .then((result) => console.log(result.data.data))
-      .catch((err) => console.log(err));
-  });
+
   const PayWithMomo = async () => {
     if (checkMethod == "momo") {
-      MomoPayment();
+      MomoPayment(fee, "0358227696");
     } else if (checkMethod == "bank") {
 
       navigate(`/confirm-payment?orderid=${randomNumberInRange()}`);
     } else {
       alert("Chưa chọn phương thức thanh toán");
     }
+  };
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND',
+    }).format(amount);
   };
   return (
     <div className="flex justify-center py-5">
@@ -124,7 +183,7 @@ function ChoosePayment() {
                             </span>
                             <span>Chuyên khoa</span>
                           </div>
-                          <span>Khám tổng quát</span>
+                          <span>Khám {dataSpecialty.name}</span>
                         </li>
                         <li className="text-[#003553] border-b border-solid border-[#c2c2c2]/60 flex justify-between items-center settingli my-5">
                           <div className="flex items-center gap-2 font-medium mb-3">
@@ -133,7 +192,7 @@ function ChoosePayment() {
                             </span>
                             <span>Bác sĩ</span>
                           </div>
-                          <span>Trần thanh phong</span>
+                          <span>{dataDoctor.name}</span>
                         </li>
                         <li className="text-[#003553] border-b border-solid border-[#c2c2c2]/60 flex justify-between items-center settingli my-5">
                           <div className="flex items-center gap-2 font-medium mb-3">
@@ -151,7 +210,7 @@ function ChoosePayment() {
                             </span>
                             <span>Ngày khám</span>
                           </div>
-                          <span>10/12/2024</span>
+                          <span>{formartDate(dataWork.workDate)}</span>
                         </li>
                         <li className="text-[#003553] border-b border-solid border-[#c2c2c2]/60 flex justify-between items-center settingli my-5">
                           <div className="flex items-center gap-2 font-medium mb-3">
@@ -160,7 +219,7 @@ function ChoosePayment() {
                             </span>
                             <span>Giờ khám</span>
                           </div>
-                          <span>09:30 - 10:30</span>
+                          <span>{TimeFormatted(dataWork.startTime)} - {TimeFormatted(dataWork.endTime)}</span>
                         </li>
                         <li className="text-[#003553]  flex justify-between items-center settingli mt-5">
                           <div className="flex items-center gap-2 font-medium mb-3">
@@ -180,7 +239,7 @@ function ChoosePayment() {
                         Tổng Cộng:
                       </span>
                       <span className="text-[18px] text-[#00b5f1] font-medium whitespace-nowrap">
-                        100 triệu đ
+                        {formatCurrency(fee)}
                       </span>
                     </div>
                   </div>

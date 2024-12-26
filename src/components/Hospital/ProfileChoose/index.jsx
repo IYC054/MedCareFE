@@ -12,10 +12,16 @@ import {
 import { FaLocationDot } from "react-icons/fa6";
 import { MdGroups } from "react-icons/md";
 import "./Profilechoose.scss";
-import { Link } from "react-router-dom";
-import profilebyaccount from "../../../api/Profile/profilebyaccount";
+import { Link, useLocation } from "react-router-dom";
+import {profilebyaccount} from "../../../api/Profile/profilebyaccount";
 const fakedata = [{ id: 1 }, { id: 2 }];
 function ProfileChoose(props) {
+  const location = useLocation();
+  const getParams = new URLSearchParams(location.search);
+  const doctorId = getParams.get("doctor")
+  const workid = getParams.get("work")
+  const specialtyid = getParams.get("specialty")
+
   const [selectProfileId, setSelectProfileId] = useState(null);
   const [DataProfile, setDataProfile] = useState([]);
   const handleSelectProfile = (e) => {
@@ -32,6 +38,7 @@ function ProfileChoose(props) {
   useEffect(() => {
     console.log(selectProfileId);
   }, [selectProfileId])
+
   return (
     <div className="flex justify-center py-5">
       <div className="w-4/5 max-lg:4/5 mb-10">
@@ -112,7 +119,7 @@ function ProfileChoose(props) {
                 <div className="mb-2">
                   <hr className="h-[1px] mb-2" />
                   <div className="w-full h-[40px] flex items-center justify-end">
-                    <Link to={`/confirm-information?hospital=choray`}>
+                    <Link to={`/confirm-information?hospital=choray&doctor=${doctorId}&work=${workid}&specialty=${specialtyid}&profile=${selectProfileId}`}>
                       <button
                         className="py-2 flex items-center justify-center gap-2 px-6 bg-gradient-to-r from-[#00b5f1] to-[#00e0ff] rounded-lg text-[#fff]"
                         id="godown"

@@ -5,6 +5,7 @@ export const AppContext = createContext();
 const AppProvider = ({ children }) => {
     const [isShow, setisShow] = useState(false);
     const [content, setContent] = useState();
+    const [specialtyid, setspecialtyid] = useState(0);
     console.log(isShow, content);
 
     useEffect(() => {
@@ -16,7 +17,7 @@ const AppProvider = ({ children }) => {
     }, [isShow]);
 
     return (
-        <AppContext.Provider value={{ setisShow, setContent, content }}>
+        <AppContext.Provider value={{ setisShow, setContent, content, specialtyid, setspecialtyid }}>
             {children}
             {isShow && (
                 <div className="fixed inset-0 z-[100000]">

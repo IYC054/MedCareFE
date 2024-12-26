@@ -5,7 +5,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import viLocale from "@fullcalendar/core/locales/vi";
 import "./calender.scss";
-import getWorkTimeDoctor from "../../../api/Doctor/workinghour";
+import {getWorkTimeDoctor} from "../../../api/Doctor/workinghour";
 
 function Calender({ onDateSelect, doctorId }) {
   const [WorkTimeDoctor, setWorkTimeDoctor] = useState([]);

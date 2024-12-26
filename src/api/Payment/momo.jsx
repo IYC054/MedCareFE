@@ -1,7 +1,8 @@
 import React from "react";
 import axios from "axios";
+import token from "../token";
 
-const MomoPayment = async () => {
+const MomoPayment = async (fee, phone) => {
   try {
     const randomNumberInRange = () => {
       return Math.floor(Math.random() * (99999999 - 11111111 + 1)) + 11111111;
@@ -9,9 +10,13 @@ const MomoPayment = async () => {
     const response = await axios.post(
       "http://localhost:8080/api/payment/momo",
       {
-        amount: "1000",
-        orderInfo: `MedCare ${randomNumberInRange()}`,
-
+        amount: fee,
+        orderInfo: `MedCare ${phone}`,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
 
