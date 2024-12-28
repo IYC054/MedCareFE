@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 import axios from 'axios';
+import token from '../../../api/token';
 
 const Chart12Months = () => {
     const [monthlyData, setMonthlyData] = useState(new Array(12).fill(0)); // Mảng chứa tổng doanh thu của 12 tháng
@@ -8,7 +9,9 @@ const Chart12Months = () => {
     useEffect(() => {
         const fetchMonthlyData = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/payments');
+                const response = await axios.get('http://localhost:8080/api/payments',{  headers: {
+                    Authorization: `Bearer ${token}`,
+                },});
                 const payments = response.data;
 
                 const currentYear = new Date().getFullYear();

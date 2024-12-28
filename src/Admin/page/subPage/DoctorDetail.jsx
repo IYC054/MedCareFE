@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import token from '../../../api/token';
 
 function DoctorDetail() {
     const { id } = useParams(); // Lấy ID bác sĩ từ URL
@@ -13,7 +14,9 @@ function DoctorDetail() {
         const fetchDoctorData = async () => {
             try {
                 // Lấy danh sách bác sĩ
-                const response = await axios.get('http://localhost:8080/api/doctors');
+                const response = await axios.get('http://localhost:8080/api/doctors',{  headers: {
+                    Authorization: `Bearer ${token}`,
+                },});
                 const doctorData = response.data.find(doc => doc.account.id === parseInt(id));
 
                 if (doctorData) {

@@ -36,6 +36,7 @@ import PaymentSuccess from "./components/Hospital/PaymentSuccess";
 import Specialty from "./Admin/page/Specialty";
 import CreateSpecialty from "./Admin/page/createPage/CreateSpecialty";
 import LoginAdmin from "./Admin/page/LoginAdmin";
+import AppointmentDetail from "./Admin/page/subPage/AppointmentDetail";
 
 
 
@@ -96,6 +97,10 @@ const router = createBrowserRouter([
       {
         path: "/admin/appointment",
         element: <Appointment />,
+      },
+      {
+        path: "/admin/appointment/detail",
+        element: <AppointmentDetail />,
       },
       {
         path: "/admin/appointment/createApp",

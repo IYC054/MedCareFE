@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import token from '../../../api/token';
 
 function TransactionDetail() {
     const { id } = useParams();
@@ -14,7 +15,9 @@ function TransactionDetail() {
         const fetchData = async () => {
             try {
                 // Fetch transaction data
-                const tranResponse = await axios.get(`http://localhost:8080/api/payments/${id}`);
+                const tranResponse = await axios.get(`http://localhost:8080/api/payments/${id}`,{  headers: {
+                    Authorization: `Bearer ${token}`,
+                },});
                 const transactionData = tranResponse.data;
 
                 if (!transactionData) {
@@ -24,7 +27,9 @@ function TransactionDetail() {
                 setTran(transactionData);
 
                 // Fetch appointment if transaction data is valid
-                const appointmentResponse = await axios.get(`http://localhost:8080/api/appointment/${transactionData.appointment_id}`);
+                const appointmentResponse = await axios.get(`http://localhost:8080/api/appointment/${transactionData.appointment_id}`,{  headers: {
+                    Authorization: `Bearer ${token}`,
+                },});
                 const appointmentData = appointmentResponse.data;
 
                 if (!appointmentData || appointmentData.id !== transactionData.appointment_id) {
@@ -34,7 +39,9 @@ function TransactionDetail() {
                 setAppointment(appointmentData.patient.account_id);
 
                 // Fetch patient information using the account ID from appointment
-                const patientResponse = await axios.get(`http://localhost:8080/api/account/${appointmentData.patient.account_id}`);
+                const patientResponse = await axios.get(`http://localhost:8080/api/account/${appointmentData.patient.account_id}`,{  headers: {
+                    Authorization: `Bearer ${token}`,
+                },});
                 const patientData = patientResponse.data;
 
 

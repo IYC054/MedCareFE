@@ -9,6 +9,7 @@ import ChartMess from './chart/ChartMess';
 import ChartMessSent from './chart/ChartMessSent';
 import ChartMessInbox from './chart/ChartMessInbox';
 import axios from 'axios';
+import token from '../../api/token';
 
 function Dashboard() {
     const [activeTab, setActiveTab] = useState('this month');
@@ -31,13 +32,25 @@ function Dashboard() {
     useEffect(() => {
         const fetch = async () => {
 
-            const responseUser = await axios.get('http://localhost:8080/api/account');
+            const responseUser = await axios.get('http://localhost:8080/api/account', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             const filteredUsers = responseUser.data.result.filter(u => u.role === 'Patients');
             setUser(filteredUsers);
 
-            const responseBook = await axios.get('http://localhost:8080/api/appointment');
+            const responseBook = await axios.get('http://localhost:8080/api/appointment', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             setBook(responseBook.data);
-            const responseMoney = await axios.get('http://localhost:8080/api/payments');
+            const responseMoney = await axios.get('http://localhost:8080/api/payments', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             const filteredMoney = responseMoney.data.filter(payment => payment.status === 'Hoàn thành');
             const totalMoney = filteredMoney.reduce((sum, payment) => sum + payment.amount, 0);
             setMoney(totalMoney);
@@ -56,7 +69,11 @@ function Dashboard() {
     useEffect(() => {
         const fetchIncomeData = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/payments');
+                const response = await axios.get('http://localhost:8080/api/payments', {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
                 const payments = response.data;
 
                 const currentDate = new Date();
@@ -279,7 +296,7 @@ function Dashboard() {
                                                         <div className="widget-content-wrapper flex items-center justify-between">
                                                             <div className="widget-content-left mr-6 pb-2">
                                                                 <div className="widget-numbers text-2xl text-gray-500 font-bold">
-                                                                {yearPercentChange.toFixed(2)}%
+                                                                    {yearPercentChange.toFixed(2)}%
                                                                 </div>
                                                             </div>
                                                             <div className="content-right">
@@ -292,7 +309,7 @@ function Dashboard() {
                                                             <div className="w-full bg-gray-200 rounded-full h-2 relative overflow-hidden">
                                                                 <div
                                                                     className="bg-purple-600 h-2 rounded-full transition-all duration-500"
-                                                                    style={{ width: `${Math.min(yearPercentChange, 100)}%`  }}
+                                                                    style={{ width: `${Math.min(yearPercentChange, 100)}%` }}
                                                                 ></div>
                                                                 {/* Continuous Glowing Effect */}
                                                                 <div className="progress-glow"></div>
@@ -300,7 +317,7 @@ function Dashboard() {
                                                         </div>
                                                     </div>
                                                 </div>
-                                              
+
                                             </div>
                                         </div>
                                     </div>

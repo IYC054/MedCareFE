@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 // import '../scss/AccountDoctor.scss';
 import { Link, useNavigate } from 'react-router-dom';
+import token from '../../api/token';
 
 function AccountDoctor(props) {
     const [doctor, setdoctor] = useState([])
@@ -10,7 +11,9 @@ function AccountDoctor(props) {
     useEffect(() => {
         const fetchdoctorAccounts = async () => {
 
-            const response = await axios.get('http://localhost:8080/api/account');
+            const response = await axios.get('http://localhost:8080/api/account',{  headers: {
+                Authorization: `Bearer ${token}`,
+            },});
             const filtereddoctors = response.data.result.filter(u => u.role === 'Doctor');
             setdoctor(filtereddoctors);
             console.log(filtereddoctors);
@@ -23,7 +26,9 @@ function AccountDoctor(props) {
     useEffect(() => {
         const fetchSpecialties = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/specialty');
+                const response = await axios.get('http://localhost:8080/api/specialty',{  headers: {
+                    Authorization: `Bearer ${token}`,
+                },});
                 setSpecialties(response.data); 
             } catch (error) {
                 console.error("Error fetching specialties:", error);

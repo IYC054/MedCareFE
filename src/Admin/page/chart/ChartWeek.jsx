@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 import axios from 'axios';
+import token from '../../../api/token';
 
 const ChartWeek = () => {
   const [chartData, setChartData] = useState([0, 0, 0, 0, 0, 0, 0]);
@@ -8,7 +9,9 @@ const ChartWeek = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/appointment');
+        const response = await axios.get('http://localhost:8080/api/appointment',{  headers: {
+          Authorization: `Bearer ${token}`,
+      },});
         const appointments = response.data;
 
         // Tính ngày đầu tuần (Thứ Hai) và ngày cuối tuần (Chủ Nhật)

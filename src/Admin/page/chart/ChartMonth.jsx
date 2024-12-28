@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 import axios from 'axios';
+import token from '../../../api/token';
 
 const ChartMonth = () => {
   const [chartData, setChartData] = useState(new Array(12).fill(0)); // Mảng 12 tháng, khởi tạo giá trị 0
@@ -8,7 +9,9 @@ const ChartMonth = () => {
   useEffect(() => {
     const fetchMonthlyData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/appointment');
+        const response = await axios.get('http://localhost:8080/api/appointment',{  headers: {
+          Authorization: `Bearer ${token}`,
+      },});
         const appointments = response.data;
 
         // Lấy năm hiện tại

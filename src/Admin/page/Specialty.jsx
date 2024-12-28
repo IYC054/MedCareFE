@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import token from '../../api/token';
 
 function Specialty(props) {
     const [specialty, setSpecialty] = useState([])
@@ -8,7 +9,9 @@ function Specialty(props) {
     useEffect(() => {
         const fetchSpecialty = async () => {
 
-            const response = await axios.get('http://localhost:8080/api/specialty');
+            const response = await axios.get('http://localhost:8080/api/specialty',{  headers: {
+                Authorization: `Bearer ${token}`,
+            },});
 
             setSpecialty(response.data);
 
