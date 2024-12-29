@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 import axios from 'axios';
+import token from '../../../api/token';
 
 const Chart1Week = () => {
   const [weeklyData, setWeeklyData] = useState(new Array(7).fill(0)); // Mảng dữ liệu cho 7 ngày
@@ -8,7 +9,9 @@ const Chart1Week = () => {
   useEffect(() => {
     const fetchWeeklyData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/payments');
+        const response = await axios.get('http://localhost:8080/api/payments',{  headers: {
+          Authorization: `Bearer ${token}`,
+      },});
         const payments = response.data;
 
         const currentDate = new Date();

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import token from '../../api/token';
 
 function AccountUser() {
     const [user, setUser] = useState([])
@@ -8,7 +9,9 @@ function AccountUser() {
     useEffect(() => {
         const fetchUserAccounts = async () => {
 
-            const response = await axios.get('http://localhost:8080/api/account');
+            const response = await axios.get('http://localhost:8080/api/account',{  headers: {
+                Authorization: `Bearer ${token}`,
+            },});
             const filteredUsers = response.data.result.filter(u => u.role === 'Patients');
             setUser(filteredUsers);
 

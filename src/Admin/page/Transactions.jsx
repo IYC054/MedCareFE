@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format } from "date-fns";
 import { useNavigate } from 'react-router-dom';
+import token from '../../api/token';
 function Transactions() {
     const [transactions, setTransactions] = useState([]);
     const [appointment, setAppointment] = useState([]);
@@ -25,14 +26,22 @@ function Transactions() {
     useEffect(() => {
         const fetchTransactions = async () => {
             try {
-                const responsePayments = await axios.get('http://localhost:8080/api/payments');
+                const responsePayments = await axios.get('http://localhost:8080/api/payments', {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
                 const paymentsData = responsePayments.data;
 
                 // Extract appointment IDs from payments
                 const appointmentIdsFromPayments = paymentsData.map((payment) => payment.appointment_id);
 
                 // Fetch appointments
-                const responseAppointments = await axios.get('http://localhost:8080/api/appointment');
+                const responseAppointments = await axios.get('http://localhost:8080/api/appointment', {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
                 const appointmentsData = responseAppointments.data;
                 setAppointment(appointmentsData);
 
@@ -46,7 +55,11 @@ function Transactions() {
                 const patientAccountIds = matchingAppointments.map((appointment) => appointment.patient.account_id);
 
                 // Fetch all patients
-                const responsePatients = await axios.get('http://localhost:8080/api/account');
+                const responsePatients = await axios.get('http://localhost:8080/api/account', {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
                 const patientData = responsePatients.data.result;
                 setPatient(patientData);
 
@@ -62,7 +75,11 @@ function Transactions() {
                 const endOfDay = new Date(today.setHours(23, 59, 59, 999));
 
                 // Fetch transactions data
-                const responseTransactions = await axios.get('http://localhost:8080/api/payments');
+                const responseTransactions = await axios.get('http://localhost:8080/api/payments', {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
                 const transactions = responseTransactions.data;
 
                 // Filter transactions for today
@@ -245,23 +262,27 @@ function Transactions() {
         if (transactionCode) params.append('transactionCode', transactionCode);
         if (status) params.append('status', status);
 
-        const apiUrl = `http://localhost:8080/api/payments/filter?${params.toString()}`;
-
+        const apiUrl = "http://localhost:8080/api/payments/filter"; 
+      
         axios
-            .get(apiUrl)
+            .get(`${apiUrl}?${params.toString()}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`, 
+                },
+            })
             .then((response) => {
-                const transactionsFromAPI = response.data; // Transactions from API
+                const transactionsFromAPI = response.data; 
                 console.log("Filtered transactions from API:", transactionsFromAPI);
 
-                
+
                 const filteredTransactions = transactionsFromAPI.filter((item) =>
                     ["Hoàn thành", "Thất bại", "Chờ xử lý", "Hoàn tiền"].includes(item.status)
                 );
 
-              
+
                 const limitedTransactions = filteredTransactions.slice(0, 50);
 
-             
+
                 const totalRevenue = limitedTransactions.reduce(
                     (sum, item) => (item.status === "Hoàn thành" ? sum + item.amount : sum),
                     0

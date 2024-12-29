@@ -7,7 +7,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./page/RootLayout";
 import RootLayoutAdmin from "./page/RootLayoutAdmin";
 import Dashboard from "./Admin/page/Dashboard";
-import AuthPage from "./page/AuthPage";
 import AccountUser from "./Admin/page/AccountUser";
 import AccountDoctor from "./Admin/page/AccountDoctor";
 import Appointment from "./Admin/page/Appointment";
@@ -23,7 +22,7 @@ import Feedback from './Admin/page/Feedback'
 import ConfirmInfo from "./components/Hospital/Confirm_information";
 import ProfileChoose from "./components/Hospital/ProfileChoose";
 import ChoosePayment from "./components/Hospital/ChoosePayment";
-import CheckPhone from "./components/Authentication/Register/CheckPhone";
+import CheckPhone from "./components/Authentication/CheckPhone";
 import CreatEmail from "./Admin/page/createPage/CreatEmail";
 import ResponseBackFeedback from "./Admin/page/createPage/ResponseBackFeedback";
 import ConfirmPayment from "./components/Hospital/ChoosePayment/ConfirmPayment";
@@ -36,6 +35,7 @@ import PaymentSuccess from "./components/Hospital/PaymentSuccess";
 import Specialty from "./Admin/page/Specialty";
 import CreateSpecialty from "./Admin/page/createPage/CreateSpecialty";
 import LoginAdmin from "./Admin/page/LoginAdmin";
+import AppointmentDetail from "./Admin/page/subPage/AppointmentDetail";
 
 
 
@@ -98,6 +98,10 @@ const router = createBrowserRouter([
         element: <Appointment />,
       },
       {
+        path: "/admin/appointment/detail",
+        element: <AppointmentDetail />,
+      },
+      {
         path: "/admin/appointment/createApp",
         element: <CreateApp />,
       },
@@ -131,24 +135,7 @@ const router = createBrowserRouter([
   {
     path: "/loginAdmin",
     element: <LoginAdmin />,
-  },
-  {
-    element: <AuthPage />,
-    children: [
-      {
-        path: "/auth/check-phone",
-        element: <CheckPhone />,
-      },
-      // {
-      //   path: "/auth/check-otp",
-      //   element: <CheckOTP/>,
-      // },
-      // {
-      //   path: "/auth/register",
-      //   element: <Resgister/>,
-      // },
-    ]
-  },
+  }
 ]);
 
 createRoot(document.getElementById('root')).render(
