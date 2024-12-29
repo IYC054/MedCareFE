@@ -1,34 +1,73 @@
 import React from "react";
 import axios from "axios";
+import token from "../token";
 
-const BankPayment = async (amount, description , transactionCode ) => {
+const BankPayment = async (amount, description, transactionCode) => {
   try {
-    
-   await axios.post("http://localhost:8080/api/payments", {
-      amount: amount,
-      paymentMethod: "Ngân hàng",
-      transactionDescription: description,
-      transactionCode: transactionCode,
-      appointmentId: 1,
-    }).then((respone) => {
-        console.log(respone)
-    }).catch((err) => {
-        console.log(err)
-    })
-
+    await axios
+      .post("http://localhost:8080/api/payments", {
+        amount: amount,
+        paymentMethod: "Ngân hàng",
+        transactionDescription: description,
+        transactionCode: transactionCode,
+        appointmentId: 1,
+      }, {
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      })
+      .then((respone) => {
+        console.log(respone);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   } catch (error) {
     alert(`${error.response.data}`);
   }
 };
-const GetPaymentCode = async (code) => {
+
+const gethistoryMbbank = async () => {
   try {
-    const response = await axios.get(`http://localhost:8080/api/payments/transcode/${code}`);
-    console.log(response);
-    return response.data;  // Trả về dữ liệu từ API
+    const data = new FormData();
+    data.append("sessionId", "f8d938d9-e85d-49be-9cea-5b0cf4c90449");
+    data.append("account", "0933315633");
+    const account = "0933315633";
+    var sessionId = "61f90e57-4ea0-4078-bd35-ffce3d2c1ab9"
+
+    const response = await axios.get(
+      `http://localhost:8080/api/payments/transaction-history`, {
+        headers: {
+          Authorization: `Bearer ${token}` 
+        },
+        params: {  
+          sessionId: sessionId, 
+          account: account
+        }
+      }
+    );
+    return response.data;
   } catch (error) {
     console.log(error);
-    return null;  // Nếu có lỗi, trả về null
+    return null;
+  }
+};
+const gethistoryPayment = async () => {
+  try {
+   
+
+    const response = await axios.get(
+      `http://localhost:8080/api/payments`, {
+        headers: {
+          Authorization: `Bearer ${token}` 
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return null;
   }
 };
 
-export {BankPayment,GetPaymentCode} ;
+export { BankPayment, gethistoryMbbank, gethistoryPayment };

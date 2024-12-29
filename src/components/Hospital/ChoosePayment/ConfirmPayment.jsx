@@ -4,10 +4,15 @@ import { FaRegPaste } from "react-icons/fa6";
 import bank from "../../../api/Bank/bank";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-import { BankPayment, GetPaymentCode } from "../../../api/Bank/payment";
-// https://script.googleusercontent.com/macros/echo?user_content_key=__ZBNLjzXF16sGbbYfxsPd9bkipAyDONUH5Gx89fr3BPKi89xkfktg6Zm8l-ZEE5DKZVbHMb02BR0GhXOW-gAbk9ZneuTrSGm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnKFSTgqWUC3IbRd9ct5YnsPGC9SeBer_DXjgG7tHWtkbwP2cF25Pi3tcAvwxiKaNVFwBhhEq5-m9Aa24UFt4HjrPmoFN7-tZYQ&lib=M_gSwOHrgvf5DnR9tSLjeAN_Iq9KWg1kY
-// url check lich su gia odich
+import {
+  BankPayment,
+  gethistoryMbbank,
+  gethistoryPayment,
+} from "../../../api/Bank/payment";
 function ConfirmPayment(props) {
+  //
+  const [HistoryMbbank, setHistoryMbbank] = useState([]);
+  //
   const [timeLeft, setTimeLeft] = useState(15 * 60);
   const navigate = useNavigate();
   const location = useLocation();
@@ -34,31 +39,35 @@ function ConfirmPayment(props) {
   useEffect(() => {
     const getTrans = async () => {
       try {
-        const result = await axios.get(
-          "https://script.googleusercontent.com/macros/echo?user_content_key=SwT55JguzVhYJZVNOjy_875iFMQoAKvo-SrAJ2UjrZBU-MDl0Ih8du-i_-3_ibtaKzz1eY83f6MyTLYOkxvOI6LBL-EDQbQ6m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnHmDzCyvqrH6g6K3uTlviLhPt4ZCpWztcL6A_cApFmaIR8LWVQztqdaZ0h4MVyhzPVgu2EDunFSjB5pd3pmUVnryn1Z4YyOlLg&lib=M_gSwOHrgvf5DnR9tSLjeAN_Iq9KWg1kY"
+        const result = await gethistoryMbbank();
+        const historypaymentdb = await gethistoryPayment();
+        //
+        const gethistorydb = result;
+        const gethistorymb = result?.result?.transactionHistoryList || [];
+        //
+
+        // check dieu kien
+        const isTransactionFound = gethistorymb.some((mbTransaction) =>
+          historypaymentdb.some(
+            (dbTransaction) =>
+              dbTransaction.transactionCode === mbTransaction.refNo
+          )
         );
+        if (!isTransactionFound) {
+          gethistorymb.map((mb) => {
+            if (mb.description.includes(orderid)) {
+              BankPayment(mb.creditAmount, mb.addDescription, mb.refNo)
+              alert("Đã bank cảm ơn ní")
+              navigator("/profile")
+            }
+          });
 
-        const data = result.data.data;
-        console.log(data);
-
-        for (const item of data) {
-          // Đợi kết quả từ GetPaymentCode
-          const paymentCode = await GetPaymentCode(item["Mã GD"]);
-          console.log("tìm id trong db", paymentCode);
-
-          if (paymentCode != 0) {
-            console.log("giao dịch đã tồn tại");
-          } else if (
-            paymentCode.length === 0 &&
-            item["Mô tả"].includes(orderid) &&
-            item["Giá trị"] >= amount
-          ) {
-            console.log("Thanh toán thành công, cảm ơn bạn");
-            // BankPayment(amount, orderid, item["Mã GD"].toString());
-            clearInterval(interval);
-            break;
-          }
+          console.log("chưa có giao dịch mới");
+        } else {
+          console.log("Giao dịch đã tồn tại");
         }
+
+        console.log("Bankhistory: " + JSON.stringify(historypaymentdb));
       } catch (err) {
         console.log(err);
       }
@@ -74,6 +83,9 @@ function ConfirmPayment(props) {
     return () => clearInterval(interval);
   }, []);
 
+  const checkPayment = () => {
+    alert("Check balance");
+  };
   return (
     <div className="flex justify-center py-5">
       <div className="w-[90%] border border-solid border-[#91caff] rounded-lg bg-[#e6f4ff]/60 p-4">
@@ -156,6 +168,14 @@ function ConfirmPayment(props) {
           <span className="text-[24px] text-[#D44333] font-semibold ">
             Đơn hàng sẽ hết hạn sau: {minutes} phút {seconds} giây
           </span>
+          <div className="w-full flex">
+            <button
+              className="px-5 py-2  bg-gradient-to-r from-[#00b5f1] to-[#00e0ff] border-none text-[#fff] rounded-lg"
+              onClick={checkPayment}
+            >
+              Tôi đã chuyển khoản
+            </button>
+          </div>
         </div>
       </div>
     </div>
