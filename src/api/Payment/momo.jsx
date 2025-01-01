@@ -2,16 +2,17 @@ import React from "react";
 import axios from "axios";
 import token from "../token";
 
-const MomoPayment = async (fee, phone) => {
+const MomoPayment = async (fee, phone,doctorid, workid, profileid, specialtyid) => {
   try {
-    const randomNumberInRange = () => {
-      return Math.floor(Math.random() * (99999999 - 11111111 + 1)) + 11111111;
-    };
     const response = await axios.post(
-      "http://localhost:8080/api/payment/momo",
+      "http://localhost:8080/api/payments/momo",
       {
         amount: fee,
         orderInfo: `MedCare ${phone}`,
+        doctorId: doctorid,
+        workId: workid,
+        profileId: profileid,
+        specialtyId: specialtyid,
       },
       {
         headers: {
@@ -27,7 +28,7 @@ const MomoPayment = async (fee, phone) => {
       alert("Thanh toán thất bại. Vui lòng thử lại.");
     }
   } catch (error) {
-    alert(`${error.response.data}`);
+    console.log(`${error.response.data}`);
   }
 };
 

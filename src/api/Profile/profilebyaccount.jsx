@@ -28,7 +28,6 @@ const profilebyaccountId = async (id) => {
         },
       }
     );
-    console.log("Profile by id: ", res.data);
     return res.data;
   } catch (error) {
     console.error(error);

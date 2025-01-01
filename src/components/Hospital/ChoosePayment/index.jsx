@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import Breadcrumbs from "../Breadcrumbs";
 import bank from "../../../api/Bank/bank";
 
@@ -21,17 +21,19 @@ import MomoPayment from "../../../api/Payment/momo";
 import axios from "axios";
 import { Divider } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
+import ConfirmPayment from "./ConfirmPayment";
 
 function ChoosePayment() {
   const location = useLocation();
   const getParams = new URLSearchParams(location.search);
-  // data 
+  const [showQR, setShowQR] = useState(false);
+  // data
   const [dataDoctor, setDataDoctor] = useState({});
   const [dataWork, setdataWork] = useState({});
   const [dataSpecialty, setdataSpecialty] = useState({});
   const [dataProfile, setdataProfile] = useState({});
   const [fee, setFee] = useState(2000);
-  // 
+  //
   const doctorid = getParams.get("doctor");
   const workid = getParams.get("work");
   const specialtyid = getParams.get("specialty");
@@ -69,48 +71,49 @@ function ChoosePayment() {
 
     fetchDoctor();
   }, [profileid]);
-  const TimeFormatted = (time) => new Date(
-    `1970-01-01T${time}`
-  ).toLocaleTimeString("vi-VN", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const TimeFormatted = (time) =>
+    new Date(`1970-01-01T${time}`).toLocaleTimeString("vi-VN", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   const formartDate = (date) => {
     const d = new Date(date);
     const day = d.getDay();
     const month = d.getMonth();
     const year = d.getFullYear();
     return `${day}/${month}/${year}`;
-  }
-  const [checkMethod, setCheckMethod] = useState();
-  const randomNumberInRange = () => {
-    return Math.floor(Math.random() * (99999999 - 11111111 + 1)) + 11111111;
   };
-  const navigate = useNavigate();
+  const [checkMethod, setCheckMethod] = useState();
 
+  const navigate = useNavigate();
 
   const PayWithMomo = async () => {
     if (checkMethod == "momo") {
-      MomoPayment(fee, "0358227696");
-    } else if (checkMethod == "bank") {
-
-      navigate(`/confirm-payment?orderid=${randomNumberInRange()}`);
+      MomoPayment(fee, "0358227696",doctorid, workid, profileid, specialtyid);
+      setShowQR(false);
     } else {
       alert("Chưa chọn phương thức thanh toán");
     }
   };
   const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND',
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
     }).format(amount);
   };
+  useEffect(() => {
+    if (checkMethod == "bank") {
+      setShowQR(true);
+    } else {
+      setShowQR(false);
+    }
+  }, [checkMethod]);
   return (
     <div className="flex justify-center py-5">
-      <div className="w-4/5 ">
+      <div className="lg:w-4/5 w-full px-2">
         <Breadcrumbs />
         <div className="grid grid-cols-4 gap-4">
-          <div className="col-span-1 w-full  py-4 mb-5">
+          <div className="lg:col-span-1 hidden lg:block w-full  py-4 mb-5">
             <div className="w-full  bg-[#fff] rounded-lg " id="goup">
               <div className="w-full h-[50px] bg-gradient-to-r from-[#00b5f1] to-[#00e0ff] rounded-t-lg text-[#fff] py-1 px-4 flex items-center">
                 <span className="font-medium text-[20px]">
@@ -132,7 +135,7 @@ function ChoosePayment() {
               </div>
             </div>
           </div>
-          <div className="col-span-3 py-4 w-full ">
+          <div className="lg:col-span-3 col-span-4 py-4 w-full ">
             <div className="w-full ">
               <div className="w-full h-[50px] bg-gradient-to-r from-[#00b5f1] to-[#00e0ff] rounded-t-lg text-[#fff] py-1 px-4 flex items-center justify-center">
                 <span className="font-medium text-[20px]">
@@ -140,7 +143,7 @@ function ChoosePayment() {
                 </span>
               </div>
               <div className="w-full grid-cols-3 grid gap-2 bg-[#fff] rounded-bl-lg rounded-br-lg">
-                <div className="col-span-2">
+                <div className="md:col-span-2 col-span-1">
                   <div className="w-full h-full  p-2">
                     <ul className="list-none">
                       <li className="flex items-center gap-2 settingli mt-2 mb-6">
@@ -161,12 +164,15 @@ function ChoosePayment() {
                           value="bank"
                           onClick={(e) => setCheckMethod(e.target.value)}
                         />
-                        <span>Chuyển khoản qua ngân hàng/Internet Banking</span>
+                        <span>Chuyển khoản qua ngân hàng/Internet Banking
+                          
+                        </span>
                       </li>
+                      <div className="md:block hidden"> {showQR ? <ConfirmPayment /> : <Fragment></Fragment>}</div>
                     </ul>
                   </div>
                 </div>
-                <div className="col-span-1 mb-5">
+                <div className="md:col-span-1 col-span-2 mb-5">
                   <div className="w-full h-full p-2">
                     <div className="text-[24px] text-[#00b5f1] font-medium flex items-center gap-2">
                       <span>
@@ -219,7 +225,10 @@ function ChoosePayment() {
                             </span>
                             <span>Giờ khám</span>
                           </div>
-                          <span>{TimeFormatted(dataWork.startTime)} - {TimeFormatted(dataWork.endTime)}</span>
+                          <span>
+                            {TimeFormatted(dataWork.startTime)} -{" "}
+                            {TimeFormatted(dataWork.endTime)}
+                          </span>
                         </li>
                         <li className="text-[#003553]  flex justify-between items-center settingli mt-5">
                           <div className="flex items-center gap-2 font-medium mb-3">
@@ -257,6 +266,9 @@ function ChoosePayment() {
                   <FaArrowRight id="goright" />
                 </span>
               </button>
+            </div>
+            <div className="w-full items-center justify-center my-5 md:hidden block">
+              {showQR ? <ConfirmPayment /> : <Fragment></Fragment>}
             </div>
           </div>
         </div>

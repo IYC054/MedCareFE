@@ -1,48 +1,102 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Success from "../../Loading/success";
+import CreateAppointment from "../../../api/Doctor/appointment";
+import token from "../../../api/token";
+import { gethistoryPayment } from "../../../api/Bank/payment";
 
 function PaymentSuccess() {
   const location = useLocation();
   const [paymentStatus, setPaymentStatus] = useState(null);
-
+  const navigator = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const amount = queryParams.get("amount");
   const orderInfo = queryParams.get("orderInfo");
   const resultCode = queryParams.get("resultCode");
   const orderId = queryParams.get("orderId");
+  const doctorid = queryParams.get("doctor");
+  const workid = queryParams.get("work");
+  const specialtyid = queryParams.get("specialty");
+  const profileid = queryParams.get("profile");
   useEffect(() => {
-    if (!amount || !orderInfo || !resultCode) {
-      console.error("Thiếu tham số quan trọng:", { amount, orderInfo, resultCode });
-      setPaymentStatus("Lỗi: Thiếu thông tin thanh toán.");
-      return;
-    }
-
-    console.log("Thông tin thanh toán:", { orderInfo, amount, resultCode }); 
-
-    
-    const formData = new URLSearchParams();
-    formData.append("resultCode", resultCode);
-    formData.append("orderInfo", orderInfo);
-    formData.append("amount", amount);
-    formData.append("trans_code", orderId);
-    axios
-      .post("http://localhost:8080/api/payments/confirm-payment", formData, {
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+    const confirmpayment = async () => {
+      if (!amount || !orderInfo || !resultCode) {
+        console.error("Thiếu tham số quan trọng:", {
+          amount,
+          orderInfo,
+          resultCode,
+        });
+        setPaymentStatus("Lỗi: Thiếu thông tin thanh toán.");
+        return;
+      }
+  
+      try {
+        
+  
+        const result = await gethistoryPayment();
+        const checktransaction = result || [];
+  
+        const transactionExists = checktransaction.some((db) =>
+          db.transactionCode.includes(orderId)
+        );
+  
+        if (transactionExists) {
+          console.log("Giao dịch đã tồn tại");
+          navigator("/profile");
+          return;
         }
-      })
-      .then((result) => {
-        console.log("Kết quả thanh toán:", result);
+        const createAppointment = await CreateAppointment(
+          1,
+          doctorid,
+          workid,
+          profileid,
+          specialtyid
+        );
+  
+        if (!createAppointment) {
+          setPaymentStatus("Lỗi: Không thể tạo lịch hẹn.");
+          return;
+        }
+        const formData = new URLSearchParams();
+        formData.append("resultCode", resultCode);
+        formData.append("orderInfo", orderInfo);
+        formData.append("amount", amount);
+        formData.append("trans_code", orderId);
+        formData.append("appointment_id", createAppointment.id);
+  
+        const response = await axios.post(
+          "http://localhost:8080/api/payments/confirm-payment",
+          formData,
+          {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+  
+        console.log("Kết quả thanh toán:", response);
         setPaymentStatus("Thanh toán thành công!");
-      })
-      .catch((error) => {
-        console.error("Lỗi xác nhận thanh toán:", error);
+        navigator("/profile");
+      } catch (error) {
+        console.error("Lỗi trong quá trình thanh toán:", error);
         setPaymentStatus("Đã xảy ra lỗi trong quá trình xác nhận thanh toán.");
-      });
-  }, [amount, orderId, orderInfo, resultCode]);
-  return (
+      }
+    };
+  
+    confirmpayment();
+  }, [
+    amount,
+    doctorid,
+    navigator,
+    orderId,
+    orderInfo,
+    profileid,
+    resultCode,
+    specialtyid,
+    workid,
+  ]);  return (
     <div>
       <section className="relative z-[1] py-28">
         <div className="w-[calc(100%_-_3rem)] mx-auto max-w-lg sm:max-w-3xl text-center">

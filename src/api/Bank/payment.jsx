@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import token from "../token";
 
-const BankPayment = async (amount, description, transactionCode) => {
+const BankPayment = async (amount, description, transactionCode, appointmentId) => {
   try {
     await axios
       .post("http://localhost:8080/api/payments", {
@@ -10,7 +10,7 @@ const BankPayment = async (amount, description, transactionCode) => {
         paymentMethod: "Ngân hàng",
         transactionDescription: description,
         transactionCode: transactionCode,
-        appointmentId: 1,
+        appointmentId: appointmentId,
       }, {
         headers: {
           Authorization: "Bearer " + token
@@ -33,7 +33,7 @@ const gethistoryMbbank = async () => {
     data.append("sessionId", "f8d938d9-e85d-49be-9cea-5b0cf4c90449");
     data.append("account", "0933315633");
     const account = "0933315633";
-    var sessionId = "61f90e57-4ea0-4078-bd35-ffce3d2c1ab9"
+    var sessionId = "1e725eb2-6e36-492d-9480-0beb81188977"
 
     const response = await axios.get(
       `http://localhost:8080/api/payments/transaction-history`, {

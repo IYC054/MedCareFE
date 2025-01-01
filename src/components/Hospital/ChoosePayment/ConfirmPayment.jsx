@@ -9,29 +9,17 @@ import {
   gethistoryMbbank,
   gethistoryPayment,
 } from "../../../api/Bank/payment";
+import CreateAppointment from "../../../api/Doctor/appointment";
 function ConfirmPayment(props) {
   //
   const [HistoryMbbank, setHistoryMbbank] = useState([]);
   //
-  const [timeLeft, setTimeLeft] = useState(15 * 60);
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const orderid = "MedCare 0337218288";
   const [amount, setAmount] = useState(2000);
-  useEffect(() => {
-    if (timeLeft === 0) {
-      navigate(-1);
-    }
-
-    const interval = setInterval(() => {
-      setTimeLeft((prevTime) => prevTime - 1);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [timeLeft]);
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = timeLeft % 60;
+  
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
@@ -42,7 +30,6 @@ function ConfirmPayment(props) {
         const result = await gethistoryMbbank();
         const historypaymentdb = await gethistoryPayment();
         //
-        const gethistorydb = result;
         const gethistorymb = result?.result?.transactionHistoryList || [];
         //
 
@@ -54,41 +41,39 @@ function ConfirmPayment(props) {
           )
         );
         if (!isTransactionFound) {
-          gethistorymb.map((mb) => {
+          gethistorymb.map(async (mb) => {
             if (mb.description.includes(orderid)) {
-              BankPayment(mb.creditAmount, mb.addDescription, mb.refNo)
-              alert("Đã bank cảm ơn ní")
-              navigator("/profile")
+              const appointment = await CreateAppointment(1,1,1,1, "Tổng quát");
+              console.log("appointment đã tạo: " + appointment.id);
+              if(appointment != null){
+                BankPayment(mb.creditAmount, mb.addDescription, mb.refNo, appointment.id)
+                alert("Đã bank cảm ơn ní")
+                // navigator("/profile")
+              }
             }
           });
 
-          console.log("chưa có giao dịch mới");
+          if(gethistorymb == null){
+            console.log("hết session")
+          }
         } else {
           console.log("Giao dịch đã tồn tại");
         }
 
-        console.log("Bankhistory: " + JSON.stringify(historypaymentdb));
+        // console.log("Bankhistory: " + JSON.stringify(historypaymentdb));
       } catch (err) {
         console.log(err);
       }
     };
     getTrans();
     const interval = setInterval(getTrans, 5000);
-    setTimeout(() => {
-      clearInterval(interval);
-      console.log("ngưng !!!!!");
-    }, 1000 * 60 * 5); //1 giây *60*=5 phút
-
     // Dọn dẹp interval khi component bị unmount
     return () => clearInterval(interval);
   }, []);
 
-  const checkPayment = () => {
-    alert("Check balance");
-  };
   return (
     <div className="flex justify-center py-5">
-      <div className="w-[90%] border border-solid border-[#91caff] rounded-lg bg-[#e6f4ff]/60 p-4">
+      <div className="w-full border border-solid border-[#91caff] rounded-lg bg-[#e6f4ff]/60 p-4 ">
         <div className="w-full text-center">
           <span>
             Để hoàn tất giao dịch, bạn vui lòng chuyển khoản với thông tin như
@@ -165,17 +150,6 @@ function ConfirmPayment(props) {
               </span>
             </span>
           </li>
-          <span className="text-[24px] text-[#D44333] font-semibold ">
-            Đơn hàng sẽ hết hạn sau: {minutes} phút {seconds} giây
-          </span>
-          <div className="w-full flex">
-            <button
-              className="px-5 py-2  bg-gradient-to-r from-[#00b5f1] to-[#00e0ff] border-none text-[#fff] rounded-lg"
-              onClick={checkPayment}
-            >
-              Tôi đã chuyển khoản
-            </button>
-          </div>
         </div>
       </div>
     </div>

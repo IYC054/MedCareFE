@@ -25,7 +25,7 @@ import ChoosePayment from "./components/Hospital/ChoosePayment";
 import CheckPhone from "./components/Authentication/CheckPhone";
 import CreatEmail from "./Admin/page/createPage/CreatEmail";
 import ResponseBackFeedback from "./Admin/page/createPage/ResponseBackFeedback";
-import ConfirmPayment from "./components/Hospital/ChoosePayment/ConfirmPayment";
+// import ConfirmPayment from "./components/Hospital/ChoosePayment/ConfirmPayment";
 import ProfileAdmin from "./Admin/page/ProfileAdmin";
 import UserDetail from "./Admin/page/subPage/UserDetail";
 import Transactions from "./Admin/page/Transactions";
@@ -54,7 +54,7 @@ const router = createBrowserRouter([
       { path: "/choose-profile", element: <ProfileChoose /> },
       { path: "/confirm-information", element: <ConfirmInfo /> },
       { path: "/choose-payment", element: <ChoosePayment /> },
-      { path: "/confirm-payment", element: <ConfirmPayment /> },
+      // { path: "/confirm-payment", element: <ConfirmPayment /> },
       { path: "/payment-success", element: <PaymentSuccess /> },
     ],
   },
