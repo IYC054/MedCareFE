@@ -16,7 +16,6 @@ function Tabprofile() {
   useEffect(() => {
     const getdataprofile = async () => {
       const result = await profilebyaccountId(1);
-      console.log("Profile by account " + JSON.stringify(result));
       setDataProfile(result)
     }
     getdataprofile();
@@ -60,7 +59,7 @@ function Tabprofile() {
                 <span>Giới tính :</span>
               </span>
               <span className="text-[14px] font-medium text-[#003553]">
-                {dataProfile.gender === "male" ? "Nam" : "Nữ"}
+                {dataProfile.gender === "Male" ? "Nam" : "Nữ"}
               </span>
             </li>
             <li className="flex w-full items-center gap-2 text-[#003553] my-1 settingli">

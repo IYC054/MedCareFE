@@ -14,19 +14,7 @@ const AppProvider = ({ children }) => {
     // Dọn dẹp interval khi component bị unmount
     return () => clearInterval(interval);
   }, []);
-  const [patient, setPatient] = useState([]);
-  useEffect(() => {
-    const getPatient = async () => {
-      try {
-        const result = await getpatientbyaccountid(1);
-        console.log("result : " + JSON.stringify(result));
-        setPatient(result);
-      } catch (error) {
-        console.error("Error fetching patient by account ID:", error);
-      }
-    };
-    getPatient();
-  }, []);
+
   const [isShow, setisShow] = useState(false);
   const [content, setContent] = useState();
   const [specialtyid, setspecialtyid] = useState(0);
@@ -42,7 +30,7 @@ const AppProvider = ({ children }) => {
 
   return (
     <AppContext.Provider
-      value={{ setisShow, setContent, content, specialtyid, setspecialtyid, patient }}
+      value={{ setisShow, setContent, content, specialtyid, setspecialtyid }}
     >
       {children}
       {isShow && (

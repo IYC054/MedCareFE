@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Success from "../../Loading/success";
-import CreateAppointment from "../../../api/Doctor/appointment";
+import {CreateAppointment} from "../../../api/Doctor/appointment";
 import token from "../../../api/token";
 import { gethistoryPayment } from "../../../api/Bank/payment";
 

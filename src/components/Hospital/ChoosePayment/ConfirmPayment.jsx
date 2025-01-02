@@ -9,7 +9,7 @@ import {
   gethistoryMbbank,
   gethistoryPayment,
 } from "../../../api/Bank/payment";
-import CreateAppointment from "../../../api/Doctor/appointment";
+import { CreateAppointment } from "../../../api/Doctor/appointment";
 function ConfirmPayment(props) {
   //
   const [HistoryMbbank, setHistoryMbbank] = useState([]);

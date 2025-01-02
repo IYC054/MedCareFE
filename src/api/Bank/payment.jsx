@@ -69,5 +69,22 @@ const gethistoryPayment = async () => {
     return null;
   }
 };
+const getallPaymentByAppoint = async (id) => {
+  try {
+   
 
-export { BankPayment, gethistoryMbbank, gethistoryPayment };
+    const response = await axios.get(
+      `http://localhost:8080/api/payments/appointment/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}` 
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+export { BankPayment, gethistoryMbbank, gethistoryPayment, getallPaymentByAppoint };

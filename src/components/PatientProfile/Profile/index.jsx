@@ -35,7 +35,7 @@ function PatientProfile() {
         <div className="w-full mt-4 grid grid-cols-4 gap-3">
           <div className="col-span-1">
             <div className="w-full bg-[#fff] border border-solid border-[#eaeaea] rounded-lg shadow-xl mb-5">
-              <div className="w-full h-[240px] my-4  flex justify-center">
+              <div className="w-full  my-4  flex justify-center">
                 <div className="w-56 h-full  rounded-full">
                   <img
                     src={Avatar}
