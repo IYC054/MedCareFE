@@ -7,7 +7,9 @@ import {
   FaFileMedical,
   FaMale,
   FaPhoneAlt,
+  FaSearch,
   FaUserCircle,
+  FaUserPlus,
 } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdGroups } from "react-icons/md";
@@ -16,16 +18,26 @@ import "./PatientProfile.scss";
 import { Link } from "react-router-dom";
 import Tabprofile from "./Tabprofile";
 import TabAppointment from "./TabAppointment";
+import TabCheckBHYT from "./TabCheckBHYT";
 function PatientProfile() {
   const [selectTabProfile, setSelectTabProfile] = useState(true);
   const [selectTabAppointment, setSelectTabAppointment] = useState(false);
+  const [selectTabBHYT, setSelectTabBHYT] = useState(false);
   const handleTab = (value) => {
     if(value == "hosobenhnhan"){
       setSelectTabProfile(true);
       setSelectTabAppointment(false);
+      setSelectTabBHYT(false);
     }else if(value == "phieukhambenh"){
       setSelectTabProfile(false);
       setSelectTabAppointment(true);
+      setSelectTabBHYT(false);
+    }
+    else if(value == "bhyt"){
+      setSelectTabProfile(false);
+      setSelectTabAppointment(false);
+      setSelectTabBHYT(true);
+    
     }
   }
   return (
@@ -52,12 +64,16 @@ function PatientProfile() {
             <div className="w-full  mb-5">
               <ul className="list-none text-center py-2 my-2">
                 <li onClick={() => handleTab("hosobenhnhan")} className={`my-4 flex justify-center hover:bg-[#fff] ${selectTabProfile ? "isactive" : ""} cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}>
-                  <FaFileMedical className="text-[20px]" />
+                  <FaUserPlus className="text-[20px]" />
                   Hồ sơ bệnh nhân
                 </li>
                 <li onClick={() => handleTab("phieukhambenh")} className={`my-4 flex justify-center hover:bg-[#fff] ${selectTabAppointment ? "isactive" : ""} cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}>
                   <FaFileMedical className="text-[20px]" />
                   Phiếu khám bệnh
+                </li>
+                <li onClick={() => handleTab("bhyt")} className={`my-4 flex justify-center hover:bg-[#fff] ${selectTabBHYT ? "isactive" : ""} cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}>
+                  <FaSearch className="text-[20px]" />
+                  Tra cứu BHYT
                 </li>
               </ul>
             </div>
@@ -65,6 +81,7 @@ function PatientProfile() {
           <div className="col-span-3">
            {selectTabProfile ? <Tabprofile /> : <Fragment />}
            {selectTabAppointment ? <TabAppointment /> : <Fragment />}
+           {selectTabBHYT ? <TabCheckBHYT /> : <Fragment />}
           </div>
         </div>
       </div>
