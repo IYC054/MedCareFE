@@ -16,7 +16,6 @@ const getDoctorbyId = async (doctorid) => {
         Authorization: `Bearer ${token}`  
       }
     });
-    console.log("Get doctor by id: ", res.data.account);
     return res.data.account; 
   } catch (error) {
     console.error(error);

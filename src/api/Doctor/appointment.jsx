@@ -27,7 +27,6 @@ const CreateAppointment = async (
         },
       }
     );
-    // console.log(response.data);
     return response.data
   } catch (error) {
     alert(`${error.response.data}`);
@@ -41,7 +40,6 @@ const getAppointmentByPatientId = async (id) => {
         Authorization: `Bearer ${token}`  
       }
     });
-    // console.log("Get Appoint by patientid: ", res.data);
     return res.data; 
   } catch (error) {
     console.error(error);

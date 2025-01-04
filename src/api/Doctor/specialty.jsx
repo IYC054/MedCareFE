@@ -8,7 +8,6 @@ const getSpecialtyByDoctor = async (doctorid) => {
         Authorization: `Bearer ${token}`  
       }
     });
-    console.log("Specialty by doctor: ", res.data);
     return res.data; 
   } catch (error) {
     console.error(error);
@@ -22,7 +21,6 @@ const getSpecialtyById = async (id) => {
         Authorization: `Bearer ${token}`  
       }
     });
-    console.log("Specialty by doctor: ", res.data);
     return res.data; 
   } catch (error) {
     console.error(error);

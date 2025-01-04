@@ -8,7 +8,6 @@ const getWorkTimeDoctor = async (doctorid) => {
           Authorization: `Bearer ${token}`  
         }
       });
-      console.log("WorkTime by doctor: ", res.data);
       return res.data; 
     } catch (error) {
       console.error(error);
@@ -22,7 +21,6 @@ const getWorkTimeDoctorbyId = async (id) => {
           Authorization: `Bearer ${token}`  
         }
       });
-      console.log("WorkTime by id: ", res.data);
       return res.data; 
     } catch (error) {
       console.error(error);

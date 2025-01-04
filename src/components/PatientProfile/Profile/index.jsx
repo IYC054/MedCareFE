@@ -22,23 +22,23 @@ import TabCheckBHYT from "./TabCheckBHYT";
 function PatientProfile() {
   const [selectTabProfile, setSelectTabProfile] = useState(true);
   const [selectTabAppointment, setSelectTabAppointment] = useState(false);
-  const [selectTabBHYT, setSelectTabBHYT] = useState(false);
+  // const [selectTabBHYT, setSelectTabBHYT] = useState(false);
   const handleTab = (value) => {
     if(value == "hosobenhnhan"){
       setSelectTabProfile(true);
       setSelectTabAppointment(false);
-      setSelectTabBHYT(false);
+      // setSelectTabBHYT(false);
     }else if(value == "phieukhambenh"){
       setSelectTabProfile(false);
       setSelectTabAppointment(true);
-      setSelectTabBHYT(false);
+      // setSelectTabBHYT(false);
     }
-    else if(value == "bhyt"){
-      setSelectTabProfile(false);
-      setSelectTabAppointment(false);
-      setSelectTabBHYT(true);
+    // else if(value == "bhyt"){
+    //   setSelectTabProfile(false);
+    //   setSelectTabAppointment(false);
+    //   setSelectTabBHYT(true);
     
-    }
+    // }
   }
   return (
     <div className="flex justify-center py-5">
@@ -71,17 +71,17 @@ function PatientProfile() {
                   <FaFileMedical className="text-[20px]" />
                   Phiếu khám bệnh
                 </li>
-                <li onClick={() => handleTab("bhyt")} className={`my-4 flex justify-center hover:bg-[#fff] ${selectTabBHYT ? "isactive" : ""} cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}>
+                {/* <li onClick={() => handleTab("bhyt")} className={`my-4 flex justify-center hover:bg-[#fff] ${selectTabBHYT ? "isactive" : ""} cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}>
                   <FaSearch className="text-[20px]" />
                   Tra cứu BHYT
-                </li>
+                </li> */}
               </ul>
             </div>
           </div>
           <div className="col-span-3">
            {selectTabProfile ? <Tabprofile /> : <Fragment />}
            {selectTabAppointment ? <TabAppointment /> : <Fragment />}
-           {selectTabBHYT ? <TabCheckBHYT /> : <Fragment />}
+           {/* {selectTabBHYT ? <TabCheckBHYT /> : <Fragment />} */}
           </div>
         </div>
       </div>

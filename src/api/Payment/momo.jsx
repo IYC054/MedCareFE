@@ -24,7 +24,6 @@ const MomoPayment = async (fee, phone,doctorid, workid, profileid, specialtyid) 
     if (response.data.payUrl) {
       window.location.href = response.data.payUrl;
     } else {
-      console.error("Payment failed:", response.data);
       alert("Thanh toán thất bại. Vui lòng thử lại.");
     }
   } catch (error) {

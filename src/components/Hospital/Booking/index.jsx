@@ -9,11 +9,11 @@ import { IoReturnDownBack } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import Calender from "../Calender";
 import { AppContext } from "../../Context/AppProvider";
-import {doctorApi} from "../../../api/Doctor/doctor";
+import { doctorApi } from "../../../api/Doctor/doctor";
 import { format } from "crypto-js";
-import {getWorkTimeDoctor} from "../../../api/Doctor/workinghour";
+import { getWorkTimeDoctor } from "../../../api/Doctor/workinghour";
 import { stringify } from "postcss";
-import {getSpecialtyByDoctor} from "../../../api/Doctor/specialty";
+import { getSpecialtyByDoctor } from "../../../api/Doctor/specialty";
 
 const faketime2 = [
   { id: 1, settime: "13:30 - 14:30" },
@@ -26,6 +26,7 @@ function Booking() {
   const [specialtyDoctor, setSpecialtyDoctor] = useState([]);
   const [WorkTimeDoctor, setWorkTimeDoctor] = useState([]);
   // chọn các data
+  const [searchQuery, setSearchQuery] = useState("");
   const [txnSpecialty, setTxnSpecialty] = useState();
   const [txnIdWorkTime, setTxnIdWorkTime] = useState(0);
   const [txnSpecialtyId, setTxnSpecialtyId] = useState(0);
@@ -130,9 +131,14 @@ function Booking() {
 
     fetchWorkTime();
   }, [doctorId]);
+  const filteredDoctors = dataDoctor.filter((doctor) => {
+    const name = doctor.account.name.toLowerCase();
+    return (
+      name.includes(searchQuery.toLowerCase()) );
+  });
   useEffect(() => {
-    console.log("txnSpecialtyId: " + txnSpecialtyId);
-  }, [txnSpecialtyId]);
+    console.log(searchQuery);
+  });
   return (
     <div className="flex justify-center py-5">
       <div className="w-4/5 ">
@@ -200,6 +206,8 @@ function Booking() {
                 <div className="w-full h-[435px] bg-[#fff] px-4 pt-10 rounded-lg">
                   <div className="w-full h-[40px] relative mb-5" id="goup">
                     <input
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
                       className="w-full h-full rounded-md px-4 boder-[#00e0ff] border-solid border-[#c2c2c2] border-[1px] focus:border-[#00e0ff] shadow-xl focus:outline-none"
                       placeholder="Tìm bác sĩ"
                     />
@@ -208,7 +216,7 @@ function Booking() {
                     </div>
                   </div>
                   <div className="w-full h-[335px] overflow-auto" id="style-5">
-                    {dataDoctor.map((item, index) => (
+                    {filteredDoctors.map((item, index) => (
                       <div
                         key={index}
                         className="w-full bg-white p-4 list-none text-[#053353] mb-4 rounded-xl border-soid border-[1px] border-[#00e0ff] cursor-pointer"

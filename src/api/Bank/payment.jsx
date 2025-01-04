@@ -17,13 +17,12 @@ const BankPayment = async (amount, description, transactionCode, appointmentId) 
         }
       })
       .then((respone) => {
-        console.log(respone);
       })
       .catch((err) => {
         console.log(err);
       });
   } catch (error) {
-    alert(`${error.response.data}`);
+    console.log(error)
   }
 };
 

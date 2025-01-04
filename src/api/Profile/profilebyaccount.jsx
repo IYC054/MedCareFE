@@ -11,7 +11,6 @@ const profilebyaccount = async (accountid) => {
         },
       }
     );
-    console.log("Profile by Accountid: ", res.data);
     return res.data;
   } catch (error) {
     console.error(error);

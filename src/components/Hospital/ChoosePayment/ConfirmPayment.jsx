@@ -44,21 +44,16 @@ function ConfirmPayment(props) {
           gethistorymb.map(async (mb) => {
             if (mb.description.includes(orderid)) {
               const appointment = await CreateAppointment(1,1,1,1, "Tổng quát");
-              console.log("appointment đã tạo: " + appointment.id);
               if(appointment != null){
                 BankPayment(mb.creditAmount, mb.addDescription, mb.refNo, appointment.id)
                 alert("Đã bank cảm ơn ní")
-                // navigator("/profile")
+                navigator("/profile")
               }
             }
           });
 
-          if(gethistorymb == null){
-            console.log("hết session")
-          }
-        } else {
-          console.log("Giao dịch đã tồn tại");
-        }
+         
+        } 
 
         // console.log("Bankhistory: " + JSON.stringify(historypaymentdb));
       } catch (err) {

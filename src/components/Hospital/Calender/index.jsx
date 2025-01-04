@@ -15,10 +15,11 @@ function Calender({ onDateSelect, doctorId }) {
     const selectedDate = e.start;
     const day = selectedDate.getDate();
     const month = selectedDate.getMonth() + 1;
+    const year = selectedDate.getFullYear();
 
     // Kiểm tra nếu ngày đã được chọn trong WorkTimeDoctor
     const isValid = WorkTimeDoctor.some(
-      (d) => d.day === day && d.month === month
+      (d) => d.day === day && d.month === month && d.year === year
     );
 
     if (isValid) {
@@ -28,9 +29,8 @@ function Calender({ onDateSelect, doctorId }) {
         day: "2-digit",
       });
       onDateSelect(formattedDate);
-      console.log("Ngày đã chọn: " + formattedDate);
     } else {
-      alert(`Bác sĩ không rảnh vào ngày này ${day}/${month}`);
+      alert(`Bác sĩ không rảnh vào ngày này ${day}/${month}/${year}`);
     }
   };
 
@@ -38,9 +38,9 @@ function Calender({ onDateSelect, doctorId }) {
   const handleDayCellClassNames = (info) => {
     const day = info.date.getDate();
     const month = info.date.getMonth() + 1;
-
+    const year = info.date.getFullYear();
     const isDisabled = !WorkTimeDoctor.some(
-      (d) => d.day === day && d.month === month
+      (d) => d.day === day && d.month === month && d.year === year
     );
 
     if (isDisabled) {
@@ -57,6 +57,7 @@ function Calender({ onDateSelect, doctorId }) {
         return {
           day: workDate.getDate(),
           month: workDate.getMonth() + 1,
+          year: workDate.getFullYear(),
         };
       });
       setWorkTimeDoctor(dataupdate);
