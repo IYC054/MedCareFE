@@ -26,7 +26,6 @@ import ConfirmPayment from "./ConfirmPayment";
 function ChoosePayment() {
   const location = useLocation();
   const getParams = new URLSearchParams(location.search);
-  const [showQR, setShowQR] = useState(false);
   // data
   const [dataDoctor, setDataDoctor] = useState({});
   const [dataWork, setdataWork] = useState({});
@@ -90,8 +89,10 @@ function ChoosePayment() {
   const PayWithMomo = async () => {
     if (checkMethod == "momo") {
       MomoPayment(fee, "0358227696",doctorid, workid, profileid, specialtyid);
-      setShowQR(false);
-    } else {
+    }else if (checkMethod == "bank"){
+      navigate(`/confirm-payment?doctor=${doctorid}&work=${workid}&specialty=${dataSpecialty.name}&profile=${profileid}`)
+    } 
+    else {
       alert("Chưa chọn phương thức thanh toán");
     }
   };
@@ -101,13 +102,6 @@ function ChoosePayment() {
       currency: "VND",
     }).format(amount);
   };
-  useEffect(() => {
-    if (checkMethod == "bank") {
-      setShowQR(true);
-    } else {
-      setShowQR(false);
-    }
-  }, [checkMethod]);
   return (
     <div className="flex justify-center py-5">
       <div className="lg:w-4/5 w-full px-2">
@@ -168,7 +162,6 @@ function ChoosePayment() {
                           
                         </span>
                       </li>
-                      <div className="md:block hidden"> {showQR ? <ConfirmPayment /> : <Fragment></Fragment>}</div>
                     </ul>
                   </div>
                 </div>
@@ -267,9 +260,7 @@ function ChoosePayment() {
                 </span>
               </button>
             </div>
-            <div className="w-full items-center justify-center my-5 md:hidden block">
-              {showQR ? <ConfirmPayment /> : <Fragment></Fragment>}
-            </div>
+           
           </div>
         </div>
       </div>

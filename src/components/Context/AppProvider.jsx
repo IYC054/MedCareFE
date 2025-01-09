@@ -5,15 +5,15 @@ import getpatientbyaccountid from "../../api/Doctor/patient";
 export const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
-  useEffect(() => {
-    const getTrans = async () => {
-      await gethistoryMbbank();
-    };
-    getTrans();
-    const interval = setInterval(getTrans, 5000);
-    // Dọn dẹp interval khi component bị unmount
-    return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   const getTrans = async () => {
+  //     await gethistoryMbbank();
+  //   };
+  //   getTrans();
+  //   const interval = setInterval(getTrans, 5000);
+  //   // Dọn dẹp interval khi component bị unmount
+  //   return () => clearInterval(interval);
+  // }, []);
 
   const [isShow, setisShow] = useState(false);
   const [content, setContent] = useState();
