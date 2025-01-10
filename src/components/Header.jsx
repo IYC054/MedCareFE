@@ -2,21 +2,31 @@ import React from "react";
 import DropdownMenu from "./DropdownMenu";
 import CheckPhone from "./Authentication/CheckPhone";
 import { useEffect, useState, memo, useContext } from "react";
+import { FaBars, FaDownload, FaFile, FaUser } from "react-icons/fa";
+import { FaX } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [sidebar, setsidebar] = useState(false);
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
   };
+  const toggleSidebar = () => {
+    setsidebar(!sidebar);
+  };
   return (
     <div className="">
-      <div className="bg-gray-50 flex px-48 h-[112px]">
+      <div className="bg-gray-50 flex items-center justify-between px-12 h-[60px] lg:h-[112px]">
         {/* Phần 1 */}
         <div className="w-1/6 flex items-center">
-          <img src="https://medpro.vn/_next/image?url=https%3A%2F%2Fbo-api.medpro.com.vn%2Fstatic%2Fimages%2Fmedpro%2Fweb%2Fheader_logo.svg&w=2048&q=75" width={120}></img>
+          <img
+            src="https://medpro.vn/_next/image?url=https%3A%2F%2Fbo-api.medpro.com.vn%2Fstatic%2Fimages%2Fmedpro%2Fweb%2Fheader_logo.svg&w=2048&q=75"
+            width={120}
+          ></img>
         </div>
         {/* Phần 2 */}
-        <div className="w-5/6">
+        <div className="hidden lg:block w-5/6">
           <div className="flex justify-between  border-b-[1px] py-4">
             <div className="flex text-[12px] font-semibold items-center">
               <a
@@ -26,7 +36,7 @@ const Header = () => {
                 <svg
                   stroke="currentColor"
                   fill="currentColor"
-                  stroke-width="0"
+                  strokeWidth="0"
                   viewBox="0 0 448 512"
                   aria-label="Icon TikTok"
                   height="16"
@@ -45,7 +55,7 @@ const Header = () => {
                 <svg
                   stroke="currentColor"
                   fill="currentColor"
-                  stroke-width="0"
+                  strokeWidth="0"
                   viewBox="0 0 320 512"
                   aria-label="Icon FaceBook"
                   height="16"
@@ -75,7 +85,7 @@ const Header = () => {
                 <svg
                   stroke="currentColor"
                   fill="currentColor"
-                  stroke-width="0"
+                  strokeWidth="0"
                   viewBox="0 0 576 512"
                   aria-label="Icon Youtube"
                   height="16"
@@ -92,7 +102,7 @@ const Header = () => {
                 <svg
                   stroke="currentColor"
                   fill="currentColor"
-                  stroke-width="0"
+                  strokeWidth="0"
                   viewBox="0 0 24 24"
                   aria-label="Icon Phone"
                   height="17"
@@ -104,12 +114,15 @@ const Header = () => {
                 </svg>
                 Tải Ứng Dụng{" "}
               </button>
-              <button onClick={togglePopup} className="border border-[00b5f1] flex gap-3 hover:bg-[#00b5f1] hover:text-white text-[#00b5f1] font-bold  px-3 py-2 rounded-full  items-center bg-white">
+              <button
+                onClick={togglePopup}
+                className="border border-[00b5f1] flex gap-3 hover:bg-[#00b5f1] hover:text-white text-[#00b5f1] font-bold  px-3 py-2 rounded-full  items-center bg-white"
+              >
                 {" "}
                 <svg
                   stroke="currentColor"
                   fill="currentColor"
-                  stroke-width="0"
+                  strokeWidth="0"
                   viewBox="0 0 512 512"
                   aria-label="Icon User"
                   height="15"
@@ -119,42 +132,71 @@ const Header = () => {
                   <path d="M256 288c79.5 0 144-64.5 144-144S335.5 0 256 0 112 64.5 112 144s64.5 144 144 144zm128 32h-55.1c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16H128C57.3 320 0 377.3 0 448v16c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48v-16c0-70.7-57.3-128-128-128z"></path>
                 </svg>
                 Tài Khoản
-
               </button>
-              {isOpen &&
+              {isOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex max-w-full max-h-full items-center justify-center z-10">
-                  <CheckPhone close={togglePopup}/>
+                  <CheckPhone close={togglePopup} />
                 </div>
-              }
-
+              )}
 
               <div className="flex items-center px-3">
-                <DropdownMenu title={
-                  <div className="flex items-center gap-1 p-2 rounded-lg border hover:border-[#00b5f1]">
-                    <img src="https://medpro.vn/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FVN.bda9ffec.svg&w=32&q=75" width={25} />
-                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"></path ></svg>
-                  </div>
-                }
+                <DropdownMenu
+                  title={
+                    <div className="flex items-center gap-1 p-2 rounded-lg border hover:border-[#00b5f1]">
+                      <img
+                        src="https://medpro.vn/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FVN.bda9ffec.svg&w=32&q=75"
+                        width={25}
+                      />
+                      <svg
+                        stroke="currentColor"
+                        fill="currentColor"
+                        strokeWidth="0"
+                        viewBox="0 0 1024 1024"
+                        height="1em"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"></path>
+                      </svg>
+                    </div>
+                  }
                   items={[
                     {
-                      label: <div className="flex items-center gap-1 p-2 rounded-lg  ">
-                        <img src="https://medpro.vn/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FVN.bda9ffec.svg&w=32&q=75" width={25} />
-                        <span className="font-semibold">Tiếng Việt</span>
-                      </div>, link: "#"
+                      label: (
+                        <div className="flex items-center gap-1 p-2 rounded-lg  ">
+                          <img
+                            src="https://medpro.vn/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FVN.bda9ffec.svg&w=32&q=75"
+                            width={25}
+                          />
+                          <span className="font-semibold">Tiếng Việt</span>
+                        </div>
+                      ),
+                      link: "#",
                     },
                     {
-                      label: <div className="flex items-center gap-1 p-2 rounded-lg  ">
-                        <img src="https://medpro.vn/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FEN.d2d45dde.png&w=32&q=75" width={25} />
-                        <span className="font-semibold">English</span>
-                      </div>, link: "#"
+                      label: (
+                        <div className="flex items-center gap-1 p-2 rounded-lg  ">
+                          <img
+                            src="https://medpro.vn/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FEN.d2d45dde.png&w=32&q=75"
+                            width={25}
+                          />
+                          <span className="font-semibold">English</span>
+                        </div>
+                      ),
+                      link: "#",
                     },
                     {
-                      label: <div className="flex items-center gap-1 p-2 rounded-lg  ">
-                        <img src="https://medpro.vn/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FKH.095c5bfb.png&w=32&q=75" width={25} />
-                        <span className="font-semibold">Campuchia</span>
-                      </div>, link: "#"
+                      label: (
+                        <div className="flex items-center gap-1 p-2 rounded-lg  ">
+                          <img
+                            src="https://medpro.vn/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FKH.095c5bfb.png&w=32&q=75"
+                            width={25}
+                          />
+                          <span className="font-semibold">Campuchia</span>
+                        </div>
+                      ),
+                      link: "#",
                     },
-
                   ]}
                 />
               </div>
@@ -164,100 +206,247 @@ const Header = () => {
           <div className="flex items-center justify-between py-2 ">
             <div className="flex items-center gap-1 px-2 ">
               <div>
-                <img src="https://medpro.vn/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhp.a16c51cc.svg&w=2048&q=75" width={30} height={30} />
+                <img
+                  src="https://medpro.vn/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhp.a16c51cc.svg&w=2048&q=75"
+                  width={30}
+                  height={30}
+                />
               </div>
               <div>
                 <p className="font-semibold text-[11px]">Hỗ trợ đặt khám</p>
-                <p className="text-[18px] font-bold  text-[#ffb54a] mt-[-2px]">1900 2115</p>
+                <p className="text-[18px] font-bold  text-[#ffb54a] mt-[-2px]">
+                  1900 2115
+                </p>
               </div>
             </div>
             <div className="pr-3">
               <ul className="flex gap-3 items-center">
-                <li> <DropdownMenu title={
-                  <div className="flex items-center gap-1 ">
-                    <span>Cơ sở y tế</span>
-                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="8px" width="8px" xmlns="http://www.w3.org/2000/svg"><path d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"></path ></svg>
-                  </div>
-                }
-                  items={[
-                    { label: "Bệnh viện công", link: "#" },
-                    { label: "Bệnh viện tư", link: "#" },
-                    { label: "Phòng khám ", link: "#" },
-                    { label: "Phòng mạch", link: "#" },
-                    { label: "Xét nghiệm", link: "#" },
+                <li>
+                  {" "}
+                  <DropdownMenu
+                    title={
+                      <div className="flex items-center gap-1 ">
+                        <span>Cơ sở y tế</span>
+                        <svg
+                          stroke="currentColor"
+                          fill="currentColor"
+                          strokeWidth="0"
+                          viewBox="0 0 1024 1024"
+                          height="8px"
+                          width="8px"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"></path>
+                        </svg>
+                      </div>
+                    }
+                    items={[
+                      { label: "Bệnh viện công", link: "#" },
+                      { label: "Bệnh viện tư", link: "#" },
+                      { label: "Phòng khám ", link: "#" },
+                      { label: "Phòng mạch", link: "#" },
+                      { label: "Xét nghiệm", link: "#" },
+                    ]}
+                  />
+                </li>
+                <li>
+                  {" "}
+                  <DropdownMenu
+                    title={
+                      <div className="flex items-center gap-1 ">
+                        <span>Dịch vụ y tế</span>
+                        <svg
+                          stroke="currentColor"
+                          fill="currentColor"
+                          strokeWidth="0"
+                          viewBox="0 0 1024 1024"
+                          height="8px"
+                          width="8px"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"></path>
+                        </svg>
+                      </div>
+                    }
+                    items={[
+                      { label: "Bệnh viện công", link: "#" },
+                      { label: "Bệnh viện tư", link: "#" },
+                      { label: "Phòng khám ", link: "#" },
+                      { label: "Phòng mạch", link: "#" },
+                      { label: "Xét nghiệm", link: "#" },
+                    ]}
+                  />
+                </li>
+                <li>
+                  {" "}
+                  <DropdownMenu
+                    title={
+                      <div className="flex items-center gap-1 ">
+                        <span>Khám sức khỏe doanh nghiệp</span>
+                      </div>
+                    }
+                    items={[]}
+                  />
+                </li>
 
-                  ]} /></li>
-                <li> <DropdownMenu title={
-                  <div className="flex items-center gap-1 ">
-                    <span>Dịch vụ y tế</span>
-                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="8px" width="8px" xmlns="http://www.w3.org/2000/svg"><path d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"></path ></svg>
-                  </div>
-                }
-                  items={[
-                    { label: "Bệnh viện công", link: "#" },
-                    { label: "Bệnh viện tư", link: "#" },
-                    { label: "Phòng khám ", link: "#" },
-                    { label: "Phòng mạch", link: "#" },
-                    { label: "Xét nghiệm", link: "#" },
-
-                  ]} /></li>
-                <li> <DropdownMenu title={
-                  <div className="flex items-center gap-1 ">
-                    <span>Khám sức khỏe doanh nghiệp</span>
-                  </div>
-                }
-                  items={[]} /></li>
-
-                <li> <DropdownMenu title={
-                  <div className="flex items-center gap-1 ">
-                    <span>Tin tức</span>
-                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="8px" width="8px" xmlns="http://www.w3.org/2000/svg"><path d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"></path ></svg>
-                  </div>
-                }
-                  items={[
-                    { label: "Bệnh viện công", link: "#" },
-                    { label: "Bệnh viện tư", link: "#" },
-                    { label: "Phòng khám ", link: "#" },
-                    { label: "Phòng mạch", link: "#" },
-                    { label: "Xét nghiệm", link: "#" },
-
-                  ]} /></li>
-                <li> <DropdownMenu title={
-                  <div className="flex items-center gap-1 ">
-                    <span>Hướng dẫn</span>
-                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="8px" width="8px" xmlns="http://www.w3.org/2000/svg"><path d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"></path ></svg>
-                  </div>
-                }
-                  items={[
-                    { label: "Bệnh viện công", link: "#" },
-                    { label: "Bệnh viện tư", link: "#" },
-                    { label: "Phòng khám ", link: "#" },
-                    { label: "Phòng mạch", link: "#" },
-                    { label: "Xét nghiệm", link: "#" },
-
-                  ]} /></li>
-                <li> <DropdownMenu title={
-                  <div className="flex items-center gap-1 ">
-                    <span>Liên hệ hợp tác</span>
-                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="8px" width="8px" xmlns="http://www.w3.org/2000/svg"><path d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"></path ></svg>
-                  </div>
-                }
-                  items={[
-                    { label: "Bệnh viện công", link: "#" },
-                    { label: "Bệnh viện tư", link: "#" },
-                    { label: "Phòng khám ", link: "#" },
-                    { label: "Phòng mạch", link: "#" },
-                    { label: "Xét nghiệm", link: "#" },
-
-                  ]} /></li>
-
-
+                <li>
+                  {" "}
+                  <DropdownMenu
+                    title={
+                      <div className="flex items-center gap-1 ">
+                        <span>Tin tức</span>
+                        <svg
+                          stroke="currentColor"
+                          fill="currentColor"
+                          strokeWidth="0"
+                          viewBox="0 0 1024 1024"
+                          height="8px"
+                          width="8px"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"></path>
+                        </svg>
+                      </div>
+                    }
+                    items={[
+                      { label: "Bệnh viện công", link: "#" },
+                      { label: "Bệnh viện tư", link: "#" },
+                      { label: "Phòng khám ", link: "#" },
+                      { label: "Phòng mạch", link: "#" },
+                      { label: "Xét nghiệm", link: "#" },
+                    ]}
+                  />
+                </li>
+                <li>
+                  {" "}
+                  <DropdownMenu
+                    title={
+                      <div className="flex items-center gap-1 ">
+                        <span>Hướng dẫn</span>
+                        <svg
+                          stroke="currentColor"
+                          fill="currentColor"
+                          strokeWidth="0"
+                          viewBox="0 0 1024 1024"
+                          height="8px"
+                          width="8px"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"></path>
+                        </svg>
+                      </div>
+                    }
+                    items={[
+                      { label: "Bệnh viện công", link: "#" },
+                      { label: "Bệnh viện tư", link: "#" },
+                      { label: "Phòng khám ", link: "#" },
+                      { label: "Phòng mạch", link: "#" },
+                      { label: "Xét nghiệm", link: "#" },
+                    ]}
+                  />
+                </li>
+                <li>
+                  {" "}
+                  <DropdownMenu
+                    title={
+                      <div className="flex items-center gap-1 ">
+                        <span>Liên hệ hợp tác</span>
+                        <svg
+                          stroke="currentColor"
+                          fill="currentColor"
+                          strokeWidth="0"
+                          viewBox="0 0 1024 1024"
+                          height="8px"
+                          width="8px"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"></path>
+                        </svg>
+                      </div>
+                    }
+                    items={[
+                      { label: "Bệnh viện công", link: "#" },
+                      { label: "Bệnh viện tư", link: "#" },
+                      { label: "Phòng khám ", link: "#" },
+                      { label: "Phòng mạch", link: "#" },
+                      { label: "Xét nghiệm", link: "#" },
+                    ]}
+                  />
+                </li>
               </ul>
             </div>
           </div>
         </div>
+        {/* mobile */}
+        <div className="relative">
+          {/* Icon để mở sidebar */}
+          <div
+            className="lg:hidden block text-[20px] cursor-pointer"
+            onClick={toggleSidebar}
+          >
+            <FaBars />
+          </div>
 
-
+          {/* Sidebar */}
+          <div
+            className={`fixed lg:hidden block top-0 right-0 z-40 h-full bg-[#fff] text-white shadow-lg transition-all duration-300 ${
+              sidebar ? "w-96" : "w-0"
+            } overflow-y-auto`}
+          >
+            <div className="p-4 text-[#000]">
+              <h2 className="flex justify-between items-center text-lg font-bold border-b border-solid border-[#c2c2c2]">
+                <div className="w-[120px] h-[50px]">
+                  <img
+                    src="https://medpro.vn/_next/image?url=https%3A%2F%2Fbo-api.medpro.com.vn%2Fstatic%2Fimages%2Fmedpro%2Fweb%2Fheader_logo.svg&w=2048&q=75"
+                    className="w-full h-full object-cover"
+                    alt="icon"
+                  />
+                </div>
+                <div className="cursor-pointer" onClick={toggleSidebar}>
+                  <FaX />
+                </div>
+              </h2>
+              <ul className="mt-4 space-y-6 text-[20px]">
+                <li className="hover:text-[#47bfff] font-medium cursor-pointer ">
+                  <div className="w-full h-10 bg-[#47bfff] flex justify-center items-center rounded-lg gap-2 text-[#fff]">
+                    <FaUser />
+                    <span>Nguyễn văn nghị</span>
+                  </div>
+                </li>
+                <li className="hover:text-[#47bfff] font-medium cursor-pointer">
+                  <div className="flex gap-2 items-center">
+                    <FaUser className="text-[#47bfff]" />
+                    <Link to={"/profile"}>Hồ sơ bệnh nhân</Link>
+                  </div>
+                </li>
+                <li className="hover:text-[#47bfff] font-medium cursor-pointer">
+                  <div className="flex gap-2 items-center">
+                    <FaFile className="text-[#47bfff]" />
+                    <Link to={"/hospital"}>Đặt lịch khám</Link>
+                  </div>
+                </li>
+              </ul>
+            </div>
+              <div className="w-full absolute bottom-5 p-4">
+                <div className="w-full flex items-center gap-3 mb-4">
+                  <div className="w-[42px] h-[60px]">
+                    <img
+                      src="https://medpro.vn/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FimgDownApp.791e0cff.svg&w=48&q=75"
+                      alt="icon"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="text-[20px] text-[#000] flex gap-2 items-center cursor-pointer">
+                    <span>Tải ứng dụng tải đây</span>
+                    <FaDownload />
+                  </div>
+                </div>
+                <div className="w-full h-[40px] bg-[red] text-[#fff] flex justify-center items-center rounded-lg">
+                  Đăng xuất
+                </div>
+              </div>
+          </div>
+        </div>
       </div>
 
       <div className="bg-[#ffb340] gap-10 h-9 w-full flex items-center overflow-hidden font-semibold text-white text-[13px]">

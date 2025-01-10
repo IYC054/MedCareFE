@@ -82,7 +82,7 @@ function ConfirmInfo() {
       <div className="w-4/5 ">
         <Breadcrumbs />
         <div className="grid grid-cols-4 gap-4">
-          <div className="col-span-1 w-full  py-4">
+          <div className="col-span-4 md:col-span-1 md:order-1 order-2 w-full  py-4">
             <div className="w-full  bg-[#fff] rounded-lg " id="goup">
               <div className="w-full h-[50px] bg-gradient-to-r from-[#00b5f1] to-[#00e0ff] rounded-t-lg text-[#fff] py-1 px-4 flex items-center">
                 <span className="font-medium text-[20px]">
@@ -104,7 +104,7 @@ function ConfirmInfo() {
               </div>
             </div>
           </div>
-          <div className="col-span-3 py-4 w-full ">
+          <div className="col-span-4 md:col-span-3 order-1 md:order-2 py-4 w-full ">
             <div className="w-full ">
               <div className="w-full h-[50px] bg-gradient-to-r from-[#00b5f1] to-[#00e0ff] rounded-t-lg text-[#fff] py-1 px-4 flex items-center justify-center">
                 <span className="font-medium text-[20px]">

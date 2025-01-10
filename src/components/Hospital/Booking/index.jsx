@@ -25,6 +25,7 @@ function Booking() {
   // chọn chuyên khoa của bác sĩ
   const [specialtyDoctor, setSpecialtyDoctor] = useState([]);
   const [WorkTimeDoctor, setWorkTimeDoctor] = useState([]);
+  const [queryType, setQueryType] = useState("doctor");
   // chọn các data
   const [searchQuery, setSearchQuery] = useState("");
   const [txnSpecialty, setTxnSpecialty] = useState();
@@ -131,11 +132,17 @@ function Booking() {
 
     fetchWorkTime();
   }, [doctorId]);
-  const filteredDoctors = dataDoctor.filter((doctor) => {
-    const name = doctor.account.name.toLowerCase();
-    return (
-      name.includes(searchQuery.toLowerCase()) );
-  });
+  const filteredDoctors =
+    queryType === "doctor"
+      ? dataDoctor.filter((doctor) => {
+          const name = doctor.account.name.toLowerCase();
+          return name.includes(searchQuery.toLowerCase());
+        })
+      : dataDoctor.filter((doctor) => {
+          return doctor.specialties.some((specialty) =>
+            specialty.name.toLowerCase().includes(searchQuery.toLowerCase())
+          );
+        });
   useEffect(() => {
     console.log(searchQuery);
   });
@@ -146,7 +153,7 @@ function Booking() {
         {/* end bread */}
         <div className="grid grid-cols-4 gap-4">
           {/* start col 1 */}
-          <div className="col-span-1 w-full  py-4">
+          <div className="col-span-4 md:col-span-1 md:order-1 order-2 w-full  py-4">
             <div className="w-full  bg-[#fff] rounded-lg " id="goup">
               <div className="w-full h-[50px] bg-gradient-to-r from-[#00b5f1] to-[#00e0ff] rounded-t-lg text-[#fff] py-1 px-4 flex items-center">
                 <span className="font-medium text-[20px]">
@@ -197,20 +204,47 @@ function Booking() {
           {/* end col 1 */}
           {/* start col 2 */}
 
-          <div className="col-span-3 py-4 w-full ">
+          <div className="col-span-4 md:col-span-3 order-1 md:order-2 py-4 w-full ">
             <div className="w-full h-full ">
               <div className="w-full h-[50px] bg-gradient-to-r from-[#00b5f1] to-[#00e0ff] rounded-t-lg text-[#fff] py-1 px-4 flex items-center justify-center">
                 <span className="font-medium text-[20px]">{title}</span>
               </div>
               {ChooseDoctor ? (
-                <div className="w-full h-[435px] bg-[#fff] px-4 pt-10 rounded-lg">
+                <div className="w-full h-[435px] bg-[#fff] px-4 pt-10 rounded-lg overflow-hidden">
+                  <div className="flex items-center gap-4 mb-2">
+                    <span
+                      className={`font-medium cursor-pointer ${
+                        queryType === "doctor" ? "text-[#00e0ff]" : ""
+                      }`}
+                      onClick={() => setQueryType("doctor")}
+                    >
+                      Tìm bác sĩ
+                    </span>
+                    <span
+                      className={`font-medium cursor-pointer ${
+                        queryType === "specialty" ? "text-[#00e0ff]" : ""
+                      }`}
+                      onClick={() => setQueryType("specialty")}
+                    >
+                      Tìm chuyên khoa
+                    </span>
+                  </div>
                   <div className="w-full h-[40px] relative mb-5" id="goup">
-                    <input
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full h-full rounded-md px-4 boder-[#00e0ff] border-solid border-[#c2c2c2] border-[1px] focus:border-[#00e0ff] shadow-xl focus:outline-none"
-                      placeholder="Tìm bác sĩ"
-                    />
+                    {queryType === "doctor" ? (
+                      <input
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full h-full rounded-md px-4 boder-[#00e0ff] border-solid border-[#c2c2c2] border-[1px] focus:border-[#00e0ff] shadow-xl focus:outline-none"
+                        placeholder="Tìm bác sĩ"
+                      />
+                    ) : (
+                      <input
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full h-full rounded-md px-4 boder-[#00e0ff] border-solid border-[#c2c2c2] border-[1px] focus:border-[#00e0ff] shadow-xl focus:outline-none"
+                        placeholder="Tìm chuyên khoa"
+                      />
+                    )}
                     <div className="absolute w-[40px] h-full border-solid border-[#c2c2c2] border-[1px] top-0 right-0 rounded-tr-md rounded-br-md flex justify-center items-center">
                       <FaMagnifyingGlass className="text-[#c2c2c2]/60" />
                     </div>
@@ -381,7 +415,7 @@ function Booking() {
                       <Fragment>
                         <hr className="w-full h-[2px] border-[1px]  bg-gradient-to-r from-[#00b5f1] to-[#00e0ff] border-none" />
                         <div className="w-full text-[20px] my-5">
-                          <span>Buổi sáng</span>
+                          <span>Giờ làm việc</span>
                         </div>
                         <div className="w-full my-2 flex gap-5 flex-wrap ">
                           {WorkTimeDoctor.map((item, index) => {
@@ -418,6 +452,7 @@ function Booking() {
                                 hour: "2-digit",
                                 minute: "2-digit",
                               });
+                              
                               return (
                                 <Link
                                   key={index}
@@ -438,18 +473,6 @@ function Booking() {
 
                             return null;
                           })}
-                        </div>
-                        <div className="w-full text-[20px] my-5">
-                          <span>Buổi Trưa</span>
-                        </div>
-                        <div className="w-full my-2 flex gap-5 flex-wrap ">
-                          {faketime2.map((item, index) => (
-                            <Link key={index}>
-                              <div className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]">
-                                {item.settime}
-                              </div>
-                            </Link>
-                          ))}
                         </div>
                         <div className="w-full mt-4">
                           <span className="text-[#d98634] text-[16px]">

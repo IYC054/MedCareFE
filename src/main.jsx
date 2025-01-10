@@ -37,6 +37,7 @@ import CreateSpecialty from "./Admin/page/createPage/CreateSpecialty";
 import LoginAdmin from "./Admin/page/LoginAdmin";
 import AppointmentDetail from "./Admin/page/subPage/AppointmentDetail";
 import Invoice from "./sendmail/Invoice";
+import Notfound from "./404/notfound";
 
 
 
@@ -58,6 +59,7 @@ const router = createBrowserRouter([
       { path: "/confirm-payment", element: <ConfirmPayment /> },
       { path: "/payment-success", element: <PaymentSuccess /> },
       { path: "/invoice", element: <Invoice /> },
+      { path: "*", element: <Notfound /> },
     ],
   },
   {
