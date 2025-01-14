@@ -43,8 +43,8 @@ function Transactions() {
                     },
                 });
                 const appointmentsData = responseAppointments.data;
-                setAppointment(appointmentsData);
-
+                setAppointment("as",appointmentsData);
+             
                 // Filter appointments matching IDs in payments
                 const matchingAppointments = appointmentsData.filter((appointment) =>
                     appointmentIdsFromPayments.includes(appointment.id)
@@ -344,7 +344,7 @@ function Transactions() {
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
             <div className=" flex justify-between items-center bg-[#e5f6fd] py-2 px-4 rounded-md mb-2">
-                <div className="font-bold text-black">50 LATEST TRANSACTIONS OF THE DAY</div>
+                <div className="font-bold text-black">50 GIAO DỊCH MỚI NHẤT TRONG NGÀY</div>
                 <button
                     onClick={() => setShowForm(!showForm)}
                     className="border-2 bg-[#d82d8b] text-white rounded-md px-5 py-1 hover:bg-[#b5236b] transition duration-300"
@@ -361,7 +361,7 @@ function Transactions() {
                         {/* Thời gian */}
                         <div className='relative'>
                             <label className="block text-sm font-medium text-gray-500 mb-1 absolute ml-2 bg-[#fff]">
-                                Time
+                                Thời gian
                             </label>
                             <select
                                 value={option}
@@ -417,10 +417,10 @@ function Transactions() {
                         </div>
                         {/* Mã giao dịch */}
                         <div className='relative h-10'>
-                            <label className="block text-sm font-medium text-gray-500 mb-1 absolute ml-2 bg-[#fff] ">Transaction code</label>
+                            <label className="block text-sm font-medium text-gray-500 mb-1 absolute ml-2 bg-[#fff] ">Mã gia dịch</label>
                             <input
                                 type="text"
-                                placeholder="Transaction code"
+                                placeholder="Mã gia dịch"
                                 maxLength={20}
                                 className="w-full border-gray-300 rounded-md p-2 text-sm border-2  mt-3"
                                 value={transactionCode}
@@ -430,7 +430,7 @@ function Transactions() {
 
                         {/* Trạng thái */}
                         <div className='relative'>
-                            <label className="block text-sm font-medium text-gray-500 mb-1 absolute ml-2 bg-[#fff]">Status</label>
+                            <label className="block text-sm font-medium text-gray-500 mb-1 absolute ml-2 bg-[#fff]">Trạng thái</label>
                             <select
                                 className="w-full border-gray-300 rounded-md p-2 text-sm border-2 mt-3"
                                 value={status}
@@ -469,11 +469,11 @@ function Transactions() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
                     <div className="text-sm font-medium text-gray-900 border-1 bg-[#fdeef4] rounded-lg p-3">
-                        <i className="bi bi-bank px-3 text-lg"></i>TOTAL REVENUE
+                        <i className="bi bi-bank px-3 text-lg"></i>TỔNG DOANH THU
                     </div>
                     <div className='flex align-center justify-between'>
                         <div className="text-md text-gray-600 pl-4 pr-4 text-center py-3">
-                            <div className="font-normal">value</div>
+                            <div className="font-normal">giá trị</div>
                             <div className="font-bold text-gray-800">
                                 {metrics.totalRevenue.toLocaleString()}
                                 <span className="text-sm pl-0.5">₫</span>
@@ -481,7 +481,7 @@ function Transactions() {
                         </div>
                         <div className="h-12 w-px bg-gray-100 mx-4 my-3 "></div>
                         <div className="text-md text-gray-600 pl-4 pr-4 text-center py-3">
-                            <div className="font-normal">Quanlity</div>
+                            <div className="font-normal">Số lượng</div>
                             <div className="font-bold text-gray-800">
                                 {metrics.successfulTransactions}
 
@@ -491,11 +491,11 @@ function Transactions() {
                 </div>
                 <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
                     <div className="text-sm font-medium text-gray-900 border-1 bg-[#fff9e2] rounded-lg p-3">
-                        <i className="bi bi-arrow-counterclockwise text-orange-700 px-3 text-lg"></i>CASHBACK TRANSACTIONS
+                        <i className="bi bi-arrow-counterclockwise text-orange-700 px-3 text-lg"></i>GIAO DỊCH HOÀN TIỀN
                     </div>
                     <div className='flex align-center justify-between'>
                         <div className="text-md text-gray-600 pl-4 pr-4 text-center py-3">
-                            <div className="font-normal">value</div>
+                            <div className="font-normal">giá trị</div>
                             <div className="font-bold text-gray-800">
                                 {metrics.totalcashback.toLocaleString()}
                                 <span className="text-sm pl-0.5">₫</span>
@@ -503,7 +503,7 @@ function Transactions() {
                         </div>
                         <div className="h-12 w-px bg-gray-100 mx-4 my-3 "></div>
                         <div className="text-md text-gray-600 pl-4 pr-4 text-center py-3">
-                            <div className="font-normal">Quanlity</div>
+                            <div className="font-normal">Số lượng</div>
                             <div className="font-bold text-gray-800">
                                 {metrics.cashbackTransactions}
 
@@ -513,11 +513,11 @@ function Transactions() {
                 </div>
                 <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
                     <div className="text-sm font-medium text-gray-900 border-1 bg-[#ffefdd] rounded-lg p-3">
-                        <i className="bi bi-clock-history text-yellow-700 px-3 text-lg"></i>PENDING TRANSACTION
+                        <i className="bi bi-clock-history text-yellow-700 px-3 text-lg"></i>GIAO DỊCH ĐANG CHỜ XỬ LÝ
                     </div>
                     <div className='flex align-center justify-between'>
                         <div className="text-md text-gray-600 pl-4 pr-4 text-center py-3">
-                            <div className="font-normal">value</div>
+                            <div className="font-normal">giá trị</div>
                             <div className="font-bold text-gray-800">
                                 {metrics.totalpending.toLocaleString()}
                                 <span className="text-sm pl-0.5">₫</span>
@@ -525,7 +525,7 @@ function Transactions() {
                         </div>
                         <div className="h-12 w-px bg-gray-100 mx-4 my-3 "></div>
                         <div className="text-md text-gray-600 pl-4 pr-4 text-center py-3">
-                            <div className="font-normal">Quanlity</div>
+                            <div className="font-normal">Số lượng</div>
                             <div className="font-bold text-gray-800">
                                 {metrics.pendingTransactions}
                             </div>
@@ -534,11 +534,11 @@ function Transactions() {
                 </div>
                 <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
                     <div className="text-sm font-medium text-gray-900 border-1 bg-[#ffebe9] rounded-lg p-3">
-                        <i className="bi bi-exclamation-circle px-3 text-red-700 text-lg"></i>TRANSACTIONS FAILED
+                        <i className="bi bi-exclamation-circle px-3 text-red-700 text-lg"></i>GIAO DỊCH THẤT BẠI
                     </div>
                     <div className='flex align-center justify-between'>
                         <div className="text-md text-gray-600 pl-4 pr-4 text-center py-3">
-                            <div className="font-normal">value</div>
+                            <div className="font-normal">giá trị</div>
                             <div className="font-bold text-gray-800">
                                 {metrics.totalfail.toLocaleString()}
                                 <span className="text-sm pl-0.5">₫</span>
@@ -546,7 +546,7 @@ function Transactions() {
                         </div>
                         <div className="h-12 w-px bg-gray-100 mx-4 my-3 "></div>
                         <div className="text-md text-gray-600 pl-4 pr-4 text-center py-3">
-                            <div className="font-normal">Quanlity</div>
+                            <div className="font-normal">Số lượng</div>
                             <div className="font-bold text-gray-800">
                                 {metrics.failedTransactions}
 
@@ -559,7 +559,7 @@ function Transactions() {
             {/* Table Section */}
             <div className="bg-white rounded-lg shadow-md border border-gray-200">
                 <div className="p-4 flex justify-between items-center border-b border-gray-200">
-                    <h2 className="text-lg font-semibold text-[#da624a]">List Transaction</h2>
+                    <h2 className="text-lg font-semibold text-[#da624a]">Danh sách giao dịch</h2>
 
                 </div>
                 <div className="overflow-x-auto">
@@ -567,14 +567,14 @@ function Transactions() {
                         <thead>
                             <tr className="bg-gray-50">
                                 <th className="text-left p-4 text-sm font-medium text-gray-500">STT</th>
-                                <th className="text-left p-4 text-sm font-medium text-gray-500">Transaction code</th>
-                                <th className="text-left p-4 text-sm font-medium text-gray-500">Date and time</th>
-                                <th className="text-left p-4 text-sm font-medium text-gray-500">Payment method</th>
-                                <th className="text-left p-4 text-sm font-medium text-gray-500">Phone number</th>
-                                <th className="text-left p-4 text-sm font-medium text-gray-500">Customer name</th>
-                                <th className="text-left p-4 text-sm font-medium text-gray-500">Transaction value (VND)</th>
-                                <th className="text-left p-4 text-sm font-medium text-gray-500">Status</th>
-                                <th className="text-left p-4 text-sm font-medium text-gray-500">Action</th>
+                                <th className="text-left p-4 text-sm font-medium text-gray-500">Mã giao dịch	</th>
+                                <th className="text-left p-4 text-sm font-medium text-gray-500">Ngày và giờ</th>
+                                <th className="text-left p-4 text-sm font-medium text-gray-500">Phương thức thanh toán</th>
+                                <th className="text-left p-4 text-sm font-medium text-gray-500">	Số điện thoại</th>
+                                <th className="text-left p-4 text-sm font-medium text-gray-500">Tên khách hàng</th>
+                                <th className="text-left p-4 text-sm font-medium text-gray-500">Giá trị giao dịch (VND)</th>
+                                <th className="text-left p-4 text-sm font-medium text-gray-500">	Trạng thái</th>
+                                <th className="text-left p-4 text-sm font-medium text-gray-500">	Hoạt động</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -582,20 +582,17 @@ function Transactions() {
                                 transactions.map((t, index) => {
                                     // Find the matching patient for each transaction
                                     const transactionAppointment = appointmentsData.find((appointment) => appointment.id === t.appointment_id);
-
-                                    // If appointment exists, find the matching patient by appointment's patient.account_id
-                                    const matchingPatient = transactionAppointment
-                                        ? filteredPatient.find((patient) => patient.id === transactionAppointment.patient.account_id)
-                                        : null;
-
+                                    console.log('transactionAppointment',transactionAppointment);
+                                 
+                                   
                                     return (
                                         <tr key={t.id} className="border-b">
                                             <td className="p-4 text-sm">{index + 1}</td>
                                             <td className="p-4 text-sm">{t.transactionCode}</td>
                                             <td className="p-4 text-sm">{new Date(t.transactionDate).toLocaleString()}</td>
                                             <td className="p-4 text-sm">{t.paymentMethod}</td>
-                                            <td className="p-4 text-sm">{matchingPatient ? matchingPatient.phone : 'N/A'}</td>
-                                            <td className="p-4 text-sm">{matchingPatient ? matchingPatient.name : 'N/A'}</td>
+                                            <td className="p-4 text-sm">{transactionAppointment ? transactionAppointment.patient.account.phone : 'N/A'}</td>
+                                            <td className="p-4 text-sm">{transactionAppointment ? transactionAppointment.patient.account.name : 'N/A'}</td>
                                             <td className="p-4 text-sm">{t.amount} ₫</td>
                                             <td className="p-4">
                                                 <span
@@ -613,7 +610,7 @@ function Transactions() {
                                             </td>
                                             <td className="p-4">
                                                 <button className="text-sm text-[#da624a] hover:underline" onClick={() => handleDetailClick(t.id)}>
-                                                    View
+                                                    Chi tiết
                                                 </button>
                                             </td>
                                         </tr>
@@ -639,7 +636,7 @@ function Transactions() {
                                                     />
                                                 </svg>
                                             </div>
-                                            <span className="text-gray-300">No data</span>
+                                            <span className="text-gray-300">Không có dữ liệu</span>
                                         </div>
                                     </td>
                                 </tr>

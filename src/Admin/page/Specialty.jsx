@@ -1,17 +1,14 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import token from '../../api/token';
 
-function Specialty(props) {
+function Specialty() {
     const [specialty, setSpecialty] = useState([])
 
     useEffect(() => {
         const fetchSpecialty = async () => {
 
-            const response = await axios.get('http://localhost:8080/api/specialty',{  headers: {
-                Authorization: `Bearer ${token}`,
-            },});
+            const response = await axios.get('http://localhost:8080/api/specialty');
 
             setSpecialty(response.data);
 
@@ -37,11 +34,12 @@ function Specialty(props) {
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };
+    
     console.log()
     return (
         <div className="bg-gray-100 min-h-screen p-6">
             <div className="container mx-auto bg-white rounded-lg shadow-lg p-6">
-                <h1 className="text-2xl font-bold mb-6 text-[#da624a]">Specialty</h1>
+                <h1 className="text-2xl font-bold mb-6 text-[#da624a]">Các Khoa Khám Bệnh</h1>
                 <div className="mb-4 w-60">
                     <input
                         type="text"
@@ -54,7 +52,7 @@ function Specialty(props) {
                 <div className='w-60 py-5'>
                     <Link to="/admin/specialty/createSpecialty" className="w-full flex items-center justify-center px-4 py-2 text-base font-medium text-white bg-[#da624a] border-primary rounded-md hover:bg-[#b2503c] transition"
                     >
-                        Create New Specialty
+                        Thêm mới
                     </Link>
                 </div>
                 <div className="overflow-x-auto max-h-96 overflow-y-auto">
@@ -62,9 +60,9 @@ function Specialty(props) {
                         <thead className="sticky top-0 z-10 bg-[#da624a] text-white">
                             <tr>
                                 <th className="px-4 py-2 text-left">#</th>
-                                <th className="px-4 py-2 text-left">Name</th>
-                                <th className="px-4 py-2 text-left">Description</th>
-                                <th className="px-4 py-2 text-left">Image</th>
+                                <th className="px-4 py-2 text-left">Tên</th>
+                                <th className="px-4 py-2 text-left">Miêu tả</th>
+                                <th className="px-4 py-2 text-left">Hình minh hoạ</th>
 
                             </tr>
                         </thead>
@@ -77,7 +75,7 @@ function Specialty(props) {
                                     <td className="border px-4 py-2">
                                         <img
                                             className="mx-auto"
-                                            src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fmedpro-production%2Fdefault%2Favatar%2Fsubjects%2Fnoi_co_xuong_khop.png&w=96&q=75"
+                                            src={special.image}
                                             width={70}
                                             height={70}
                                         />
