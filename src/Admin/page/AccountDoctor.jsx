@@ -72,7 +72,7 @@ function AccountDoctor(props) {
                 <div className='place-content-center'>
                     <Link to="/admin/doctor/CreateDoctor" className="w-full flex items-center justify-center px-4 py-2 text-base font-medium text-white bg-[#da624a] border-primary rounded-md hover:bg-[#b2503c] transition"
                     >
-                        Create New Account
+                    Tạo tài khoản mới
                     </Link>
                 </div>
                 <div className='flex'>
@@ -82,7 +82,7 @@ function AccountDoctor(props) {
                             value={selectedSpecialty}
                             onChange={handleSpecialtyChange}
                         >
-                            <option value="">Select a Department</option> 
+                            <option value="">Chọn một bộ phận</option> 
                             {specialties.map((specialty) => (
                                 <option key={specialty.id} value={specialty.id}>
                                     {specialty.name} 

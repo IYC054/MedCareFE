@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+
 function CreateSpecialty(props) {
     const [formData, setFormData] = useState({
         name: '',
         description: '',
-        avatar: null, // Avatar sẽ lưu ảnh dưới dạng file
+        image: null, // Avatar sẽ lưu ảnh dưới dạng file
     });
 
     const [loading, setLoading] = useState(false);
@@ -26,56 +27,57 @@ function CreateSpecialty(props) {
         const file = e.target.files[0];
         setFormData((prevData) => ({
             ...prevData,
-            avatar: file || null, // Nếu không có file, đặt giá trị là null
+            image: file || null, // Nếu không có file, đặt giá trị là null
         }));
     };
-
+    console.log("FormData:", formData);
     // Xử lý khi submit form
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
 
-        try {
-            // Tạo request payload
-            const payload = {
-                name: formData.name,
-                description: formData.description,
-            };
+        
 
+        try {
+            const formDataToSend = new FormData();
+            formDataToSend.append("name", formData.name);
+            formDataToSend.append("description", formData.description);
+            formDataToSend.append("image", formData.avatar);
             const response = await axios.post(
-                'http://localhost:8080/api/specialty',
-                payload,
+                'http://localhost:8080/api/specialty/create',
+                formData,
                 {
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'multipart/form-data',
+                       
                     },
                 }
             );
+            
 
             console.log('Response:', response.data);
-            setSuccess('Specialty created successfully!');
+            setSuccess('Tạo thành công');
             navigate('/admin/specialty');
         } catch (err) {
             console.error('Error:', err);
-            setError('Failed to create specialty. Please try again.');
+            setError('Không thể tạo. Vui lòng thử lại');
         } finally {
             setLoading(false);
         }
     };
 
-
     return (
         <div className="max-h-full pb-3 flex" id="goup">
             <div className="w-full bg-white shadow-lg rounded-lg p-5 border-2 border-[#da624a]">
                 <form className="space-y-4 w-full sm:px-96" onSubmit={handleSubmit}>
-                    <h3 className="text-xl font-semibold text-[#da624a]">Create Doctor Account</h3>
+                    <h3 className="text-xl font-semibold text-[#da624a]">Thêm mới</h3>
 
                     {error && <div className="text-red-500 text-sm">{error}</div>}
                     {success && <div className="text-green-500 text-sm">{success}</div>}
 
                     <div>
                         <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                            Name
+                            Tên khoa
                         </label>
                         <input
                             id="name"
@@ -90,7 +92,7 @@ function CreateSpecialty(props) {
                     </div>
                     <div>
                         <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-                            Description
+                            Miêu tả
                         </label>
                         <input
                             id="description"
@@ -105,7 +107,7 @@ function CreateSpecialty(props) {
                     </div>
                     <div>
                         <label htmlFor="avatar" className="block text-sm font-medium text-gray-700">
-                            Avatar
+                            Ảnh bìa
                         </label>
                         <input
                             id="avatar"
@@ -119,7 +121,7 @@ function CreateSpecialty(props) {
                                 <img
                                     src={URL.createObjectURL(formData.avatar)}
                                     alt="Avatar Preview"
-                                    className="w-16 h-16 rounded-full"
+                                    className="w-36 h-36 rounded-sm"
                                 />
                             </div>
                         )}
@@ -131,7 +133,7 @@ function CreateSpecialty(props) {
                             className={`px-6 py-2 rounded-md ${loading ? 'bg-gray-400' : 'bg-[#da624a] text-white'}`}
                             disabled={loading}
                         >
-                            {loading ? 'Submitting...' : 'Submit'}
+                            {loading ? 'Đang thêm...' : 'Thêm'}
                         </button>
                     </div>
                 </form>

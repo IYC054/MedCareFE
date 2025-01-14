@@ -9,9 +9,11 @@ function AccountUser() {
     useEffect(() => {
         const fetchUserAccounts = async () => {
 
-            const response = await axios.get('http://localhost:8080/api/account',{  headers: {
-                Authorization: `Bearer ${token}`,
-            },});
+            const response = await axios.get('http://localhost:8080/api/account', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             const filteredUsers = response.data.result.filter(u => u.role === 'Patients');
             setUser(filteredUsers);
 
@@ -21,7 +23,7 @@ function AccountUser() {
     const navigate = useNavigate();
 
     const handleDetailClick = (id) => {
-        navigate(`/admin/user/userDetail/${id}`); 
+        navigate(`/admin/user/userDetail/${id}`);
     };
     console.log(user);
     const [searchTerm, setSearchTerm] = useState('');
@@ -45,11 +47,11 @@ function AccountUser() {
     return (
         <div className="bg-gray-100 min-h-screen p-6">
             <div className="container mx-auto bg-white rounded-lg shadow-lg p-6">
-                <h1 className="text-2xl font-bold mb-6 text-[#da624a]">User Management</h1>
+                <h1 className="text-2xl font-bold mb-6 text-[#da624a]">Quản lý người dùng</h1>
                 <div className="mb-4 w-60">
                     <input
                         type="text"
-                        placeholder="Search by name..."
+                        placeholder="Tìm kiếm theo tên..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="w-full px-4 py-2 border rounded shadow focus:outline-none focus:ring-2 focus:ring-[#da624a]"
@@ -60,11 +62,11 @@ function AccountUser() {
                         <thead className="sticky top-0 z-10 bg-[#da624a] text-white">
                             <tr>
                                 <th className="px-4 py-2 text-left">#</th>
-                                <th className="px-4 py-2 text-left">Name</th>
+                                <th className="px-4 py-2 text-left">Tên</th>
                                 <th className="px-4 py-2 text-left">Email</th>
-                                <th className="px-4 py-2 text-left">Phone</th>
-                                <th className="px-4 py-2 text-left">Gender</th>
-                                <th className="px-4 py-2 text-left">Actions</th>
+                                <th className="px-4 py-2 text-left">Điện thoại</th>
+                                <th className="px-4 py-2 text-left">Giới tính</th>
+                                <th className="px-4 py-2 text-left">Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -76,7 +78,7 @@ function AccountUser() {
                                     <td className="border px-4 py-2">{user.phone}</td>
                                     <td className='border px-4 py-2'>{user.gender}</td>
                                     <td className="border px-4 py-2">
-                                        <button className="bg-[#da624a] text-white px-4 py-2 rounded shadow hover:bg-[#c75240] transition"  onClick={() => handleDetailClick(user.id)}>Detail</button>
+                                        <button className="bg-[#da624a] text-white px-4 py-2 rounded shadow hover:bg-[#c75240] transition" onClick={() => handleDetailClick(user.id)}>Detail</button>
                                     </td>
                                 </tr>
                             ))}
