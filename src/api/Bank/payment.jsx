@@ -11,10 +11,6 @@ const BankPayment = async (amount, description, transactionCode, appointmentId) 
         transactionDescription: description,
         transactionCode: transactionCode,
         appointmentId: appointmentId,
-      }, {
-        headers: {
-          Authorization: "Bearer " + token
-        }
       })
       .then((respone) => {
       })
@@ -34,11 +30,7 @@ const gethistoryMbbank = async (appointid = null) => {
       url += `&appointid=${appointid}`;
     }
 
-    const response = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+    const response = await axios.get(url);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -50,11 +42,7 @@ const gethistoryPayment = async () => {
    
 
     const response = await axios.get(
-      `http://localhost:8080/api/payments`, {
-        headers: {
-          Authorization: `Bearer ${token}` 
-        },
-      }
+      `http://localhost:8080/api/payments`
     );
     return response.data;
   } catch (error) {
@@ -67,11 +55,7 @@ const getallPaymentByAppoint = async (id) => {
    
 
     const response = await axios.get(
-      `http://localhost:8080/api/payments/appointment/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}` 
-        },
-      }
+      `http://localhost:8080/api/payments/appointment/${id}`
     );
     return response.data;
   } catch (error) {
@@ -80,4 +64,5 @@ const getallPaymentByAppoint = async (id) => {
   }
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export { BankPayment, gethistoryMbbank, gethistoryPayment, getallPaymentByAppoint };

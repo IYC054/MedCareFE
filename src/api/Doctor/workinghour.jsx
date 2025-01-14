@@ -3,11 +3,7 @@ import token from "../token";
 
 const getWorkTimeDoctor = async (doctorid) => {
   try {
-      const res = await axios.get(`http://localhost:8080/api/workinghours/doctor/${doctorid}`, {
-        headers: {
-          Authorization: `Bearer ${token}`  
-        }
-      });
+      const res = await axios.get(`http://localhost:8080/api/workinghours/doctor/${doctorid}`);
       return res.data; 
     } catch (error) {
       console.error(error);
@@ -16,11 +12,7 @@ const getWorkTimeDoctor = async (doctorid) => {
 };
 const getWorkTimeDoctorbyId = async (id) => {
   try {
-      const res = await axios.get(`http://localhost:8080/api/workinghours/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`  
-        }
-      });
+      const res = await axios.get(`http://localhost:8080/api/workinghours/${id}`);
       return res.data; 
     } catch (error) {
       console.error(error);

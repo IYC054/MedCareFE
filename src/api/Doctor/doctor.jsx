@@ -6,16 +6,11 @@ const doctorApi = axios.create({
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
-    "Authorization": `Bearer ${token}`,
   },
 });
 const getDoctorbyId = async (doctorid) => {
   try {
-    const res = await axios.get(`http://localhost:8080/api/doctors/${doctorid}`,{
-      headers: {
-        Authorization: `Bearer ${token}`  
-      }
-    });
+    const res = await axios.get(`http://localhost:8080/api/doctors/${doctorid}`);
     return res.data.account; 
   } catch (error) {
     console.error(error);

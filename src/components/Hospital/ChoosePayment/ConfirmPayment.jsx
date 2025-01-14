@@ -29,11 +29,16 @@ function ConfirmPayment(props) {
     navigator.clipboard.writeText(text);
   };
   useEffect(() => {
-    if(doctorid == null || workid == null || specialty == null || profileid == null) {
-      console.log("nhầm đường r")
-      navigate("/hospital")
+    if (
+      doctorid == null ||
+      workid == null ||
+      specialty == null ||
+      profileid == null
+    ) {
+      console.log("nhầm đường r");
+      navigate("/hospital");
     }
-  }, [doctorid, profileid, specialty, workid])
+  }, [doctorid, profileid, specialty, workid]);
   useEffect(() => {
     const getTrans = async () => {
       try {
@@ -43,15 +48,18 @@ function ConfirmPayment(props) {
         var isStatus = result.result;
         if (isStatus == false) {
           const appointment = await CreateAppointment(
-            1,
+            1, //đợi login
             doctorid,
             workid,
             profileid,
             specialty
           );
+          // const htmlContent = ReactDOMServer.renderToString(
+          //   <Invoice customerName={"Thanh Phong"} services={"Khám tổng quát"} total={mb.creditAmount} />
+          // );
+          // SendMail(htmlContent)
           await gethistoryMbbank(appointment.id);
           setShowPopup(true);
-          // xu ly popup
         }
       } catch (err) {
         console.log(err);
@@ -62,10 +70,7 @@ function ConfirmPayment(props) {
     // Dọn dẹp interval khi component bị unmount
     return () => clearInterval(interval);
   }, [doctorid, profileid, specialty, workid]);
-  // const htmlContent = ReactDOMServer.renderToString(
-  //   <Invoice customerName={"Thanh Phong"} services={"Khám tổng quát"} total={mb.creditAmount} />
-  // );
-  // SendMail(htmlContent)
+
   const handleRedirect = () => {
     // Chuyển trang khi nhấn "OK"
     navigate("/profile"); // Điều chỉnh theo route bạn muốn chuyển
@@ -106,9 +111,7 @@ function ConfirmPayment(props) {
         <div className="w-full   list-none">
           <li className="settingli my-2 text-[#00000073] text-[14px]">
             Ngân hàng :{" "}
-            <span className="text-[#000] font-medium text-[15px]">
-              MB
-            </span>
+            <span className="text-[#000] font-medium text-[15px]">MB</span>
           </li>
           <li className="settingli my-2 text-[#00000073] text-[14px]">
             Số tải khoản :{" "}

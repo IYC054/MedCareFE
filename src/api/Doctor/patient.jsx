@@ -4,12 +4,7 @@ import token from "../token";
 const getpatientbyaccountid = async (id) => {
   try {
     const res = await axios.get(
-      `http://localhost:8080/api/patients/account/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+      `http://localhost:8080/api/patients/account/${id}`
     );
     return res.data;
   } catch (error) {

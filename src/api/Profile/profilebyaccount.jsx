@@ -4,12 +4,7 @@ import token from "../token";
 const profilebyaccount = async (accountid) => {
   try {
     const res = await axios.get(
-      `http://localhost:8080/api/patientsprofile/account/${accountid}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+      `http://localhost:8080/api/patientsprofile/account/${accountid}`
     );
     return res.data;
   } catch (error) {
@@ -20,12 +15,7 @@ const profilebyaccount = async (accountid) => {
 const profilebyaccountId = async (id) => {
   try {
     const res = await axios.get(
-      `http://localhost:8080/api/patientsprofile/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+      `http://localhost:8080/api/patientsprofile/${id}`
     );
     return res.data;
   } catch (error) {

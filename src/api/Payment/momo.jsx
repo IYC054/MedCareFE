@@ -13,11 +13,6 @@ const MomoPayment = async (fee, phone,doctorid, workid, profileid, specialtyid) 
         workId: workid,
         profileId: profileid,
         specialtyId: specialtyid,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       }
     );
 

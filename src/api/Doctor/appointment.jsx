@@ -21,11 +21,6 @@ const CreateAppointment = async (
         worktimeId: worktimeId,
         patientProfileId: patientProfileId,
       },
-      {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      }
     );
     return response.data
   } catch (error) {
@@ -35,11 +30,7 @@ const CreateAppointment = async (
 };
 const getAppointmentByPatientId = async (id) => {
   try {
-    const res = await axios.get(`http://localhost:8080/api/appointment/patient/${id}`,{
-      headers: {
-        Authorization: `Bearer ${token}`  
-      }
-    });
+    const res = await axios.get(`http://localhost:8080/api/appointment/patient/${id}`);
     return res.data; 
   } catch (error) {
     // console.error(error);
