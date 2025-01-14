@@ -26,15 +26,19 @@ const BankPayment = async (amount, description, transactionCode, appointmentId) 
   }
 };
 
-const gethistoryMbbank = async () => {
+const gethistoryMbbank = async (appointid = null) => { 
   try {
-    const response = await axios.get(
-      `http://localhost:8080/api/payments/transaction-history`, {
-        headers: {
-          Authorization: `Bearer ${token}` 
-        }
+    // Kiểm tra nếu có appointid thì thêm vào URL
+    let url = `http://localhost:8080/api/payments/transaction-history?accountphone=0337218288`;
+    if (appointid !== null) {
+      url += `&appointid=${appointid}`;
+    }
+
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
     return response.data;
   } catch (error) {
     console.log(error);

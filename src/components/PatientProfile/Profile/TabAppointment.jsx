@@ -27,7 +27,7 @@ function TabAppointment(props) {
         setDataPayment(allPayments.flat()); 
         setPatient(result);
       } catch (error) {
-        console.error("Error fetching patient by account ID:", error);
+        // console.log("Error fetching patient by account ID:", error);
       }
     };
     getPatient();
@@ -37,7 +37,7 @@ function TabAppointment(props) {
     <div className="w-full h-full border-l border-[#00b5f1] pl-10">
       <span className="text-[24px] font-medium">Danh sách phiếu khám bệnh</span>
       {appointment.map((app, index) => {
-        console.log("Appointment: " + JSON.stringify(app.doctor.specialties))
+        // console.log("Appointment: " + JSON.stringify(app.doctor.specialties))
         const resultcode = dataPayment.filter(
           (payment) => payment.appointment_id === app.id
         );
@@ -45,11 +45,11 @@ function TabAppointment(props) {
           if (payment.status === "Chờ xử lý") {
             return "Chờ xử lý";
           } else if (payment.status === "Hoàn thành") {
-            return "Đã thanh toán";
+            return "Hoàn thành";
           } else if (payment.status === "Hoàn tiền") {
             return "Hoàn tiền";
           }
-        });
+        }).find(status => status !== undefined);
         return (
           <div
             className="w-full bg-[#fff] border-solid border border-[#c2c2c2]/50 rounded-lg p-4 my-4"
@@ -63,7 +63,7 @@ function TabAppointment(props) {
                 </span>
               </span>
               <div>
-                <button className={`px-4 py-2 ${statuspayment == "Đã thanh toán" ? "bg-[#03C03C]" : statuspayment == "Chờ xử lý" ? "bg-[#F1C40F]" : statuspayment == "Hoàn tiền" ? "bg-[#C0392B]" : ""} rounded-xl text-[#fff] font-medium`}>
+                <button className={`px-4 py-2 ${statuspayment == "Hoàn thành" ? "bg-[#03C03C]" : statuspayment == "Chờ xử lý" ? "bg-[#F1C40F]" : statuspayment == "Hoàn tiền" ? "bg-[#C0392B]" : ""} rounded-xl text-[#fff] font-medium`}>
                   {statuspayment}
                 </button>
               </div>

@@ -75,7 +75,7 @@ function Calender({ onDateSelect, doctorId }) {
         locale={viLocale}
         selectable={true}
         selectMirror={true} // Cho phép kéo chọn ngày
-        height={"auto"}
+        // height={"auto"}
         validRange={{
           start: new Date().toISOString().split("T")[0],
         }}

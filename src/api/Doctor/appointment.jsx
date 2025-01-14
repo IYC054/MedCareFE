@@ -29,7 +29,7 @@ const CreateAppointment = async (
     );
     return response.data
   } catch (error) {
-    alert(`${error.response.data}`);
+    // console.log(`${JSON.stringify(error.response.data)}`);
     return [];
   }
 };
@@ -42,7 +42,7 @@ const getAppointmentByPatientId = async (id) => {
     });
     return res.data; 
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return []; 
   }
 };
