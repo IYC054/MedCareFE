@@ -14,9 +14,7 @@ function DoctorDetail() {
         const fetchDoctorData = async () => {
             try {
                 // Lấy danh sách bác sĩ
-                const response = await axios.get('http://localhost:8080/api/doctors',{  headers: {
-                    Authorization: `Bearer ${token}`,
-                },});
+                const response = await axios.get('http://localhost:8080/api/doctors');
                 const doctorData = response.data.find(doc => doc.account.id === parseInt(id));
 
                 if (doctorData) {

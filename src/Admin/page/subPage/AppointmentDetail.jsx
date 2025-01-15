@@ -10,11 +10,7 @@ function AppointmentDetail({ roomId, onClose }) {
         const fetchDetails = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get(`http://localhost:8080/api/appointment/${roomId}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+                const response = await axios.get(`http://localhost:8080/api/appointment/${roomId}`);
                 setAppointmentDetails(response.data);
             } catch (error) {
                 console.error("Error fetching appointment details:", error);

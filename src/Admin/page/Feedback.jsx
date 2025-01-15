@@ -3,16 +3,14 @@ import '../scss/feedback.scss';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import axios from 'axios';
-import token from '../../api/token';
+
 function Feedback(props) {
     const [feedback, setFeedback] = useState([])
 
     useEffect(() => {
         const fetchFeedback = async () => {
 
-            const response = await axios.get('http://localhost:8080/api/feedbacks/',{  headers: {
-                Authorization: `Bearer ${token}`,
-            },});
+            const response = await axios.get('http://localhost:8080/api/feedbacks');
 
             setFeedback(response.data);
 

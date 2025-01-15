@@ -9,7 +9,7 @@ import ChartMess from './chart/ChartMess';
 import ChartMessSent from './chart/ChartMessSent';
 import ChartMessInbox from './chart/ChartMessInbox';
 import axios from 'axios';
-import token from '../../api/token';
+
 
 function Dashboard() {
     const [activeTab, setActiveTab] = useState('this month');
@@ -32,25 +32,13 @@ function Dashboard() {
     useEffect(() => {
         const fetch = async () => {
 
-            const responseUser = await axios.get('http://localhost:8080/api/account', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            const filteredUsers = responseUser.data.result.filter(u => u.role === 'Patients');
+            const responseUser = await axios.get('http://localhost:8080/api/account');
+            const filteredUsers = responseUser.data.result.filter(u => u.role === 1);
             setUser(filteredUsers);
 
-            const responseBook = await axios.get('http://localhost:8080/api/appointment', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+            const responseBook = await axios.get('http://localhost:8080/api/appointment');
             setBook(responseBook.data);
-            const responseMoney = await axios.get('http://localhost:8080/api/payments', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+            const responseMoney = await axios.get('http://localhost:8080/api/payments');
             const filteredMoney = responseMoney.data.filter(payment => payment.status === 'Hoàn thành');
             const totalMoney = filteredMoney.reduce((sum, payment) => sum + payment.amount, 0);
             setMoney(totalMoney);
@@ -69,11 +57,7 @@ function Dashboard() {
     useEffect(() => {
         const fetchIncomeData = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/payments', {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+                const response = await axios.get('http://localhost:8080/api/payments');
                 const payments = response.data;
 
                 const currentDate = new Date();
@@ -126,8 +110,8 @@ function Dashboard() {
                         <div className='card mb-3 bg-night-fade text-white rounded-md '>
                             <div className='p-4 flex justify-between items-center'>
                                 <div>
-                                    <div className='text-xl font-semibold'>User</div>
-                                    <div className='text-sm'>This month</div>
+                                    <div className='text-xl font-semibold'>Người sử dụng</div>
+                                    <div className='text-sm'>Tháng này</div>
                                 </div>
                                 <div>
                                     <div className='text-2xl font-bold'>{user.length}</div>
@@ -137,8 +121,9 @@ function Dashboard() {
                         <div className='card mb-3 bg-arielle-smile text-white rounded-md  '>
                             <div className='p-4 flex justify-between items-center'>
                                 <div>
-                                    <div className='text-xl font-semibold'>Booking</div>
-                                    <div className='text-sm'>medical appointments this month</div>
+                                    <div className='text-xl font-semibold'>Đặt phòng</div>
+                                    <div className='text-sm'>cuộc hẹn khám bệnh trong tháng này
+                                    </div>
                                 </div>
                                 <div>
                                     <div className='text-2xl font-bold'>{book.length}</div>
@@ -148,8 +133,10 @@ function Dashboard() {
                         <div className='card mb-3 bg-happy-green text-white rounded-md '>
                             <div className='p-4 flex justify-between items-center'>
                                 <div>
-                                    <div className='text-xl font-semibold'>Income</div>
-                                    <div className='text-sm'>This month</div>
+                                    <div className='text-xl font-semibold'>Thu nhập
+                                    </div>
+                                    <div className='text-sm'>Tháng này
+                                    </div>
                                 </div>
                                 <div>
                                     <div className='text-2xl font-bold'>{money} VNĐ</div>
@@ -163,7 +150,7 @@ function Dashboard() {
                             <div className='items-center mb-2 md:p-2 border-b-2 border-gray-300 font-bold text-sm text-[rgba(31,10,6,0.6)] bg-white whitespace-nowrap'>
                                 <div className='flex justify-between'>
                                     <div className='text-xl'>
-                                        <i className='bi bi-people'></i> User Book
+                                        <i className='bi bi-people'></i>Số người dùng đặt phòng
                                     </div>
                                     <ul className="flex space-x-2">
                                         <li>
@@ -171,7 +158,7 @@ function Dashboard() {
                                                 className={`px-4 py-2 rounded-md ${activeTab === 'whole year' ? 'border-b-4 rounded-sm border-[#da624a] text-[#da624a]' : 'text-gray-500  hover:border-b-4 hover:rounded-sm hover:border-[#da624a] hover:text-[#da624a] transition-all duration-300'}`}
                                                 onClick={() => handleTabClick('whole year')}
                                             >
-                                                This Year
+                                                Năm nay
                                             </button>
                                         </li>
                                         <li>
@@ -179,7 +166,7 @@ function Dashboard() {
                                                 className={`px-4 py-2 rounded-md ${activeTab === 'this month' ? 'border-b-4  rounded-sm border-[#da624a] text-[#da624a]' : 'text-gray-500  hover:border-b-4 hover:rounded-sm hover:border-[#da624a] hover:text-[#da624a]  transition-all duration-300'}`}
                                                 onClick={() => handleTabClick('this month')}
                                             >
-                                                This Week
+                                                Tuần này
                                             </button>
                                         </li>
                                     </ul>
@@ -203,7 +190,7 @@ function Dashboard() {
                                             </div>
                                         </div>
                                         <h6 className='text-sm text-gray-500 font-semibold uppercase'>
-                                            Top Authors
+                                            Người dùng hàng đầu
                                         </h6>
                                         <div className='space-y-2 max-h-40 overflow-y-auto pt-2 '>
                                             {[...Array(4)].map((_, index) => (
@@ -232,7 +219,8 @@ function Dashboard() {
                             <div className='card-header'>
                                 <div className='flex justify-between pt-6'>
                                     <div className='text-xl'>
-                                        <i className="bi bi-coin"></i> Earning
+                                        <i className="bi bi-coin"></i> Thu nhập
+
                                     </div>
                                     <ul className='flex space-x-2'>
                                         <li>
@@ -240,7 +228,7 @@ function Dashboard() {
                                                 className={`px-4 py-2 rounded-md ${activeTab2 === 'tab1' ? 'bg-blue-600 text-white' : 'text-gray-500'}`}
                                                 onClick={() => handleTabClick1('tab1')}
                                             >
-                                                This year
+                                                Năm nay
                                             </button>
                                         </li>
                                         <li>
@@ -248,7 +236,7 @@ function Dashboard() {
                                                 className={`px-4 py-2 rounded-md ${activeTab2 === 'tab2' ? 'bg-blue-600 text-white' : 'text-gray-500'}`}
                                                 onClick={() => handleTabClick1('tab2')}
                                             >
-                                                This Week
+                                                Tuần này
                                             </button>
                                         </li>
                                     </ul>
@@ -273,7 +261,8 @@ function Dashboard() {
                                                             </div>
                                                             <div className="content-right">
                                                                 <div className="text-gray-500 text-xs opacity-60">
-                                                                    Income Change This Month vs Last Month
+                                                                    Thu nhập thay đổi tháng này so với tháng trước
+
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -301,7 +290,7 @@ function Dashboard() {
                                                             </div>
                                                             <div className="content-right">
                                                                 <div className="text-gray-500 text-xs opacity-60">
-                                                                    Income This Year vs Last Year
+                                                                    Thu nhập năm nay so với năm ngoái
                                                                 </div>
                                                             </div>
                                                         </div>

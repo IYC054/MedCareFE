@@ -11,12 +11,10 @@ function AccountDoctor(props) {
     useEffect(() => {
         const fetchdoctorAccounts = async () => {
 
-            const response = await axios.get('http://localhost:8080/api/account',{  headers: {
-                Authorization: `Bearer ${token}`,
-            },});
-            const filtereddoctors = response.data.result.filter(u => u.role === 'Doctor');
+            const response = await axios.get('http://localhost:8080/api/account');
+            const filtereddoctors = response.data.result.filter(u => u.role === 2);
             setdoctor(filtereddoctors);
-            console.log(filtereddoctors);
+            console.log("nghi",filtereddoctors);
         };
         fetchdoctorAccounts();
     }, []);
@@ -26,9 +24,7 @@ function AccountDoctor(props) {
     useEffect(() => {
         const fetchSpecialties = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/specialty',{  headers: {
-                    Authorization: `Bearer ${token}`,
-                },});
+                const response = await axios.get('http://localhost:8080/api/specialty');
                 setSpecialties(response.data); 
             } catch (error) {
                 console.error("Error fetching specialties:", error);

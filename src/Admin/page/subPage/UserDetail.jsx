@@ -14,18 +14,14 @@ function UserDetail() {
         const fetchPatientData = async () => {
             try {
                 // Fetch patient data
-                const response = await axios.get(`http://localhost:8080/api/account/${id}`,{  headers: {
-                    Authorization: `Bearer ${token}`,
-                },});
+                const response = await axios.get(`http://localhost:8080/api/account/${id}`);
                 const patientData = response.data;
 
                 if (patientData && patientData.id === parseInt(id)) {
                     setPatient(patientData);
 
                     // Fetch all appointments
-                    const responseApp = await axios.get(`http://localhost:8080/api/appointment`,{  headers: {
-                        Authorization: `Bearer ${token}`,
-                    },});
+                    const responseApp = await axios.get(`http://localhost:8080/api/appointment`);
                     const filteredAppointments = responseApp.data.filter(
                         (appointment) => appointment.patient.account_id === parseInt(id)
                     );
@@ -36,9 +32,7 @@ function UserDetail() {
 
                     if (appointmentIds.length > 0) {
                         // Fetch payment data using the appointment IDs
-                        const responsePayments = await axios.get(`http://localhost:8080/api/payments`,{  headers: {
-                            Authorization: `Bearer ${token}`,
-                        },});
+                        const responsePayments = await axios.get(`http://localhost:8080/api/payments`);
                         const filteredPayments = responsePayments.data.filter((payment) =>
                             appointmentIds.includes(payment.appointment_id)
                         );

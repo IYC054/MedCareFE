@@ -9,12 +9,8 @@ function AccountUser() {
     useEffect(() => {
         const fetchUserAccounts = async () => {
 
-            const response = await axios.get('http://localhost:8080/api/account', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            const filteredUsers = response.data.result.filter(u => u.role === 'Patients');
+            const response = await axios.get('http://localhost:8080/api/account');
+            const filteredUsers = response.data.result.filter(u => u.role === 1);
             setUser(filteredUsers);
 
         };

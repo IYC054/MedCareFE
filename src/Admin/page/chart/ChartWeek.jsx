@@ -9,9 +9,7 @@ const ChartWeek = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/appointment',{  headers: {
-          Authorization: `Bearer ${token}`,
-      },});
+        const response = await axios.get('http://localhost:8080/api/appointment');
         const appointments = response.data;
 
         // Tính ngày đầu tuần (Thứ Hai) và ngày cuối tuần (Chủ Nhật)

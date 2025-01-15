@@ -14,11 +14,7 @@ function TransactionDetail() {
         const fetchData = async () => {
             try {
                 // Fetch transaction data
-                const tranResponse = await axios.get(`http://localhost:8080/api/payments/${id}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+                const tranResponse = await axios.get(`http://localhost:8080/api/payments/${id}`);
 
                 const transactionData = tranResponse.data;
                 if (!transactionData) {
@@ -30,12 +26,7 @@ function TransactionDetail() {
                 // Fetch appointment data only if transaction exists
                 if (transactionData.appointment_id) {
                     const responseAppointments = await axios.get(
-                        `http://localhost:8080/api/appointment/${transactionData.appointment_id}`,
-                        {
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                            },
-                        }
+                        `http://localhost:8080/api/appointment/${transactionData.appointment_id}`
                     );
                     setAppointment(responseAppointments.data);
                 }

@@ -9,9 +9,7 @@ const ChartMonth = () => {
   useEffect(() => {
     const fetchMonthlyData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/appointment',{  headers: {
-          Authorization: `Bearer ${token}`,
-      },});
+        const response = await axios.get('http://localhost:8080/api/appointment');
         const appointments = response.data;
 
         // Lấy năm hiện tại

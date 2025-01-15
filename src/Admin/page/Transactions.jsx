@@ -5,7 +5,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format } from "date-fns";
 import { useNavigate } from 'react-router-dom';
-import token from '../../api/token';
+
 function Transactions() {
     const [transactions, setTransactions] = useState([]);
     const [appointment, setAppointment] = useState([]);
@@ -26,22 +26,14 @@ function Transactions() {
     useEffect(() => {
         const fetchTransactions = async () => {
             try {
-                const responsePayments = await axios.get('http://localhost:8080/api/payments', {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+                const responsePayments = await axios.get('http://localhost:8080/api/payments');
                 const paymentsData = responsePayments.data;
 
                 // Extract appointment IDs from payments
                 const appointmentIdsFromPayments = paymentsData.map((payment) => payment.appointment_id);
 
                 // Fetch appointments
-                const responseAppointments = await axios.get('http://localhost:8080/api/appointment', {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+                const responseAppointments = await axios.get('http://localhost:8080/api/appointment');
                 const appointmentsData = responseAppointments.data;
                 setAppointment("as",appointmentsData);
              
@@ -55,11 +47,7 @@ function Transactions() {
                 const patientAccountIds = matchingAppointments.map((appointment) => appointment.patient.account_id);
 
                 // Fetch all patients
-                const responsePatients = await axios.get('http://localhost:8080/api/account', {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+                const responsePatients = await axios.get('http://localhost:8080/api/account');
                 const patientData = responsePatients.data.result;
                 setPatient(patientData);
 
@@ -75,11 +63,7 @@ function Transactions() {
                 const endOfDay = new Date(today.setHours(23, 59, 59, 999));
 
                 // Fetch transactions data
-                const responseTransactions = await axios.get('http://localhost:8080/api/payments', {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+                const responseTransactions = await axios.get('http://localhost:8080/api/payments'  );
                 const transactions = responseTransactions.data;
 
                 // Filter transactions for today
@@ -265,11 +249,7 @@ function Transactions() {
         const apiUrl = "http://localhost:8080/api/payments/filter"; 
       
         axios
-            .get(`${apiUrl}?${params.toString()}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`, 
-                },
-            })
+            .get(`${apiUrl}?${params.toString()}`)
             .then((response) => {
                 const transactionsFromAPI = response.data; 
                 console.log("Filtered transactions from API:", transactionsFromAPI);

@@ -16,11 +16,7 @@ function Appointment() {
     useEffect(() => {
         const fetchAppointments = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/appointment', {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+                const response = await axios.get('http://localhost:8080/api/appointment');
                 setAppointments(response.data);
             } catch (error) {
                 console.error('Failed to fetch appointments:', error);
@@ -29,11 +25,7 @@ function Appointment() {
 
         const fetchAccounts = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/account', {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+                const response = await axios.get('http://localhost:8080/api/account');
                 // Map account ID to account name for quick lookup
                 const accountsMap = response.data.result.reduce((acc, account) => {
                     acc[account.id] = account.name; 
