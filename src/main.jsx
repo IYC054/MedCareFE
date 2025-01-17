@@ -38,6 +38,8 @@ import LoginAdmin from "./Admin/page/LoginAdmin";
 import AppointmentDetail from "./Admin/page/subPage/AppointmentDetail";
 import Invoice from "./sendmail/Invoice";
 import Notfound from "./404/notfound";
+import News from "./Admin/page/News";
+import CreateNews from "./Admin/page/createPage/CreateNews";
 
 
 
@@ -133,6 +135,14 @@ const router = createBrowserRouter([
       {
         path: "/admin/specialty/createSpecialty",
         element: <CreateSpecialty />,
+      },
+      {
+        path: "/admin/news",
+        element: <News />,
+      },
+      {
+        path: "/admin/news/createnews",
+        element: <CreateNews />,
       },
     ],
   },

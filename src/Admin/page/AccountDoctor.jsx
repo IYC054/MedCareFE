@@ -14,7 +14,7 @@ function AccountDoctor(props) {
             const response = await axios.get('http://localhost:8080/api/account');
             const filtereddoctors = response.data.result.filter(u => u.role === 2);
             setdoctor(filtereddoctors);
-            console.log("nghi",filtereddoctors);
+           
         };
         fetchdoctorAccounts();
     }, []);

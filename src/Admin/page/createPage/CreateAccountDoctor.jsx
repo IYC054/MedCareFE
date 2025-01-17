@@ -10,10 +10,14 @@ function CreateAccountDoctor() {
         phone: "",
         gender: "",
         birthdate: "",
-        role: "Doctor",
+        role: 2,
         avatar: null,
+        lastFeedbackTime: "",
+    });
+    const [formData2, setFormData2] = useState({
         experienceYears: 0,
-        status: "Active",
+        status: "Available",
+        account: 0,
         selectedSpecialties: [],
     });
     useEffect(() => {
@@ -32,35 +36,88 @@ function CreateAccountDoctor() {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
-
+    const handleChange2 = (e) => {
+        const { name, value } = e.target;
+        // Cập nhật trực tiếp trong state
+        setFormData2((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+    };
     const handleFileChange = (e) => {
         const file = e.target.files[0];
 
-        // Nếu có file được chọn
         if (file) {
-            // Tạo một bản sao của file mới với tên mặc định là "avatar" và phần mở rộng giống file g
-            const newFile = new File([file], "avatar" + file.name.slice(file.name.lastIndexOf('.')), { type: file.type });
+            // Lưu thông tin file vào state, bao gồm cả file object
+            setFormData({
+                ...formData,
+                avatar: file, // File object (binary)
 
-            // Cập nhật avatar trong formData
-            setFormData({ ...formData, avatar: newFile });
+            });
         }
     };
 
+
+
     const handleSpecialtyChange = (e) => {
         const selectedIds = Array.from(e.target.selectedOptions, (option) => option.value);
-        setFormData({ ...formData, selectedSpecialties: selectedIds });
+        setFormData2({ ...formData2, selectedSpecialties: selectedIds });
     };
-
+    console.log(formData);
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const submitData = {
-            ...formData,
-            specialties: formData.selectedSpecialties,
-        };
 
-        console.log("Form Data Submitted:", submitData);
-        // API call for form submission goes here
+        const formDataToSend = new FormData();
+        formDataToSend.append("email", formData.email);
+        formDataToSend.append("name", formData.name);
+        formDataToSend.append("password", formData.password);
+        formDataToSend.append("phone", formData.phone);
+        formDataToSend.append("gender", formData.gender);
+        formDataToSend.append("birthdate", formData.birthdate);
+        formDataToSend.append("role", formData.role);
+        formDataToSend.append("avatar", formData.avatar); // Đính kèm file
+        // Gửi tên file
+        formDataToSend.append("lastFeedbackTime", null);
+        console.log(formData);
+        try {
+            const response = await axios.post("http://localhost:8080/api/account", formDataToSend, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+
+            console.log("Form Data Submitted Successfully:", response.data.result);
+            const accountId = response.data.result.id;
+            const formDataToSend2 = new FormData();
+            formDataToSend2.append("experienceYears", formData2.experienceYears);
+            formDataToSend2.append("status", "Available");
+            formDataToSend2.append("account", accountId);
+            formDataToSend2.append("specialties",formData2.specialties );
+            try {
+       
+                const doctorResponse = await axios.post(
+                    "http://localhost:8080/api/doctors",
+                    formDataToSend2,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+  
+                        }
+                    }
+                );
+
+                console.log("Doctor Created Successfully:", doctorResponse.data);
+
+            } catch (error) {
+                console.error("Error creating doctor:", error.message);
+            }
+        } catch (error) {
+            console.error("Error submitting form:", error.message);
+        }
+
+
     };
+
 
     return (
         <div className="max-h-full pb-3 flex " id="goup">
@@ -177,40 +234,6 @@ function CreateAccountDoctor() {
                         />
                     </div>
 
-                    {/* Experience Years Field */}
-                    <div>
-                        <label htmlFor="experienceYears" className="block text-sm font-medium text-gray-700">
-                            Years of Experience
-                        </label>
-                        <input
-                            id="experienceYears"
-                            name="experienceYears"
-                            type="number"
-                            value={formData.experienceYears}
-                            onChange={handleChange}
-                            min="0"
-                            placeholder="Enter years of experience"
-                            className="mt-2 w-full p-2 border border-[#da624a] rounded-md focus:ring-2 focus:ring-[#da624a]"
-                        />
-                    </div>
-
-                    {/* Status Field */}
-                    <div>
-                        <label htmlFor="status" className="block text-sm font-medium text-gray-700">
-                            Status
-                        </label>
-                        <select
-                            id="status"
-                            name="status"
-                            value={formData.status}
-                            onChange={handleChange}
-                            className="mt-2 w-full p-2 border border-[#da624a] rounded-md focus:ring-2 focus:ring-[#da624a]"
-                        >
-                            <option value="Active">Active</option>
-                            <option value="Inactive">Inactive</option>
-                        </select>
-                    </div>
-
                     {/* Profile Image Upload */}
                     <div>
                         <label htmlFor="avatar" className="block text-sm font-medium text-gray-700">
@@ -233,6 +256,24 @@ function CreateAccountDoctor() {
                             </div>
                         )}
                     </div>
+                    {/* Experience Years Field */}
+                    <div>
+                        <label htmlFor="experienceYears" className="block text-sm font-medium text-gray-700">
+                            Years of Experience
+                        </label>
+                        <input
+                            id="experienceYears"
+                            name="experienceYears"
+                            type="number"
+                            value={formData2.experienceYears}
+                            onChange={handleChange2}
+    
+                            placeholder="Enter years of experience"
+                            className="mt-2 w-full p-2 border border-[#da624a] rounded-md focus:ring-2 focus:ring-[#da624a]"
+                        />
+                    </div>
+
+
 
                     {/* Specialty Selection */}
                     <div>
@@ -241,8 +282,8 @@ function CreateAccountDoctor() {
                         </label>
                         <select
                             id="specialties"
-                            multiple
-                            value={formData.selectedSpecialties}
+
+                            value={formData2.selectedSpecialties}
                             onChange={handleSpecialtyChange}
                             className="mt-2 w-full p-2 border border-[#da624a] rounded-md focus:ring-2 focus:ring-[#da624a]"
                         >

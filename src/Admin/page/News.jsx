@@ -1,37 +1,32 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import token from '../../api/token';
+import { Link, useNavigate } from 'react-router-dom';
 
-function AccountUser() {
-    const [user, setUser] = useState([])
+function News() {
+    const [news, setnews] = useState([])
 
     useEffect(() => {
-        const fetchUserAccounts = async () => {
+        const fetchnews = async () => {
 
-            const response = await axios.get('http://localhost:8080/api/account');
-            const filteredUsers = response.data.result.filter(u => u.role === 1);
-            setUser(filteredUsers);
+            const response = await axios.get('http://localhost:8080/api/news');
+
+            setnews(response.data);
 
         };
-        fetchUserAccounts();
+        fetchnews();
     }, []);
-    const navigate = useNavigate();
- 
-    const handleDetailClick = (id) => {
-        navigate(`/admin/user/userDetail/${id}`);
-    };
-    console.log(user);
+
+    console.log(news);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const usersPerPage = 10;
 
-    const filteredUsers = user.filter(user =>
-        user.name.toLowerCase().includes(searchTerm.toLowerCase())
+    const filterednews = news.filter(news =>
+        news.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
-    const displayuser = filteredUsers.slice(
+    const totalPages = Math.ceil(filterednews.length / usersPerPage);
+    const displaynews = filterednews.slice(
         (currentPage - 1) * usersPerPage,
         currentPage * usersPerPage
     );
@@ -40,42 +35,55 @@ function AccountUser() {
         setCurrentPage(page);
     };
 
+    console.log()
     return (
         <div className="bg-gray-100 min-h-screen p-6">
             <div className="container mx-auto bg-white rounded-lg shadow-lg p-6">
-                <h1 className="text-2xl font-bold mb-6 text-[#da624a]">Quản lý người dùng</h1>
+                <h1 className="text-2xl font-bold mb-6 text-[#da624a]">Tin tức</h1>
                 <div className="mb-4 w-60">
                     <input
                         type="text"
-                        placeholder="Tìm kiếm theo tên..."
+                        placeholder="Tìm kiếm theo tiêu đề..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="w-full px-4 py-2 border rounded shadow focus:outline-none focus:ring-2 focus:ring-[#da624a]"
                     />
+                </div>
+                <div className='w-60 py-5'>
+                    <Link to="/admin/news/createnews" className="w-full flex items-center justify-center px-4 py-2 text-base font-medium text-white bg-[#da624a] border-primary rounded-md hover:bg-[#b2503c] transition"
+                    >
+                        Thêm mới
+                    </Link>
                 </div>
                 <div className="overflow-x-auto max-h-96 overflow-y-auto">
                     <table className="min-w-full table-auto border-collapse">
                         <thead className="sticky top-0 z-10 bg-[#da624a] text-white">
                             <tr>
                                 <th className="px-4 py-2 text-left">#</th>
-                                <th className="px-4 py-2 text-left">Tên</th>
-                                <th className="px-4 py-2 text-left">Email</th>
-                                <th className="px-4 py-2 text-left">Điện thoại</th>
-                                <th className="px-4 py-2 text-left">Giới tính</th>
-                                <th className="px-4 py-2 text-left">Hành động</th>
+                                <th className="px-4 py-2 text-left">Hình minh hoạ</th>
+                                <th className="px-4 py-2 text-left">Tiêu đề</th>
+                                <th className="px-4 py-2 text-left">Ngày đăng</th>
+                                <th className="px-4 py-2 text-left">Miêu tả</th>
+
                             </tr>
                         </thead>
                         <tbody>
-                            {displayuser.map((user, index) => (
-                                <tr key={user.id} className={`hover:bg-gray-100 ${index % 2 === 0 ? 'bg-gray-50' : ''}`}>
+                            {displaynews.map((news, index) => (
+                                <tr key={news.id} className={`hover:bg-gray-100 ${index % 2 === 0 ? 'bg-gray-50' : ''}`}>
                                     <td className="border px-4 py-2">{(currentPage - 1) * usersPerPage + index + 1}</td>
-                                    <td className="border px-4 py-2">{user.name}</td>
-                                    <td className="border px-4 py-2">{user.email}</td>
-                                    <td className="border px-4 py-2">{user.phone}</td>
-                                    <td className='border px-4 py-2'>{user.gender}</td>
                                     <td className="border px-4 py-2">
-                                        <button className="bg-[#da624a] text-white px-4 py-2 rounded shadow hover:bg-[#c75240] transition" onClick={() => handleDetailClick(user.id)}>Detail</button>
+                                        <img
+                                            className="mx-auto"
+                                            src={news.images}
+                                            width={70}
+                                            height={70}
+                                        />
                                     </td>
+                                    <td className="border px-4 py-2">{news.name}</td>
+                                    <td className="border px-4 py-2">{news.date}</td>
+
+                                    <td className="border px-4 py-2">{news.description}</td>
+                                  
                                 </tr>
                             ))}
                         </tbody>
@@ -98,4 +106,4 @@ function AccountUser() {
     );
 }
 
-export default AccountUser;
+export default News;

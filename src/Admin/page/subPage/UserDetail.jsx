@@ -16,15 +16,17 @@ function UserDetail() {
                 // Fetch patient data
                 const response = await axios.get(`http://localhost:8080/api/account/${id}`);
                 const patientData = response.data;
-
+                console.log(patientData);
                 if (patientData && patientData.id === parseInt(id)) {
                     setPatient(patientData);
 
                     // Fetch all appointments
-                    const responseApp = await axios.get(`http://localhost:8080/api/appointment`);
+                    const responseApp = await axios.get(`http://localhost:8080/api/appointment`);   
+                
                     const filteredAppointments = responseApp.data.filter(
-                        (appointment) => appointment.patient.account_id === parseInt(id)
+                        (appointment) => appointment.patient.account.id === parseInt(id)
                     );
+               
                     setAppointments(filteredAppointments);
 
                     // Extract IDs of filtered appointments
@@ -53,13 +55,14 @@ function UserDetail() {
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
-
     console.log("App", appointments);
+    console.log("pay", payments);
 
     return (
         <div className="bg-gray-100 min-h-screen p-6" id="goup">
             <div className="container mx-auto bg-white rounded-lg shadow-lg p-6">
-                <h1 className="text-2xl font-bold mb-6 text-[#da624a]">Patient Information</h1>
+                <h1 className="text-2xl font-bold mb-6 text-[#da624a]">Thông tin bệnh nhân
+</h1>
                 <div className="mb-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="flex">
@@ -71,32 +74,38 @@ function UserDetail() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-gray-600 text-sm mb-2">Full name:</label>
+                                <label className="block text-gray-600 text-sm mb-2">Họ và tên đầy đủ
+                                :</label>
                                 <p className="text-gray-800 mb-7">{patient.name || 'N/A'}</p>
-                                <label className="block text-gray-600 text-sm mb-2">Phone number:</label>
+                                <label className="block text-gray-600 text-sm mb-2">Số điện thoại
+                                :</label>
                                 <p className="text-gray-800">{patient.phone || 'N/A'}</p>
                             </div>
                         </div>
                         <div>
-                            <label className="block text-gray-600 text-sm mb-2">Email:</label>
+                            <label className="block text-gray-600 text-sm mb-2">E-mail
+                            :</label>
                             <p className="text-gray-800 mb-7">{patient.email || 'N/A'}</p>
-                            <label className="block text-gray-600 text-sm mb-2">Address:</label>
+                            <label className="block text-gray-600 text-sm mb-2">Địa chỉ
+                            :</label>
                             <p className="text-gray-800">{patient.address || 'N/A'}</p>
                         </div>
                     </div>
                 </div>
 
                 <div className="mt-6">
-                    <h2 className="text-xl font-semibold text-gray-700 mb-4">Transaction History</h2>
+                    <h2 className="text-xl font-semibold text-gray-700 mb-4">Lịch sử giao dịch
+</h2>
                     <div className="overflow-x-auto max-h-96 overflow-y-auto">
                         <table className="min-w-full bg-white border border-gray-200 rounded-lg">
                             <thead className="top-0 sticky z-10">
                                 <tr className="bg-gray-50">
                                     <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">STT</th>
-                                    <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">Transaction Code</th>
-                                    <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">Date</th>
-                                    <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">Payment Method</th>
-                                    <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">Value</th>
+                                    <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">Mã giao dịch	</th>
+                                    <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">Ngày</th>
+                                    <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">Phương thức thanh toán	</th>
+                                    <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">Trạng thái
+                                    </th>
                                     <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">Status</th>
                                 </tr>
                             </thead>

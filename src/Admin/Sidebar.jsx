@@ -54,13 +54,13 @@ function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
                         <li className='app-sidebar__heading pl-3'>Menu</li>
                         <li className='mm-active'>
                             <a className='childmenu' onClick={toggleSubMenu}>
-                                <FontAwesomeIcon icon={faRocket} /> Analytics
+                                <FontAwesomeIcon icon={faRocket} /> Phân tích
                                 <FontAwesomeIcon icon={isSubMenuOpen ? faChevronUp : faChevronDown} className='metismenu-state-icon' />
                             </a>
                             <ul className={isSubMenuOpen ? 'mm-show' : 'mm-collapse'}>
                                 <li>
                                     <Link to="/admin" className={activeMenu === 'Analytics' ? 'mm-active' : ''} onClick={() => handleMenuClick('Analytics')}>
-                                        Dashboard
+                                        Bảng thống kê
                                     </Link>
                                 </li>
 
@@ -71,12 +71,17 @@ function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
                                 </li>
                                 <li>
                                     <Link to="/admin/appointment" className={activeMenu === 'Appointment' ? 'mm-active' : ''} onClick={() => handleMenuClick('Appointment')}>
-                                        Appointment
+                                        Các Lịch đặt hẹn
                                     </Link>
                                 </li>
                                 <li>
                                     <Link to="/admin/specialty" className={activeMenu === 'Specialty' ? 'mm-active' : ''} onClick={() => handleMenuClick('Specialty')}>
-                                        Specialty
+                                        Các khoa khám
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/admin/news" className={activeMenu === 'News' ? 'mm-active' : ''} onClick={() => handleMenuClick('News')}>
+                                        Tin tức
                                     </Link>
                                 </li>
                             </ul>
@@ -86,23 +91,23 @@ function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
                     <ul className='vertical-nav-menu metismenu'>
                         <li className='mm-active'>
                             <a className='childmenu' onClick={toggleSubMenu1}>
-                                <FontAwesomeIcon icon={faPeopleRoof} className='fa-people-roof pr-2' /> Manager
+                                <FontAwesomeIcon icon={faPeopleRoof} className='fa-people-roof pr-2' /> Quản lý
                                 <FontAwesomeIcon icon={isSubMenuOpen1 ? faChevronUp : faChevronDown} className='metismenu-state-icon' />
                             </a>
                             <ul className={isSubMenuOpen1 ? 'mm-show' : 'mm-collapse'}>
                                 <li>
                                     <Link to="/admin/user" className={activeMenu === 'User' ? 'mm-active' : ''} onClick={() => handleMenuClick('User')}>
-                                        User
+                                        Người dùng
                                     </Link>
                                 </li>
                                 <li>
                                     <Link to="/admin/doctor" className={activeMenu === 'Doctor' ? 'mm-active' : ''} onClick={() => handleMenuClick('Doctor')}>
-                                        Doctor
+                                        Bác sĩ
                                     </Link>
                                 </li>
                                 <li>
                                     <Link to="/admin/transaction" className={activeMenu === 'Transaction' ? 'mm-active' : ''} onClick={() => handleMenuClick('Transaction')}>
-                                        Transaction Report
+                                        Báo cáo giao dịch
                                     </Link>
                                 </li>
                             </ul>

@@ -139,7 +139,7 @@ function Appointment() {
                             {filteredRooms.map((room) => (
                                 <tr key={room.id}>
                                     <td className="border border-gray-300 p-2">
-                                        {accounts[room.patient.account_id] || 'Unknown'} 
+                                        {room.patient.account.name || 'Unknown'} 
                                     </td>
                                     <td className="border border-gray-300 p-2">{room.type}</td>
                                     <td className="border border-gray-300 p-2">{room.patient.descriptions}</td>
