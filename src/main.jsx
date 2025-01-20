@@ -40,6 +40,7 @@ import Invoice from "./sendmail/Invoice";
 import Notfound from "./404/notfound";
 import News from "./Admin/page/News";
 import CreateNews from "./Admin/page/createPage/CreateNews";
+import NewDetail from "./Admin/page/subPage/NewDetail";
 
 
 
@@ -143,6 +144,10 @@ const router = createBrowserRouter([
       {
         path: "/admin/news/createnews",
         element: <CreateNews />,
+      },
+      {
+        path: "/admin/news/detail/:id",
+        element: <NewDetail />,
       },
     ],
   },

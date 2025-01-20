@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 function News() {
     const [news, setnews] = useState([])
@@ -22,7 +22,7 @@ function News() {
     const usersPerPage = 10;
 
     const filterednews = news.filter(news =>
-        news.name.toLowerCase().includes(searchTerm.toLowerCase())
+        news.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     const totalPages = Math.ceil(filterednews.length / usersPerPage);
@@ -34,8 +34,17 @@ function News() {
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };
+    const navigate = useNavigate();
+    const handleDetail = (id) => {
+       
+        navigate(`/admin/news/detail/${id}`); 
+    };
+    const stripHTML = (html) => {
+        const div = document.createElement('div');
+        div.innerHTML = html;
+        return div.textContent || div.innerText || "";
+    };
 
-    console.log()
     return (
         <div className="bg-gray-100 min-h-screen p-6">
             <div className="container mx-auto bg-white rounded-lg shadow-lg p-6">
@@ -64,6 +73,7 @@ function News() {
                                 <th className="px-4 py-2 text-left">Tiêu đề</th>
                                 <th className="px-4 py-2 text-left">Ngày đăng</th>
                                 <th className="px-4 py-2 text-left">Miêu tả</th>
+                                <th className="px-4 py-2 text-left">Chi tiết</th>
 
                             </tr>
                         </thead>
@@ -79,11 +89,21 @@ function News() {
                                             height={70}
                                         />
                                     </td>
-                                    <td className="border px-4 py-2">{news.name}</td>
+                                    <td className="border px-4 py-2">{news.title}</td>
                                     <td className="border px-4 py-2">{news.date}</td>
 
-                                    <td className="border px-4 py-2">{news.description}</td>
-                                  
+                                    <td className="border px-4 py-2">
+                                        {stripHTML(news.description).length > 100
+                                            ? `${stripHTML(news.description).slice(0, 100)}...`
+                                            : stripHTML(news.description)}
+                                    </td>
+
+
+                                    <td className="border px-4 py-2 ">
+                                        <button className="text-sm text-[#da624a] hover:underline" onClick={() => handleDetail(news.id)}>
+                                            Chi tiết
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
