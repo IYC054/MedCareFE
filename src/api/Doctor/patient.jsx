@@ -12,4 +12,15 @@ const getpatientbyaccountid = async (id) => {
     return [];
   }
 };
-export default getpatientbyaccountid;
+const getpatientbyid = async (id) => {
+  try {
+    const res = await axios.get(
+      `http://localhost:8080/api/patients/${id}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+export {getpatientbyaccountid, getpatientbyid};

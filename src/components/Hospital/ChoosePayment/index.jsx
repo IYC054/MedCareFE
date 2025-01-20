@@ -31,6 +31,7 @@ function ChoosePayment() {
   const [dataWork, setdataWork] = useState({});
   const [dataSpecialty, setdataSpecialty] = useState({});
   const [dataProfile, setdataProfile] = useState({});
+  const [showQR, setShowQR] = useState(false);
   const [fee, setFee] = useState(2000);
   //
   const doctorid = getParams.get("doctor");
@@ -88,14 +89,20 @@ function ChoosePayment() {
 
   const PayWithMomo = async () => {
     if (checkMethod == "momo") {
-      MomoPayment(fee, "0358227696",doctorid, workid, profileid, specialtyid);
-    }else if (checkMethod == "bank"){
-      navigate(`/confirm-payment?doctor=${doctorid}&work=${workid}&specialty=${dataSpecialty.name}&profile=${profileid}`)
-    } 
-    else {
+      MomoPayment(fee, "0358227696", doctorid, workid, profileid, specialtyid);
+    } else if (checkMethod == "bank") {
+      // navigate(`/confirm-payment?doctor=${doctorid}&work=${workid}&specialty=${dataSpecialty.name}&profile=${profileid}`)
+    } else {
       alert("Chưa chọn phương thức thanh toán");
     }
   };
+  useEffect(() => {
+    if (checkMethod == "bank") {
+      setShowQR(true);
+    } else {
+      setShowQR(false);
+    }
+  }, [checkMethod]);
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
@@ -158,10 +165,12 @@ function ChoosePayment() {
                           value="bank"
                           onClick={(e) => setCheckMethod(e.target.value)}
                         />
-                        <span>Chuyển khoản qua ngân hàng/Internet Banking
-                          
-                        </span>
+                        <span>Chuyển khoản qua ngân hàng/Internet Banking</span>
                       </li>
+                      <div className="block ">
+                        {" "}
+                        {showQR ? <ConfirmPayment /> : <Fragment></Fragment>}
+                      </div>
                     </ul>
                   </div>
                 </div>
@@ -260,7 +269,9 @@ function ChoosePayment() {
                 </span>
               </button>
             </div>
-           
+            <div className="w-full items-center justify-center my-5 md:hidden block">
+              {/* {showQR ? <ConfirmPayment /> : <Fragment></Fragment>} */}
+            </div>
           </div>
         </div>
       </div>

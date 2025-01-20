@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import { gethistoryMbbank } from "../../api/Bank/payment";
-import getpatientbyaccountid from "../../api/Doctor/patient";
+import {getpatientbyaccountid} from "../../api/Doctor/patient";
 
 export const AppContext = createContext();
 

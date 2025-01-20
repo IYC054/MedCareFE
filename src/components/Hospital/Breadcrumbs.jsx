@@ -25,6 +25,9 @@ function Breadcrumbs(props) {
     breadcrumb.push({ name: "Xác nhận thông tin", link: `/confirm-information?hospital=${hospitalName}` });
   }else if (pathParts.includes("choose-payment")) {
     breadcrumb.push({ name: "Chọn phương thức thanh toán", link: "/choose-payment" });
+  
+  }else if (pathParts.includes("hospital/form-appointment")) {
+    breadcrumb.push({ name: "Chọn hình thức đặt khám", link: "hospital/form-appointment" });
   }
 
   return (

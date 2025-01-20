@@ -35,7 +35,6 @@ function ConfirmPayment(props) {
       specialty == null ||
       profileid == null
     ) {
-      console.log("nhầm đường r");
       navigate("/hospital");
     }
   }, [doctorid, profileid, specialty, workid]);
@@ -46,7 +45,7 @@ function ConfirmPayment(props) {
 
         // lay status exists
         var isStatus = result.result;
-        if (isStatus == false) {
+        if (isStatus == true) {
           const appointment = await CreateAppointment(
             1, //đợi login
             doctorid,
@@ -116,7 +115,7 @@ function ConfirmPayment(props) {
           <li className="settingli my-2 text-[#00000073] text-[14px]">
             Số tải khoản :{" "}
             <span className="text-[#000] font-medium text-[15px] flex items-center">
-              1308200200
+            0799951104
               <span
                 className="ml-2 text-[18px] text-[#00b5f1] cursor-pointer"
                 onClick={() => copyToClipboard("1308200200")}
@@ -128,7 +127,7 @@ function ConfirmPayment(props) {
           <li className="settingli my-2 text-[#00000073] text-[14px]">
             Tên tài khoản :{" "}
             <span className="text-[#000] font-medium text-[15px]">
-              Tran Thanh Phong
+              Nguyễn Anh Tuấn
             </span>
           </li>
           <li className="settingli my-2 text-[#00000073] text-[14px]">

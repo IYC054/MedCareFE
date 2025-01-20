@@ -22,7 +22,7 @@ function AddProfile(props) {
     occupation: "",
     identityCard: "",
     email: "",
-    nation: "Kinh",
+    nation: "",
     address: "",
     accountid: 1,
   });
@@ -109,9 +109,9 @@ function AddProfile(props) {
     }
 
     // Validate CCCD (must be 12 digits)
-    if (!/^\d{12}$/.test(formValues.identityCard)) {
-      errors.identityCard = "Số CCCD phải có 12 chữ số!";
-    }
+    // if (!/^\d{12}$/.test(formValues.identityCard)) {
+    //   errors.identityCard = "Số CCCD phải có 12 chữ số!";
+    // }
 
     // Validate email format
     if (!/\S+@\S+\.\S+/.test(formValues.email)) {
@@ -291,7 +291,7 @@ function AddProfile(props) {
                     className="text-[20px] text-[#003553]"
                   >
                     Nghề nghiệp
-                    <span className="text-[red]"> *</span>{" "}
+                    <span className="text-[red]"></span>{" "}
                   </label>
                   <div className="grid grid-cols-1 gap-2">
                     <Select
@@ -301,8 +301,8 @@ function AddProfile(props) {
                         handleInputChange("occupation", value)
                       }
                     >
-                      <Select.Option value="#">Bác sĩ</Select.Option>
-                      <Select.Option value="#">Cảnh sát</Select.Option>
+                      <Select.Option value="Bác sĩ">Bác sĩ</Select.Option>
+                      <Select.Option value="Cảnh sát">Cảnh sát</Select.Option>
                     </Select>
                   </div>
                 </div>
@@ -311,13 +311,13 @@ function AddProfile(props) {
                     htmlFor="username"
                     className="text-[20px] text-[#003553]"
                   >
-                    Số CCCD
+                    Mã số BHYT
                     <span className="text-[red]"> *</span>{" "}
                   </label>
                   <div className="grid grid-cols-1 gap-2">
                     <input
                       type="text"
-                      placeholder="NHẬP SỐ CCCD"
+                      placeholder="NHẬP SỐ BHYT"
                       value={formValues.identityCard}
                       onChange={(e) =>
                         handleInputChange("identityCard", e.target.value)
@@ -372,9 +372,9 @@ function AddProfile(props) {
                       value={formValues.nation}
                       onChange={(value) => handleInputChange("nation", value)}
                     >
-                      <Select.Option value="#">Kinh</Select.Option>
-                      <Select.Option value="#">Hoa</Select.Option>
-                      <Select.Option value="#">Khơ-me</Select.Option>
+                      <Select.Option value="Kinh">Kinh</Select.Option>
+                      <Select.Option value="Hoa">Hoa</Select.Option>
+                      <Select.Option value="Khơ-me">Khơ-me</Select.Option>
                     </Select>
                   </div>
                 </div>

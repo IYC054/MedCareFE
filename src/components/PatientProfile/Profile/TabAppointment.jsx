@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { FaHandHoldingMedical, FaHospital } from "react-icons/fa";
 import { FaKitMedical } from "react-icons/fa6";
 import loading from "../../../../asset/loading.gif";
-import getpatientbyaccountid from "../../../api/Doctor/patient";
+import {getpatientbyaccountid} from "../../../api/Doctor/patient";
 import { getAppointmentByPatientId } from "../../../api/Doctor/appointment";
 import { getallPaymentByAppoint } from "../../../api/Bank/payment";
 
