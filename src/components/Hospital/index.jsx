@@ -70,7 +70,7 @@ function Hopsital() {
                 </ul>
               </div>
               <div className="w-full my-3">
-                <Link to={`${location.pathname}/booking`}>
+                <Link to={`${location.pathname}/form-appointment`}>
                   <button className="w-full h-[50px] text-[#fff] font-medium rounded-full bg-gradient-to-r from-[#00b5f1] to-[#00e0ff]">
                     Đặt Khám Ngay
                   </button>

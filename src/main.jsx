@@ -38,6 +38,7 @@ import LoginAdmin from "./Admin/page/LoginAdmin";
 import AppointmentDetail from "./Admin/page/subPage/AppointmentDetail";
 import Invoice from "./sendmail/Invoice";
 import Notfound from "./404/notfound";
+import FormAppointment from "./components/Hospital/Formappointment";
 
 
 
@@ -59,6 +60,7 @@ const router = createBrowserRouter([
       { path: "/confirm-payment", element: <ConfirmPayment /> },
       { path: "/payment-success", element: <PaymentSuccess /> },
       { path: "/invoice", element: <Invoice /> },
+      { path: "/hospital/form-appointment", element: <FormAppointment /> },
       { path: "*", element: <Notfound /> },
     ],
   },

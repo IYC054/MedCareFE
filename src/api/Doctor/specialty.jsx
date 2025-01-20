@@ -19,5 +19,14 @@ const getSpecialtyById = async (id) => {
     return []; 
   }
 };
+const getallSpecialty = async () => {
+  try {
+    const res = await axios.get(`http://localhost:8080/api/specialty`);
+    return res.data; 
+  } catch (error) {
+    console.error(error);
+    return []; 
+  }
+};
 
-export {getSpecialtyByDoctor, getSpecialtyById};
+export {getSpecialtyByDoctor, getSpecialtyById, getallSpecialty};

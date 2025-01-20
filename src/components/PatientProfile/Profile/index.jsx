@@ -11,7 +11,7 @@ import {
   FaUserCircle,
   FaUserPlus,
 } from "react-icons/fa";
-import { FaLocationDot } from "react-icons/fa6";
+import { FaCalendarDays, FaLocationDot, FaUserDoctor } from "react-icons/fa6";
 import { MdGroups } from "react-icons/md";
 
 import "./PatientProfile.scss";
@@ -19,27 +19,41 @@ import { Link } from "react-router-dom";
 import Tabprofile from "./Tabprofile";
 import TabAppointment from "./TabAppointment";
 import TabCheckBHYT from "./TabCheckBHYT";
+import TabDoctorappointment from "./TabDoctorappointment";
+import TabDoctorwithpatient from "./TabDoctorwithpatient";
 function PatientProfile() {
   const [selectTabProfile, setSelectTabProfile] = useState(true);
   const [selectTabAppointment, setSelectTabAppointment] = useState(false);
+  const [selectTabDoctorAppointment, setSelectTabDoctorAppointment] = useState(false);
+  const [selectTabDoctorWithPatient, setSelectTabDoctorWithPatient] = useState(false);
   // const [selectTabBHYT, setSelectTabBHYT] = useState(false);
   const handleTab = (value) => {
-    if(value == "hosobenhnhan"){
+    if (value == "hosobenhnhan") {
       setSelectTabProfile(true);
+      setSelectTabDoctorAppointment(false);
       setSelectTabAppointment(false);
+      setSelectTabDoctorWithPatient(false);
       // setSelectTabBHYT(false);
-    }else if(value == "phieukhambenh"){
-      setSelectTabProfile(false);
+    } else if (value == "phieukhambenh") {
       setSelectTabAppointment(true);
+      setSelectTabProfile(false);
+      setSelectTabDoctorWithPatient(false);
+      setSelectTabDoctorAppointment(false);
+
       // setSelectTabBHYT(false);
+    } else if (value == "quanlydatlich") {
+      setSelectTabDoctorAppointment(true);
+      setSelectTabProfile(false);
+      setSelectTabDoctorWithPatient(false);
+      setSelectTabAppointment(false);
     }
-    // else if(value == "bhyt"){
-    //   setSelectTabProfile(false);
-    //   setSelectTabAppointment(false);
-    //   setSelectTabBHYT(true);
-    
-    // }
-  }
+    else if (value == "quanlybenhnhan") {
+      setSelectTabAppointment(false);
+      setSelectTabDoctorAppointment(false);
+      setSelectTabProfile(false);
+      setSelectTabDoctorWithPatient(true);
+    }
+  };
   return (
     <div className="flex justify-center py-5">
       <div className="w-4/5 mb-2">
@@ -63,13 +77,41 @@ function PatientProfile() {
             </div>
             <div className="w-full  mb-5">
               <ul className="list-none text-center py-2 my-2">
-                <li onClick={() => handleTab("hosobenhnhan")} className={`my-4 flex justify-center hover:bg-[#fff] ${selectTabProfile ? "isactive" : ""} cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}>
+                <li
+                  onClick={() => handleTab("hosobenhnhan")}
+                  className={`my-4 flex justify-center hover:bg-[#fff] ${
+                    selectTabProfile ? "isactive" : ""
+                  } cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}
+                >
                   <FaUserPlus className="text-[20px]" />
                   Hồ sơ bệnh nhân
                 </li>
-                <li onClick={() => handleTab("phieukhambenh")} className={`my-4 flex justify-center hover:bg-[#fff] ${selectTabAppointment ? "isactive" : ""} cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}>
+                <li
+                  onClick={() => handleTab("phieukhambenh")}
+                  className={`my-4 flex justify-center hover:bg-[#fff] ${
+                    selectTabAppointment ? "isactive" : ""
+                  } cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}
+                >
                   <FaFileMedical className="text-[20px]" />
                   Phiếu khám bệnh
+                </li>
+                <li
+                  onClick={() => handleTab("quanlydatlich")}
+                  className={`my-4 flex justify-center hover:bg-[#fff] ${
+                    selectTabDoctorAppointment ? "isactive" : ""
+                  } cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}
+                >
+                  <FaCalendarDays   className="text-[20px]" />
+                  Quản lý lịch hẹn
+                </li>
+                <li
+                  onClick={() => handleTab("quanlybenhnhan")}
+                  className={`my-4 flex justify-center hover:bg-[#fff] ${
+                    selectTabDoctorWithPatient ? "isactive" : ""
+                  } cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}
+                >
+                  <FaCalendarDays   className="text-[20px]" />
+                  Quản lý bệnh nhân
                 </li>
                 {/* <li onClick={() => handleTab("bhyt")} className={`my-4 flex justify-center hover:bg-[#fff] ${selectTabBHYT ? "isactive" : ""} cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}>
                   <FaSearch className="text-[20px]" />
@@ -79,9 +121,11 @@ function PatientProfile() {
             </div>
           </div>
           <div className="col-span-3">
-           {selectTabProfile ? <Tabprofile /> : <Fragment />}
-           {selectTabAppointment ? <TabAppointment /> : <Fragment />}
-           {/* {selectTabBHYT ? <TabCheckBHYT /> : <Fragment />} */}
+            {selectTabProfile ? <Tabprofile /> : <Fragment />}
+            {selectTabAppointment ? <TabAppointment /> : <Fragment />}
+            {selectTabDoctorAppointment ? <TabDoctorappointment /> : <Fragment />}
+            {selectTabDoctorWithPatient ? <TabDoctorwithpatient /> : <Fragment />}
+            {/* {selectTabBHYT ? <TabCheckBHYT /> : <Fragment />} */}
           </div>
         </div>
       </div>

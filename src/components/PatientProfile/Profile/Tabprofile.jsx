@@ -9,13 +9,13 @@ import {
 } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdGroups } from "react-icons/md";
-import { profilebyaccountId } from "../../../api/Profile/profilebyaccount";
+import { profilebyaccount } from "../../../api/Profile/profilebyaccount";
 
 function Tabprofile() {
   const [dataProfile, setDataProfile] = useState([]);
   useEffect(() => {
     const getdataprofile = async () => {
-      const result = await profilebyaccountId(1);
+      const result = await profilebyaccount(1);
       setDataProfile(result)
     }
     getdataprofile();
@@ -24,7 +24,8 @@ function Tabprofile() {
     <div className="w-full h-full  border-l border-[#00b5f1] pl-10">
       <span className="text-[24px] font-medium">Hồ Sơ Bệnh Nhân</span>
       {dataProfile && Object.keys(dataProfile).length > 0 ? (
-        <div className="my-4 w-full  bg-[#fff] rounded-xl border border-solid border-[#eaeaea]">
+        dataProfile.map((item, index) => (
+          <div className="my-4 w-full  bg-[#fff] rounded-xl border border-solid border-[#eaeaea]" key={index}>
           <ul className="list-none flex flex-wrap p-4 justify-between">
             <li className="flex w-full items-center gap-2 text-[#003553] my-1 settingli">
               <span className="flex items-center gap-2 ">
@@ -32,7 +33,7 @@ function Tabprofile() {
                 <span>Họ và tên :</span>
               </span>
               <span className="text-[18px] font-medium text-[#00b5f1]">
-                {dataProfile.fullname}
+                {item.fullname}
               </span>
             </li>
             <li className="flex w-full items-center gap-2 text-[#003553] my-1 settingli">
@@ -41,7 +42,7 @@ function Tabprofile() {
                 <span>Ngày Sinh :</span>
               </span>
               <span className="text-[14px] font-medium text-[#003553]">
-                {dataProfile.birthdate}
+                {item.birthdate}
               </span>
             </li>
             <li className="flex w-full items-center gap-2 text-[#003553] my-1 settingli">
@@ -50,7 +51,7 @@ function Tabprofile() {
                 <span>Số điện thoại :</span>
               </span>
               <span className="text-[14px] font-medium text-[#003553]">
-                {dataProfile.phone}
+                {item.phone}
               </span>
             </li>
             <li className="flex w-full items-center gap-2 text-[#003553] my-1 settingli">
@@ -59,7 +60,7 @@ function Tabprofile() {
                 <span>Giới tính :</span>
               </span>
               <span className="text-[14px] font-medium text-[#003553]">
-                {dataProfile.gender === "Male" ? "Nam" : "Nữ"}
+                {item.gender === "Male" ? "Nam" : "Nữ"}
               </span>
             </li>
             <li className="flex w-full items-center gap-2 text-[#003553] my-1 settingli">
@@ -68,7 +69,7 @@ function Tabprofile() {
                 <span>Địa chỉ :</span>
               </span>
               <span className="text-[14px] font-medium text-[#003553]">
-                {dataProfile.address}
+                {item.address}
               </span>
             </li>
             <li className="flex w-full items-center gap-2 text-[#003553] my-1 settingli">
@@ -77,7 +78,7 @@ function Tabprofile() {
                 <span>Dân tộc :</span>
               </span>
               <span className="text-[14px] font-medium text-[#003553]">
-                {dataProfile.nation}
+                {item.nation}
               </span>
             </li>
           </ul>
@@ -88,6 +89,7 @@ function Tabprofile() {
             </div>
           </div>
         </div>
+        ))
       ) : (
         <Link to={"/profile/add"}>
           <div className="flex justify-center items-center w-full">
