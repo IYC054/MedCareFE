@@ -23,7 +23,7 @@ function AppointmentDetail({ roomId, onClose }) {
             fetchDetails();
         }
     }, [roomId]);
-
+    
     if (loading) {
         return (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
@@ -60,19 +60,19 @@ function AppointmentDetail({ roomId, onClose }) {
                     <div className="grid grid-cols-3 gap-4">
                         <div>
                             <h3 className="font-medium text-gray-700">Bác sĩ:</h3>
-                            <p className="text-gray-600">{appointmentDetails.type}</p>
+                            <p className="text-gray-600">{appointmentDetails.doctor.account.name}</p>
                         </div>
                         <div>
                             <h3 className="font-medium text-gray-700">Bệnh nhân:</h3>
-                            <p className="text-gray-600">Jane Smith</p>
+                            <p className="text-gray-600">{appointmentDetails.patient.account.name}</p>
                         </div>
                         <div>
                             <h3 className="font-medium text-gray-700">Loại cuộc hẹn:</h3>
                             <p className="text-gray-600">{appointmentDetails.type}</p>
                         </div>
                         <div>
-                            <h3 className="font-medium text-gray-700">So tien</h3>
-                            <p className="text-gray-600">{appointmentDetails.amount}</p>
+                            <h3 className="font-medium text-gray-700">Số tiền </h3>
+                            <p className="text-gray-600">{appointmentDetails.amount} VNĐ</p>
                         </div>
                         <div>
                             <h3 className="font-medium text-gray-700">Trại thái:</h3>

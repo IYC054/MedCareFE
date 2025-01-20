@@ -17,7 +17,7 @@ function AccountUser() {
         fetchUserAccounts();
     }, []);
     const navigate = useNavigate();
-
+ 
     const handleDetailClick = (id) => {
         navigate(`/admin/user/userDetail/${id}`);
     };

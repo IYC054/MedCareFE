@@ -288,33 +288,15 @@ const Header = () => {
                     items={[]}
                   />
                 </li>
-
                 <li>
                   {" "}
                   <DropdownMenu
                     title={
-                      <div className="flex items-center gap-1 ">
+                      <Link to="/new" className="flex items-center gap-1 ">
                         <span>Tin tức</span>
-                        <svg
-                          stroke="currentColor"
-                          fill="currentColor"
-                          strokeWidth="0"
-                          viewBox="0 0 1024 1024"
-                          height="8px"
-                          width="8px"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"></path>
-                        </svg>
-                      </div>
+                      </Link>
                     }
-                    items={[
-                      { label: "Bệnh viện công", link: "#" },
-                      { label: "Bệnh viện tư", link: "#" },
-                      { label: "Phòng khám ", link: "#" },
-                      { label: "Phòng mạch", link: "#" },
-                      { label: "Xét nghiệm", link: "#" },
-                    ]}
+                    items={[]}
                   />
                 </li>
                 <li>
@@ -389,9 +371,8 @@ const Header = () => {
 
           {/* Sidebar */}
           <div
-            className={`fixed lg:hidden block top-0 right-0 z-40 h-full bg-[#fff] text-white shadow-lg transition-all duration-300 ${
-              sidebar ? "w-96" : "w-0"
-            } overflow-y-auto`}
+            className={`fixed lg:hidden block top-0 right-0 z-40 h-full bg-[#fff] text-white shadow-lg transition-all duration-300 ${sidebar ? "w-96" : "w-0"
+              } overflow-y-auto`}
           >
             <div className="p-4 text-[#000]">
               <h2 className="flex justify-between items-center text-lg font-bold border-b border-solid border-[#c2c2c2]">
@@ -427,24 +408,24 @@ const Header = () => {
                 </li>
               </ul>
             </div>
-              <div className="w-full absolute bottom-5 p-4">
-                <div className="w-full flex items-center gap-3 mb-4">
-                  <div className="w-[42px] h-[60px]">
-                    <img
-                      src="https://medpro.vn/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FimgDownApp.791e0cff.svg&w=48&q=75"
-                      alt="icon"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="text-[20px] text-[#000] flex gap-2 items-center cursor-pointer">
-                    <span>Tải ứng dụng tải đây</span>
-                    <FaDownload />
-                  </div>
+            <div className="w-full absolute bottom-5 p-4">
+              <div className="w-full flex items-center gap-3 mb-4">
+                <div className="w-[42px] h-[60px]">
+                  <img
+                    src="https://medpro.vn/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FimgDownApp.791e0cff.svg&w=48&q=75"
+                    alt="icon"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-                <div className="w-full h-[40px] bg-[red] text-[#fff] flex justify-center items-center rounded-lg">
-                  Đăng xuất
+                <div className="text-[20px] text-[#000] flex gap-2 items-center cursor-pointer">
+                  <span>Tải ứng dụng tải đây</span>
+                  <FaDownload />
                 </div>
               </div>
+              <div className="w-full h-[40px] bg-[red] text-[#fff] flex justify-center items-center rounded-lg">
+                Đăng xuất
+              </div>
+            </div>
           </div>
         </div>
       </div>
