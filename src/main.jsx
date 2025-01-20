@@ -41,6 +41,7 @@ import Notfound from "./404/notfound";
 import News from "./Admin/page/News";
 import CreateNews from "./Admin/page/createPage/CreateNews";
 import NewDetail from "./Admin/page/subPage/NewDetail";
+import NewDetails from "./page/NewDetails";
 
 
 
@@ -52,6 +53,7 @@ const router = createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "/about", element: <About /> },
       { path: "/new", element: <New /> },
+      { path: "/new/detail", element: <NewDetails /> },
       { path: "/hospital", element: <Hopsital /> },
       { path: "/hospital/booking", element: <Booking /> },
       { path: "/profile/add", element: <AddProfile /> },
