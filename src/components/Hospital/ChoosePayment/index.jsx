@@ -12,7 +12,7 @@ import {
 import { getDoctorbyId } from "../../../api/Doctor/doctor";
 import { getSpecialtyById } from "../../../api/Doctor/specialty";
 import { getWorkTimeDoctorbyId } from "../../../api/Doctor/workinghour";
-import { profilebyaccountId } from "../../../api/Profile/profilebyaccount";
+import { ProfilebypatientprofileId } from "../../../api/Profile/profilebyaccount";
 import { FaArrowRight } from "react-icons/fa";
 import { FaLocationDot, FaRegPaste, FaUserDoctor } from "react-icons/fa6";
 import { MdOutlineAttachMoney, MdOutlineMedicalServices } from "react-icons/md";
@@ -65,7 +65,7 @@ function ChoosePayment() {
   }, [workid]);
   useEffect(() => {
     const fetchDoctor = async () => {
-      const data = await profilebyaccountId(profileid);
+      const data = await ProfilebypatientprofileId(profileid);
       setdataProfile(data);
     };
 

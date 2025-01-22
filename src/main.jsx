@@ -38,14 +38,11 @@ import LoginAdmin from "./Admin/page/LoginAdmin";
 import AppointmentDetail from "./Admin/page/subPage/AppointmentDetail";
 import Invoice from "./sendmail/Invoice";
 import Notfound from "./404/notfound";
-<<<<<<< HEAD
 import FormAppointment from "./components/Hospital/Formappointment";
-=======
 import News from "./Admin/page/News";
 import CreateNews from "./Admin/page/createPage/CreateNews";
 import NewDetail from "./Admin/page/subPage/NewDetail";
 import NewDetails from "./page/NewDetails";
->>>>>>> 8171a00480b771e7d56e4256e445ae052831c097
 
 
 

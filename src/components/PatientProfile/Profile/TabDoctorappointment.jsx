@@ -10,11 +10,10 @@ import { Option } from "antd/es/mentions";
 
 function TabDoctorappointment() {
   const [appointments, setAppointments] = useState([]);
-  const [popup, setPopup] = useState(false);
   // const [selectedPatientId, setSelectedPatientId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [appointmentsPerPage] = useState(7);
-  const statusoption = ["Confirmed", "Cancelled", "Pending"];
+  const statusoption = ["Confirmed", "Cancelled", "Pending", "Success"];
   const fetchAppointments = async () => {
     try {
       const data = await getAppointmentByDoctorId(1);
@@ -44,15 +43,7 @@ function TabDoctorappointment() {
   useEffect(() => {
     fetchAppointments();
   }, []);
-  const handlePopupDetail = (id = null) => {
-    if (id) {
-      setSelectedPatientId(id);
-      setPopup(true);
-    } else {
-      setSelectedPatientId(null);
-      setPopup(false);
-    }
-  };
+ 
   const handleUpdateStauts = async (id, status) => {
     try {
       const data = await UpdateStatusAppointment(id, status);
@@ -167,6 +158,8 @@ function TabDoctorappointment() {
                             key={status}
                             value={status}
                             className="w-full"
+                            
+                            disabled={item.status === "Success" && item.status !== status}
                           >
                             {item.status === status ? item.status : status}
                           </Option>

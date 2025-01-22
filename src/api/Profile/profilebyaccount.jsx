@@ -12,7 +12,7 @@ const profilebyaccount = async (accountid) => {
     return [];
   }
 };
-const profilebyaccountId = async (id) => {
+const ProfilebypatientprofileId = async (id) => {
   try {
     const res = await axios.get(
       `http://localhost:8080/api/patientsprofile/${id}`
@@ -24,4 +24,4 @@ const profilebyaccountId = async (id) => {
   }
 };
 
-export {profilebyaccount, profilebyaccountId};
+export {profilebyaccount, ProfilebypatientprofileId};

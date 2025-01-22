@@ -7,5 +7,9 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    function({ addVariant }) {
+      addVariant('not-placeholder-shown', '&:not(:placeholder-shown)');
+    }
+  ],
 }

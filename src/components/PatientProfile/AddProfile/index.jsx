@@ -306,193 +306,169 @@ function AddProfile(props) {
                     </Select>
                   </div>
                 </div>
-                <div className="col-span-1">
-                  <label
-                    htmlFor="username"
-                    className="text-[20px] text-[#003553]"
-                  >
-                    Mã số BHYT
-                    <span className="text-[red]"> *</span>{" "}
-                  </label>
-                  <div className="grid grid-cols-1 gap-2">
-                    <input
-                      type="text"
-                      placeholder="NHẬP SỐ BHYT"
-                      value={formValues.identityCard}
-                      onChange={(e) =>
-                        handleInputChange("identityCard", e.target.value)
-                      }
-                      className="w-full h-10 border p-2 mt-2 border-solid border-[#c2c2c2] rounded-lg focus:border-[#47bfff] focus:ring-2 focus:ring-[#1da1f2]/20 focus:outline-none"
-                    />
-                  </div>
-                  {errorMessages.identityCard && (
-                    <small className="text-red-500 text-sm ">
-                      {errorMessages.identityCard}
-                    </small>
-                  )}
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4 my-5 font-medium ">
-                <div className="col-span-1">
-                  <label
-                    htmlFor="username"
-                    className="text-[20px] text-[#003553]"
-                  >
-                    Địa chỉ Email
-                    <span className="text-[red]"> *</span>{" "}
-                  </label>
-                  <div className="grid grid-cols-1 gap-2">
-                    <input
-                      type="text"
-                      placeholder="NHẬP ĐỊA CHỈ EMAIL "
-                      value={formValues.email}
-                      onChange={(e) =>
-                        handleInputChange("email", e.target.value)
-                      }
-                      className="w-full h-10 border p-2 mt-2 border-solid border-[#c2c2c2] rounded-lg focus:border-[#47bfff] focus:ring-2 focus:ring-[#1da1f2]/20 focus:outline-none"
-                    />
-                  </div>
-                  {errorMessages.email && (
-                    <small className="text-red-500 text-sm ">
-                      {errorMessages.email}
-                    </small>
-                  )}
-                </div>
-                <div className="col-span-1">
-                  <label
-                    htmlFor="username"
-                    className="text-[20px] text-[#003553]"
-                  >
-                    Dân tộc
-                    <span className="text-[red]"> *</span>{" "}
-                  </label>
-                  <div className="grid grid-cols-1 gap-2">
-                    <Select
-                      className="mt-2 h-10"
-                      value={formValues.nation}
-                      onChange={(value) => handleInputChange("nation", value)}
+
+                <div className="grid grid-cols-2 gap-4 my-5 font-medium ">
+                  <div className="col-span-1">
+                    <label
+                      htmlFor="username"
+                      className="text-[20px] text-[#003553]"
                     >
-                      <Select.Option value="Kinh">Kinh</Select.Option>
-                      <Select.Option value="Hoa">Hoa</Select.Option>
-                      <Select.Option value="Khơ-me">Khơ-me</Select.Option>
-                    </Select>
-                  </div>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4 my-5 font-medium ">
-                <div className="col-span-1">
-                  <label
-                    htmlFor="username"
-                    className="text-[20px] text-[#003553]"
-                  >
-                    Tỉnh / thành
-                    <span className="text-[red]"> *</span>{" "}
-                  </label>
-                  <div className="grid grid-cols-1 gap-2">
-                    <Select
-                      className="mt-2 h-10"
-                      onChange={(value) => {
-                        const selectedItem = provinces.find(
-                          (item) => item.id === value
-                        );
-                        setSelectProvince(value);
-                        if (selectedItem) {
-                          setTxtProvinces(selectedItem.name);
+                      Địa chỉ Email
+                      <span className="text-[red]"> *</span>{" "}
+                    </label>
+                    <div className="grid grid-cols-1 gap-2">
+                      <input
+                        type="text"
+                        placeholder="NHẬP ĐỊA CHỈ EMAIL "
+                        value={formValues.email}
+                        onChange={(e) =>
+                          handleInputChange("email", e.target.value)
                         }
-                      }}
+                        className="w-full h-10 border p-2 mt-2 border-solid border-[#c2c2c2] rounded-lg focus:border-[#47bfff] focus:ring-2 focus:ring-[#1da1f2]/20 focus:outline-none"
+                      />
+                    </div>
+                    {errorMessages.email && (
+                      <small className="text-red-500 text-sm ">
+                        {errorMessages.email}
+                      </small>
+                    )}
+                  </div>
+                  <div className="col-span-1">
+                    <label
+                      htmlFor="username"
+                      className="text-[20px] text-[#003553]"
                     >
-                      {provinces.map((item, index) => (
-                        <Select.Option value={item.id} key={index}>
-                          {item.name}
-                        </Select.Option>
-                      ))}
-                    </Select>
+                      Dân tộc
+                      <span className="text-[red]"> *</span>{" "}
+                    </label>
+                    <div className="grid grid-cols-1 gap-2">
+                      <Select
+                        className="mt-2 h-10"
+                        value={formValues.nation}
+                        onChange={(value) => handleInputChange("nation", value)}
+                      >
+                        <Select.Option value="Kinh">Kinh</Select.Option>
+                        <Select.Option value="Hoa">Hoa</Select.Option>
+                        <Select.Option value="Khơ-me">Khơ-me</Select.Option>
+                      </Select>
+                    </div>
                   </div>
                 </div>
-                <div className="col-span-1">
-                  <label
-                    htmlFor="username"
-                    className="text-[20px] text-[#003553]"
-                  >
-                    Quận / Huyện
-                    <span className="text-[red]"> *</span>{" "}
-                  </label>
-                  <div className="grid grid-cols-1 gap-2">
-                    <Select
-                      className="mt-2 h-10"
-                      onChange={(value) => {
-                        const selectedItem = districts.find(
-                          (item) => item.id === value
-                        );
-                        setSelectDistrict(value);
-                        if (selectedItem) {
-                          setTxtDistricts(selectedItem.name);
-                        }
-                      }}
-                      disabled={!districts.length}
+                <div className="grid grid-cols-2 gap-4 my-5 font-medium ">
+                  <div className="col-span-1">
+                    <label
+                      htmlFor="username"
+                      className="text-[20px] text-[#003553]"
                     >
-                      {districts.map((item, index) => (
-                        <Select.Option value={item.id} key={index}>
-                          {item.name}
-                        </Select.Option>
-                      ))}
-                    </Select>
+                      Tỉnh / thành
+                      <span className="text-[red]"> *</span>{" "}
+                    </label>
+                    <div className="grid grid-cols-1 gap-2">
+                      <Select
+                        className="mt-2 h-10"
+                        onChange={(value) => {
+                          const selectedItem = provinces.find(
+                            (item) => item.id === value
+                          );
+                          setSelectProvince(value);
+                          if (selectedItem) {
+                            setTxtProvinces(selectedItem.name);
+                          }
+                        }}
+                      >
+                        {provinces.map((item, index) => (
+                          <Select.Option value={item.id} key={index}>
+                            {item.name}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4 my-5 font-medium ">
-                <div className="col-span-1">
-                  <label
-                    htmlFor="username"
-                    className="text-[20px] text-[#003553]"
-                  >
-                    Phường / Xã
-                    <span className="text-[red]"> *</span>{" "}
-                  </label>
-                  <div className="grid grid-cols-1 gap-2">
-                    <Select
-                      className="mt-2 h-10"
-                      disabled={!wards.length}
-                      onChange={(value) => {
-                        const selectedItem = wards.find(
-                          (item) => item.id === value
-                        );
-                        if (selectedItem) {
-                          setTxtWards(selectedItem.name);
-                        }
-                      }}
+                  <div className="col-span-1">
+                    <label
+                      htmlFor="username"
+                      className="text-[20px] text-[#003553]"
                     >
-                      {wards.map((item, index) => (
-                        <Select.Option value={item.id} key={index}>
-                          {item.name}
-                        </Select.Option>
-                      ))}
-                    </Select>
+                      Quận / Huyện
+                      <span className="text-[red]"> *</span>{" "}
+                    </label>
+                    <div className="grid grid-cols-1 gap-2">
+                      <Select
+                        className="mt-2 h-10"
+                        onChange={(value) => {
+                          const selectedItem = districts.find(
+                            (item) => item.id === value
+                          );
+                          setSelectDistrict(value);
+                          if (selectedItem) {
+                            setTxtDistricts(selectedItem.name);
+                          }
+                        }}
+                        disabled={!districts.length}
+                      >
+                        {districts.map((item, index) => (
+                          <Select.Option value={item.id} key={index}>
+                            {item.name}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </div>
                   </div>
                 </div>
-                <div className="col-span-1">
-                  <label
-                    htmlFor="username"
-                    className="text-[20px] text-[#003553]"
-                  >
-                    Địa chỉ hiện tại
-                    <span className="text-[red]"> *</span>{" "}
-                  </label>
-                  <div className="grid grid-cols-1 gap-2">
-                    <input
-                      type="text"
-                      placeholder="NHẬP ĐỊA CHỈ HIỆN TẠI CỦA BẠN"
-                      value={txtAddress}
-                      onChange={(e) => settxtAddress(e.target.value)}
-                      className="w-full h-10 border p-2 mt-2 border-solid border-[#c2c2c2] rounded-lg focus:border-[#47bfff] focus:ring-2 focus:ring-[#1da1f2]/20 focus:outline-none"
-                    />
+                <div className="grid grid-cols-2 gap-4 my-5 font-medium ">
+                  <div className="col-span-1">
+                    <label
+                      htmlFor="username"
+                      className="text-[20px] text-[#003553]"
+                    >
+                      Phường / Xã
+                      <span className="text-[red]"> *</span>{" "}
+                    </label>
+                    <div className="grid grid-cols-1 gap-2">
+                      <Select
+                        className="mt-2 h-10"
+                        disabled={!wards.length}
+                        onChange={(value) => {
+                          const selectedItem = wards.find(
+                            (item) => item.id === value
+                          );
+                          if (selectedItem) {
+                            setTxtWards(selectedItem.name);
+                          }
+                        }}
+                      >
+                        {wards.map((item, index) => (
+                          <Select.Option value={item.id} key={index}>
+                            {item.name}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </div>
+                  </div>
+                  <div className="col-span-1">
+                    <label
+                      htmlFor="username"
+                      className="text-[20px] text-[#003553]"
+                    >
+                      Địa chỉ hiện tại
+                      <span className="text-[red]"> *</span>{" "}
+                    </label>
+                    <div className="grid grid-cols-1 gap-2">
+                      <input
+                        type="text"
+                        placeholder="NHẬP ĐỊA CHỈ HIỆN TẠI CỦA BẠN"
+                        value={txtAddress}
+                        onChange={(e) => settxtAddress(e.target.value)}
+                        className="w-full h-10 border p-2 mt-2 border-solid border-[#c2c2c2] rounded-lg focus:border-[#47bfff] focus:ring-2 focus:ring-[#1da1f2]/20 focus:outline-none"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="w-full flex justify-end">
-                <button className="py-2 px-4 text-[#fff] font-medium rounded-lg bg-gradient-to-r from-[#00b5f1] to-[#00e0ff]">
-                  Cập nhật
-                </button>
+                <div className="w-full flex justify-end">
+                  <button className="py-2 px-4 text-[#fff] font-medium rounded-lg bg-gradient-to-r from-[#00b5f1] to-[#00e0ff]">
+                    Cập nhật
+                  </button>
+                </div>
               </div>
             </div>
           </form>

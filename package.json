@@ -12,6 +12,8 @@
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^42.0.2",
     "@ckeditor/ckeditor5-react": "^8.0.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@fullcalendar/core": "^6.1.15",
@@ -19,6 +21,7 @@
     "@fullcalendar/interaction": "^6.1.15",
     "@fullcalendar/react": "^6.1.15",
     "@fullcalendar/timegrid": "^6.1.15",
+    "@mui/material": "^6.4.1",
     "antd": "^5.22.2",
     "apexcharts": "^4.1.0",
     "axios": "^1.7.9",
@@ -28,6 +31,7 @@
     "date-fns": "^4.1.0",
     "firebase": "^11.1.0",
     "framer-motion": "^11.11.17",
+    "notistack": "^3.0.2",
     "owl.carousel": "^2.3.4",
     "quill": "^2.0.3",
     "react": "^18.3.1",
@@ -38,7 +42,8 @@
     "react-owl-carousel": "^2.3.3",
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.27.0",
-    "react-scroll": "^1.9.0"
+    "react-scroll": "^1.9.0",
+    "react-toastify": "^11.0.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",

@@ -17,7 +17,7 @@ import { Link, useLocation } from "react-router-dom";
 import { getDoctorbyId } from "../../../api/Doctor/doctor";
 import { getSpecialtyById } from "../../../api/Doctor/specialty";
 import { getWorkTimeDoctorbyId } from "../../../api/Doctor/workinghour";
-import { profilebyaccountId } from "../../../api/Profile/profilebyaccount";
+import { ProfilebypatientprofileId } from "../../../api/Profile/profilebyaccount";
 function ConfirmInfo() {
   const location = useLocation();
   const getParams = new URLSearchParams(location.search);
@@ -58,7 +58,7 @@ function ConfirmInfo() {
   }, [workid]);
   useEffect(() => {
     const fetchDoctor = async () => {
-      const data = await profilebyaccountId(profileid);
+      const data = await ProfilebypatientprofileId(profileid);
       setdataProfile(data);
     };
 
@@ -205,15 +205,6 @@ function ConfirmInfo() {
                         </span>
                         <span className="text-[14px] font-medium text-[#003553]">
                           {dataProfile.nation}
-                        </span>
-                      </li>
-                      <li className="flex w-full items-center gap-2 text-[#003553] my-1 settingli">
-                        <span className="flex items-center gap-2 ">
-                          <FaAddressCard className="text-[#B1B1B1] text-[18px]" />
-                          <span>CMND :</span>
-                        </span>
-                        <span className="text-[14px] font-medium text-[#003553]">
-                          {dataProfile.identityCard}
                         </span>
                       </li>
                       <li className="flex w-full items-center gap-2 text-[#003553] my-1 settingli">
