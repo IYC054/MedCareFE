@@ -71,7 +71,7 @@ function PatientProfile() {
                 </div>
               </div>
               <div className="w-full text-center mt-2 mb-6 text-[20px] font-medium text-[#003553]">
-                <p>Trần Văn Anh Yeong</p>
+                <p>Thanh phong</p>
                 <p className="text-[#c2c2c2] text-[16px] my-2">Bệnh nhân</p>
               </div>
             </div>

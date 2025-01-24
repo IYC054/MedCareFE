@@ -14,6 +14,7 @@ import {
 import { CreateAppointment } from "../../../api/Doctor/appointment";
 import Invoice from "../../../sendmail/Invoice";
 import SendMail from "../../../api/mail/sendmail";
+import { enqueueSnackbar } from "notistack";
 function ConfirmPayment(props) {
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
@@ -57,8 +58,13 @@ function ConfirmPayment(props) {
           //   <Invoice customerName={"Thanh Phong"} services={"Khám tổng quát"} total={mb.creditAmount} />
           // );
           // SendMail(htmlContent)
+          enqueueSnackbar("Đặt lịch thành công.", {
+            variant: "success",
+            autoHideDuration: 3000,
+          });
           await gethistoryMbbank(appointment.id);
-          setShowPopup(true);
+          navigate("/profile");
+          // setShowPopup(true);
         }
       } catch (err) {
         console.log(err);
@@ -115,7 +121,7 @@ function ConfirmPayment(props) {
           <li className="settingli my-2 text-[#00000073] text-[14px]">
             Số tải khoản :{" "}
             <span className="text-[#000] font-medium text-[15px] flex items-center">
-            0799951104
+              0799951104
               <span
                 className="ml-2 text-[18px] text-[#00b5f1] cursor-pointer"
                 onClick={() => copyToClipboard("1308200200")}

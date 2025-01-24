@@ -23,6 +23,8 @@ import {
   getallSpecialty,
   getSpecialtyByDoctor,
 } from "../../../api/Doctor/specialty";
+import { checkslotAppointment } from "../../../api/Doctor/appointment";
+import { enqueueSnackbar } from "notistack";
 
 const faketime2 = [
   { id: 1, settime: "13:30 - 14:30" },
@@ -69,8 +71,18 @@ function Booking() {
   const handleSelectedDate = (date) => {
     setChooseDate(date);
   };
-  const handleSelectidByWorktime = (id) => {
+  const handleSelectidByWorktime = async (id) => {
     setTxnIdWorkTime(id);
+    const checkslot = await checkslotAppointment(doctorId, id);
+    if(checkslot){
+      navigate(`/choose-profile?doctor=${doctorId}&work=${id}&specialty=${txnSpecialtyId}`)
+    }else{
+      enqueueSnackbar("Hiện tải giờ này đã hết slot xin vui lòng đặt giờ khác.", {
+        variant: "warning",
+        autoHideDuration: 3000,
+      });
+    }
+
   };
   // end chọn ngày
 
@@ -714,10 +726,10 @@ function Booking() {
                                 });
 
                                 return (
-                                  <Link
-                                    key={index}
-                                    to={`/choose-profile?doctor=${doctorId}&work=${item.id}&specialty=${txnSpecialtyId}`}
-                                  >
+                                  // <Link
+                                  //   key={index}
+                                  //   to={`/choose-profile?doctor=${doctorId}&work=${item.id}&specialty=${txnSpecialtyId}`}
+                                  // >
                                     <div
                                       className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]"
                                       key={index}
@@ -727,7 +739,7 @@ function Booking() {
                                     >
                                       {startTimeFormatted} - {endTimeFormatted}
                                     </div>
-                                  </Link>
+                                  // </Link>
                                 );
                               }
 

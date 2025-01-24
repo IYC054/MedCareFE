@@ -7,6 +7,9 @@ import { getpatientbyid } from "../../../api/Doctor/patient";
 import { getallPaymentByAppoint } from "../../../api/Bank/payment";
 import { Select } from "antd";
 import { Option } from "antd/es/mentions";
+import { ProfilebypatientprofileId } from "../../../api/Profile/profilebyaccount";
+import axios from "axios";
+import { enqueueSnackbar } from "notistack";
 
 function TabDoctorappointment() {
   const [appointments, setAppointments] = useState([]);
@@ -21,7 +24,7 @@ function TabDoctorappointment() {
         const enrichedAppointments = await Promise.all(
           data.map(async (appointment) => {
             const [patientDetails, paymentDetails] = await Promise.all([
-              getpatientbyid(appointment.patient.id),
+              ProfilebypatientprofileId(appointment.patientprofile.id),
               getallPaymentByAppoint(appointment.id),
             ]);
             return { ...appointment, patientDetails, paymentDetails };
@@ -44,12 +47,25 @@ function TabDoctorappointment() {
     fetchAppointments();
   }, []);
  
-  const handleUpdateStauts = async (id, status) => {
+  const handleUpdateStauts = async (id, status, doctorid , patientfile_id, appointment_id) => {
     try {
       const data = await UpdateStatusAppointment(id, status);
-      console.log("Updated Status: ", status);
-      console.log("Updated Status: ", data);
-
+      if(status === "Success"){
+        const checksuccess =  axios.post(`http://localhost:8080/api/patientsfile?doctors_id=${doctorid}&patients_profile_id=${patientfile_id}&appointment_id=${appointment_id}`)
+        if(checksuccess != null){
+          enqueueSnackbar("Cập nhật thành công!", {
+            variant: "success",
+            autoHideDuration: 5000,
+            anchorOrigin: {vertical: "top", horizontal: "right"}
+          });
+        }else{
+          enqueueSnackbar("Cập nhật không thành công!", {
+            variant: "error",
+            autoHideDuration: 5000,
+            anchorOrigin: {vertical: "top", horizontal: "right"}
+          });
+        }
+      }
       fetchAppointments();
     } catch (error) {
       console.error("Error updating status:", error);
@@ -57,7 +73,7 @@ function TabDoctorappointment() {
   };
   const totalPages = Math.ceil(appointments.length / appointmentsPerPage);
   return (
-    <div className="w-full h-full  border-l border-[#00b5f1] pl-10">
+    <div className="w-full h-full  border-l border-[#00b5f1] pl-10 ">
       <span className="text-[24px] font-medium">
         Quản lý lịch hẹn đặt khám{" "}
       </span>
@@ -75,7 +91,7 @@ function TabDoctorappointment() {
           style={{ width: "fit-content" }}
         >
           Bạn khám thành công{" "}
-          {appointments.filter((item) => item.status === "Confirmed").length} cuộc hẹn
+          {appointments.filter((item) => item.status === "Success").length} cuộc hẹn
         </div>
         <div
           className=" p-2 bg-[#00b5f1] text-[#fff] rounded-lg"
@@ -125,7 +141,7 @@ function TabDoctorappointment() {
                 <tr key={index}>
                   <td className="p-4 border-b border-blue-gray-50">
                     <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900 capitalize">
-                      {item.patientDetails.account.name}
+                      {item.patientDetails.fullname}
                     </p>
                   </td>
                   <td className="p-4 border-b border-blue-gray-50">
@@ -151,7 +167,7 @@ function TabDoctorappointment() {
                       <Select
                         className="w-full"
                         value={item.status}
-                        onChange={(value) => handleUpdateStauts(item.id, value)}
+                        onChange={(value) => handleUpdateStauts(item.id, value, item.doctor.id, item.patientDetails.id, item.id)}
                       >
                         {statusoption.map((status) => (
                           <Option
@@ -183,7 +199,8 @@ function TabDoctorappointment() {
             </tbody>
           </table>
         </div>
-        <div className="flex justify-center mt-4">
+      </div>
+        <div className="flex justify-center my-4">
           <button
             onClick={() =>
               setCurrentPage(currentPage > 1 ? currentPage - 1 : 1)
@@ -206,7 +223,6 @@ function TabDoctorappointment() {
             Next
           </button>
         </div>
-      </div>
       {/* <div
         className={`w-full h-screen ${
           popup ? "fixed" : "hidden"

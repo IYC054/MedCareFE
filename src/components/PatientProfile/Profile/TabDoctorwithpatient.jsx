@@ -12,6 +12,8 @@ import axios from "axios";
 import { useSnackbar } from "notistack";
 
 function TabDoctorwithpatient() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [appointmentsPerPage] = useState(4);
   const { enqueueSnackbar } = useSnackbar();
   const [patient, setPatient] = useState([]);
   const [popup, setPopup] = useState(false);
@@ -118,7 +120,7 @@ function TabDoctorwithpatient() {
         enqueueSnackbar("Cập nhật thành công!", {
           variant: "success",
           autoHideDuration: 3000,
-          anchorOrigin: {vertical: "top", horizontal: "right"}
+          anchorOrigin: { vertical: "top", horizontal: "right" },
         });
       }
     } catch (updateError) {
@@ -135,6 +137,14 @@ function TabDoctorwithpatient() {
   const filteredPatients = patient.filter((item) =>
     item.patientDetails.fullname.toLowerCase().includes(queryName.toLowerCase())
   );
+  const indexOfLastAppointment = currentPage * appointmentsPerPage;
+  const indexOfFirstAppointment = indexOfLastAppointment - appointmentsPerPage;
+  const currentPatient = filteredPatients.slice(
+    indexOfFirstAppointment,
+    indexOfLastAppointment
+  );
+  const totalPages = Math.ceil(filteredPatients.length / appointmentsPerPage);
+
   return (
     <div className="w-full h-full  border-l border-[#00b5f1] pl-10">
       <span className="text-[24px] font-medium">Quản lý bệnh nhân </span>
@@ -179,7 +189,7 @@ function TabDoctorwithpatient() {
               </tr>
             </thead>
             <tbody className="">
-              {filteredPatients.map((item, index) => (
+              {currentPatient.map((item, index) => (
                 <tr key={index}>
                   <td className="p-4 border-b border-blue-gray-50">
                     <span className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900 capitalize">
@@ -233,7 +243,7 @@ function TabDoctorwithpatient() {
                         handlePopupDetail(item.patientDetails.id, item.id)
                       }
                     >
-                      Edit
+                      Cập nhật
                     </button>
                   </td>
                 </tr>
@@ -241,6 +251,7 @@ function TabDoctorwithpatient() {
             </tbody>
           </table>
         </div>
+        
         {/* <div className="flex justify-center mt-4">
           <button
             onClick={() =>
@@ -265,6 +276,29 @@ function TabDoctorwithpatient() {
           </button>
         </div> */}
       </div>
+      <div className="flex justify-center my-4">
+          <button
+            onClick={() =>
+              setCurrentPage(currentPage > 1 ? currentPage - 1 : 1)
+            }
+            disabled={currentPage === 1}
+            className="px-4 py-2 border rounded mr-2"
+          >
+            Previous
+          </button>
+          <span className="py-2 px-4">{`Page ${currentPage} of ${totalPages}`}</span>
+          <button
+            onClick={() =>
+              setCurrentPage(
+                currentPage < totalPages ? currentPage + 1 : totalPages
+              )
+            }
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 border rounded ml-2"
+          >
+            Next
+          </button>
+        </div>
       <div
         className={`w-full h-screen ${
           popup ? "fixed" : "hidden"
