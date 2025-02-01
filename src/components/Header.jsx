@@ -1,6 +1,6 @@
 import React from "react";
 import DropdownMenu from "./DropdownMenu";
-import CheckPhone from "./Authentication/CheckPhone";
+import CheckEmail from "./Authentication/CheckEmail";
 import { useEffect, useState, memo, useContext } from "react";
 import { FaBars, FaDownload, FaFile, FaUser } from "react-icons/fa";
 import { FaX } from "react-icons/fa6";
@@ -135,7 +135,7 @@ const Header = () => {
               </button>
               {isOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex max-w-full max-h-full items-center justify-center z-10">
-                  <CheckPhone close={togglePopup} />
+                  <CheckEmail close={togglePopup} />
                 </div>
               )}
 

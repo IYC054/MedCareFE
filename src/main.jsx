@@ -22,7 +22,7 @@ import Feedback from './Admin/page/Feedback'
 import ConfirmInfo from "./components/Hospital/Confirm_information";
 import ProfileChoose from "./components/Hospital/ProfileChoose";
 import ChoosePayment from "./components/Hospital/ChoosePayment";
-import CheckPhone from "./components/Authentication/CheckPhone";
+import CheckEmail from "./components/Authentication/CheckEmail";
 import CreatEmail from "./Admin/page/createPage/CreatEmail";
 import ResponseBackFeedback from "./Admin/page/createPage/ResponseBackFeedback";
 import ConfirmPayment from "./components/Hospital/ChoosePayment/ConfirmPayment";

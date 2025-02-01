@@ -5,7 +5,7 @@ import Register from "./Register";
 import CheckOTP from "./CheckOTP";
 import { useEffect, useState, memo, useContext } from "react";
 
-function CheckPhone({ close }) {
+function CheckEmail({ close }) {
   const [next, setNext] = useState(false);
   const [exist, setExist] = useState(false);
   const [email, setEmail] = useState("");
@@ -180,4 +180,4 @@ function CheckPhone({ close }) {
 
   );
 }
-export default CheckPhone;
+export default CheckEmail;
