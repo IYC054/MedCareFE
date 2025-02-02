@@ -3,6 +3,7 @@ import ImgAuth from "../../../asset/auth_img.png";
 import Login from "./Login";
 import Register from "./Register";
 import CheckOTP from "./CheckOTP";
+import { loginToken, getToken } from "./authService";
 import { useEffect, useState, memo, useContext } from "react";
 
 function CheckEmail({ close }) {
@@ -13,10 +14,19 @@ function CheckEmail({ close }) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
 
+  //lấy token
+  useEffect(() => {
+    loginToken("admin@gmail.com", "admin");
+  }, []);
+
+  const token = getToken();
+
   const validateEmail = (value) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(value);
   };
+
+  //lấy email
   const handleChange = (event) => {
     const value = event.target.value;
     setEmail(value);
@@ -68,7 +78,6 @@ function CheckEmail({ close }) {
   };
 
   
-  const token = "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJuZ2hpbWF0aGl0LmNvbSIsInN1YiI6ImFkbWluQGdtYWlsLmNvbSIsImV4cCI6MTczODQzMjU3MywiaWF0IjoxNzM4Mzk2NTczLCJzY29wZSI6IiJ9.E870M-Uy6DCLb-IaRNuNtjBfSCdtgepmri_yd7g2l8f5XKVuXg_UTYXK9klO4aWutttjmGcB_mcFxVvx-Gf43g";
   const handleSendOTP = async () => {
     if(email){
       try{
@@ -151,7 +160,7 @@ function CheckEmail({ close }) {
           </button>
         </div>
       )}
-      {exist ? next && <Login email={email}/> : next && <CheckOTP email={email} />}
+      {exist ? next && <Login email={email} close={close}/> : next && <CheckOTP email={email} />}
 
 
       {/* Hình ảnh bên phải */}

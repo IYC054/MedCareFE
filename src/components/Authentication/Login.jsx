@@ -1,7 +1,28 @@
 import React from 'react';
 import { useEffect, useState, memo, useContext } from "react";
-const Login = ({email}) => {
-  
+import { loginToken, getToken, logout } from "./authService";
+const Login = ({email, close}) => {
+  const [password, setPassword] = useState("");
+
+  // Handle password change
+  const handleChange = (event) => {
+    setPassword(event.target.value);
+  };
+
+  // Handle login logic
+  const handleLogin = (e) => {
+    e.preventDefault(); // Prevent the default form submission
+
+    if (password.trim() === "") {
+      // Handle error: password is empty
+      alert("Please enter a password");
+      return;
+    }
+
+    logout(); // Optional: Clear previous login data
+    loginToken(email, password); // Call your login function
+    close(); // Call your close function
+  };
     return (
         <div className="flex-1 p-8">
       <h1 className="text-4xl font-bold text-blue-600 mb-6">medcare</h1>
@@ -25,9 +46,10 @@ const Login = ({email}) => {
                 type="password"
                 placeholder="Nhập mật khẩu"
                 className="flex-1 px-4 py-2 focus:outline-none"
+                onChange={handleChange}
               />
       </div>
-      <button className="w-full py-2 bg-blue-600 text-white rounded-md mb-4 hover:bg-blue-700" >
+      <button className="w-full py-2 bg-blue-600 text-white rounded-md mb-4 hover:bg-blue-700" onClick={handleLogin}>
         Đăng nhập
       </button>
       </form>
