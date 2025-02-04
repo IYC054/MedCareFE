@@ -1,6 +1,7 @@
 import React from "react";
 import DropdownMenu from "./DropdownMenu";
 import CheckEmail from "./Authentication/CheckEmail";
+import Login from "./Authentication/Login";
 import { useEffect, useState, memo, useContext } from "react";
 import { FaBars, FaDownload, FaFile, FaUser } from "react-icons/fa";
 import { FaX } from "react-icons/fa6";
@@ -133,9 +134,11 @@ const Header = () => {
                 </svg>
                 Tài Khoản
               </button>
+              
               {isOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex max-w-full max-h-full items-center justify-center z-10">
                   <CheckEmail close={togglePopup} />
+                  {/* <div className="hidden"><Login close={togglePopup}/></div> */}
                 </div>
               )}
 

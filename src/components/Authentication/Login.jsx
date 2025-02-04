@@ -1,9 +1,18 @@
 import React from 'react';
 import { useEffect, useState, memo, useContext } from "react";
 import { loginToken, getToken, logout } from "./authService";
+import CheckOTP from './CheckOTP';
 const Login = ({email, close}) => {
   const [password, setPassword] = useState("");
+  const [next, setNext] = useState(false);
+  const [forgotPass, setForgotPass] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState("");
 
+  useEffect(() => {
+    setForgotPass(!forgotPass);
+  }, []);
   // Handle password change
   const handleChange = (event) => {
     setPassword(event.target.value);
@@ -23,7 +32,59 @@ const Login = ({email, close}) => {
     loginToken(email, password); // Call your login function
     close(); // Call your close function
   };
+
+  const token = getToken();
+  const handleForgotPass = async () => {
+    setForgotPass(true);
+    setLoading(!setLoading);
+    if(email){
+      try{
+        const response = await fetch(
+          `http://localhost:8080/api/auth/forgot-password?email=${encodeURIComponent(email)}`,
+          {
+            method: "POST",
+            headers: {
+              "Authorization":`Bearer ${token}`, // Gửi token vào header
+              "Content-Type": "application/json",
+            },
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            if(data.message){
+              setSuccess(data.message)
+              setNext(!next)
+            }
+          })
+          .catch((error) => {
+            setError(error.message)
+          });
+          //goi api xong het xoay
+          setLoading(false);
+          if (!response.ok) {
+            // Nếu HTTP status không OK, lấy lỗi dưới dạng text trước
+            const errorText = await response.text();
+            throw new Error(`HTTP ${response.status}: ${errorText}`);
+          }
+      
+          // Nếu có nội dung, lấy JSON
+          const data = await response.json();
+          console.log("OTP response:", data)
+
+      }catch (error){
+        console.error("Error fetching:", error);
+      }
+      }
+  }
+  if (loading) {
+    return <div className="flex-1 p-8 items-center justify-center flex flex-col">
+      <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>;
+  }
     return (
+      <div className="flex-1">
+            {!next && (
         <div className="flex-1 p-8">
       <h1 className="text-4xl font-bold text-blue-600 mb-6">medcare</h1>
       <p className="mb-4 text-gray-600">Vui lòng đăng nhập để tiếp tục</p>
@@ -53,7 +114,9 @@ const Login = ({email, close}) => {
         Đăng nhập
       </button>
       </form>
-      <span className="text-[rgb(117,145,244)] text-sm cursor-pointer">Quên mật khẩu ?</span>
+      <span className="text-[rgb(117,145,244)] text-sm cursor-pointer" onClick={handleForgotPass}>Quên mật khẩu ?</span>
+      </div>)};
+      {next && <CheckOTP email={email} forgotPass={forgotPass}/>}
     </div>
       );
 }

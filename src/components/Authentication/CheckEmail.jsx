@@ -3,7 +3,7 @@ import ImgAuth from "../../../asset/auth_img.png";
 import Login from "./Login";
 import Register from "./Register";
 import CheckOTP from "./CheckOTP";
-import { loginToken, getToken } from "./authService";
+import { loginToken, getToken, usePopup } from "./authService";
 import { useEffect, useState, memo, useContext } from "react";
 
 function CheckEmail({ close }) {

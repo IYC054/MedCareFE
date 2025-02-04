@@ -2,8 +2,9 @@ import React from "react";
 import Register from "./Register";
 import { getToken } from "./authService";
 import { useEffect, useState, memo, useContext, useRef } from "react";
+import ChangePass from "./ChangPass";
 
-function CheckOTP({ email }) {
+function CheckOTP({ email, forgotPass}) {
 
     const token = getToken();
 
@@ -57,7 +58,7 @@ function CheckOTP({ email }) {
                   console.log(data);
                   if(data.message){
                     setSuccess(data.message)
-                    setNext(!next);
+                    setNext(data.success);
                   }
                 })
                 .catch((error) => {
@@ -85,6 +86,45 @@ function CheckOTP({ email }) {
     //xu ly gui lai otp
     const handelSendOtpAgain = async () => {
         setLoading(true);
+        if(forgotPass){
+            try{
+                const response = await fetch(
+                  `http://localhost:8080/api/auth/forgot-password?email=${encodeURIComponent(email)}`,
+                  {
+                    method: "POST",
+                    headers: {
+                      "Authorization":`Bearer ${token}`, // Gửi token vào header
+                      "Content-Type": "application/json",
+                    },
+                  }
+                )
+                  .then((response) => response.json())
+                  .then((data) => {
+                    console.log(data);
+                    if(data.message){
+                      setSuccess(data.message)
+                      setNext(!next)
+                    }
+                  })
+                  .catch((error) => {
+                    setError(error.message)
+                  });
+                  //goi api xong het xoay
+                  setLoading(false);
+                  if (!response.ok) {
+                    // Nếu HTTP status không OK, lấy lỗi dưới dạng text trước
+                    const errorText = await response.text();
+                    throw new Error(`HTTP ${response.status}: ${errorText}`);
+                  }
+              
+                  // Nếu có nội dung, lấy JSON
+                  const data = await response.json();
+                  console.log("OTP response:", data)
+        
+              }catch (error){
+                console.error("Error fetching:", error);
+              }
+        }else{
         try {
             const response = await fetch(
                 `http://localhost:8080/api/auth/send?email=${encodeURIComponent(email)}`,
@@ -116,6 +156,7 @@ function CheckOTP({ email }) {
         } catch (error) {
             console.error("Error fetching:", error);
         }
+    }
         setSecond(60);
     };
 
@@ -204,7 +245,7 @@ function CheckOTP({ email }) {
                 </div>
             )}
 
-            {next && <Register email={email} />}
+            {forgotPass? next && <ChangePass email={email} forgotPass={forgotPass}/> : next && <Register email={email} />}
         </div>
     );
 }
