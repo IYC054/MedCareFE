@@ -5,7 +5,8 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format } from "date-fns";
 import { useNavigate } from 'react-router-dom';
-
+import { saveAs } from 'file-saver';
+import * as XLSX from 'xlsx';
 function Transactions() {
     const [transactions, setTransactions] = useState([]);
     const [appointment, setAppointment] = useState([]);
@@ -35,8 +36,8 @@ function Transactions() {
                 // Fetch appointments
                 const responseAppointments = await axios.get('http://localhost:8080/api/appointment');
                 const appointmentsData = responseAppointments.data;
-                setAppointment("as",appointmentsData);
-             
+                setAppointment("as", appointmentsData);
+
                 // Filter appointments matching IDs in payments
                 const matchingAppointments = appointmentsData.filter((appointment) =>
                     appointmentIdsFromPayments.includes(appointment.id)
@@ -63,7 +64,7 @@ function Transactions() {
                 const endOfDay = new Date(today.setHours(23, 59, 59, 999));
 
                 // Fetch transactions data
-                const responseTransactions = await axios.get('http://localhost:8080/api/payments'  );
+                const responseTransactions = await axios.get('http://localhost:8080/api/payments');
                 const transactions = responseTransactions.data;
 
                 // Filter transactions for today
@@ -130,7 +131,7 @@ function Transactions() {
                     totalcashback,
                 });
                 setTransactions(limitedTransactions);
-
+                console.log("giao dich", transactions);
             } catch (error) {
                 console.error('Error fetching transactions:', error);
             }
@@ -246,12 +247,12 @@ function Transactions() {
         if (transactionCode) params.append('transactionCode', transactionCode);
         if (status) params.append('status', status);
 
-        const apiUrl = "http://localhost:8080/api/payments/filter"; 
-      
+        const apiUrl = "http://localhost:8080/api/payments/filter";
+
         axios
             .get(`${apiUrl}?${params.toString()}`)
             .then((response) => {
-                const transactionsFromAPI = response.data; 
+                const transactionsFromAPI = response.data;
                 console.log("Filtered transactions from API:", transactionsFromAPI);
 
 
@@ -320,7 +321,33 @@ function Transactions() {
         navigate(`/admin/transaction/detail/${id}`);
     };
     console.log(transactions)
+    const handleExportExcel = () => {
+        if (transactions.length === 0) {
+            alert("Không có dữ liệu để xuất.");
+            return;
+        }
 
+
+        const exportData = transactions.map((tra, index) => ({
+            "STT": index + 1,
+            "Mã giao dịch": tra.transactionCode,
+            "Ngày và giờ": new Date(tra.transactionDate).toLocaleString(),
+            "Phương thức thanh toán": tra.paymentMethod,
+            "Số điện thoại": appointmentsData.find(a => a.id === tra.appointment_id)?.patient?.account?.phone || 'N/A',
+            "Tên khách hàng": appointmentsData.find(a => a.id === tra.appointment_id)?.patient?.account?.name || 'N/A',
+            "Giá trị giao dịch (VND)": tra.amount + " ₫",
+            "Trạng thái": tra.status,
+        }));
+
+        const worksheet = XLSX.utils.json_to_sheet(exportData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Transactions");
+
+        const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+        const data = new Blob([excelBuffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8" });
+
+        saveAs(data, "Transactions.xlsx");
+    };
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
             <div className=" flex justify-between items-center bg-[#e5f6fd] py-2 px-4 rounded-md mb-2">
@@ -451,6 +478,7 @@ function Transactions() {
                     <div className="text-sm font-medium text-gray-900 border-1 bg-[#fdeef4] rounded-lg p-3">
                         <i className="bi bi-bank px-3 text-lg"></i>TỔNG DOANH THU
                     </div>
+
                     <div className='flex align-center justify-between'>
                         <div className="text-md text-gray-600 pl-4 pr-4 text-center py-3">
                             <div className="font-normal">giá trị</div>
@@ -540,8 +568,11 @@ function Transactions() {
             <div className="bg-white rounded-lg shadow-md border border-gray-200">
                 <div className="p-4 flex justify-between items-center border-b border-gray-200">
                     <h2 className="text-lg font-semibold text-[#da624a]">Danh sách giao dịch</h2>
-
+                    <button onClick={handleExportExcel} className="px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white rounded ">
+                        <i className="bi bi-file-earmark-arrow-down pr-2"></i>Xuất Excel
+                    </button>
                 </div>
+
                 <div className="overflow-x-auto">
                     <table className="min-w-full bg-white">
                         <thead>
@@ -562,9 +593,6 @@ function Transactions() {
                                 transactions.map((t, index) => {
                                     // Find the matching patient for each transaction
                                     const transactionAppointment = appointmentsData.find((appointment) => appointment.id === t.appointment_id);
-                                    console.log('transactionAppointment',transactionAppointment);
-                                 
-                                   
                                     return (
                                         <tr key={t.id} className="border-b">
                                             <td className="p-4 text-sm">{index + 1}</td>
