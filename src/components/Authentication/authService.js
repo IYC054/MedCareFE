@@ -6,12 +6,16 @@ const API_BASE_URL = "http://localhost:8080/api/account"; // URL backend
 export const loginToken = async (email, password) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/token`, {
-      "email": email,
-      "password": password,
+      email: email,
+      password: password,
     });
+    var token = response.data?.result?.token;
+    var user = response.data?.result?.user;
 
-    if (response.data?.result?.token) {
-      localStorage.setItem("token", response.data.result.token); // Lưu token vào localStorage
+    if (token) {
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
     }
 
     return response.data;
@@ -30,7 +34,7 @@ export const getToken = () => {
 export const logout = () => {
   localStorage.removeItem("token");
 };
-import { useState } from 'react';
+import { useState } from "react";
 
 export const usePopup = () => {
   const [isOpen, setIsOpen] = useState(false);

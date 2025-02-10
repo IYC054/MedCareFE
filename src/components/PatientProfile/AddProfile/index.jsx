@@ -20,7 +20,7 @@ function AddProfile(props) {
     phone: "",
     gender: "Male",
     occupation: "",
-    identityCard: "",
+    codeBhyt: "",
     email: "",
     nation: "",
     address: "",
@@ -108,10 +108,7 @@ function AddProfile(props) {
       errors.phone = "Số điện thoại phải có 10 chữ số!";
     }
 
-    // Validate CCCD (must be 12 digits)
-    // if (!/^\d{12}$/.test(formValues.identityCard)) {
-    //   errors.identityCard = "Số CCCD phải có 12 chữ số!";
-    // }
+    
 
     // Validate email format
     if (!/\S+@\S+\.\S+/.test(formValues.email)) {
@@ -306,56 +303,74 @@ function AddProfile(props) {
                     </Select>
                   </div>
                 </div>
-
-                <div className="grid grid-cols-2 gap-4 my-5 font-medium ">
-                  <div className="col-span-1">
-                    <label
-                      htmlFor="username"
-                      className="text-[20px] text-[#003553]"
-                    >
-                      Địa chỉ Email
-                      <span className="text-[red]"> *</span>{" "}
-                    </label>
-                    <div className="grid grid-cols-1 gap-2">
-                      <input
-                        type="text"
-                        placeholder="NHẬP ĐỊA CHỈ EMAIL "
-                        value={formValues.email}
-                        onChange={(e) =>
-                          handleInputChange("email", e.target.value)
-                        }
-                        className="w-full h-10 border p-2 mt-2 border-solid border-[#c2c2c2] rounded-lg focus:border-[#47bfff] focus:ring-2 focus:ring-[#1da1f2]/20 focus:outline-none"
-                      />
-                    </div>
-                    {errorMessages.email && (
-                      <small className="text-red-500 text-sm ">
-                        {errorMessages.email}
-                      </small>
-                    )}
+                <div className="col-span-1">
+                  <label
+                    htmlFor="username"
+                    className="text-[20px] text-[#003553]"
+                  >
+                    Địa chỉ Email
+                    <span className="text-[red]"> *</span>{" "}
+                  </label>
+                  <div className="grid grid-cols-1 gap-2">
+                    <input
+                      type="text"
+                      placeholder="NHẬP ĐỊA CHỈ EMAIL "
+                      value={formValues.email}
+                      onChange={(e) =>
+                        handleInputChange("email", e.target.value)
+                      }
+                      className="w-full h-10 border p-2 mt-2 border-solid border-[#c2c2c2] rounded-lg focus:border-[#47bfff] focus:ring-2 focus:ring-[#1da1f2]/20 focus:outline-none"
+                    />
                   </div>
-                  <div className="col-span-1">
-                    <label
-                      htmlFor="username"
-                      className="text-[20px] text-[#003553]"
+                  {errorMessages.email && (
+                    <small className="text-red-500 text-sm ">
+                      {errorMessages.email}
+                    </small>
+                  )}
+                </div>
+                <div className="col-span-1">
+                  <label
+                    htmlFor="username"
+                    className="text-[20px] text-[#003553]"
+                  >
+                    Dân tộc
+                    <span className="text-[red]"> *</span>{" "}
+                  </label>
+                  <div className="grid grid-cols-1 gap-2">
+                    <Select
+                      className="mt-2 h-10"
+                      value={formValues.nation}
+                      onChange={(value) => handleInputChange("nation", value)}
                     >
-                      Dân tộc
-                      <span className="text-[red]"> *</span>{" "}
-                    </label>
-                    <div className="grid grid-cols-1 gap-2">
-                      <Select
-                        className="mt-2 h-10"
-                        value={formValues.nation}
-                        onChange={(value) => handleInputChange("nation", value)}
-                      >
-                        <Select.Option value="Kinh">Kinh</Select.Option>
-                        <Select.Option value="Hoa">Hoa</Select.Option>
-                        <Select.Option value="Khơ-me">Khơ-me</Select.Option>
-                      </Select>
-                    </div>
+                      <Select.Option value="Kinh">Kinh</Select.Option>
+                      <Select.Option value="Hoa">Hoa</Select.Option>
+                      <Select.Option value="Khơ-me">Khơ-me</Select.Option>
+                    </Select>
+                  </div>
+                </div>
+                <div className="col-span-1">
+                  <label
+                    htmlFor="username"
+                    className="text-[20px] text-[#003553]"
+                  >
+                    Mã số BHYT
+                    <span className="text-[red]"> *</span>{" "}
+                  </label>
+                  <div className="grid grid-cols-1 gap-2">
+                    <input
+                      type="text"
+                      placeholder="NHẬP SỐ BHYT"
+                      value={formValues.codeBhyt}
+                      onChange={(e) =>
+                        handleInputChange("codeBhyt", e.target.value)
+                      }
+                      className="w-full h-10 border p-2 mt-2 border-solid border-[#c2c2c2] rounded-lg focus:border-[#47bfff] focus:ring-2 focus:ring-[#1da1f2]/20 focus:outline-none"
+                    />{" "}
+
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4 my-5 font-medium ">
-                  <div className="col-span-1">
+                  <div className="col-span-2">
                     <label
                       htmlFor="username"
                       className="text-[20px] text-[#003553]"
@@ -384,13 +399,15 @@ function AddProfile(props) {
                       </Select>
                     </div>
                   </div>
-                  <div className="col-span-1">
+                </div>
+                <div className="grid grid-cols-2 gap-4 my-5 font-medium ">
+                  <div className="col-span-2">
                     <label
                       htmlFor="username"
                       className="text-[20px] text-[#003553]"
                     >
                       Quận / Huyện
-                      <span className="text-[red]"> *</span>{" "}
+                      <span className="text-[red]"> *</span>
                     </label>
                     <div className="grid grid-cols-1 gap-2">
                       <Select
@@ -415,8 +432,9 @@ function AddProfile(props) {
                     </div>
                   </div>
                 </div>
+
                 <div className="grid grid-cols-2 gap-4 my-5 font-medium ">
-                  <div className="col-span-1">
+                  <div className="col-span-2">
                     <label
                       htmlFor="username"
                       className="text-[20px] text-[#003553]"
@@ -445,7 +463,9 @@ function AddProfile(props) {
                       </Select>
                     </div>
                   </div>
-                  <div className="col-span-1">
+                </div>
+                <div className="grid grid-cols-2 gap-4 my-5 font-medium ">
+                  <div className="col-span-2">
                     <label
                       htmlFor="username"
                       className="text-[20px] text-[#003553]"
@@ -464,6 +484,7 @@ function AddProfile(props) {
                     </div>
                   </div>
                 </div>
+
                 <div className="w-full flex justify-end">
                   <button className="py-2 px-4 text-[#fff] font-medium rounded-lg bg-gradient-to-r from-[#00b5f1] to-[#00e0ff]">
                     Cập nhật

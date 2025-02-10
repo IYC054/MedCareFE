@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import { gethistoryMbbank } from "../../api/Bank/payment";
-import {getpatientbyaccountid} from "../../api/Doctor/patient";
+import { getpatientbyaccountid } from "../../api/Doctor/patient";
 
 export const AppContext = createContext();
 
@@ -14,7 +14,12 @@ const AppProvider = ({ children }) => {
   //   // Dọn dẹp interval khi component bị unmount
   //   return () => clearInterval(interval);
   // }, []);
-
+  const [userId, setUserId] = useState(localStorage.getItem("user_id"));
+  const [userRole, setUserRole] = useState(localStorage.getItem("user_scope"));
+  const [User, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
   const [isShow, setisShow] = useState(false);
   const [content, setContent] = useState();
   const [specialtyid, setspecialtyid] = useState(0);
@@ -27,10 +32,23 @@ const AppProvider = ({ children }) => {
       document.body.style.overflow = "scroll";
     }
   }, [isShow]);
-
+  useEffect(() => {
+    console.log("ABC: " + userId);
+    console.log("ABC: " + userRole);
+  }, []);
   return (
     <AppContext.Provider
-      value={{ setisShow, setContent, content, specialtyid, setspecialtyid }}
+      value={{
+        setisShow,
+        setContent,
+        content,
+        specialtyid,
+        setspecialtyid,
+        userId,
+        userRole,
+        User,
+        setUser,
+      }}
     >
       {children}
       {isShow && (

@@ -236,10 +236,11 @@ function CheckOTP({ email, forgotPass}) {
                     )}
                     {second >= 1 && (
                         <div className="flex items-center justify-center">
-                            <p className="mt-4 text-sm text-gray-600">
+                            {/* <p className="mt-4 text-sm text-gray-600">
                                 Gửi lại mã OTP sau{" "}
                                 <span className="text-blue-500">  00:{second} s</span>
-                            </p>
+                            </p> */}
+                            <p className="mt-4 text-sm text-gray-600">Gửi lại mã OTP sau{" "}<span className="text-blue-500">00:{second.toString().padStart(2, '0')}s</span></p>
                         </div>
                     )}
                 </div>
