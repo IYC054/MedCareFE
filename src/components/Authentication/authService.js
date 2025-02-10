@@ -10,20 +10,12 @@ export const loginToken = async (email, password) => {
       password: password,
     });
     var token = response.data?.result?.token;
+    var user = response.data?.result?.user;
 
     if (token) {
-      const respone_token = await axios.post(`${API_BASE_URL}/introspect`, {
-        token,
-      });
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
 
-      if (respone_token.data) {
-        const { id, scope } = respone_token.data; // Lấy giá trị id và scope
-
-        // Lưu vào localStorage
-        localStorage.setItem("user_id", id);
-        localStorage.setItem("user_scope", scope);
-        localStorage.setItem("token", token);
-      }
     }
 
     return response.data;
@@ -42,7 +34,7 @@ export const getToken = () => {
 export const logout = () => {
   localStorage.removeItem("token");
 };
-import { useState } from 'react';
+import { useState } from "react";
 
 export const usePopup = () => {
   const [isOpen, setIsOpen] = useState(false);

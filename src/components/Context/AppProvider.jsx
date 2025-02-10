@@ -16,6 +16,10 @@ const AppProvider = ({ children }) => {
   // }, []);
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
   const [userRole, setUserRole] = useState(localStorage.getItem("user_scope"));
+  const [User, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
   const [isShow, setisShow] = useState(false);
   const [content, setContent] = useState();
   const [specialtyid, setspecialtyid] = useState(0);
@@ -42,6 +46,8 @@ const AppProvider = ({ children }) => {
         setspecialtyid,
         userId,
         userRole,
+        User,
+        setUser,
       }}
     >
       {children}

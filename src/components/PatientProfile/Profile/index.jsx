@@ -1,6 +1,7 @@
-import React, { Fragment, useContext, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import Breadcrumbs from "../../Hospital/Breadcrumbs";
-import Avatar from "../../../../asset/avatar_2.jpeg";
+import AvatarPatient from "../../../../asset/avatar_2.jpeg";
+import AvatarDoctor from "../../../../asset/doctor.png";
 import {
   FaBirthdayCake,
   FaEdit,
@@ -31,7 +32,10 @@ function PatientProfile() {
     useState(false);
   // const [selectTabBHYT, setSelectTabBHYT] = useState(false);
   const { userId, userRole } = useContext(AppContext);
-
+    const { User } = useContext(AppContext);
+    useEffect(() => {
+      console.log("USER ROLE: " + JSON.stringify(User.role[0].name));
+    })
   const handleTab = (value) => {
     if (value == "hosobenhnhan") {
       setSelectTabProfile(true);
@@ -68,20 +72,20 @@ function PatientProfile() {
               <div className="w-full  my-4  flex justify-center">
                 <div className="w-56 h-full  rounded-full">
                   <img
-                    src={Avatar}
+                    src={User.role[0].name == "PATIENTS" ? AvatarPatient : AvatarDoctor}
                     alt="avatar"
                     className="w-full h-full object-cover rounded-full"
                   />
                 </div>
               </div>
               <div className="w-full text-center mt-2 mb-6 text-[20px] font-medium text-[#003553]">
-                <p>Thanh phong</p>
-                <p className="text-[#c2c2c2] text-[16px] my-2">Bệnh nhân</p>
+                <p>{User.name}</p>
+                <p className="text-[#c2c2c2] text-[16px] my-2">{User.role[0].name == "PATIENTS" ? "Bệnh nhân" : "Bác sĩ"}</p>
               </div>
             </div>
             <div className="w-full  mb-5">
               <ul className="list-none text-center py-2 my-2">
-                {userRole == "Patients" ? (
+                {User.role[0].name == "PATIENTS" ? (
                   <Fragment>
                     <li
                       onClick={() => handleTab("hosobenhnhan")}
@@ -106,7 +110,7 @@ function PatientProfile() {
                   ""
                 )}
 
-                {userRole == "Doctors" ? (
+                {User.role[0].name == "DOCTOR" ? (
                   <Fragment>
                     <li
                       onClick={() => handleTab("quanlydatlich")}
@@ -138,22 +142,22 @@ function PatientProfile() {
             </div>
           </div>
           <div className="col-span-3">
-            {selectTabProfile && userRole == "Patients" ? (
+            {selectTabProfile && User.role[0].name == "PATIENTS" ? (
               <Tabprofile />
             ) : (
               <Fragment />
             )}
-            {selectTabAppointment && userRole == "Patients" ? (
+            {selectTabAppointment && User.role[0].name == "PATIENTS" ? (
               <TabAppointment />
             ) : (
               <Fragment />
             )}
-            {selectTabDoctorAppointment && userRole == "Doctors" ? (
+            {selectTabDoctorAppointment && User.role[0].name == "DOCTOR" ? (
               <TabDoctorappointment />
             ) : (
               <Fragment />
             )}
-            {selectTabDoctorWithPatient && userRole == "Doctors" ? (
+            {selectTabDoctorWithPatient && User.role[0].name == "PATIENTS" ? (
               <TabDoctorwithpatient />
             ) : (
               <Fragment />

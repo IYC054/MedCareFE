@@ -6,10 +6,11 @@ import { useEffect, useState, memo, useContext } from "react";
 import { FaBars, FaDownload, FaFile, FaUser } from "react-icons/fa";
 import { FaX } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { AppContext } from "./Context/AppProvider";
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [sidebar, setsidebar] = useState(false);
-
+  const { User } = useContext(AppContext);
   const togglePopup = () => {
     setIsOpen(!isOpen);
   };
@@ -115,26 +116,70 @@ const Header = () => {
                 </svg>
                 Tải Ứng Dụng{" "}
               </button>
-              <button
-                onClick={togglePopup}
-                className="border border-[00b5f1] flex gap-3 hover:bg-[#00b5f1] hover:text-white text-[#00b5f1] font-bold  px-3 py-2 rounded-full  items-center bg-white"
-              >
-                {" "}
-                <svg
-                  stroke="currentColor"
-                  fill="currentColor"
-                  strokeWidth="0"
-                  viewBox="0 0 512 512"
-                  aria-label="Icon User"
-                  height="15"
-                  width="15"
-                  xmlns="http://www.w3.org/2000/svg"
+              {User != null ? (
+
+                  <div className="flex items-center px-3">
+                    <DropdownMenu
+                      title={
+                        <div className="border border-[00b5f1] flex gap-3 hover:bg-[#00b5f1] hover:text-white text-[#00b5f1] font-bold  px-3 py-2 rounded-full  items-center bg-white ">
+                          <svg
+                            stroke="currentColor"
+                            fill="currentColor"
+                            strokeWidth="0"
+                            viewBox="0 0 512 512"
+                            aria-label="Icon User"
+                            height="15"
+                            width="15"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path d="M256 288c79.5 0 144-64.5 144-144S335.5 0 256 0 112 64.5 112 144s64.5 144 144 144zm128 32h-55.1c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16H128C57.3 320 0 377.3 0 448v16c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48v-16c0-70.7-57.3-128-128-128z"></path>
+                          </svg>
+                          {User.name}
+                        </div>
+                      }
+                      items={[
+                        {
+                          label: (
+                            <Link to={'/profile'} className="flex items-center justify-center text-[16px] gap-1 p-2 rounded-lg  ">
+                              <span className="font-semibold text-[#00b5f1]">Hồ sơ bệnh nhân</span>
+                            </Link>
+                          ),
+                          link: "#",
+                        },
+                        {
+                          label: (
+                            <Link className="flex items-center justify-center text-[16px] gap-1 p-2 rounded-lg  ">
+                              <span className="font-semibold text-[red]">Đăng xuất</span>
+                            </Link>
+                          ),
+                          link: "#",
+                        },
+                       
+                      ]}
+                    />
+                  </div>
+              ) : (
+                <button
+                  onClick={togglePopup}
+                  className="border border-[00b5f1] flex gap-3 hover:bg-[#00b5f1] hover:text-white text-[#00b5f1] font-bold  px-3 py-2 rounded-full  items-center bg-white"
                 >
-                  <path d="M256 288c79.5 0 144-64.5 144-144S335.5 0 256 0 112 64.5 112 144s64.5 144 144 144zm128 32h-55.1c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16H128C57.3 320 0 377.3 0 448v16c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48v-16c0-70.7-57.3-128-128-128z"></path>
-                </svg>
-                Tài Khoản
-              </button>
-              
+                  {" "}
+                  <svg
+                    stroke="currentColor"
+                    fill="currentColor"
+                    strokeWidth="0"
+                    viewBox="0 0 512 512"
+                    aria-label="Icon User"
+                    height="15"
+                    width="15"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M256 288c79.5 0 144-64.5 144-144S335.5 0 256 0 112 64.5 112 144s64.5 144 144 144zm128 32h-55.1c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16H128C57.3 320 0 377.3 0 448v16c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48v-16c0-70.7-57.3-128-128-128z"></path>
+                  </svg>
+                  Tài Khoản
+                </button>
+              )}
+
               {isOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex max-w-full max-h-full items-center justify-center z-10">
                   <CheckEmail close={togglePopup} />
@@ -374,8 +419,9 @@ const Header = () => {
 
           {/* Sidebar */}
           <div
-            className={`fixed lg:hidden block top-0 right-0 z-40 h-full bg-[#fff] text-white shadow-lg transition-all duration-300 ${sidebar ? "w-96" : "w-0"
-              } overflow-y-auto`}
+            className={`fixed lg:hidden block top-0 right-0 z-40 h-full bg-[#fff] text-white shadow-lg transition-all duration-300 ${
+              sidebar ? "w-96" : "w-0"
+            } overflow-y-auto`}
           >
             <div className="p-4 text-[#000]">
               <h2 className="flex justify-between items-center text-lg font-bold border-b border-solid border-[#c2c2c2]">
