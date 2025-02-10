@@ -110,6 +110,11 @@ function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
                                         Báo cáo giao dịch
                                     </Link>
                                 </li>
+                                <li>
+                                    <Link to="/admin/chat" className={activeMenu === 'Chat' ? 'mm-active' : ''} onClick={() => handleMenuClick('Chat')}>
+                                        Tin nhắn
+                                    </Link>
+                                </li>
                             </ul>
                         </li>
                     </ul>

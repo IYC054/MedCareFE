@@ -43,6 +43,7 @@ import News from "./Admin/page/News";
 import CreateNews from "./Admin/page/createPage/CreateNews";
 import NewDetail from "./Admin/page/subPage/NewDetail";
 import NewDetails from "./page/NewDetails";
+import Chat from "./Admin/page/Chat";
 
 
 
@@ -75,6 +76,10 @@ const router = createBrowserRouter([
       {
         path: "/admin",
         element: <Dashboard />,
+      },
+      {
+        path: "/admin/chat",
+        element: <Chat/>,
       },
       {
         path: "/admin/user",
@@ -160,6 +165,7 @@ const router = createBrowserRouter([
     element: <LoginAdmin />,
   }
 ]);
+window.global = window;
 
 createRoot(document.getElementById('root')).render(
   <AppProvider>
