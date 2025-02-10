@@ -6,12 +6,24 @@ const API_BASE_URL = "http://localhost:8080/api/account"; // URL backend
 export const loginToken = async (email, password) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/token`, {
-      "email": email,
-      "password": password,
+      email: email,
+      password: password,
     });
+    var token = response.data?.result?.token;
 
-    if (response.data?.result?.token) {
-      localStorage.setItem("token", response.data.result.token); // Lưu token vào localStorage
+    if (token) {
+      const respone_token = await axios.post(`${API_BASE_URL}/introspect`, {
+        token,
+      });
+
+      if (respone_token.data) {
+        const { id, scope } = respone_token.data; // Lấy giá trị id và scope
+
+        // Lưu vào localStorage
+        localStorage.setItem("user_id", id);
+        localStorage.setItem("user_scope", scope);
+        localStorage.setItem("token", token);
+      }
     }
 
     return response.data;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   getAppointmentByDoctorId,
   UpdateStatusAppointment,
@@ -10,27 +10,32 @@ import { Option } from "antd/es/mentions";
 import { ProfilebypatientprofileId } from "../../../api/Profile/profilebyaccount";
 import axios from "axios";
 import { enqueueSnackbar } from "notistack";
+import { AppContext } from "../../Context/AppProvider";
 
 function TabDoctorappointment() {
   const [appointments, setAppointments] = useState([]);
+  const { userId, userRole } = useContext(AppContext);
+
   // const [selectedPatientId, setSelectedPatientId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [appointmentsPerPage] = useState(7);
   const statusoption = ["Confirmed", "Cancelled", "Pending", "Success"];
   const fetchAppointments = async () => {
     try {
-      const data = await getAppointmentByDoctorId(1);
-      if (data && data.length > 0) {
-        const enrichedAppointments = await Promise.all(
-          data.map(async (appointment) => {
-            const [patientDetails, paymentDetails] = await Promise.all([
-              ProfilebypatientprofileId(appointment.patientprofile.id),
-              getallPaymentByAppoint(appointment.id),
-            ]);
-            return { ...appointment, patientDetails, paymentDetails };
-          })
-        );
-        setAppointments(enrichedAppointments);
+      if (userRole == "Doctors") {
+        const data = await getAppointmentByDoctorId(userId);
+        if (data && data.length > 0) {
+          const enrichedAppointments = await Promise.all(
+            data.map(async (appointment) => {
+              const [patientDetails, paymentDetails] = await Promise.all([
+                ProfilebypatientprofileId(appointment.patientprofile.id),
+                getallPaymentByAppoint(appointment.id),
+              ]);
+              return { ...appointment, patientDetails, paymentDetails };
+            })
+          );
+          setAppointments(enrichedAppointments);
+        }
       }
     } catch (error) {
       console.error("Error fetching appointments:", error);
@@ -46,23 +51,31 @@ function TabDoctorappointment() {
   useEffect(() => {
     fetchAppointments();
   }, []);
- 
-  const handleUpdateStauts = async (id, status, doctorid , patientfile_id, appointment_id) => {
+
+  const handleUpdateStauts = async (
+    id,
+    status,
+    doctorid,
+    patientfile_id,
+    appointment_id
+  ) => {
     try {
       const data = await UpdateStatusAppointment(id, status);
-      if(status === "Success"){
-        const checksuccess =  axios.post(`http://localhost:8080/api/patientsfile?doctors_id=${doctorid}&patients_profile_id=${patientfile_id}&appointment_id=${appointment_id}`)
-        if(checksuccess != null){
+      if (status === "Success") {
+        const checksuccess = axios.post(
+          `http://localhost:8080/api/patientsfile?doctors_id=${doctorid}&patients_profile_id=${patientfile_id}&appointment_id=${appointment_id}`
+        );
+        if (checksuccess != null) {
           enqueueSnackbar("Cập nhật thành công!", {
             variant: "success",
             autoHideDuration: 5000,
-            anchorOrigin: {vertical: "top", horizontal: "right"}
+            anchorOrigin: { vertical: "top", horizontal: "right" },
           });
-        }else{
+        } else {
           enqueueSnackbar("Cập nhật không thành công!", {
             variant: "error",
             autoHideDuration: 5000,
-            anchorOrigin: {vertical: "top", horizontal: "right"}
+            anchorOrigin: { vertical: "top", horizontal: "right" },
           });
         }
       }
@@ -91,14 +104,16 @@ function TabDoctorappointment() {
           style={{ width: "fit-content" }}
         >
           Bạn khám thành công{" "}
-          {appointments.filter((item) => item.status === "Success").length} cuộc hẹn
+          {appointments.filter((item) => item.status === "Success").length} cuộc
+          hẹn
         </div>
         <div
           className=" p-2 bg-[#00b5f1] text-[#fff] rounded-lg"
           style={{ width: "fit-content" }}
         >
           Bạn huỷ{" "}
-          {appointments.filter((item) => item.status === "Cancelled").length} cuộc hẹn
+          {appointments.filter((item) => item.status === "Cancelled").length}{" "}
+          cuộc hẹn
         </div>
       </div>
       <div className="mt-4 w-full h-[500px] bg-[#fff] rounded-lg shadow-lg">
@@ -167,15 +182,25 @@ function TabDoctorappointment() {
                       <Select
                         className="w-full"
                         value={item.status}
-                        onChange={(value) => handleUpdateStauts(item.id, value, item.doctor.id, item.patientDetails.id, item.id)}
+                        onChange={(value) =>
+                          handleUpdateStauts(
+                            item.id,
+                            value,
+                            item.doctor.id,
+                            item.patientDetails.id,
+                            item.id
+                          )
+                        }
                       >
                         {statusoption.map((status) => (
                           <Option
                             key={status}
                             value={status}
                             className="w-full"
-                            
-                            disabled={item.status === "Success" && item.status !== status}
+                            disabled={
+                              item.status === "Success" &&
+                              item.status !== status
+                            }
                           >
                             {item.status === status ? item.status : status}
                           </Option>
@@ -200,29 +225,27 @@ function TabDoctorappointment() {
           </table>
         </div>
       </div>
-        <div className="flex justify-center my-4">
-          <button
-            onClick={() =>
-              setCurrentPage(currentPage > 1 ? currentPage - 1 : 1)
-            }
-            disabled={currentPage === 1}
-            className="px-4 py-2 border rounded mr-2"
-          >
-            Previous
-          </button>
-          <span className="py-2 px-4">{`Page ${currentPage} of ${totalPages}`}</span>
-          <button
-            onClick={() =>
-              setCurrentPage(
-                currentPage < totalPages ? currentPage + 1 : totalPages
-              )
-            }
-            disabled={currentPage === totalPages}
-            className="px-4 py-2 border rounded ml-2"
-          >
-            Next
-          </button>
-        </div>
+      <div className="flex justify-center my-4">
+        <button
+          onClick={() => setCurrentPage(currentPage > 1 ? currentPage - 1 : 1)}
+          disabled={currentPage === 1}
+          className="px-4 py-2 border rounded mr-2"
+        >
+          Previous
+        </button>
+        <span className="py-2 px-4">{`Page ${currentPage} of ${totalPages}`}</span>
+        <button
+          onClick={() =>
+            setCurrentPage(
+              currentPage < totalPages ? currentPage + 1 : totalPages
+            )
+          }
+          disabled={currentPage === totalPages}
+          className="px-4 py-2 border rounded ml-2"
+        >
+          Next
+        </button>
+      </div>
       {/* <div
         className={`w-full h-screen ${
           popup ? "fixed" : "hidden"

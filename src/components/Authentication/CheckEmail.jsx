@@ -44,7 +44,7 @@ function CheckEmail({ close }) {
   
     try {
       const response = await fetch(
-        `http://localhost:8080/api/account/find?email=${encodeURIComponent(email)}`,
+        `http://localhost:8080/api/account/find?email=${email}`,
         {
           method: "GET",
           headers: {

@@ -1,9 +1,11 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import token from "../../../api/token";
+import { AppContext } from "../../Context/AppProvider";
 
 function TabCheckBHYT(props) {
+
   const [hoten, setHoTen] = useState("");
 
   const [formData, setFormData] = useState({
@@ -25,23 +27,30 @@ function TabCheckBHYT(props) {
     data.append("txtMaThe", formData.txtMaThe);
     data.append("txtHoTen", formData.txtHoTen);
     data.append("txtNgaySinh", formData.txtNgaySinh);
-    data.append("tokenRecaptch", "03AFcWeA62X2F1uV1_ZZgS0C-S6BremAZexrypL-g34mrc6oS7SBGXlqrzECAjgFUYTp61asRLjAox00uvtm8q7ML11zgh4KBG9McP6NOT83B4cbEcXpgvG2B2_sIEqnB6wxc_oooH8UF39LmL8qfXK9ySMMYO944Bk7EuuoUh7jMdEuZIaZouYA3qkgPcFgHd6IgpAX0hM1cAX5HgmNU5EKhpedGh8tUABMUB4JI6uCMT6P8vBV-o3hmI6YtvwLKQPAqHATcr8XPfMygCug5_9_3hgl9s44hFl7RPFjaMVmYu9O6gJcRRHh8gOoBTYCRdrGNDYX-X8YMZmNOl7RySDt6_Hg1sFcFm0dw6YloOe_ll8Wf1qMZDnHF_AXYDNrqn58vuunu2b0W446_pNhOeb3PV9y6bGq3S8I4r01bfKodIq6sFLn41B4jpvpXs2EFHpHS8bAqnxkC33GLKFSmCuLWVD18eFvSanlfFJd26Q7GZuo88c0ZC_M5O6_t1HVNoRFBf8vz_3rRidCkPhDNhwkR_VxwIH-9q_Nte0fpV9alK1RD-hxTNoVDQuxRllLbzOI6lGPj5w7LQMgQ4BxaUMFtLaMocnsJzd-KDJ19lpGHxgxzMeSch2fFpU7wAKrd6Y_HJL2-c2Iz0YCtaRVwHxaFE8qSmMTbhy_bQvlPoG5nS6u-dK4O4O_krKrPLN5gY3zyfkJLe1ZonC-8K3KgoLaivU_O1AjRDyhuBFgBDNdbG82X8xqFQ4Q7dOe0v6Q6_d5C0GBq5qU8IGKodXcOrdYcvDJCCggZiPK72ura8Bed36nkyhOovXGK9xMDRS0n4tODRNrIA6-aE70PdjBH7OOAXW0ks_bklGdDmmQScjoMKxHL2lOBALHHaRu7FKUG9FJpNnFRySiwHVRgoT8ecryhbgJzNu_FCeiCzeFU7pdZeESUx96g_fzZTKsPJWU7gPbCPaeOgwXiJNKceMS_eyDC-o2KpSaePIw");
+    data.append(
+      "tokenRecaptch",
+      "03AFcWeA62X2F1uV1_ZZgS0C-S6BremAZexrypL-g34mrc6oS7SBGXlqrzECAjgFUYTp61asRLjAox00uvtm8q7ML11zgh4KBG9McP6NOT83B4cbEcXpgvG2B2_sIEqnB6wxc_oooH8UF39LmL8qfXK9ySMMYO944Bk7EuuoUh7jMdEuZIaZouYA3qkgPcFgHd6IgpAX0hM1cAX5HgmNU5EKhpedGh8tUABMUB4JI6uCMT6P8vBV-o3hmI6YtvwLKQPAqHATcr8XPfMygCug5_9_3hgl9s44hFl7RPFjaMVmYu9O6gJcRRHh8gOoBTYCRdrGNDYX-X8YMZmNOl7RySDt6_Hg1sFcFm0dw6YloOe_ll8Wf1qMZDnHF_AXYDNrqn58vuunu2b0W446_pNhOeb3PV9y6bGq3S8I4r01bfKodIq6sFLn41B4jpvpXs2EFHpHS8bAqnxkC33GLKFSmCuLWVD18eFvSanlfFJd26Q7GZuo88c0ZC_M5O6_t1HVNoRFBf8vz_3rRidCkPhDNhwkR_VxwIH-9q_Nte0fpV9alK1RD-hxTNoVDQuxRllLbzOI6lGPj5w7LQMgQ4BxaUMFtLaMocnsJzd-KDJ19lpGHxgxzMeSch2fFpU7wAKrd6Y_HJL2-c2Iz0YCtaRVwHxaFE8qSmMTbhy_bQvlPoG5nS6u-dK4O4O_krKrPLN5gY3zyfkJLe1ZonC-8K3KgoLaivU_O1AjRDyhuBFgBDNdbG82X8xqFQ4Q7dOe0v6Q6_d5C0GBq5qU8IGKodXcOrdYcvDJCCggZiPK72ura8Bed36nkyhOovXGK9xMDRS0n4tODRNrIA6-aE70PdjBH7OOAXW0ks_bklGdDmmQScjoMKxHL2lOBALHHaRu7FKUG9FJpNnFRySiwHVRgoT8ecryhbgJzNu_FCeiCzeFU7pdZeESUx96g_fzZTKsPJWU7gPbCPaeOgwXiJNKceMS_eyDC-o2KpSaePIw"
+    );
 
     try {
-      const response = await axios.post("http://localhost:8080/api/bhyt/check", data, {
-        headers: {
-            'Authorization': 'Bearer ' + token
+      const response = await axios.post(
+        "http://localhost:8080/api/bhyt/check",
+        data,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
         }
-      });
+      );
       const html = await response.data.text();
       const parser = new DOMParser();
       const doc = parser.parseFromString(html, "text/html");
       const spanHoTen = doc.querySelector("span.hoten");
-        if (spanHoTen) {
-          setHoTen(spanHoTen.textContent); // Lấy nội dung text bên trong span
-        } else {
-          console.error("Không tìm thấy span.hoten");
-        }
+      if (spanHoTen) {
+        setHoTen(spanHoTen.textContent); // Lấy nội dung text bên trong span
+      } else {
+        console.error("Không tìm thấy span.hoten");
+      }
     } catch (err) {
       console.error(err);
     }
@@ -117,9 +126,7 @@ function TabCheckBHYT(props) {
             </span>
           </button>
         </div>
-        <div className="w-full mb-5">
-          {hoten}
-        </div>
+        <div className="w-full mb-5">{hoten}</div>
       </div>
     </div>
   );
