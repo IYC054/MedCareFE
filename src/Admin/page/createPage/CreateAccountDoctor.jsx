@@ -88,29 +88,31 @@ function CreateAccountDoctor() {
 
             console.log("Form Data Submitted Successfully:", response.data.result);
             const accountId = response.data.result.id;
-            const formDataToSend2 = new FormData();
-            formDataToSend2.append("experienceYears", formData2.experienceYears);
-            formDataToSend2.append("status", "Available");
-            formDataToSend2.append("account", accountId);
-            formDataToSend2.append("specialties",formData2.specialties );
+            const formDataToSend2 = {
+                experienceYears: formData2.experienceYears,
+                status: "Available",
+                account: {
+                    id: accountId
+                },
+                specialties: formData2.selectedSpecialties.map(id => ({ id }))
+            };
+
             try {
-       
                 const doctorResponse = await axios.post(
                     "http://localhost:8080/api/doctors",
                     formDataToSend2,
                     {
                         headers: {
-                            "Content-Type": "multipart/form-data",
-  
+                            "Content-Type": "application/json"
                         }
                     }
                 );
 
                 console.log("Doctor Created Successfully:", doctorResponse.data);
-
             } catch (error) {
                 console.error("Error creating doctor:", error.message);
             }
+
         } catch (error) {
             console.error("Error submitting form:", error.message);
         }
@@ -267,7 +269,7 @@ function CreateAccountDoctor() {
                             type="number"
                             value={formData2.experienceYears}
                             onChange={handleChange2}
-    
+
                             placeholder="Enter years of experience"
                             className="mt-2 w-full p-2 border border-[#da624a] rounded-md focus:ring-2 focus:ring-[#da624a]"
                         />
