@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import Breadcrumbs from "../Breadcrumbs";
 import {
   FaArrowRight,
@@ -14,6 +14,7 @@ import { MdGroups } from "react-icons/md";
 import "./Profilechoose.scss";
 import { Link, useLocation } from "react-router-dom";
 import {profilebyaccount} from "../../../api/Profile/profilebyaccount";
+import { AppContext } from "../../Context/AppProvider";
 const fakedata = [{ id: 1 }, { id: 2 }];
 function ProfileChoose(props) {
   const location = useLocation();
@@ -24,12 +25,14 @@ function ProfileChoose(props) {
 
   const [selectProfileId, setSelectProfileId] = useState(null);
   const [DataProfile, setDataProfile] = useState([]);
+    const { User } = useContext(AppContext);
+  
   const handleSelectProfile = (e) => {
     setSelectProfileId(e);
   };
   useEffect(() => {
     const fetchProfile = async () => {
-      const data = await profilebyaccount(1); 
+      const data = await profilebyaccount(User?.id); 
       setDataProfile(data); 
     };
 
