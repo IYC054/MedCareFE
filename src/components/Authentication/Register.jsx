@@ -42,11 +42,11 @@ function Register({ email }) {
 
 
     try {
-      const response = await fetch("http://localhost:8080/api/account", {
+      const response = await fetch("http://localhost:8080/api/account/register", {
         method: "POST",
-        headers: {
-          "Authorization":`Bearer ${token}`, // Gửi token vào header
-        },
+        // headers: {
+        //   "Authorization":`Bearer ${token}`, // Gửi token vào header
+        // },
         body: formData,
       });
       const result = await response.json();

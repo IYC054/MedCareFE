@@ -10,7 +10,7 @@ const schema = yup.object().shape({
 });
 
 function ChangePass({ email, forgotPass }) {
-  const token = getToken();
+  // const token = getToken();
   const [backToLogin, setBackToLogin] = useState(false);
   const {
     register,
@@ -32,7 +32,7 @@ function ChangePass({ email, forgotPass }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`, // Gửi token vào header
+          // "Authorization": `Bearer ${token}`, // Gửi token vào header
         },
         body: JSON.stringify(formData),  // Chuyển đổi object thành JSON
       });
