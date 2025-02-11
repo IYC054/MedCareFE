@@ -1,8 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Breadcrumbs from "../../Hospital/Breadcrumbs";
 import { Select } from "antd";
 import { districtApi, provinceApi, wardApi } from "../../../api/province";
 import axios from "axios";
+import  { AppContext } from "../../Context/AppProvider";
+import { getToken } from "../../Authentication/authService";
+import { useNavigate } from "react-router-dom";
+import { enqueueSnackbar } from "notistack";
 function AddProfile(props) {
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
@@ -14,6 +18,9 @@ function AddProfile(props) {
   const [txtAddress, settxtAddress] = useState(null);
   const [txtWards, setTxtWards] = useState(null);
   const [errorMessages, setErrorMessages] = useState({});
+  const navigator = useNavigate();
+  const token = getToken();
+  const { User } = useContext(AppContext);
   const [formValues, setFormValues] = useState({
     fullname: "",
     birthdate: { day: "15", month: "1", year: "2002" },
@@ -24,7 +31,7 @@ function AddProfile(props) {
     email: "",
     nation: "",
     address: "",
-    accountid: 1,
+    accountid: User?.id,
   });
   useEffect(() => {
     const fetchProvinces = async () => {
@@ -108,8 +115,6 @@ function AddProfile(props) {
       errors.phone = "Số điện thoại phải có 10 chữ số!";
     }
 
-    
-
     // Validate email format
     if (!/\S+@\S+\.\S+/.test(formValues.email)) {
       errors.email = "Email không hợp lệ!";
@@ -134,8 +139,17 @@ function AddProfile(props) {
     };
     try {
       axios
-        .post("http://localhost:8080/api/patientsprofile", dataToSend)
+        .post("http://localhost:8080/api/patientsprofile", dataToSend, {
+          headers: {
+            Authorization: `Bearer ${token}`, // Gửi token vào header
+            "Content-Type": "application/json",
+          },
+        })
         .then(() => {
+          enqueueSnackbar("Tạo hồ sơ thành công", {
+                  variant: "success",
+                  autoHideDuration: 3000,
+                });
           navigator("/hospital");
         })
         .catch((error) => {
@@ -366,7 +380,6 @@ function AddProfile(props) {
                       }
                       className="w-full h-10 border p-2 mt-2 border-solid border-[#c2c2c2] rounded-lg focus:border-[#47bfff] focus:ring-2 focus:ring-[#1da1f2]/20 focus:outline-none"
                     />{" "}
-
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4 my-5 font-medium ">
