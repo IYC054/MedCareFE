@@ -44,6 +44,8 @@ import CreateNews from "./Admin/page/createPage/CreateNews";
 import NewDetail from "./Admin/page/subPage/NewDetail";
 import NewDetails from "./page/NewDetails";
 import Chat from "./Admin/page/Chat";
+import FeedbackDetail from "./Admin/page/subPage/FeedbackDetail";
+import FeedbackReponse from "./Admin/page/subPage/FeedbackReponse";
 
 
 
@@ -124,6 +126,14 @@ const router = createBrowserRouter([
       {
         path: "/admin/feedback",
         element: <Feedback />,
+      },
+      {
+        path: "/admin/feedback/reponse/:id",
+        element: <FeedbackDetail />,
+      },
+      {
+        path: "/admin/feedback/wasReponse/:id",
+        element: <FeedbackReponse />,
       },
       {
         path: "/admin/feedback/sendfeedback",
