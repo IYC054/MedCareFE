@@ -146,7 +146,7 @@ function Hopsital() {
             {/* start slider */}
             <div className="w-full h-[540px] mb-8">
               <img
-                src={hospital[0].urlImage}
+                src={hospital[0]?.urlImage}
                 alt=""
                 className="w-full h-full object-cover rounded-xl shadow-xl"
               />
