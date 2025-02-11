@@ -11,11 +11,7 @@ function TabAppointment(props) {
   const [patient, setPatient] = useState([]);
   const [appointment, setAppointment] = useState([]);
   const [dataPayment, setDataPayment] = useState([]);
-  const { userId, userRole } = useContext(AppContext);
-  useEffect(() => {
-    console.log("ABCaa: " + userId);
-    console.log("ABCaaaa: " + userRole);
-  }, []);
+
   useEffect(() => {
     const getPatient = async () => {
       try {

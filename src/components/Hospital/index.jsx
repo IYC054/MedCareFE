@@ -1,12 +1,45 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { BiPhone } from "react-icons/bi";
 import { FaRegClock, FaStar } from "react-icons/fa";
 import { GrLocation } from "react-icons/gr";
 import "./hospital.scss";
 import { Link, useLocation } from "react-router-dom";
 import Breadcrumbs from "./Breadcrumbs";
+import { AppContext } from "../Context/AppProvider";
+import { enqueueSnackbar } from "notistack";
+import { profilebyaccount } from "../../api/Profile/profilebyaccount";
+import { GetHospital } from "../../api/Doctor/Hospital";
 function Hopsital() {
   const location = useLocation();
+  const [hospital, setHospital] = useState([]);
+  const { User } = useContext(AppContext);
+  useEffect(() => {
+    const gethospital = async () => {
+      const result = await GetHospital();
+      console.log(JSON.stringify(result));
+      setHospital(result);
+    };
+    gethospital();
+  }, []);
+  const handleLogin = async () => {
+    if (User == null || User == []) {
+      enqueueSnackbar("Bạn chưa đăng nhập", {
+        variant: "warning",
+        autoHideDuration: 3000,
+      });
+      return;
+    }
+    const result = await profilebyaccount(User?.id);
+    if (result.length < 0) {
+      enqueueSnackbar("Bạn chưa có hồ sơ bệnh nhân", {
+        variant: "warning",
+        autoHideDuration: 3000,
+      });
+      navigator("/profile");
+      return;
+    }
+    navigator(`${location.pathname}/form-appointment`);
+  };
   return (
     <div className="flex justify-center py-5">
       <div className="w-4/5 ">
@@ -14,7 +47,7 @@ function Hopsital() {
         <Breadcrumbs />
         {/* breadcrumbs */}
         <div className="grid grid-cols-3 gap-4 my-2">
-          <div className="col-span-1 w-full ">
+          <div className="md:col-span-1 col-span-3 w-full order-1 md:order-none">
             {/* start hospital */}
             <div className="shadow-lg rounded-xl p-4 bg-[#fff] w-full mb-5">
               <div className="w-full  border-b-2 border-solid border-b-[#c2c2c2]">
@@ -27,17 +60,8 @@ function Hopsital() {
                 </div>
                 <div className="w-full p-2 py-4 mb-2 text-center">
                   <span className="text-[20px] text-[#00b5f1] font-semibold">
-                    Bệnh Viện Chợ Rẫy
+                    {hospital[0]?.name}
                   </span>
-
-                  <div className="text-[#ffb54a] text-[20px] flex gap-2 justify-center items-center">
-                    <span className="font-medium text-[17px]">(4)</span>
-                    <FaStar />
-                    <FaStar />
-                    <FaStar />
-                    <FaStar />
-                    <FaStar className="text-[#c2c2c2]" />
-                  </div>
                 </div>
               </div>
               <div className="mt-2 w-full">
@@ -47,8 +71,7 @@ function Hopsital() {
                       <GrLocation />
                     </span>
                     <span className="text-[14px]">
-                      201B Đ. Nguyễn Chí Thanh, Phường 12, Quận 5, Hồ Chí Minh
-                      700000
+                      {hospital[0]?.address}
                     </span>
                   </li>
                   <li className="flex items-center justify-start gap-2 py-2">
@@ -64,17 +87,17 @@ function Hopsital() {
                       <BiPhone />
                     </span>
                     <span className="text-[14px]">
-                      Hỗ trợ đặt khám: 0362061339
+                      Hỗ trợ đặt khám: {hospital[0]?.phone}
                     </span>
                   </li>
                 </ul>
               </div>
               <div className="w-full my-3">
-                <Link to={`${location.pathname}/form-appointment`}>
+                <div onClick={handleLogin}>
                   <button className="w-full h-[50px] text-[#fff] font-medium rounded-full bg-gradient-to-r from-[#00b5f1] to-[#00e0ff]">
                     Đặt Khám Ngay
                   </button>
-                </Link>
+                </div>
               </div>
             </div>
             {/* end hospital */}
@@ -119,11 +142,11 @@ function Hopsital() {
             </div>
             {/* end map */}
           </div>
-          <div className="col-span-2">
+          <div className="col-span-3 md:col-span-2 order-1 md:order-none">
             {/* start slider */}
             <div className="w-full h-[540px] mb-8">
               <img
-                src="https://upload.wikimedia.org/wikipedia/commons/a/a7/C%E1%BB%95ng_b%E1%BB%87nh_vi%E1%BB%87n_Ch%E1%BB%A3_R%E1%BA%ABy_2016.jpg"
+                src={hospital[0].urlImage}
                 alt=""
                 className="w-full h-full object-cover rounded-xl shadow-xl"
               />

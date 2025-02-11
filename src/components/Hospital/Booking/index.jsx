@@ -74,15 +74,19 @@ function Booking() {
   const handleSelectidByWorktime = async (id) => {
     setTxnIdWorkTime(id);
     const checkslot = await checkslotAppointment(doctorId, id);
-    if(checkslot){
-      navigate(`/choose-profile?doctor=${doctorId}&work=${id}&specialty=${txnSpecialtyId}`)
-    }else{
-      enqueueSnackbar("Hiện tải giờ này đã hết slot xin vui lòng đặt giờ khác.", {
-        variant: "warning",
-        autoHideDuration: 3000,
-      });
+    if (checkslot) {
+      navigate(
+        `/choose-profile?doctor=${doctorId}&work=${id}&specialty=${txnSpecialtyId}`
+      );
+    } else {
+      enqueueSnackbar(
+        "Hiện tải giờ này đã hết slot xin vui lòng đặt giờ khác.",
+        {
+          variant: "warning",
+          autoHideDuration: 3000,
+        }
+      );
     }
-
   };
   // end chọn ngày
 
@@ -185,12 +189,15 @@ function Booking() {
       );
       console.log("filterDoctorbyspecialtyId", filterDoctorbyspecialtyId);
       if (filterDoctorbyspecialtyId.length > 0) {
-        const randomDoctor = filterDoctorbyspecialtyId[Math.floor(Math.random() * filterDoctorbyspecialtyId.length)];
-        console.log("randomDoctor" + JSON.stringify(randomDoctor.name));
-        setdoctorId(randomDoctor.id)
-        setSelectName(randomDoctor.account.name)
+        const randomDoctor =
+          filterDoctorbyspecialtyId[
+            Math.floor(Math.random() * filterDoctorbyspecialtyId.length)
+          ];
+        console.log("randomDoctor" + JSON.stringify(randomDoctor.account.name));
+        setdoctorId(randomDoctor.id);
+        setSelectName(randomDoctor.account.name);
       } else {
-        console.log('Không có bác sĩ nào với specid này.');
+        console.log("Không có bác sĩ nào với specid này.");
       }
     }
   }, [typeselect, dataDoctor, txnSpecialtyId]);
@@ -414,20 +421,20 @@ function Booking() {
                                 });
 
                                 return (
-                                  <Link
+                                  // <Link
+                                  //   key={index}
+                                  //   to={`/choose-profile?doctor=${doctorId}&work=${item.id}&specialty=${txnSpecialtyId}`}
+                                  // >
+                                  <div
+                                    className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]"
                                     key={index}
-                                    to={`/choose-profile?doctor=${doctorId}&work=${item.id}&specialty=${txnSpecialtyId}`}
+                                    onClick={() =>
+                                      handleSelectidByWorktime(item.id)
+                                    }
                                   >
-                                    <div
-                                      className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]"
-                                      key={index}
-                                      onClick={() =>
-                                        handleSelectidByWorktime(item.id)
-                                      }
-                                    >
-                                      {startTimeFormatted} - {endTimeFormatted}
-                                    </div>
-                                  </Link>
+                                    {startTimeFormatted} - {endTimeFormatted}
+                                  </div>
+                                  // </Link>
                                 );
                               }
 
@@ -730,15 +737,15 @@ function Booking() {
                                   //   key={index}
                                   //   to={`/choose-profile?doctor=${doctorId}&work=${item.id}&specialty=${txnSpecialtyId}`}
                                   // >
-                                    <div
-                                      className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]"
-                                      key={index}
-                                      onClick={() =>
-                                        handleSelectidByWorktime(item.id)
-                                      }
-                                    >
-                                      {startTimeFormatted} - {endTimeFormatted}
-                                    </div>
+                                  <div
+                                    className="py-2 px-4 border-[1px] cursor-pointer  border-[#00b5f1] hover:bg-gradient-to-r hover:from-[#00b5f1] hover:to-[#00e0ff] hover:text-[#fff] rounded-lg border-solid text-[20px]"
+                                    key={index}
+                                    onClick={() =>
+                                      handleSelectidByWorktime(item.id)
+                                    }
+                                  >
+                                    {startTimeFormatted} - {endTimeFormatted}
+                                  </div>
                                   // </Link>
                                 );
                               }

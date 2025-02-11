@@ -28,9 +28,10 @@ const Login = ({email, close}) => {
       return;
     }
 
-    logout(); // Optional: Clear previous login data
+    logout(); 
     loginToken(email, password); // Call your login function
     close(); // Call your close function
+    // window.location.reload();
   };
 
   const token = getToken();

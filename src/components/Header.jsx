@@ -5,18 +5,25 @@ import Login from "./Authentication/Login";
 import { useEffect, useState, memo, useContext } from "react";
 import { FaBars, FaDownload, FaFile, FaUser } from "react-icons/fa";
 import { FaX } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AppContext } from "./Context/AppProvider";
+import { logout } from "./Authentication/authService";
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [sidebar, setsidebar] = useState(false);
   const { User } = useContext(AppContext);
+  const navigator = useNavigate();
   const togglePopup = () => {
     setIsOpen(!isOpen);
   };
   const toggleSidebar = () => {
     setsidebar(!sidebar);
   };
+  const Logout =() => {
+    logout();
+    navigator("/");
+    window.location.reload();
+  }
   return (
     <div className="">
       <div className="bg-gray-50 flex items-center justify-between px-12 h-[60px] lg:h-[112px]">
@@ -99,7 +106,7 @@ const Header = () => {
                 Youtube
               </a>
             </div>
-            <div className="flex gap-1 text-[12px]">
+            <div className="flex gap-1 text-[12px] pr-16">
               <button className="flex gap-2 hover:bg-orange-300/75 text-white font-bold  px-3 py-2 rounded-full  items-center bg-[#ffb54a]">
                 <svg
                   stroke="currentColor"
@@ -148,9 +155,9 @@ const Header = () => {
                         },
                         {
                           label: (
-                            <Link className="flex items-center justify-center text-[16px] gap-1 p-2 rounded-lg  ">
+                            <div onClick={Logout}  className="flex items-center justify-center text-[16px] gap-1 p-2 rounded-lg  ">
                               <span className="font-semibold text-[red]">Đăng xuất</span>
-                            </Link>
+                            </div>
                           ),
                           link: "#",
                         },
@@ -187,7 +194,7 @@ const Header = () => {
                 </div>
               )}
 
-              <div className="flex items-center px-3">
+              {/* <div className="flex items-center px-3">
                 <DropdownMenu
                   title={
                     <div className="flex items-center gap-1 p-2 rounded-lg border hover:border-[#00b5f1]">
@@ -247,7 +254,7 @@ const Header = () => {
                     },
                   ]}
                 />
-              </div>
+              </div> */}
             </div>
           </div>
           {/* phan menu dịch vu */}
@@ -267,7 +274,7 @@ const Header = () => {
                 </p>
               </div>
             </div>
-            <div className="pr-3">
+            {/* <div className="pr-3">
               <ul className="flex gap-3 items-center">
                 <li>
                   {" "}
@@ -404,7 +411,7 @@ const Header = () => {
                   />
                 </li>
               </ul>
-            </div>
+            </div> */}
           </div>
         </div>
         {/* mobile */}
@@ -440,7 +447,7 @@ const Header = () => {
                 <li className="hover:text-[#47bfff] font-medium cursor-pointer ">
                   <div className="w-full h-10 bg-[#47bfff] flex justify-center items-center rounded-lg gap-2 text-[#fff]">
                     <FaUser />
-                    <span>Nguyễn văn nghị</span>
+                    <span>{User?.name}</span>
                   </div>
                 </li>
                 <li className="hover:text-[#47bfff] font-medium cursor-pointer">
@@ -471,7 +478,7 @@ const Header = () => {
                   <FaDownload />
                 </div>
               </div>
-              <div className="w-full h-[40px] bg-[red] text-[#fff] flex justify-center items-center rounded-lg">
+              <div onClick={Logout} className="w-full h-[40px] bg-[red] text-[#fff] flex justify-center items-center rounded-lg">
                 Đăng xuất
               </div>
             </div>

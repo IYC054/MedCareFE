@@ -33,6 +33,8 @@ export const getToken = () => {
 // Xóa token khi đăng xuất
 export const logout = () => {
   localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  window.location.reload();
 };
 import { useState } from "react";
 
