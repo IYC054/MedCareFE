@@ -6,7 +6,7 @@ import { getToken } from "../../../components/Authentication/authService";
 
 
 function CreatEmail() {
-  const token = getToken();
+ 
   const [recipientType, setRecipientType] = useState(""); // doctor or patient
   const [selectedRecipient, setSelectedRecipient] = useState(null);
   const [doctors, setDoctors] = useState([]);
