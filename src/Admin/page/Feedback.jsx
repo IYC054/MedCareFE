@@ -3,13 +3,14 @@ import '../scss/feedback.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import axios from 'axios';
-import token from '../../api/token';
+import { getToken } from '../../components/Authentication/authService';
+
 
 function Feedback(props) {
     const [feedback, setFeedback] = useState([]);
     const [filteredFeedback, setFilteredFeedback] = useState([]); // For storing filtered feedback
     const [isFeedbackBox, setIsFeedbackBox] = useState(true); // To track which section is selected
-
+  const token = getToken();
     useEffect(() => {
         const fetchFeedback = async () => {
             const response = await axios.get('http://localhost:8080/api/feedbacks/', {

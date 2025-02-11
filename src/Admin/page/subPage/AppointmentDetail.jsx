@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 function AppointmentDetail({ roomId, onClose }) {
     const [appointmentDetails, setAppointmentDetails] = useState(null);
     const [loading, setLoading] = useState(true);
-
+ 
     useEffect(() => {
         const fetchDetails = async () => {
             try {

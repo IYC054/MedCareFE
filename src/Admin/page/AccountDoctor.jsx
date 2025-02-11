@@ -3,9 +3,11 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 // import '../scss/AccountDoctor.scss';
 import { Link, useNavigate } from 'react-router-dom';
-import token from '../../api/token';
+import { getToken } from '../../components/Authentication/authService';
+
 
 function AccountDoctor(props) {
+    const token = getToken();
     const [doctor, setdoctor] = useState([])
 
     useEffect(() => {

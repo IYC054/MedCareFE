@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 import axios from 'axios';
-import token from '../../../api/token';
+
+import { getToken } from '../../../components/Authentication/authService';
 
 const ChartWeek = () => {
   const [chartData, setChartData] = useState([0, 0, 0, 0, 0, 0, 0]);
-
+  const token = getToken();
   useEffect(() => {
+
     const fetchAppointments = async () => {
       try {
         const response = await axios.get('http://localhost:8080/api/appointment');

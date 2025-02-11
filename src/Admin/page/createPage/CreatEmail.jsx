@@ -2,15 +2,17 @@ import React, { useEffect, useState } from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import axios from "axios";
-import token from "../../../api/token";
+import { getToken } from "../../../components/Authentication/authService";
+
 
 function CreatEmail() {
+ 
   const [recipientType, setRecipientType] = useState(""); // doctor or patient
   const [selectedRecipient, setSelectedRecipient] = useState(null);
   const [doctors, setDoctors] = useState([]);
   const [patients, setPatients] = useState([]);
   const [message, setMessage] = useState("");
-
+  const token = getToken();
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -62,11 +64,11 @@ function CreatEmail() {
 
     axios
       .post(
-        `http://localhost:8080/api/feedbacks/${10}`,
+        `http://localhost:8080/api/feedbacks/${selectedRecipient.id}`,
         {
           message,
           recipient: {
-            id: selectedRecipient.id,
+            id: 10,
           },
         },
         {

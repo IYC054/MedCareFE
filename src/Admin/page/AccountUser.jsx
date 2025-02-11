@@ -1,11 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import token from '../../api/token';
+import { getToken } from '../../components/Authentication/authService';
+
 
 function AccountUser() {
     const [user, setUser] = useState([])
-
+    const token = getToken();
     useEffect(() => {
         const fetchUserAccounts = async () => {
 

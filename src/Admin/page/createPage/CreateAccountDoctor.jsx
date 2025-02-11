@@ -1,7 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { getToken } from "../../../components/Authentication/authService";
 
 function CreateAccountDoctor() {
+    const token = getToken();
     const [specialties, setSpecialties] = useState([]);
     const [formData, setFormData] = useState({
         email: "",
@@ -82,8 +84,10 @@ function CreateAccountDoctor() {
         try {
             const response = await axios.post("http://localhost:8080/api/account", formDataToSend, {
                 headers: {
+                    Authorization: `Bearer ${token}`,
                     "Content-Type": "multipart/form-data",
                 },
+
             });
 
             console.log("Form Data Submitted Successfully:", response.data.result);
@@ -103,6 +107,7 @@ function CreateAccountDoctor() {
                     formDataToSend2,
                     {
                         headers: {
+                            Authorization: `Bearer ${token}`,
                             "Content-Type": "application/json"
                         }
                     }

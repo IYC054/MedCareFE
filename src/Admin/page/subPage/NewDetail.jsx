@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { getToken } from '../../../components/Authentication/authService';
 
 function NewDetail() {
     const { id } = useParams();
@@ -10,7 +11,7 @@ function NewDetail() {
     const [news, setNews] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-
+   const token = getToken();
     // Fetch news details
     useEffect(() => {
         const fetchNews = async () => {

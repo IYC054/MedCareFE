@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 import axios from 'axios';
-import token from '../../../api/token';
+import { getToken } from '../../../components/Authentication/authService';
+
 
 const ChartMonth = () => {
+    const token = getToken();
   const [chartData, setChartData] = useState(new Array(12).fill(0)); // Mảng 12 tháng, khởi tạo giá trị 0
 
   useEffect(() => {

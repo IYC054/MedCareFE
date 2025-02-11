@@ -1,10 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { getToken } from '../../components/Authentication/authService';
 
 function News() {
     const [news, setnews] = useState([])
-
+  const token = getToken();
     useEffect(() => {
         const fetchnews = async () => {
 

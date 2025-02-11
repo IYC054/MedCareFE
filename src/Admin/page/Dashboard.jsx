@@ -9,6 +9,7 @@ import ChartMess from './chart/ChartMess';
 import ChartMessSent from './chart/ChartMessSent';
 import ChartMessInbox from './chart/ChartMessInbox';
 import axios from 'axios';
+import { getToken } from '../../components/Authentication/authService';
 
 
 function Dashboard() {
@@ -16,7 +17,7 @@ function Dashboard() {
     const [activeTab2, setActiveTab2] = useState('tab2');
     const [activeChart, setActiveChart] = useState('this week');
     const [activeChart2, setActiveChart2] = useState('tab2');
-
+    const token = getToken();
     const handleTabClick = (tab) => {
         setActiveTab(tab);
         setActiveChart(tab);
