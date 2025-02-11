@@ -12,7 +12,6 @@ import AccountDoctor from "./Admin/page/AccountDoctor";
 import Appointment from "./Admin/page/Appointment";
 
 import Hopsital from './components/Hospital'
-import CreateApp from './Admin/page/createPage/CreateApp'
 import Booking from './components/Hospital/Booking'
 import AppProvider from './components/Context/AppProvider'
 import AddProfile from './components/PatientProfile/AddProfile'
@@ -43,7 +42,7 @@ import News from "./Admin/page/News";
 import CreateNews from "./Admin/page/createPage/CreateNews";
 import NewDetail from "./Admin/page/subPage/NewDetail";
 import NewDetails from "./page/NewDetails";
-import Chat from "./Admin/page/Chat";
+// import Chat from "./Admin/page/Chat";
 import FeedbackDetail from "./Admin/page/subPage/FeedbackDetail";
 import FeedbackReponse from "./Admin/page/subPage/FeedbackReponse";
 
@@ -79,10 +78,10 @@ const router = createBrowserRouter([
         path: "/admin",
         element: <Dashboard />,
       },
-      {
-        path: "/admin/chat",
-        element: <Chat/>,
-      },
+      // {
+      //   path: "/admin/chat",
+      //   element: <Chat/>,
+      // },
       {
         path: "/admin/user",
         element: <AccountUser />,
@@ -119,10 +118,7 @@ const router = createBrowserRouter([
         path: "/admin/appointment/detail",
         element: <AppointmentDetail />,
       },
-      {
-        path: "/admin/appointment/createApp",
-        element: <CreateApp />,
-      },
+
       {
         path: "/admin/feedback",
         element: <Feedback />,
