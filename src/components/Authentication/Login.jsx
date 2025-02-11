@@ -36,11 +36,8 @@ const Login = ({ email, close }) => {
     loginToken(email, password); // Call your login function
 
     // Call your close function
-    enqueueSnackbar("Đăng nhập thành công", {
-      variant: "success",
-      autoHideDuration: 3000,
-    });
-    window.location.reload();
+    alert("Login successfully");
+    // window.location.reload();
   };
 
   // const token = getToken();
