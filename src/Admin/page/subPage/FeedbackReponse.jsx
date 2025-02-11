@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import token from "../../../api/token";
+
 import { useParams } from "react-router-dom";
+import { getToken } from "../../../components/Authentication/authService";
 
 const FeedbackList = () => {
     const { id } = useParams();  // Get the `id` from the URL params
     const [feedbackList, setFeedbackList] = useState([]);
-
+   const token = getToken();
     useEffect(() => {
         const fetchFeedbacks = async () => {
             try {

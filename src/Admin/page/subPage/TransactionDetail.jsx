@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import token from '../../../api/token';
+
+import { getToken } from '../../../components/Authentication/authService';
 
 function TransactionDetail() {
     const { id } = useParams();
@@ -9,7 +10,7 @@ function TransactionDetail() {
     const [appointment, setAppointment] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
-
+   const token = getToken();
     useEffect(() => {
         const fetchData = async () => {
             try {

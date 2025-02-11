@@ -1,7 +1,9 @@
 import React from 'react';
 import Chart from 'react-apexcharts';
+import { getToken } from '../../../components/Authentication/authService';
 
 function ChartMessSent(props) {
+      const token = getToken();
     const data = {
         series: [
             {

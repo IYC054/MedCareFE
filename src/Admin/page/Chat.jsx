@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import io from "socket.io-client";
-import token from "../../api/token";
+
+import { getToken } from "../../components/Authentication/authService";
 
 const socket = io("http://localhost:8080"); // Thay thế URL backend
 
 function Chat() {
+     const token = getToken();
     const [selectedFriend, setSelectedFriend] = useState(null);
     const [newMessage, setNewMessage] = useState("");
     const [messages, setMessages] = useState({});

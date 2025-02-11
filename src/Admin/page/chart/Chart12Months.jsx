@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 import axios from 'axios';
-import token from '../../../api/token';
+import { getToken } from '../../../components/Authentication/authService';
+
 
 const Chart12Months = () => {
     const [monthlyData, setMonthlyData] = useState(new Array(12).fill(0)); // Mảng chứa tổng doanh thu của 12 tháng
-
+  const token = getToken();
     useEffect(() => {
         const fetchMonthlyData = async () => {
             try {

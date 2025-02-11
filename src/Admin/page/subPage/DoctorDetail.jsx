@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import token from '../../../api/token';
+import { getToken } from '../../../components/Authentication/authService';
 
 function DoctorDetail() {
     const { id } = useParams(); // Lấy ID bác sĩ từ URL
@@ -9,7 +9,7 @@ function DoctorDetail() {
     const [patientFile, setPatientFile] = useState([]);
 
     const [loading, setLoading] = useState(true);
-
+   const token = getToken();
     useEffect(() => {
         const fetchDoctorData = async () => {
             try {

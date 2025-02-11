@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 import axios from 'axios';
-import token from '../../../api/token';
+import { getToken } from '../../../components/Authentication/authService';
+
 
 const Chart1Week = () => {
   const [weeklyData, setWeeklyData] = useState(new Array(7).fill(0)); // Mảng dữ liệu cho 7 ngày
-
+  const token = getToken();
   useEffect(() => {
     const fetchWeeklyData = async () => {
       try {

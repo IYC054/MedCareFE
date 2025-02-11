@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import token from '../../../api/token';
+
+import { getToken } from '../../../components/Authentication/authService';
 
 function UserDetail() {
     const { id } = useParams();
@@ -10,7 +11,9 @@ function UserDetail() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
     const [payments, setPayments] = useState([]);
+    
     useEffect(() => {
+         const token = getToken();
         const fetchPatientData = async () => {
             try {
                 // Fetch patient data
