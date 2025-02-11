@@ -15,11 +15,11 @@ function CheckEmail({ close }) {
   const [success, setSuccess] = useState("");
 
   //lấy token
-  useEffect(() => {
-    loginToken("admin@gmail.com", "admin");
-  }, []);
+  // useEffect(() => {
+  //   loginToken("admin@gmail.com", "admin");
+  // }, []);
 
-  const token = getToken();
+  // const token = getToken();
 
   const validateEmail = (value) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -48,7 +48,7 @@ function CheckEmail({ close }) {
         {
           method: "GET",
           headers: {
-            "Authorization": `Bearer ${token}`,
+            // "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }

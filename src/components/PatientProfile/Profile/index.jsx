@@ -16,26 +16,34 @@ import { FaCalendarDays, FaLocationDot, FaUserDoctor } from "react-icons/fa6";
 import { MdGroups } from "react-icons/md";
 
 import "./PatientProfile.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Tabprofile from "./Tabprofile";
 import TabAppointment from "./TabAppointment";
 import TabCheckBHYT from "./TabCheckBHYT";
 import TabDoctorappointment from "./TabDoctorappointment";
 import TabDoctorwithpatient from "./TabDoctorwithpatient";
 import { AppContext } from "../../Context/AppProvider";
+import { enqueueSnackbar } from "notistack";
+
 function PatientProfile() {
   const [selectTabProfile, setSelectTabProfile] = useState(true);
   const [selectTabAppointment, setSelectTabAppointment] = useState(false);
+  const navigator = useNavigate();
   const [selectTabDoctorAppointment, setSelectTabDoctorAppointment] =
     useState(false);
   const [selectTabDoctorWithPatient, setSelectTabDoctorWithPatient] =
     useState(false);
   // const [selectTabBHYT, setSelectTabBHYT] = useState(false);
-  const { userId, userRole } = useContext(AppContext);
-    const { User } = useContext(AppContext);
-    useEffect(() => {
-      console.log("USER ROLE: " + JSON.stringify(User.role[0].name));
-    })
+  const { User } = useContext(AppContext);
+  useEffect(() => {
+    if (User == null || User == []) {
+      enqueueSnackbar("Bạn chưa đăng nhập", {
+        variant: "warning",
+        autoHideDuration: 3000,
+      });
+      navigator("/");
+    }
+  }, [User]);
   const handleTab = (value) => {
     if (value == "hosobenhnhan") {
       setSelectTabProfile(true);
@@ -72,20 +80,26 @@ function PatientProfile() {
               <div className="w-full  my-4  flex justify-center">
                 <div className="w-56 h-full  rounded-full">
                   <img
-                    src={User.role[0].name == "PATIENTS" ? AvatarPatient : AvatarDoctor}
+                    src={
+                      User?.role?.[0]?.name == "PATIENTS"
+                        ? AvatarPatient
+                        : AvatarDoctor
+                    }
                     alt="avatar"
                     className="w-full h-full object-cover rounded-full"
                   />
                 </div>
               </div>
               <div className="w-full text-center mt-2 mb-6 text-[20px] font-medium text-[#003553]">
-                <p>{User.name}</p>
-                <p className="text-[#c2c2c2] text-[16px] my-2">{User.role[0].name == "PATIENTS" ? "Bệnh nhân" : "Bác sĩ"}</p>
+                <p>{User?.name}</p>
+                <p className="text-[#c2c2c2] text-[16px] my-2">
+                  {User?.role?.[0]?.name == "PATIENTS" ? "Bệnh nhân" : "Bác sĩ"}
+                </p>
               </div>
             </div>
             <div className="w-full  mb-5">
               <ul className="list-none text-center py-2 my-2">
-                {User.role[0].name == "PATIENTS" ? (
+                {User?.role?.[0]?.name == "PATIENTS" ? (
                   <Fragment>
                     <li
                       onClick={() => handleTab("hosobenhnhan")}
@@ -110,7 +124,7 @@ function PatientProfile() {
                   ""
                 )}
 
-                {User.role[0].name == "DOCTOR" ? (
+                {User?.role?.[0]?.name == "DOCTOR" ? (
                   <Fragment>
                     <li
                       onClick={() => handleTab("quanlydatlich")}
@@ -142,22 +156,22 @@ function PatientProfile() {
             </div>
           </div>
           <div className="col-span-3">
-            {selectTabProfile && User.role[0].name == "PATIENTS" ? (
+            {selectTabProfile && User?.role?.[0]?.name == "PATIENTS" ? (
               <Tabprofile />
             ) : (
               <Fragment />
             )}
-            {selectTabAppointment && User.role[0].name == "PATIENTS" ? (
+            {selectTabAppointment && User?.role?.[0]?.name == "PATIENTS" ? (
               <TabAppointment />
             ) : (
               <Fragment />
             )}
-            {selectTabDoctorAppointment && User.role[0].name == "DOCTOR" ? (
+            {selectTabDoctorAppointment && User?.role?.[0]?.name == "DOCTOR" ? (
               <TabDoctorappointment />
             ) : (
               <Fragment />
             )}
-            {selectTabDoctorWithPatient && User.role[0].name == "PATIENTS" ? (
+            {selectTabDoctorWithPatient && User?.role?.[0]?.name == "PATIENTS" ? (
               <TabDoctorwithpatient />
             ) : (
               <Fragment />

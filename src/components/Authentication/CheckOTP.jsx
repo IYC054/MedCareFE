@@ -6,7 +6,7 @@ import ChangePass from "./ChangPass";
 
 function CheckOTP({ email, forgotPass}) {
 
-    const token = getToken();
+    // const token = getToken();
 
     const [nextPassword, setNextPassword] = useState(false);
     const [second, setSecond] = useState(60);
@@ -48,7 +48,7 @@ function CheckOTP({ email, forgotPass}) {
                 {
                   method: "POST",
                   headers: {
-                    "Authorization":`Bearer ${token}`, // Gửi token vào header
+                    // "Authorization":`Bearer ${token}`, // Gửi token vào header
                     "Content-Type": "application/json",
                   }
                 }
@@ -93,7 +93,7 @@ function CheckOTP({ email, forgotPass}) {
                   {
                     method: "POST",
                     headers: {
-                      "Authorization":`Bearer ${token}`, // Gửi token vào header
+                    //   "Authorization":`Bearer ${token}`, // Gửi token vào header
                       "Content-Type": "application/json",
                     },
                   }
@@ -131,7 +131,7 @@ function CheckOTP({ email, forgotPass}) {
                 {
                     method: "POST",
                     headers: {
-                        "Authorization": `Bearer ${token}`, // Gửi token vào header
+                        // "Authorization": `Bearer ${token}`, // Gửi token vào header
                         "Content-Type": "application/json",
                     },
                 }
@@ -175,7 +175,7 @@ function CheckOTP({ email, forgotPass}) {
     
 
     if (loading) {
-        return <div className="flex-1 p-8 items-center justify-center flex flex-col">
+        return <div className="flex-1 p-8 items-center justify-center flex flex-col mt-40">
             <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
         </div>;
     }

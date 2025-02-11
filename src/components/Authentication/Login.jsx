@@ -28,12 +28,16 @@ const Login = ({email, close}) => {
       return;
     }
 
-    logout(); // Optional: Clear previous login data
+    logout(); 
     loginToken(email, password); // Call your login function
-    close(); // Call your close function
+
+     // Call your close function
+    alert("Login successfully");
+    window.location.reload();
+
   };
 
-  const token = getToken();
+  // const token = getToken();
   const handleForgotPass = async () => {
     setForgotPass(true);
     setLoading(!setLoading);
@@ -44,7 +48,7 @@ const Login = ({email, close}) => {
           {
             method: "POST",
             headers: {
-              "Authorization":`Bearer ${token}`, // Gửi token vào header
+              // "Authorization":`Bearer ${token}`, // Gửi token vào header
               "Content-Type": "application/json",
             },
           }
@@ -78,10 +82,10 @@ const Login = ({email, close}) => {
       }
   }
   if (loading) {
-    return <div className="flex-1 p-8 items-center justify-center flex flex-col">
-      <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    return <div className="flex-1 p-8 items-center justify-center flex flex-col mt-40">
+        <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
     </div>;
-  }
+}
     return (
       <div className="flex-1">
             {!next && (

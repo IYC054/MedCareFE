@@ -292,11 +292,11 @@ const Home = () => {
     },
   ];
 
-  const { setisShow, setContent} = useContext(AppContext);
-  useEffect(() => {
-    setisShow(true);
-    setContent(<Advertisement/>);
-  }, [setContent,setContent]);
+  // const { setisShow, setContent} = useContext(AppContext);
+  // useEffect(() => {
+  //   setisShow(true);
+  //   setContent(<Advertisement/>);
+  // }, [setContent,setContent]);
 
   const [placeholderText, setPlaceholderText] = useState("");
   const fullPlaceholders = [
