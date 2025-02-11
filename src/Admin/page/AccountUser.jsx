@@ -9,15 +9,22 @@ function AccountUser() {
     useEffect(() => {
         const fetchUserAccounts = async () => {
 
-            const response = await axios.get('http://localhost:8080/api/account');
-            const filteredUsers = response.data.result.filter(u => u.role === 1);
+            const response = await axios.get('http://localhost:8080/api/account', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            const filteredUsers = response.data.result.filter(account =>
+                account.role.some(r => r.name === "PATIENTS")
+            );
             setUser(filteredUsers);
 
         };
         fetchUserAccounts();
     }, []);
     const navigate = useNavigate();
- 
+    console.log(user.role);
     const handleDetailClick = (id) => {
         navigate(`/admin/user/userDetail/${id}`);
     };

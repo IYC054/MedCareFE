@@ -14,13 +14,16 @@ function UserDetail() {
         const fetchPatientData = async () => {
             try {
                 // Fetch patient data
-                const response = await axios.get(`http://localhost:8080/api/account/${id}`);
+                const response = await axios.get(`http://localhost:8080/api/account/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
                 const patientData = response.data;
-                console.log(patientData);
-                if (patientData && patientData.id === parseInt(id)) {
+                console.log("123",patientData);
+                if ( patientData.account.id === parseInt(id)) {
                     setPatient(patientData);
 
-                    // Fetch all appointments
                     const responseApp = await axios.get(`http://localhost:8080/api/appointment`);   
                 
                     const filteredAppointments = responseApp.data.filter(
@@ -28,7 +31,7 @@ function UserDetail() {
                     );
                
                     setAppointments(filteredAppointments);
-
+                    console.log("123",patientData);
                     // Extract IDs of filtered appointments
                     const appointmentIds = filteredAppointments.map((appointment) => appointment.id);
 
@@ -62,7 +65,7 @@ function UserDetail() {
         <div className="bg-gray-100 min-h-screen p-6" id="goup">
             <div className="container mx-auto bg-white rounded-lg shadow-lg p-6">
                 <h1 className="text-2xl font-bold mb-6 text-[#da624a]">Thông tin bệnh nhân
-</h1>
+                </h1>
                 <div className="mb-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="flex">

@@ -11,10 +11,16 @@ function AccountDoctor(props) {
     useEffect(() => {
         const fetchdoctorAccounts = async () => {
 
-            const response = await axios.get('http://localhost:8080/api/account');
-            const filtereddoctors = response.data.result.filter(u => u.role === 2);
+            const response = await axios.get('http://localhost:8080/api/account', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            const filtereddoctors = response.data.result.filter(account =>
+                account.role.some(r => r.name === "DOCTOR")
+            );
             setdoctor(filtereddoctors);
-           
+
         };
         fetchdoctorAccounts();
     }, []);
@@ -25,7 +31,7 @@ function AccountDoctor(props) {
         const fetchSpecialties = async () => {
             try {
                 const response = await axios.get('http://localhost:8080/api/specialty');
-                setSpecialties(response.data); 
+                setSpecialties(response.data);
             } catch (error) {
                 console.error("Error fetching specialties:", error);
             }
@@ -33,7 +39,7 @@ function AccountDoctor(props) {
 
         fetchSpecialties();
     }, []); // Fetch data once when the component mounts
-
+    console.log(specialties);
     // Handle specialty selection
     const handleSpecialtyChange = (e) => {
         setSelectedSpecialty(e.target.value);
@@ -68,7 +74,7 @@ function AccountDoctor(props) {
                 <div className='place-content-center'>
                     <Link to="/admin/doctor/CreateDoctor" className="w-full flex items-center justify-center px-4 py-2 text-base font-medium text-white bg-[#da624a] border-primary rounded-md hover:bg-[#b2503c] transition"
                     >
-                    Tạo tài khoản mới
+                        Tạo tài khoản mới
                     </Link>
                 </div>
                 <div className='flex'>
@@ -78,10 +84,10 @@ function AccountDoctor(props) {
                             value={selectedSpecialty}
                             onChange={handleSpecialtyChange}
                         >
-                            <option value="">Chọn một bộ phận</option> 
+                            <option value="">Chọn một bộ phận</option>
                             {specialties.map((specialty) => (
                                 <option key={specialty.id} value={specialty.id}>
-                                    {specialty.name} 
+                                    {specialty.name}
                                 </option>
                             ))}
                         </select>

@@ -30,11 +30,17 @@ const Login = ({email, close}) => {
 
     logout(); 
     loginToken(email, password); // Call your login function
+<<<<<<< HEAD
     close(); // Call your close function
     // window.location.reload();
+=======
+     // Call your close function
+    alert("Login successfully");
+    window.location.reload();
+>>>>>>> 2988ca1648454e1558e0788143e263bcd2f0c7c6
   };
 
-  const token = getToken();
+  // const token = getToken();
   const handleForgotPass = async () => {
     setForgotPass(true);
     setLoading(!setLoading);
@@ -45,7 +51,7 @@ const Login = ({email, close}) => {
           {
             method: "POST",
             headers: {
-              "Authorization":`Bearer ${token}`, // Gửi token vào header
+              // "Authorization":`Bearer ${token}`, // Gửi token vào header
               "Content-Type": "application/json",
             },
           }
@@ -79,10 +85,10 @@ const Login = ({email, close}) => {
       }
   }
   if (loading) {
-    return <div className="flex-1 p-8 items-center justify-center flex flex-col">
-      <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    return <div className="flex-1 p-8 items-center justify-center flex flex-col mt-40">
+        <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
     </div>;
-  }
+}
     return (
       <div className="flex-1">
             {!next && (

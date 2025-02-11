@@ -16,15 +16,11 @@ function DoctorDetail() {
                 // Lấy danh sách bác sĩ
                 const response = await axios.get('http://localhost:8080/api/doctors');
                 const doctorData = response.data.find(doc => doc.account.id === parseInt(id));
-
                 if (doctorData) {
                     setDoctor(doctorData);
-
-
-                    // Lấy danh sách bệnh nhân
                     const patientfileResponse = await axios.get('http://localhost:8080/api/patientsfile');
                     const patientsForDoctor = patientfileResponse.data.filter(
-                        pa => pa.patients.doctor.account.id === parseInt(id)
+                        pa => pa.doctor_id === parseInt(id)
                     );
                     setPatientFile(patientsForDoctor);
                 } else {
@@ -39,8 +35,8 @@ function DoctorDetail() {
 
         fetchDoctorData();
     }, [id]);
-    console.log(doctor)
-
+    console.log(doctor);
+    console.log("patientFile",patientFile);
     if (loading) {
         return <div className="text-center text-gray-600 mt-10">Loading data...</div>;
     }

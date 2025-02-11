@@ -31,43 +31,55 @@ const RootLayoutAdmin = () => {
   let description = '';
 
   if (location.pathname === '/admin/user') {
-    title = 'Patient Account';
-    description = 'Manage and view details of patient accounts, including history and current status.';
+    title = 'Tài khoản bệnh nhân';
+    description = 'Quản lý và xem chi tiết tài khoản bệnh nhân, bao gồm lịch sử và trạng thái hiện tại.';
   } else if (location.pathname === '/admin/doctor') {
-    title = 'Doctor Account';
-    description = 'Manage doctor accounts and track their appointments and performance.';
+    title = 'Tài khoản bác sĩ';
+    description = 'Quản lý tài khoản bác sĩ và theo dõi lịch hẹn cũng như hiệu suất làm việc.';
   } else if (location.pathname === '/admin/appointment') {
-    title = 'Appointment';
-    description = 'Manage patient appointments, scheduling, and availability of doctors.';
+    title = 'Lịch hẹn';
+    description = 'Quản lý lịch hẹn của bệnh nhân, sắp xếp thời gian và tình trạng sẵn có của bác sĩ.';
   } else if (location.pathname === '/admin/feedback') {
-    title = 'Feedback';
-    description = 'View and manage feedback from patients and clients to improve services.';
+    title = 'Phản hồi';
+    description = 'Xem và quản lý phản hồi từ bệnh nhân và khách hàng để cải thiện dịch vụ.';
   } else if (location.pathname === '/admin') {
-    title = 'Dashboard';
-    description = 'This is an example dashboard created using built-in elements and components.';
+    title = 'Bảng điều khiển';
+    description = 'Đây là bảng điều khiển với các thành phần và tính năng quản trị.';
   } else if (location.pathname === '/admin/transaction') {
-    title = 'Transactions';
-    description = 'View and manage all transactions from patients';
+    title = 'Giao dịch';
+    description = 'Xem và quản lý tất cả giao dịch từ bệnh nhân.';
   } else if (location.pathname === '/admin/appointment/createApp') {
-    title = 'Create Room';
-    description = '';
+    title = 'Tạo phòng';
+    description = 'Thiết lập và tạo phòng cho các cuộc hẹn trực tuyến.';
+  } else if (location.pathname === '/admin/chat') {
+    title = 'Phản hồi tin nhắn';
+    description = 'Quản lý và phản hồi tin nhắn từ bệnh nhân và bác sĩ.';
   } else if (location.pathname === '/admin/user/userDetail/:id') {
-    title = 'Detail Patient';
-    description = '';
+    title = 'Chi tiết bệnh nhân';
+    description = 'Xem thông tin chi tiết về bệnh nhân và lịch sử điều trị.';
   } else if (location.pathname === '/admin/doctor/doctorDetail/:id') {
-    title = 'Detail Doctor';
-    description = '';
+    title = 'Chi tiết bác sĩ';
+    description = 'Xem thông tin chi tiết của bác sĩ, bao gồm lịch làm việc và đánh giá.';
   } else if (location.pathname === '/admin/transaction/Detail/:id') {
-    title = '  Transaction report details';
-    description = '';
+    title = 'Chi tiết giao dịch';
+    description = 'Xem chi tiết báo cáo giao dịch và lịch sử thanh toán.';
+  } else if (location.pathname === '/admin/profileadmin') {
+    title = 'Hồ sơ quản trị viên';
+    description = 'Cập nhật thông tin cá nhân và cài đặt tài khoản quản trị viên.';
+  } else if (location.pathname === '/admin/specialty') {
+    title = 'Chuyên khoa';
+    description = 'Quản lý danh sách các chuyên khoa y tế trong hệ thống.';
   }
-  else if (location.pathname === '/admin/profileadmin') {
-    title = 'Profile Admin';
-    description = '';
-  } else {
+  else if (location.pathname === '/admin/news') {
+    title = 'Tin tức';
+    description = 'Quản lý và cập nhật tin tức liên quan đến y tế và bệnh viện.';
+  }
+  else {
     title = '';
     description = '';
   }
+
+
   return (
     <div className={`root-layout-admin  ${!isOpen && !isClosed ? 'sidebar-closed' : 'sidebar-open'}`}>
       <Sidebar
