@@ -30,14 +30,11 @@ const Login = ({email, close}) => {
 
     logout(); 
     loginToken(email, password); // Call your login function
-<<<<<<< HEAD
-    close(); // Call your close function
-    // window.location.reload();
-=======
+
      // Call your close function
     alert("Login successfully");
     window.location.reload();
->>>>>>> 2988ca1648454e1558e0788143e263bcd2f0c7c6
+
   };
 
   // const token = getToken();
