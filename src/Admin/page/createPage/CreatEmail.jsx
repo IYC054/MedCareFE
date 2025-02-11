@@ -6,6 +6,7 @@ import { getToken } from "../../../components/Authentication/authService";
 
 
 function CreatEmail() {
+  const token = getToken();
   const [recipientType, setRecipientType] = useState(""); // doctor or patient
   const [selectedRecipient, setSelectedRecipient] = useState(null);
   const [doctors, setDoctors] = useState([]);
@@ -63,11 +64,11 @@ function CreatEmail() {
 
     axios
       .post(
-        `http://localhost:8080/api/feedbacks/${10}`,
+        `http://localhost:8080/api/feedbacks/${selectedRecipient.id}`,
         {
           message,
           recipient: {
-            id: selectedRecipient.id,
+            id: 10,
           },
         },
         {

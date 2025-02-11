@@ -86,7 +86,7 @@ function CheckEmail({ close }) {
           {
             method: "POST",
             headers: {
-              "Authorization":`Bearer ${token}`, // Gửi token vào header
+              // "Authorization":`Bearer ${token}`, // Gửi token vào header
               "Content-Type": "application/json",
             },
           }
