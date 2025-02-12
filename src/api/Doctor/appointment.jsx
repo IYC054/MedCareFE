@@ -10,10 +10,11 @@ const CreateAppointment = async (
   specialty
 ) => {
   try {
+    const speciltyname = await axios.get(`http://localhost:8080/api/specialty/${specialty}`)
     const response = await axios.post("http://localhost:8080/api/appointment", {
       patientId: patientId,
       doctorId: doctorId,
-      type: "Khám " + specialty,
+      type: "Khám " + speciltyname.data.name,
       status: "Pending",
       amount: 150000.0,
       worktimeId: worktimeId,

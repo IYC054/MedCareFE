@@ -29,18 +29,12 @@ function TabDoctorwithpatient() {
   const openModal = (urlImage) => {
     setSelectedImage(urlImage);
   };
-  const handleClick = () => {
-    enqueueSnackbar("This is a success message!", {
-      variant: "success",
-      autoHideDuration: 3000,
-    });
-  };
   const closeModal = () => {
     setSelectedImage(null);
   };
   const fetchPatient = async (id) => {
     try {
-      const data = await getpatientbydoctorid(1);
+      const data = await getpatientbydoctorid(id);
       if (data && data.length > 0) {
         const enrichedPatient = await Promise.all(
           data.map(async (patient) => {

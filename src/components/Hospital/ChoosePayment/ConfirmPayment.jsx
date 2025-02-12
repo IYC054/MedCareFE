@@ -48,12 +48,13 @@ function ConfirmPayment(props) {
       try {
         const result = await gethistoryMbbank();
         const respone_patient = await getpatientbyaccountid(User?.id);
-        // console.log("ID" + respone_patient[0].account.id);
+      
+        // console.log("ID" + respone_patient[0].id);
         // lay status exists
         var isStatus = result.result;
         if (isStatus == true) {
           const appointment = await CreateAppointment(
-            respone_patient[0].account.id,
+            respone_patient[0].id,
             doctorid,
             workid,
             profileid,
@@ -68,7 +69,9 @@ function ConfirmPayment(props) {
             autoHideDuration: 3000,
           });
           await gethistoryMbbank(appointment.id);
-          navigate("/profile");
+          setInterval(() => {
+            navigate("/profile");
+          }, 2000);
           // setShowPopup(true);
         }
       } catch (err) {

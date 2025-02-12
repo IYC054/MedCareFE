@@ -22,8 +22,8 @@ function TabDoctorappointment() {
   const statusoption = ["Confirmed", "Cancelled", "Pending", "Success"];
   const fetchAppointments = async () => {
     try {
-      if (User[0]?.role.name == "Doctors") {
-        const data = await getAppointmentByDoctorId(User?.id);
+      // if (User[0]?.role.name == "DOCTOR") {
+        const data = await getAppointmentByDoctorId(7);
         if (data && data.length > 0) {
           const enrichedAppointments = await Promise.all(
             data.map(async (appointment) => {
@@ -36,7 +36,7 @@ function TabDoctorappointment() {
           );
           setAppointments(enrichedAppointments);
         }
-      }
+      // }
     } catch (error) {
       console.error("Error fetching appointments:", error);
     }

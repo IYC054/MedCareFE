@@ -1,10 +1,12 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Success from "../../Loading/success";
 import { CreateAppointment } from "../../../api/Doctor/appointment";
 import token from "../../../api/token";
 import { gethistoryPayment } from "../../../api/Bank/payment";
+import { getpatientbyaccountid } from "../../../api/Doctor/patient";
+import { AppContext } from "../../Context/AppProvider";
 
 function PaymentSuccess() {
   const location = useLocation();
@@ -19,6 +21,9 @@ function PaymentSuccess() {
   const workid = queryParams.get("work");
   const specialtyid = queryParams.get("specialty");
   const profileid = queryParams.get("profile");
+
+  const { User } = useContext(AppContext);
+  console.log("User" + User);
   useEffect(() => {
     const confirmpayment = async () => {
       if (!amount || !orderInfo || !resultCode) {
@@ -44,8 +49,10 @@ function PaymentSuccess() {
           navigator("/profile");
           return;
         }
+        const respone_patient = await getpatientbyaccountid(User?.id);
+        console.log(User);
         const createAppointment = await CreateAppointment(
-          1,
+          respone_patient[0].id,
           doctorid,
           workid,
           profileid,

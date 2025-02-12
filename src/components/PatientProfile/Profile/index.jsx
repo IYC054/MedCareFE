@@ -99,7 +99,7 @@ function PatientProfile() {
             </div>
             <div className="w-full  mb-5">
               <ul className="list-none text-center py-2 my-2">
-                {User?.role?.[0]?.name == "PATIENTS" ? (
+                {User?.role?.[0]?.name == "PATIENTS" || User?.role?.[0]?.name == "DOCTOR" ? (
                   <Fragment>
                     <li
                       onClick={() => handleTab("hosobenhnhan")}
@@ -171,7 +171,7 @@ function PatientProfile() {
             ) : (
               <Fragment />
             )}
-            {selectTabDoctorWithPatient && User?.role?.[0]?.name == "PATIENTS" ? (
+            {selectTabDoctorWithPatient && User?.role?.[0]?.name == "DOCTOR" ? (
               <TabDoctorwithpatient />
             ) : (
               <Fragment />
