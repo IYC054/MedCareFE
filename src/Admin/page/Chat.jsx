@@ -4,10 +4,14 @@ import io from "socket.io-client";
 
 import { getToken } from "../../components/Authentication/authService";
 
-const socket = io("http://localhost:8080"); // Thay thế URL backend
+const socket = io("http://localhost:8080", {
+    extraHeaders: {
+        Authorization: `Bearer ${getToken()}`
+    }
+});
 
 function Chat() {
-     const token = getToken();
+    const token = getToken();
     const [selectedFriend, setSelectedFriend] = useState(null);
     const [newMessage, setNewMessage] = useState("");
     const [messages, setMessages] = useState({});
@@ -110,42 +114,45 @@ function Chat() {
     };
 
     return (
-        <div className="flex h-[85vh] bg-gray-100">
+        <div className="flex h-[85vh] bg-gray-100  ">
             {/* Sidebar */}
-            <div className="w-1/4 bg-white p-4 border-r">
-                <h2 className="text-gray-600 font-semibold mb-3">BẠN BÈ TRỰC TUYẾN</h2>
-                {friendsList.length > 0 ? (
-                    friendsList.map((friend) => (
-                        <div
-                            key={friend.id}
-                            className={`flex items-center p-3 rounded-md cursor-pointer transition 
+            <div className="w-1/4 bg-white p-4 border-r overflow-auto">
+                <h2 className="text-gray-600 font-semibold mb-3  ">BẠN BÈ TRỰC TUYẾN</h2>
+                <div className="">
+                    {friendsList.length > 0 ? (
+                        friendsList.map((friend) => (
+                            <div
+                                key={friend.id}
+                                className={`flex items-center p-3 rounded-md cursor-pointer transition  
                 ${selectedFriend?.id === friend.id ? "bg-red-400 text-white" : "hover:bg-gray-100"}`}
-                            onClick={() => handleSelectFriend(friend)}
-                        >
-                            <div className="relative">
-                                <img
-                                    src={friend.avatar || "https://via.placeholder.com/40"}
-                                    alt={friend.name}
-                                    className="w-10 h-10 rounded-full border"
-                                />
-                                <span className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${friend.online ? "bg-green-500" : "bg-gray-400"}`}></span>
+                                onClick={() => handleSelectFriend(friend)}
+                            >
+                                <div className="relative">
+                                    <img
+                                        src={friend.avatar || "https://via.placeholder.com/40"}
+                                        alt={friend.name}
+                                        className="w-10 h-10 rounded-full border"
+                                    />
+                                    <span className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${friend.online ? "bg-green-500" : "bg-gray-400"}`}></span>
+                                </div>
+                                <div className="ml-3">
+                                    <p className="font-semibold">{friend.name}</p>
+                                    <p className="text-sm text-gray-500">{friend.message || "..."}</p>
+                                </div>
                             </div>
-                            <div className="ml-3">
-                                <p className="font-semibold">{friend.name}</p>
-                                <p className="text-sm text-gray-500">{friend.message || "..."}</p>
-                            </div>
-                        </div>
-                    ))
-                ) : (
-                    <p className="text-gray-500">Đang tải danh sách...</p>
-                )}
+                        ))
+                    ) : (
+                        <p className="text-gray-500">Đang tải danh sách...</p>
+                    )}
+                </div>
+
             </div>
 
             {/* Chat Window */}
             <div className="flex-1 flex flex-col">
                 {selectedFriend ? (
                     <>
-                        <div className="p-4 bg-white border-b flex justify-between items-center">
+                        <div className="p-4 bg-white border-b flex justify-between items-center ">
                             <h2 className="text-lg font-semibold">{selectedFriend.name}</h2>
                             <div className={`w-3 h-3 rounded-full ${selectedFriend.online ? "bg-green-500" : "bg-gray-400"}`} />
                         </div>

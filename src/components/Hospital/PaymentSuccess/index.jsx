@@ -3,7 +3,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Success from "../../Loading/success";
 import { CreateAppointment } from "../../../api/Doctor/appointment";
-import token from "../../../api/token";
 import { gethistoryPayment } from "../../../api/Bank/payment";
 import { getpatientbyaccountid } from "../../../api/Doctor/patient";
 import { AppContext } from "../../Context/AppProvider";

@@ -12,6 +12,7 @@ import AccountDoctor from "./Admin/page/AccountDoctor";
 import Appointment from "./Admin/page/Appointment";
 
 import Hopsital from './components/Hospital'
+
 import Booking from './components/Hospital/Booking'
 import AppProvider from './components/Context/AppProvider'
 import AddProfile from './components/PatientProfile/AddProfile'
@@ -45,6 +46,7 @@ import NewDetails from "./page/NewDetails";
 // import Chat from "./Admin/page/Chat";
 import FeedbackDetail from "./Admin/page/subPage/FeedbackDetail";
 import FeedbackReponse from "./Admin/page/subPage/FeedbackReponse";
+import Chat from "./Admin/page/Chat";
 
 
 
@@ -78,10 +80,10 @@ const router = createBrowserRouter([
         path: "/admin",
         element: <Dashboard />,
       },
-      // {
-      //   path: "/admin/chat",
-      //   element: <Chat/>,
-      // },
+      {
+        path: "/admin/chat",
+        element: <Chat/>,
+      },
       {
         path: "/admin/user",
         element: <AccountUser />,

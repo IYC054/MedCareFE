@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import axios from "axios";
 import { getToken } from "../../../components/Authentication/authService";
-
+import { useNavigate } from "react-router-dom";
 
 function CreatEmail() {
+<<<<<<< HEAD
+  const [recipientType, setRecipientType] = useState("");
+=======
  
   const [recipientType, setRecipientType] = useState(""); // doctor or patient
+>>>>>>> bb2c290bf1c1c3a971ecb5918e57f5efc680ad2a
   const [selectedRecipient, setSelectedRecipient] = useState(null);
   const [doctors, setDoctors] = useState([]);
   const [patients, setPatients] = useState([]);
   const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // Thêm state loading
   const token = getToken();
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        // Fetch accounts from the API
         const response = await axios.get("http://localhost:8080/api/account", {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -24,47 +27,45 @@ function CreatEmail() {
         });
 
         const accounts = response.data.result;
-
-        // Filter doctors and patients based on their role
-        const filteredDoctors = accounts.filter((account) =>
-          account.role.some((r) => r.name === "DOCTOR")
-        );
-        const filteredPatients = accounts.filter((account) =>
-          account.role.some((r) => r.name === "PATIENTS")
-        );
-
-        setDoctors(filteredDoctors); // Set doctors data
-        setPatients(filteredPatients); // Set patients data
+        setDoctors(accounts.filter((account) => account.role.some((r) => r.name === "DOCTOR")));
+        setPatients(accounts.filter((account) => account.role.some((r) => r.name === "PATIENTS")));
       } catch (error) {
         console.error("Error fetching accounts:", error);
       }
     };
 
     fetchUsers();
-  }, []); // Only run once when the component mounts
+  }, []);
 
   const handleRecipientTypeChange = (e) => {
     setRecipientType(e.target.value);
-    setSelectedRecipient(null); // Reset selected recipient when type changes
+    setSelectedRecipient(null);
   };
-
+  const natigave = useNavigate();
   const handleRecipientChange = (e) => {
     const id = parseInt(e.target.value);
     const recipients = recipientType === "doctor" ? doctors : patients;
-    const recipient = recipients.find((r) => r.id === id);
-    setSelectedRecipient(recipient);
+    setSelectedRecipient(recipients.find((r) => r.id === id));
   };
 
-  const handleReplySubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
+  const handleReplySubmit = async (e) => {
+    e.preventDefault();
     if (message.trim() === "") {
       alert("Please enter your message before submitting!");
       return;
     }
 
+<<<<<<< HEAD
+    setIsLoading(true); // Bắt đầu loading
+
+    try {
+      await axios.post(
+        `http://localhost:8080/api/feedbacks/${10}`,
+=======
     axios
       .post(
         `http://localhost:8080/api/feedbacks/${selectedRecipient.id}`,
+>>>>>>> bb2c290bf1c1c3a971ecb5918e57f5efc680ad2a
         {
           message,
           recipient: {
@@ -76,24 +77,22 @@ function CreatEmail() {
             Authorization: `Bearer ${token}`,
           },
         }
-      )
-      .then(() => {
-        alert("Reply sent successfully!");
-        // You can navigate to another page if necessary
-      })
-      .catch((error) => {
-        alert(
-          `Error: ${error.response?.data?.message || "Something went wrong!"}`
-        );
-        console.error("Error sending reply:", error);
-      });
+      );
+      alert("Reply sent successfully!");
+      natigave("/admin/feedback");
+      setMessage("");
+    } catch (error) {
+      alert(`Error: ${error.response?.data?.message || "Something went wrong!"}`);
+      console.error("Error sending reply:", error);
+    } finally {
+      setIsLoading(false); // Kết thúc loading
+    }
   };
 
   return (
     <div className="max-w-screen-md mx-auto p-6 bg-white rounded-lg shadow-lg border border-[#da624a]">
       <h3 className="text-xl font-semibold text-[#da624a] mb-4">Send Email</h3>
       <form onSubmit={handleReplySubmit} className="space-y-4">
-        {/* Recipient Type */}
         <div>
           <label className="block text-sm font-medium text-gray-700">Send To</label>
           <select
@@ -119,21 +118,16 @@ function CreatEmail() {
               className="mt-2 w-full p-2 border border-[#da624a] rounded-md focus:ring-2 focus:ring-[#da624a]"
               required
             >
-              <option value="">
-                Select {recipientType === "doctor" ? "Doctor" : "Patient"}
-              </option>
-              {(recipientType === "doctor" ? doctors : patients).map(
-                (recipient) => (
-                  <option key={recipient.id} value={recipient.id}>
-                    {recipient.name}
-                  </option>
-                )
-              )}
+              <option value="">Select {recipientType === "doctor" ? "Doctor" : "Patient"}</option>
+              {(recipientType === "doctor" ? doctors : patients).map((recipient) => (
+                <option key={recipient.id} value={recipient.id}>
+                  {recipient.name}
+                </option>
+              ))}
             </select>
           </div>
         )}
 
-        {/* Display Selected Recipient */}
         {selectedRecipient && (
           <div className="mt-4 flex items-center">
             <img
@@ -147,22 +141,48 @@ function CreatEmail() {
             </div>
           </div>
         )}
+
         <textarea
-                className="w-full p-2 border rounded-md"
-                rows="4"
-                value={message}
-             
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Enter your reply..."
-            />
-      
-        {/* Submit Button */}
+          className="w-full p-2 border rounded-md"
+          rows="4"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Enter your reply..."
+        />
+
         <div className="flex justify-end">
           <button
             type="submit"
-            className="px-6 py-2 bg-[#da624a] text-white rounded-md hover:bg-[#c85138]"
+            className="px-6 py-2 bg-[#da624a] text-white rounded-md hover:bg-[#c85138] flex items-center justify-center"
+            disabled={isLoading} // Vô hiệu hóa khi đang gửi
           >
-            Send Email
+            {isLoading ? (
+              <>
+                <svg
+                  className="animate-spin h-5 w-5 mr-2 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8z"
+                  ></path>
+                </svg>
+                Sending...
+              </>
+            ) : (
+              "Send Email"
+            )}
           </button>
         </div>
       </form>

@@ -33,13 +33,26 @@ function Dashboard() {
     useEffect(() => {
         const fetch = async () => {
 
-            const responseUser = await axios.get('http://localhost:8080/api/account');
-            const filteredUsers = responseUser.data.result.filter(u => u.role === 1);
+            const responseUser = await axios.get('http://localhost:8080/api/account', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            const filteredUsers = responseUser.data.result.filter(account =>
+                account.role.some(r => r.name === "PATIENTS"));
             setUser(filteredUsers);
-
-            const responseBook = await axios.get('http://localhost:8080/api/appointment');
+            console.log("ueser", user);
+            const responseBook = await axios.get('http://localhost:8080/api/appointment', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
             setBook(responseBook.data);
-            const responseMoney = await axios.get('http://localhost:8080/api/payments');
+            const responseMoney = await axios.get('http://localhost:8080/api/payments', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
             const filteredMoney = responseMoney.data.filter(payment => payment.status === 'Hoàn thành');
             const totalMoney = filteredMoney.reduce((sum, payment) => sum + payment.amount, 0);
             setMoney(totalMoney);
@@ -58,7 +71,11 @@ function Dashboard() {
     useEffect(() => {
         const fetchIncomeData = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/payments');
+                const response = await axios.get('http://localhost:8080/api/payments', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
                 const payments = response.data;
 
                 const currentDate = new Date();
@@ -194,17 +211,17 @@ function Dashboard() {
                                             Người dùng hàng đầu
                                         </h6>
                                         <div className='space-y-2 max-h-40 overflow-y-auto pt-2 '>
-                                            {[...Array(4)].map((_, index) => (
+                                            {user.map((user, index) => (
                                                 <div key={index} className='flex items-center justify-between space-x-3'>
                                                     <div className='flex' >
                                                         <img
                                                             className='rounded-full w-10 h-10 m-2'
-                                                            src="https://demo.dashboardpack.com/kero-html-sidebar-pro/assets/images/avatars/9.jpg"
+                                                            src={user.avatar}
                                                             alt="Avatar"
                                                         />
                                                         <div>
-                                                            <div className="font-semibold">Ella-Rose Henry</div>
-                                                            <div className="text-sm text-gray-500">Web Developer</div>
+                                                            <div className="font-semibold">{user.name}</div>
+                                                            
                                                         </div>
                                                     </div>
                                                     <div className="ml-24 font-semibold">129</div>
