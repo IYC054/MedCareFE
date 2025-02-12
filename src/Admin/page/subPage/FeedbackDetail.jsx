@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import token from "../../../api/token";
+import { getToken } from "../../../components/Authentication/authService";
+
 
 const FeedbackDetail = () => {
     const { id } = useParams();
     const [feedback, setFeedback] = useState(null);
     const [reply, setReply] = useState("");
-
+    const token = getToken();
 
     useEffect(() => {
         const fetchNews = async () => {
@@ -25,11 +26,11 @@ const FeedbackDetail = () => {
         fetchNews();
     }, [id]);
     console.log(feedback);
-     const navigate = useNavigate();
+    const navigate = useNavigate();
     const handleReplySubmit = () => {
         if (reply.trim() === "") {
             alert("Please enter your reply before submitting!");
-            return;  
+            return;
         }
         axios.post(`http://localhost:8080/api/feedbacks/${feedback.recipient.id}`, {
             message: reply,
@@ -76,7 +77,7 @@ const FeedbackDetail = () => {
                 className="w-full p-2 border rounded-md"
                 rows="4"
                 value={reply}
-             
+
                 onChange={(e) => setReply(e.target.value)}
                 placeholder="Enter your reply..."
             />

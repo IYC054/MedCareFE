@@ -10,7 +10,11 @@ const Chart1Week = () => {
   useEffect(() => {
     const fetchWeeklyData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/payments');
+        const response = await axios.get('http://localhost:8080/api/payments', {
+          headers: {
+              Authorization: `Bearer ${token}`
+          }
+      });
         const payments = response.data;
 
         const currentDate = new Date();

@@ -12,7 +12,7 @@ function CreateAccountDoctor() {
         phone: "",
         gender: "",
         birthdate: "",
-        role: 2,
+        role: "DOCTOR",
         avatar: null,
         lastFeedbackTime: "",
     });
@@ -77,7 +77,7 @@ function CreateAccountDoctor() {
         formDataToSend.append("gender", formData.gender);
         formDataToSend.append("birthdate", formData.birthdate);
         formDataToSend.append("role", formData.role);
-        formDataToSend.append("avatar", formData.avatar); // Đính kèm file
+        formDataToSend.append("avatar", formData.avatar); 
         // Gửi tên file
         formDataToSend.append("lastFeedbackTime", null);
         console.log(formData);

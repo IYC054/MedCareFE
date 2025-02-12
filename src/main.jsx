@@ -12,7 +12,7 @@ import AccountDoctor from "./Admin/page/AccountDoctor";
 import Appointment from "./Admin/page/Appointment";
 
 import Hopsital from './components/Hospital'
-import CreateApp from './Admin/page/createPage/CreateApp'
+
 import Booking from './components/Hospital/Booking'
 import AppProvider from './components/Context/AppProvider'
 import AddProfile from './components/PatientProfile/AddProfile'
@@ -118,10 +118,6 @@ const router = createBrowserRouter([
       {
         path: "/admin/appointment/detail",
         element: <AppointmentDetail />,
-      },
-      {
-        path: "/admin/appointment/createApp",
-        element: <CreateApp />,
       },
       {
         path: "/admin/feedback",

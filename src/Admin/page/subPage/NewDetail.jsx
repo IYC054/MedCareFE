@@ -11,7 +11,7 @@ function NewDetail() {
     const [news, setNews] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-   const token = getToken();
+    const token = getToken();
     // Fetch news details
     useEffect(() => {
         const fetchNews = async () => {
@@ -31,13 +31,36 @@ function NewDetail() {
     // Handle update
     const handleUpdate = async (e) => {
         e.preventDefault();
+
+        const formData = new FormData();
+        formData.append("title", news.title);
+        formData.append("description", news.description);
+        formData.append("date", news.date);
+        if (news.image instanceof File) { // Kiểm tra nếu ảnh mới được chọn
+            formData.append("images", news.image);
+        }
+
         try {
-            await axios.put(`http://localhost:8080/api/news/${id}`, news);
-            alert('Cập nhật thành công');
-            navigate('/admin/news'); // Redirect to news list
+            await axios.put(`http://localhost:8080/api/news/${id}`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            alert("Cập nhật thành công");
+            navigate("/admin/news");
         } catch (err) {
             console.error(err);
-            alert('Cập nhật thất bại');
+            alert("Cập nhật thất bại");
+        }
+    };
+    const [previewImage, setPreviewImage] = useState(null);
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setNews({ ...news, image: file });
+            setPreviewImage(URL.createObjectURL(file));
         }
     };
 
@@ -98,16 +121,18 @@ function NewDetail() {
                         id="image"
                         type="file"
                         accept="image/*"
-                        onChange={(e) => setNews({ ...news, image: e.target.files[0] })}
+                        onChange={handleImageChange} 
                         className="mt-1 block w-full p-2 border border-[#da624a] rounded-md"
                     />
-                    {news.images && (
+
+                    {(previewImage || news.images) && (
                         <img
-                            src={news.images}
+                            src={previewImage || news.images}
                             alt="Preview"
                             className="mt-2 w-36 h-36 object-cover rounded-md"
                         />
                     )}
+
                 </div>
 
                 <div className="mt-6 flex space-x-4">
