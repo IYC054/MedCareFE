@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Divider } from "antd";
 import { FaRegPaste } from "react-icons/fa6";
 import bank from "../../../api/Bank/bank";
@@ -15,6 +15,8 @@ import { CreateAppointment } from "../../../api/Doctor/appointment";
 import Invoice from "../../../sendmail/Invoice";
 import SendMail from "../../../api/mail/sendmail";
 import { enqueueSnackbar } from "notistack";
+import { AppContext } from "../../Context/AppProvider";
+import { getpatientbyaccountid } from "../../../api/Doctor/patient";
 function ConfirmPayment(props) {
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
@@ -29,6 +31,8 @@ function ConfirmPayment(props) {
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
   };
+  const { User } = useContext(AppContext);
+
   useEffect(() => {
     if (
       doctorid == null ||
@@ -43,12 +47,13 @@ function ConfirmPayment(props) {
     const getTrans = async () => {
       try {
         const result = await gethistoryMbbank();
-
+        const respone_patient = await getpatientbyaccountid(User?.id);
+        // console.log("ID" + respone_patient[0].account.id);
         // lay status exists
         var isStatus = result.result;
         if (isStatus == true) {
           const appointment = await CreateAppointment(
-            1, //đợi login
+            respone_patient[0].account.id,
             doctorid,
             workid,
             profileid,
@@ -80,6 +85,7 @@ function ConfirmPayment(props) {
     // Chuyển trang khi nhấn "OK"
     navigate("/profile"); // Điều chỉnh theo route bạn muốn chuyển
   };
+
   return (
     <div className="flex justify-center py-5">
       <div className="w-full border border-solid border-[#91caff] rounded-lg bg-[#e6f4ff]/60 p-4 ">

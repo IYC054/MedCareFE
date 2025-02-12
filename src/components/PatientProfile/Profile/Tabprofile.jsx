@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   FaBirthdayCake,
@@ -10,12 +10,15 @@ import {
 import { FaLocationDot } from "react-icons/fa6";
 import { MdGroups } from "react-icons/md";
 import { profilebyaccount } from "../../../api/Profile/profilebyaccount";
+import { AppContext } from "../../Context/AppProvider";
 
 function Tabprofile() {
   const [dataProfile, setDataProfile] = useState([]);
+    const { User } = useContext(AppContext);
+  
   useEffect(() => {
     const getdataprofile = async () => {
-      const result = await profilebyaccount(1);
+      const result = await profilebyaccount(User?.id);
       setDataProfile(result)
     }
     getdataprofile();

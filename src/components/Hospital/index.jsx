@@ -3,7 +3,7 @@ import { BiPhone } from "react-icons/bi";
 import { FaRegClock, FaStar } from "react-icons/fa";
 import { GrLocation } from "react-icons/gr";
 import "./hospital.scss";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Breadcrumbs from "./Breadcrumbs";
 import { AppContext } from "../Context/AppProvider";
 import { enqueueSnackbar } from "notistack";
@@ -13,6 +13,7 @@ function Hopsital() {
   const location = useLocation();
   const [hospital, setHospital] = useState([]);
   const { User } = useContext(AppContext);
+  const navigator = useNavigate();
   useEffect(() => {
     const gethospital = async () => {
       const result = await GetHospital();
@@ -30,7 +31,7 @@ function Hopsital() {
       return;
     }
     const result = await profilebyaccount(User?.id);
-    if (result.length < 0) {
+    if (result.length == []) {
       enqueueSnackbar("Bạn chưa có hồ sơ bệnh nhân", {
         variant: "warning",
         autoHideDuration: 3000,
@@ -38,6 +39,7 @@ function Hopsital() {
       navigator("/profile");
       return;
     }
+    console.log(result);
     navigator(`${location.pathname}/form-appointment`);
   };
   return (
@@ -146,7 +148,7 @@ function Hopsital() {
             {/* start slider */}
             <div className="w-full h-[540px] mb-8">
               <img
-                src={hospital[0].urlImage}
+                src={hospital[0]?.urlImage}
                 alt=""
                 className="w-full h-full object-cover rounded-xl shadow-xl"
               />

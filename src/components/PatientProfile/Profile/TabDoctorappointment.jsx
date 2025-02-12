@@ -14,7 +14,7 @@ import { AppContext } from "../../Context/AppProvider";
 
 function TabDoctorappointment() {
   const [appointments, setAppointments] = useState([]);
-  const { userId, userRole } = useContext(AppContext);
+  const { User } = useContext(AppContext);
 
   // const [selectedPatientId, setSelectedPatientId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -22,8 +22,8 @@ function TabDoctorappointment() {
   const statusoption = ["Confirmed", "Cancelled", "Pending", "Success"];
   const fetchAppointments = async () => {
     try {
-      if (userRole == "Doctors") {
-        const data = await getAppointmentByDoctorId(userId);
+      if (User[0]?.role.name == "Doctors") {
+        const data = await getAppointmentByDoctorId(User?.id);
         if (data && data.length > 0) {
           const enrichedAppointments = await Promise.all(
             data.map(async (appointment) => {

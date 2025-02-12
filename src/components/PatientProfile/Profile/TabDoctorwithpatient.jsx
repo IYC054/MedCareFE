@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { getAppointmentByDoctorId } from "../../../api/Doctor/appointment";
 import {
   deteleimage,
@@ -10,6 +10,7 @@ import { getallPaymentByAppoint } from "../../../api/Bank/payment";
 import { ProfilebypatientprofileId } from "../../../api/Profile/profilebyaccount";
 import axios from "axios";
 import { useSnackbar } from "notistack";
+import { AppContext } from "../../Context/AppProvider";
 
 function TabDoctorwithpatient() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,6 +24,8 @@ function TabDoctorwithpatient() {
   const [queryName, setQueryName] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
+  const { User } = useContext(AppContext);
+
   const openModal = (urlImage) => {
     setSelectedImage(urlImage);
   };
@@ -56,7 +59,7 @@ function TabDoctorwithpatient() {
     }
   };
   useEffect(() => {
-    fetchPatient(1); // chờ login
+    fetchPatient(User?.id); // chờ login
   }, []);
   const handlePopupDetail = (id = null, patientfileid = null) => {
     if (id == null) {
@@ -79,7 +82,7 @@ function TabDoctorwithpatient() {
   const handleDeleteImage = async (imageId) => {
     try {
       await deteleimage(imageId);
-      fetchPatient(1);
+      fetchPatient(User?.id);
     } catch (error) {
       console.error("Error deleting image:", error);
     }
@@ -130,7 +133,7 @@ function TabDoctorwithpatient() {
         autoHideDuration: 3000,
       });
     } finally {
-      fetchPatient(1);
+      fetchPatient(User?.id);
     }
   };
 
@@ -251,7 +254,7 @@ function TabDoctorwithpatient() {
             </tbody>
           </table>
         </div>
-        
+
         {/* <div className="flex justify-center mt-4">
           <button
             onClick={() =>
@@ -277,28 +280,26 @@ function TabDoctorwithpatient() {
         </div> */}
       </div>
       <div className="flex justify-center my-4">
-          <button
-            onClick={() =>
-              setCurrentPage(currentPage > 1 ? currentPage - 1 : 1)
-            }
-            disabled={currentPage === 1}
-            className="px-4 py-2 border rounded mr-2"
-          >
-            Previous
-          </button>
-          <span className="py-2 px-4">{`Page ${currentPage} of ${totalPages}`}</span>
-          <button
-            onClick={() =>
-              setCurrentPage(
-                currentPage < totalPages ? currentPage + 1 : totalPages
-              )
-            }
-            disabled={currentPage === totalPages}
-            className="px-4 py-2 border rounded ml-2"
-          >
-            Next
-          </button>
-        </div>
+        <button
+          onClick={() => setCurrentPage(currentPage > 1 ? currentPage - 1 : 1)}
+          disabled={currentPage === 1}
+          className="px-4 py-2 border rounded mr-2"
+        >
+          Previous
+        </button>
+        <span className="py-2 px-4">{`Page ${currentPage} of ${totalPages}`}</span>
+        <button
+          onClick={() =>
+            setCurrentPage(
+              currentPage < totalPages ? currentPage + 1 : totalPages
+            )
+          }
+          disabled={currentPage === totalPages}
+          className="px-4 py-2 border rounded ml-2"
+        >
+          Next
+        </button>
+      </div>
       <div
         className={`w-full h-screen ${
           popup ? "fixed" : "hidden"
