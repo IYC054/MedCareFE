@@ -47,6 +47,7 @@ import NewDetails from "./page/NewDetails";
 import FeedbackDetail from "./Admin/page/subPage/FeedbackDetail";
 import FeedbackReponse from "./Admin/page/subPage/FeedbackReponse";
 import Chat from "./Admin/page/Chat";
+import Contract from "./components/Contract/Contract";
 
 
 
@@ -69,6 +70,7 @@ const router = createBrowserRouter([
       { path: "/confirm-payment", element: <ConfirmPayment /> },
       { path: "/payment-success", element: <PaymentSuccess /> },
       { path: "/invoice", element: <Invoice /> },
+      { path: "/contract", element: <Contract /> },
       { path: "/hospital/form-appointment", element: <FormAppointment /> },
       { path: "*", element: <Notfound /> },
     ],
