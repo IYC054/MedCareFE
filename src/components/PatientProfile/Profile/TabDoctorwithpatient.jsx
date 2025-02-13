@@ -11,6 +11,7 @@ import { ProfilebypatientprofileId } from "../../../api/Profile/profilebyaccount
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import { AppContext } from "../../Context/AppProvider";
+import { getDoctorbyId } from "../../../api/Doctor/doctor";
 
 function TabDoctorwithpatient() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -53,7 +54,8 @@ function TabDoctorwithpatient() {
     }
   };
   useEffect(() => {
-    fetchPatient(User?.id); // chờ login
+    const doctorId = getDoctorbyId(User?.id);
+    fetchPatient(doctorId); // chờ login
   }, []);
   const handlePopupDetail = (id = null, patientfileid = null) => {
     if (id == null) {

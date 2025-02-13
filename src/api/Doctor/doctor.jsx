@@ -10,8 +10,8 @@ const doctorApi = axios.create({
 });
 const getDoctorbyId = async (doctorid) => {
   try {
-    const res = await axios.get(`http://localhost:8080/api/doctors/${doctorid}`);
-    return res.data.account; 
+    const res = await axios.get(`http://localhost:8080/api/doctors/account/${doctorid}`);
+    return res.data; 
   } catch (error) {
     console.error(error);
     return []; 

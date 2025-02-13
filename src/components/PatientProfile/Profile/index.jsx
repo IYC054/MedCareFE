@@ -82,6 +82,7 @@ function PatientProfile() {
       setSelectTabFeedback(true);
     }
   };
+
   return (
     <div className="flex justify-center py-5">
       <div className="w-4/5 mb-2">
@@ -111,8 +112,7 @@ function PatientProfile() {
             </div>
             <div className="w-full  mb-5">
               <ul className="list-none text-center py-2 my-2">
-                {User?.role?.[0]?.name == "PATIENTS" ||
-                User?.role?.[0]?.name == "DOCTOR" ? (
+                {User?.role?.[0]?.name == "PATIENTS" ? (
                   <Fragment>
                     <li
                       onClick={() => handleTab("hosobenhnhan")}
@@ -183,7 +183,8 @@ function PatientProfile() {
             ) : (
               <Fragment />
             )}
-            {selectTabFeedback && User?.role?.[0]?.name == "PATIENTS" || User?.role?.[0]?.name == "DOCTOR" ? (
+            {selectTabFeedback &&
+            ["PATIENTS", "DOCTOR"].includes(User?.role?.[0]?.name) ? (
               <TabFeedBack />
             ) : (
               <Fragment />

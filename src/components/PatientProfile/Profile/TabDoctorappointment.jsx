@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
   getAppointmentByDoctorId,
+  getVIPAppointmentByDoctorId,
   UpdateStatusAppointment,
 } from "../../../api/Doctor/appointment";
 import { getpatientbyid } from "../../../api/Doctor/patient";
@@ -11,6 +12,7 @@ import { ProfilebypatientprofileId } from "../../../api/Profile/profilebyaccount
 import axios from "axios";
 import { enqueueSnackbar } from "notistack";
 import { AppContext } from "../../Context/AppProvider";
+import { getDoctorbyId } from "../../../api/Doctor/doctor";
 
 function TabDoctorappointment() {
   const [appointments, setAppointments] = useState([]);
@@ -19,28 +21,38 @@ function TabDoctorappointment() {
   // const [selectedPatientId, setSelectedPatientId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [appointmentsPerPage] = useState(7);
-  const statusoption = ["Confirmed", "Cancelled", "Pending", "Success"];
+  const statusoption = ["Xác nhận", "Huỷ bỏ", "Chờ xử lý", "Thành công"];
   const fetchAppointments = async () => {
     try {
-      // if (User[0]?.role.name == "DOCTOR") {
-        const data = await getAppointmentByDoctorId(7);
-        if (data && data.length > 0) {
-          const enrichedAppointments = await Promise.all(
-            data.map(async (appointment) => {
-              const [patientDetails, paymentDetails] = await Promise.all([
-                ProfilebypatientprofileId(appointment.patientprofile.id),
-                getallPaymentByAppoint(appointment.id),
-              ]);
-              return { ...appointment, patientDetails, paymentDetails };
-            })
-          );
-          setAppointments(enrichedAppointments);
-        }
-      // }
+      const doctorId = await getDoctorbyId(User?.id);
+  
+      // Gọi API lấy danh sách appointment thường
+      console.log("DOCTORID: " + JSON.stringify(doctorId));
+      const normalAppointments = await getAppointmentByDoctorId(doctorId?.id);
+      
+      // Gọi API lấy danh sách appointment VIP
+      const vipAppointments = await getVIPAppointmentByDoctorId(doctorId?.id); // API này bạn cần kiểm tra
+  
+      // Gộp hai danh sách lại
+      const allAppointments = [...normalAppointments, ...vipAppointments];
+  
+      if (allAppointments.length > 0) {
+        const enrichedAppointments = await Promise.all(
+          allAppointments.map(async (appointment) => {
+            const [patientDetails, paymentDetails] = await Promise.all([
+              ProfilebypatientprofileId(appointment.patientprofile.id),
+              getallPaymentByAppoint(appointment.id),
+            ]);
+            return { ...appointment, patientDetails, paymentDetails };
+          })
+        );
+        setAppointments(enrichedAppointments);
+      }
     } catch (error) {
       console.error("Error fetching appointments:", error);
     }
   };
+  
   const indexOfLastAppointment = currentPage * appointmentsPerPage;
   const indexOfFirstAppointment = indexOfLastAppointment - appointmentsPerPage;
   const currentAppointments = appointments.slice(
@@ -61,7 +73,7 @@ function TabDoctorappointment() {
   ) => {
     try {
       const data = await UpdateStatusAppointment(id, status);
-      if (status === "Success") {
+      if (status === "Hoàn thành") {
         const checksuccess = axios.post(
           `http://localhost:8080/api/patientsfile?doctors_id=${doctorid}&patients_profile_id=${patientfile_id}&appointment_id=${appointment_id}`
         );
@@ -96,24 +108,24 @@ function TabDoctorappointment() {
           style={{ width: "fit-content" }}
         >
           Bạn đang hiện có{" "}
-          {appointments.filter((item) => item.status === "Pending").length} cuộc
-          hẹn
+          {appointments.filter((item) => item.status === "Chờ xử lý").length}{" "}
+          cuộc hẹn
         </div>
         <div
           className=" p-2 bg-[#00b5f1] text-[#fff] rounded-lg"
           style={{ width: "fit-content" }}
         >
           Bạn khám thành công{" "}
-          {appointments.filter((item) => item.status === "Success").length} cuộc
-          hẹn
+          {appointments.filter((item) => item.status === "Thành công").length}{" "}
+          cuộc hẹn
         </div>
         <div
           className=" p-2 bg-[#00b5f1] text-[#fff] rounded-lg"
           style={{ width: "fit-content" }}
         >
           Bạn huỷ{" "}
-          {appointments.filter((item) => item.status === "Cancelled").length}{" "}
-          cuộc hẹn
+          {appointments.filter((item) => item.status === "Huỷ bỏ").length} cuộc
+          hẹn
         </div>
       </div>
       <div className="mt-4 w-full h-[500px] bg-[#fff] rounded-lg shadow-lg">
@@ -198,7 +210,7 @@ function TabDoctorappointment() {
                             value={status}
                             className="w-full"
                             disabled={
-                              item.status === "Success" &&
+                              item.status === "Thành công" &&
                               item.status !== status
                             }
                           >
