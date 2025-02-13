@@ -24,10 +24,12 @@ import TabDoctorappointment from "./TabDoctorappointment";
 import TabDoctorwithpatient from "./TabDoctorwithpatient";
 import { AppContext } from "../../Context/AppProvider";
 import { enqueueSnackbar } from "notistack";
+import TabFeedBack from "./TabFeedBack";
 
 function PatientProfile() {
   const [selectTabProfile, setSelectTabProfile] = useState(true);
   const [selectTabAppointment, setSelectTabAppointment] = useState(false);
+  const [selectTabFeedback, setSelectTabFeedback] = useState(false);
   const navigator = useNavigate();
   const [selectTabDoctorAppointment, setSelectTabDoctorAppointment] =
     useState(false);
@@ -50,12 +52,14 @@ function PatientProfile() {
       setSelectTabDoctorAppointment(false);
       setSelectTabAppointment(false);
       setSelectTabDoctorWithPatient(false);
+      setSelectTabFeedback(false);
       // setSelectTabBHYT(false);
     } else if (value == "phieukhambenh") {
       setSelectTabAppointment(true);
       setSelectTabProfile(false);
       setSelectTabDoctorWithPatient(false);
       setSelectTabDoctorAppointment(false);
+      setSelectTabFeedback(false);
 
       // setSelectTabBHYT(false);
     } else if (value == "quanlydatlich") {
@@ -63,11 +67,19 @@ function PatientProfile() {
       setSelectTabProfile(false);
       setSelectTabDoctorWithPatient(false);
       setSelectTabAppointment(false);
+      setSelectTabFeedback(false);
     } else if (value == "quanlybenhnhan") {
       setSelectTabAppointment(false);
       setSelectTabDoctorAppointment(false);
       setSelectTabProfile(false);
       setSelectTabDoctorWithPatient(true);
+      setSelectTabFeedback(false);
+    } else if (value == "feedback") {
+      setSelectTabAppointment(false);
+      setSelectTabDoctorAppointment(false);
+      setSelectTabProfile(false);
+      setSelectTabDoctorWithPatient(false);
+      setSelectTabFeedback(true);
     }
   };
   return (
@@ -99,7 +111,8 @@ function PatientProfile() {
             </div>
             <div className="w-full  mb-5">
               <ul className="list-none text-center py-2 my-2">
-                {User?.role?.[0]?.name == "PATIENTS" || User?.role?.[0]?.name == "DOCTOR" ? (
+                {User?.role?.[0]?.name == "PATIENTS" ||
+                User?.role?.[0]?.name == "DOCTOR" ? (
                   <Fragment>
                     <li
                       onClick={() => handleTab("hosobenhnhan")}
@@ -118,6 +131,15 @@ function PatientProfile() {
                     >
                       <FaFileMedical className="text-[20px]" />
                       Phiếu khám bệnh
+                    </li>
+                    <li
+                      onClick={() => handleTab("feedback")}
+                      className={`my-4 flex justify-center hover:bg-[#fff] ${
+                        selectTabFeedback ? "isactive" : ""
+                      } cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}
+                    >
+                      <FaUserPlus className="text-[20px]" />
+                      Feedback
                     </li>
                   </Fragment>
                 ) : (
@@ -158,6 +180,11 @@ function PatientProfile() {
           <div className="col-span-3">
             {selectTabProfile && User?.role?.[0]?.name == "PATIENTS" ? (
               <Tabprofile />
+            ) : (
+              <Fragment />
+            )}
+            {selectTabFeedback && User?.role?.[0]?.name == "PATIENTS" || User?.role?.[0]?.name == "DOCTOR" ? (
+              <TabFeedBack />
             ) : (
               <Fragment />
             )}
