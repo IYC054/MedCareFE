@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 function CreatEmail() {
  
-  const [recipientType, setRecipientType] = useState(""); // doctor or patient
+  const [recipientType, setRecipientType] = useState("");
   const [selectedRecipient, setSelectedRecipient] = useState(null);
   const [doctors, setDoctors] = useState([]);
   const [patients, setPatients] = useState([]);
