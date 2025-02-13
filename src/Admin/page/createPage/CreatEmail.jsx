@@ -4,12 +4,8 @@ import { getToken } from "../../../components/Authentication/authService";
 import { useNavigate } from "react-router-dom";
 
 function CreatEmail() {
-<<<<<<< HEAD
-  const [recipientType, setRecipientType] = useState("");
-=======
  
-  const [recipientType, setRecipientType] = useState(""); // doctor or patient
->>>>>>> bb2c290bf1c1c3a971ecb5918e57f5efc680ad2a
+  const [recipientType, setRecipientType] = useState("");
   const [selectedRecipient, setSelectedRecipient] = useState(null);
   const [doctors, setDoctors] = useState([]);
   const [patients, setPatients] = useState([]);
@@ -55,17 +51,11 @@ function CreatEmail() {
       return;
     }
 
-<<<<<<< HEAD
     setIsLoading(true); // Bắt đầu loading
 
     try {
       await axios.post(
-        `http://localhost:8080/api/feedbacks/${10}`,
-=======
-    axios
-      .post(
         `http://localhost:8080/api/feedbacks/${selectedRecipient.id}`,
->>>>>>> bb2c290bf1c1c3a971ecb5918e57f5efc680ad2a
         {
           message,
           recipient: {
