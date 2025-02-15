@@ -52,6 +52,7 @@
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
     "sockjs-client": "^1.4.0",
+    "stompjs": "^2.3.3",
     "xlsx": "^0.18.5",
     "yup": "^1.6.1"
   },

@@ -1,14 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import io from "socket.io-client";
-
 import { getToken } from "../../components/Authentication/authService";
+import SockJS from "sockjs-client";
+import { over } from "stompjs";
 
-const socket = io("http://localhost:8080", {
-    extraHeaders: {
-        Authorization: `Bearer ${getToken()}`
-    }
-});
 
 function Chat() {
     const token = getToken();
@@ -17,8 +12,67 @@ function Chat() {
     const [messages, setMessages] = useState({});
     const [selectedImage, setSelectedImage] = useState(null);
     const [friendsList, setFriendsList] = useState([]);
-    const messagesEndRef = useRef(null); // Ref để cuộn xuống tin nhắn mới nhất
+    const messagesEndRef = useRef(null);
 
+    // const stompClientRef = useStompClient();
+
+    useEffect(() => {
+
+        const socket = new SockJS("http://localhost:8080/ws", null, {
+            withCredentials: true,  // Cần thiết để gửi thông tin xác thực như cookies hoặc token
+        });;
+        const client = over(socket);
+
+
+        client.connect({}, () => {
+            console.log("✅ WebSocket Connected!");
+
+            client.subscribe("/user/queue/messages", (message) => {
+                console.log("📩 Received Message:", message.body);
+                const receivedMessage = JSON.parse(message.body);
+                handleReceiveMessage(receivedMessage);
+            });
+        }, (error) => {
+            console.error("❌ WebSocket connection error:", error);
+        });
+
+    }, []);
+
+    const handleReceiveMessage = (message) => {
+        setMessages((prevMessages) => ({
+            ...prevMessages,
+            [message.sender.id]: [...(prevMessages[message.sender.id] || []), message],
+        }));
+    };
+
+    // const handleSendMessage = () => {
+    //     if (!newMessage.trim() && !selectedImage) return;
+
+    //     const messageData = {
+    //         sender: { id: 10 }, // Assuming logged-in user ID
+    //         receiver: { id: selectedFriend.id },
+    //         message: newMessage || null,
+    //         image: selectedImage || null,
+    //         sent: new Date().toISOString(),
+    //     };
+
+    //     if (stompClientRef.current && stompClientRef.current.connected) {
+    //         stompClientRef.current.send("/app/chat", {}, JSON.stringify(messageData));
+
+    //         setMessages((prevMessages) => ({
+    //             ...prevMessages,
+    //             [selectedFriend.id]: [...(prevMessages[selectedFriend.id] || []), messageData],
+    //         }));
+
+    //         setNewMessage("");
+    //         setSelectedImage(null);
+    //     } else {
+    //         console.error("STOMP client not connected");
+    //     }
+    // };
+
+
+    // Fetch danh sách bạn bè
     useEffect(() => {
         const fetchAccounts = async () => {
             try {
@@ -34,76 +88,24 @@ function Chat() {
         fetchAccounts();
     }, []);
 
-    useEffect(() => {
-        // Lắng nghe sự kiện tin nhắn mới từ server
-        socket.on("receiveMessage", (message) => {
-            if (message.receiver.id === selectedFriend?.id) {
-                setMessages((prevMessages) => {
-                    const updatedMessages = { ...prevMessages };
-                    if (!updatedMessages[selectedFriend.id]) {
-                        updatedMessages[selectedFriend.id] = [];
-                    }
-                    updatedMessages[selectedFriend.id].push(message);
-                    return updatedMessages;
-                });
-            }
-        });
-
-        return () => {
-            socket.off("receiveMessage");
-        };
-    }, [selectedFriend]);
-
-    useEffect(() => {
-        // Tự động cuộn xuống khi có tin nhắn mới
-        if (messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-        }
-    }, [messages]);
-
     const handleSelectFriend = async (friend) => {
         setSelectedFriend(friend);
+
         try {
             const response = await axios.get(`http://localhost:8080/api/chat/history/${10}/${friend.id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            setMessages({ ...messages, [friend.id]: response.data });
+
+            setMessages((prevMessages) => ({
+                ...prevMessages,
+                [friend.id]: response.data,
+            }));
         } catch (error) {
             console.error("Error fetching messages:", error);
         }
     };
 
-    const handleSendMessage = async () => {
-        if (!newMessage.trim() && !selectedImage) return;
 
-        const messageData = {
-            sender: { id: 10 },
-            receiver: { id: selectedFriend.id },
-            message: newMessage || null,
-            image: selectedImage || null,
-            sent: new Date().toISOString(),
-        };
-
-        try {
-            // Gửi tin nhắn qua socket
-            socket.emit("sendMessage", messageData);
-
-            // Cập nhật tin nhắn vào state
-            setMessages((prevMessages) => {
-                const updatedMessages = { ...prevMessages };
-                if (!updatedMessages[selectedFriend.id]) {
-                    updatedMessages[selectedFriend.id] = [];
-                }
-                updatedMessages[selectedFriend.id].push(messageData);
-                return updatedMessages;
-            });
-
-            setNewMessage("");
-            setSelectedImage(null);
-        } catch (error) {
-            console.error("Error sending message:", error);
-        }
-    };
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -114,22 +116,22 @@ function Chat() {
     };
 
     return (
-        <div className="flex h-[85vh] bg-gray-100  ">
+        <div className="flex h-[85vh] bg-gray-100">
             {/* Sidebar */}
             <div className="w-1/4 bg-white p-4 border-r overflow-auto">
-                <h2 className="text-gray-600 font-semibold mb-3  ">BẠN BÈ TRỰC TUYẾN</h2>
-                <div className="">
+                <h2 className="text-gray-600 font-semibold mb-3">BẠN BÈ TRỰC TUYẾN</h2>
+                <div>
                     {friendsList.length > 0 ? (
                         friendsList.map((friend) => (
                             <div
                                 key={friend.id}
                                 className={`flex items-center p-3 rounded-md cursor-pointer transition  
-                ${selectedFriend?.id === friend.id ? "bg-red-400 text-white" : "hover:bg-gray-100"}`}
+                                    ${selectedFriend?.id === friend.id ? "bg-red-400 text-white" : "hover:bg-gray-100"}`}
                                 onClick={() => handleSelectFriend(friend)}
                             >
                                 <div className="relative">
                                     <img
-                                        src={friend.avatar || "https://via.placeholder.com/40"}
+                                        src={friend.avatar || ""}
                                         alt={friend.name}
                                         className="w-10 h-10 rounded-full border"
                                     />
@@ -145,14 +147,13 @@ function Chat() {
                         <p className="text-gray-500">Đang tải danh sách...</p>
                     )}
                 </div>
-
             </div>
 
             {/* Chat Window */}
             <div className="flex-1 flex flex-col">
                 {selectedFriend ? (
                     <>
-                        <div className="p-4 bg-white border-b flex justify-between items-center ">
+                        <div className="p-4 bg-white border-b flex justify-between items-center">
                             <h2 className="text-lg font-semibold">{selectedFriend.name}</h2>
                             <div className={`w-3 h-3 rounded-full ${selectedFriend.online ? "bg-green-500" : "bg-gray-400"}`} />
                         </div>
@@ -173,26 +174,17 @@ function Chat() {
                                     </div>
                                 );
                             })}
-                            {/* Phần tử ẩn để cuộn xuống cuối */}
                             <div ref={messagesEndRef}></div>
                         </div>
 
                         {/* Input */}
                         <div className="p-4 border-t bg-white flex">
-                            <input
-                                type="message"
-                                value={newMessage}
-                                onChange={(e) => setNewMessage(e.target.value)}
-                                className="flex-1 p-2 border rounded-lg"
-                                placeholder="Type a message..."
-                            />
                             <label className="ml-2 bg-gray-200 text-gray-600 px-4 py-2 rounded-lg cursor-pointer">
                                 📎
                                 <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
                             </label>
-                            <button onClick={handleSendMessage} className="ml-2 bg-blue-500 text-white px-4 py-2 rounded-lg">
-                                Send
-                            </button>
+                            <input type="text" value={newMessage} onChange={(e) => setNewMessage(e.target.value)} className="flex-1 p-2 border rounded-lg" placeholder="Type a message..." />
+                            <button className="ml-2 bg-blue-500 text-white px-4 py-2 rounded-lg">Send</button>
                         </div>
                     </>
                 ) : (

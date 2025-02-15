@@ -48,6 +48,8 @@ import FeedbackDetail from "./Admin/page/subPage/FeedbackDetail";
 import FeedbackReponse from "./Admin/page/subPage/FeedbackReponse";
 import Chat from "./Admin/page/Chat";
 import Contract from "./components/Contract/Contract";
+import ChatRoom from "./Admin/page/ChatRoom";
+import ChatRoomlogin from "./Admin/page/ChatRoomlogin";
 
 
 
@@ -87,8 +89,16 @@ const router = createBrowserRouter([
         element: <Chat/>,
       },
       {
+        path: "/admin/chatroom",
+        element: <ChatRoom/>
+      },
+      {
         path: "/admin/user",
         element: <AccountUser />,
+      },
+      {
+        path: "/admin/loginchat",
+        element: <ChatRoomlogin />,
       },
       {
         path: "/admin/user/userDetail/:id",
