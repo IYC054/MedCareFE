@@ -73,6 +73,20 @@ const UpdateStatusAppointment = async (id, status) => {
     return [];
   }
 };
+const UpdateStatusVipAppointment = async (id, status) => {
+  try {
+    const res = await axios.put(
+      `http://localhost:8080/api/vip-appointments/status/${id}`,
+      {
+        status: status,
+      }
+    );
+    return res.data;
+  } catch (error) {
+    // console.error(error);
+    return [];
+  }
+};
 const checkslotAppointment = async (doctorid, worktimeid) => {
   try {
     const res = await axios.get(
@@ -90,5 +104,6 @@ export {
   getAppointmentByDoctorId,
   UpdateStatusAppointment,
   checkslotAppointment,
-  getVIPAppointmentByDoctorId
+  getVIPAppointmentByDoctorId,
+  UpdateStatusVipAppointment
 };

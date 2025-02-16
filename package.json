@@ -23,7 +23,6 @@
     "@fullcalendar/timegrid": "^6.1.15",
     "@hookform/resolvers": "^3.10.0",
     "@mui/material": "^6.4.1",
-    "@stomp/stompjs": "^7.0.0",
     "antd": "^5.22.2",
     "apexcharts": "^4.1.0",
     "axios": "^1.7.9",

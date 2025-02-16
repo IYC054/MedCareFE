@@ -1,10 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
   getAppointmentByDoctorId,
+  getVIPAppointmentByDoctorId,
   UpdateStatusAppointment,
+  UpdateStatusVipAppointment,
 } from "../../../api/Doctor/appointment";
-import { getpatientbyid } from "../../../api/Doctor/patient";
-import { getallPaymentByAppoint } from "../../../api/Bank/payment";
+import {
+  getallPaymentByAppoint,
+  getallPaymentByVipAppoint,
+} from "../../../api/Bank/payment";
 import { Select } from "antd";
 import { Option } from "antd/es/mentions";
 import { ProfilebypatientprofileId } from "../../../api/Profile/profilebyaccount";
@@ -14,7 +18,7 @@ import { AppContext } from "../../Context/AppProvider";
 import { getDoctorbyId } from "../../../api/Doctor/doctor";
 import { getToken } from "../../Authentication/authService";
 
-function TabDoctorappointment() {
+function TabDoctorvipappointment() {
   const [appointments, setAppointments] = useState([]);
   const { User } = useContext(AppContext);
 
@@ -25,19 +29,19 @@ function TabDoctorappointment() {
   const fetchAppointments = async () => {
     try {
       const doctorId = await getDoctorbyId(User?.id);
-      // if (User[0]?.role.name == "DOCTOR") {
-      const data = await getAppointmentByDoctorId(doctorId?.id);
+      const data = await getVIPAppointmentByDoctorId(doctorId?.id);
       if (data && data.length > 0) {
         const enrichedAppointments = await Promise.all(
           data.map(async (appointment) => {
             const [patientDetails, paymentDetails] = await Promise.all([
-              ProfilebypatientprofileId(appointment.patientprofile.id),
-              getallPaymentByAppoint(appointment.id),
+              ProfilebypatientprofileId(appointment.patientprofile_id),
+              getallPaymentByVipAppoint(appointment.id),
             ]);
             return { ...appointment, patientDetails, paymentDetails };
           })
         );
         setAppointments(enrichedAppointments);
+        // console.log("env: " + enrichedAppointments)
       }
       // }
     } catch (error) {
@@ -63,14 +67,14 @@ function TabDoctorappointment() {
     appointment_id
   ) => {
     try {
-      const data = await UpdateStatusAppointment(id, status);
-      if (status === "Hoàn thành") {
+      await UpdateStatusVipAppointment(id, status);
+      if (status === "Thành công") {
         const checksuccess = axios.post(
-          `http://localhost:8080/api/patientsfile?doctors_id=${doctorid}&patients_profile_id=${patientfile_id}&appointment_id=${appointment_id}`,
+          `http://localhost:8080/api/patientsfile/vip-appointment?doctors_id=${doctorid}&patients_profile_id=${patientfile_id}&vipappointment_id=${appointment_id}`,
           {},
           {
             headers: {
-              A: `Bearer ${getToken()}`,
+              Authorization: `Bearer ${getToken()}`,
               "Content-Type": "application/json",
             },
           }
@@ -98,7 +102,7 @@ function TabDoctorappointment() {
   return (
     <div className="w-full h-full  border-l border-[#00b5f1] pl-10 ">
       <span className="text-[24px] font-medium">
-        Quản lý lịch hẹn đặt khám{" "}
+        Quản lý lịch hẹn đặt khám VIP{" "}
       </span>
       <div className="flex gap-2">
         <div
@@ -183,21 +187,21 @@ function TabDoctorappointment() {
                   </td>
                   <td className="p-4 border-b border-blue-gray-50">
                     <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
-                      {item.worktime.startTime} - {item.worktime.endTime}
+                      {item.startTime} - {item.endTime}
                     </p>
                   </td>
                   <td className="p-4 border-b border-blue-gray-50">
                     <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
                       {/* {item.status} */}
                       <Select
-                        className="w-full"
+                        className={`w-full`}
                         value={item.status}
                         onChange={(value) =>
                           handleUpdateStauts(
                             item.id,
                             value,
-                            item.doctor.id,
-                            item.patientDetails.id,
+                            item.doctor_id,
+                            item.patientprofile_id,
                             item.id
                           )
                         }
@@ -284,4 +288,4 @@ function TabDoctorappointment() {
     </div>
   );
 }
-export default TabDoctorappointment;
+export default TabDoctorvipappointment;

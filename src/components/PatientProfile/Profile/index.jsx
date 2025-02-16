@@ -19,16 +19,18 @@ import "./PatientProfile.scss";
 import { Link, useNavigate } from "react-router-dom";
 import Tabprofile from "./Tabprofile";
 import TabAppointment from "./TabAppointment";
-import TabCheckBHYT from "./TabCheckBHYT";
 import TabDoctorappointment from "./TabDoctorappointment";
 import TabDoctorwithpatient from "./TabDoctorwithpatient";
 import { AppContext } from "../../Context/AppProvider";
 import { enqueueSnackbar } from "notistack";
 import TabFeedBack from "./TabFeedBack";
+import TabDoctorvipappointment from "./TabDoctorvipappointment";
 
 function PatientProfile() {
   const [selectTabProfile, setSelectTabProfile] = useState(true);
   const [selectTabAppointment, setSelectTabAppointment] = useState(false);
+  const [selectTabVIPAppointment, setSelectTabVIPAppointment] = useState(false);
+
   const [selectTabFeedback, setSelectTabFeedback] = useState(false);
   const navigator = useNavigate();
   const [selectTabDoctorAppointment, setSelectTabDoctorAppointment] =
@@ -53,34 +55,47 @@ function PatientProfile() {
       setSelectTabAppointment(false);
       setSelectTabDoctorWithPatient(false);
       setSelectTabFeedback(false);
-      // setSelectTabBHYT(false);
+      setSelectTabVIPAppointment(false);
     } else if (value == "phieukhambenh") {
       setSelectTabAppointment(true);
       setSelectTabProfile(false);
       setSelectTabDoctorWithPatient(false);
       setSelectTabDoctorAppointment(false);
       setSelectTabFeedback(false);
+      setSelectTabVIPAppointment(false);
 
-      // setSelectTabBHYT(false);
     } else if (value == "quanlydatlich") {
       setSelectTabDoctorAppointment(true);
       setSelectTabProfile(false);
       setSelectTabDoctorWithPatient(false);
       setSelectTabAppointment(false);
       setSelectTabFeedback(false);
+      setSelectTabVIPAppointment(false);
+
     } else if (value == "quanlybenhnhan") {
       setSelectTabAppointment(false);
       setSelectTabDoctorAppointment(false);
       setSelectTabProfile(false);
       setSelectTabDoctorWithPatient(true);
       setSelectTabFeedback(false);
+      setSelectTabVIPAppointment(false);
+
     } else if (value == "feedback") {
       setSelectTabAppointment(false);
       setSelectTabDoctorAppointment(false);
       setSelectTabProfile(false);
       setSelectTabDoctorWithPatient(false);
+      setSelectTabVIPAppointment(false);
       setSelectTabFeedback(true);
-    }
+    }else if (value == "quanlydatlichvip") {
+      setSelectTabDoctorAppointment(false);
+      setSelectTabProfile(false);
+      setSelectTabDoctorWithPatient(false);
+      setSelectTabAppointment(false);
+      setSelectTabFeedback(false);
+      setSelectTabVIPAppointment(true);
+
+    } 
   };
 
   return (
@@ -155,7 +170,16 @@ function PatientProfile() {
                       } cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}
                     >
                       <FaCalendarDays className="text-[20px]" />
-                      Quản lý lịch hẹn
+                      Quản lý lịch hẹn thường
+                    </li>
+                    <li
+                      onClick={() => handleTab("quanlydatlichvip")}
+                      className={`my-4 flex justify-center hover:bg-[#fff] ${
+                        selectTabVIPAppointment ? "isactive" : ""
+                      } cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}
+                    >
+                      <FaCalendarDays className="text-[20px]" />
+                      Quản lý lịch hẹn VIP
                     </li>
                     <li
                       onClick={() => handleTab("quanlybenhnhan")}
@@ -201,6 +225,11 @@ function PatientProfile() {
             )}
             {selectTabDoctorWithPatient && User?.role?.[0]?.name == "DOCTOR" ? (
               <TabDoctorwithpatient />
+            ) : (
+              <Fragment />
+            )}
+            {selectTabVIPAppointment && User?.role?.[0]?.name == "DOCTOR" ? (
+              <TabDoctorvipappointment />
             ) : (
               <Fragment />
             )}

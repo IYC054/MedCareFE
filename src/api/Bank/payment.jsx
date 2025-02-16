@@ -63,6 +63,18 @@ const getallPaymentByAppoint = async (id) => {
     return null;
   }
 };
+const getallPaymentByVipAppoint = async (id) => {
+  try {
+   
 
+    const response = await axios.get(
+      `http://localhost:8080/api/payments/vip-appointment/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
 // eslint-disable-next-line react-refresh/only-export-components
-export { BankPayment, gethistoryMbbank, gethistoryPayment, getallPaymentByAppoint };
+export { BankPayment, gethistoryMbbank, gethistoryPayment, getallPaymentByAppoint, getallPaymentByVipAppoint };

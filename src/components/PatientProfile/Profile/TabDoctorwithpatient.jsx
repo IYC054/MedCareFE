@@ -12,6 +12,7 @@ import axios from "axios";
 import { useSnackbar } from "notistack";
 import { AppContext } from "../../Context/AppProvider";
 import { getDoctorbyId } from "../../../api/Doctor/doctor";
+import { getToken } from "../../Authentication/authService";
 
 function TabDoctorwithpatient() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -33,9 +34,11 @@ function TabDoctorwithpatient() {
   const closeModal = () => {
     setSelectedImage(null);
   };
-  const fetchPatient = async (id) => {
+  const fetchPatient = async () => {
     try {
-      const data = await getpatientbydoctorid(id);
+      const doctorId = await getDoctorbyId(User?.id);
+
+      const data = await getpatientbydoctorid(doctorId?.id);
       if (data && data.length > 0) {
         const enrichedPatient = await Promise.all(
           data.map(async (patient) => {
@@ -54,8 +57,7 @@ function TabDoctorwithpatient() {
     }
   };
   useEffect(() => {
-    const doctorId = getDoctorbyId(User?.id);
-    fetchPatient(doctorId); // chờ login
+    fetchPatient(); // chờ login
   }, []);
   const handlePopupDetail = (id = null, patientfileid = null) => {
     if (id == null) {
@@ -105,14 +107,25 @@ function TabDoctorwithpatient() {
       if (files.length > 0) {
         responeimage = await axios.post(
           "http://localhost:8080/api/filesimage",
-          formData
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          }
         );
       }
 
       // Cập nhật mô tả bất kể có file hay không
       const response = await axios.put(
         `http://localhost:8080/api/patientsfile/description/${selectPatientFileId}`,
-        { description }
+        { description },
+        {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
 
       if (response || responeimage) {
