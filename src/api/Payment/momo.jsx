@@ -1,6 +1,5 @@
 import React from "react";
 import axios from "axios";
-import token from "../token";
 
 const MomoPayment = async (fee, phone,doctorid, workid, profileid, specialtyid) => {
   try {

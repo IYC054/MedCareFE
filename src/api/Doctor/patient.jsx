@@ -1,10 +1,14 @@
 import axios from "axios";
-import token from "../token";
+import { getToken } from "../../components/Authentication/authService";
 
 const getpatientbyaccountid = async (id) => {
   try {
     const res = await axios.get(
-      `http://localhost:8080/api/patients/account/${id}`
+      `http://localhost:8080/api/patients/account/${id}`,{
+        headers:{
+          Authorization: 'Bearer ' + getToken()
+        }
+      }
     );
     return res.data;
   } catch (error) {

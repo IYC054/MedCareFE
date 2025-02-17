@@ -1,5 +1,4 @@
 import axios from "axios";
-import token from "../token";
 
 const profilebyaccount = async (accountid) => {
   try {
@@ -23,5 +22,16 @@ const ProfilebypatientprofileId = async (id) => {
     return [];
   }
 };
+const PatientProfileByProfileId = async (id) => {
+  try {
+    const res = await axios.get(
+      `http://localhost:8080/api/patientsfile/profile/${id}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
 
-export {profilebyaccount, ProfilebypatientprofileId};
+export {profilebyaccount, ProfilebypatientprofileId, PatientProfileByProfileId};

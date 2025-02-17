@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import Breadcrumbs from "../Breadcrumbs";
 import bank from "../../../api/Bank/bank";
 
@@ -23,6 +23,7 @@ import { Divider } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 import ConfirmPayment from "./ConfirmPayment";
 import { enqueueSnackbar } from "notistack";
+import { AppContext } from "../../Context/AppProvider";
 
 function ChoosePayment() {
   const location = useLocation();
@@ -39,7 +40,7 @@ function ChoosePayment() {
   const workid = getParams.get("work");
   const specialtyid = getParams.get("specialty");
   const profileid = getParams.get("profile");
-
+  const {User} = useContext(AppContext);
   useEffect(() => {
     const fetchDoctor = async () => {
       const data = await getDoctorbyId(doctorid);
@@ -90,7 +91,7 @@ function ChoosePayment() {
 
   const PayWithMomo = async () => {
     if (checkMethod == "momo") {
-      MomoPayment(fee, "0358227696", doctorid, workid, profileid, specialtyid);
+      MomoPayment(fee, User?.phone, doctorid, workid, profileid, specialtyid);
     } else if (checkMethod == "bank") {
       // navigate(`/confirm-payment?doctor=${doctorid}&work=${workid}&specialty=${dataSpecialty.name}&profile=${profileid}`)
     } else {

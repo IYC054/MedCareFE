@@ -155,6 +155,14 @@ const Header = () => {
                         },
                         {
                           label: (
+                            <Link to={'/profile/add'} className="flex items-center justify-center text-[16px] gap-1 p-2 rounded-lg  ">
+                              <span className="font-semibold text-[#00b5f1]">Tạo hồ sơ bệnh nhân</span>
+                            </Link>
+                          ),
+                          link: "#",
+                        },
+                        {
+                          label: (
                             <div onClick={Logout}  className="flex items-center justify-center text-[16px] gap-1 p-2 rounded-lg  ">
                               <span className="font-semibold text-[red]">Đăng xuất</span>
                             </div>

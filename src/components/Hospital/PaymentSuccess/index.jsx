@@ -22,7 +22,7 @@ function PaymentSuccess() {
   const profileid = queryParams.get("profile");
 
   const { User } = useContext(AppContext);
-  console.log("User" + User);
+  console.log("User" + JSON.stringify(User?.id))
   useEffect(() => {
     const confirmpayment = async () => {
       if (!amount || !orderInfo || !resultCode) {
@@ -49,9 +49,8 @@ function PaymentSuccess() {
           return;
         }
         const respone_patient = await getpatientbyaccountid(User?.id);
-        console.log(User);
-        const createAppointment = await CreateAppointment(
-          respone_patient[0].id,
+        const createAppointment = await CreateAppointment(  
+          respone_patient[0]?.id,
           doctorid,
           workid,
           profileid,

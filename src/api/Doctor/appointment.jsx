@@ -1,6 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
 import axios from "axios";
-import token from "../token";
 
 const CreateAppointment = async (
   patientId,
@@ -10,6 +9,7 @@ const CreateAppointment = async (
   specialty
 ) => {
   try {
+    console.log("patientId" + patientId)
     const speciltyname = await axios.get(`http://localhost:8080/api/specialty/${specialty}`)
     const response = await axios.post("http://localhost:8080/api/appointment", {
       patientId: patientId,
@@ -29,7 +29,7 @@ const CreateAppointment = async (
 const getAppointmentByPatientId = async (id) => {
   try {
     const res = await axios.get(
-      `http://localhost:8080/api/appointment/patient/${id}`
+      `http://localhost:8080/api/payments/patient/${id}`
     );
     return res.data;
   } catch (error) {
