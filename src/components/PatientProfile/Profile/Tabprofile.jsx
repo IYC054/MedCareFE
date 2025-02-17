@@ -18,23 +18,34 @@ import { AppContext } from "../../Context/AppProvider";
 function Tabprofile() {
   const [dataProfile, setDataProfile] = useState([]);
   const [popup, setPopup] = useState(false);
-  const [patientImages, setPatientImages] = useState([]);
   const [dataPatientProfile, setDataPatientProfile] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0); 
 
   const { User } = useContext(AppContext);
 
   const handlePopupDetail = async (patientfileid = null) => {
     if (patientfileid == null) {
       setPopup(false);
-      setPatientImages([]);
       setDataPatientProfile([]);
     } else {
       const res = await PatientProfileByProfileId(patientfileid);
       console.log("res: ", res);
-      setDataPatientProfile([res]); // Đảm bảo có dữ liệu để render
+      setDataPatientProfile(res); 
+      setCurrentIndex(0);
       setPopup(true);
     }
-    console.log("popup state: ", popup);
+  };
+
+  const handleNext = () => {
+    if (currentIndex < dataPatientProfile.length - 1) {
+      setCurrentIndex(currentIndex + 1); 
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
   };
 
   useEffect(() => {
@@ -44,13 +55,14 @@ function Tabprofile() {
     };
     getdataprofile();
   }, []);
+
   return (
-    <div className="w-full h-full  border-l border-[#00b5f1] pl-10">
+    <div className="w-full h-full border-l border-[#00b5f1] pl-10">
       <span className="text-[24px] font-medium">Hồ Sơ Bệnh Nhân</span>
       {dataProfile && Object.keys(dataProfile).length > 0 ? (
         dataProfile.map((item, index) => (
           <div
-            className="my-4 w-full  bg-[#fff] rounded-xl border border-solid border-[#eaeaea]"
+            className="my-4 w-full bg-[#fff] rounded-xl border border-solid border-[#eaeaea]"
             key={index}
           >
             <ul className="list-none flex flex-wrap p-4 justify-between">
@@ -129,13 +141,10 @@ function Tabprofile() {
           </div>
         </Link>
       )}
-      {dataPatientProfile.map((item, index) => (
+      {dataPatientProfile.length > 0 && popup && (
         <div
-          key={index}
-          className={`w-full h-screen ${
-            popup ? "fixed" : "hidden"
-          } z-20 bg-slate-400/60 top-0 right-0`}
-          onClick={() => handlePopupDetail()} // Đóng popup khi click vào nền
+          className={`w-full h-screen fixed z-20 bg-slate-400/60 top-0 right-0`}
+          onClick={() => handlePopupDetail()}
         >
           <div className="w-full h-full flex justify-center items-center">
             <div
@@ -160,21 +169,21 @@ function Tabprofile() {
                     id="description"
                     className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                     rows="4"
-                    value={item[0].description}
+                    value={dataPatientProfile[currentIndex].description}
                     readOnly="true"
                     placeholder="Nhập mô tả..."
                   />
                 </div>
-                {/* Chọn hình ảnh */}
-
+                {/* Image Selection */}
                 <div className="mt-4">
                   <span className="block text-sm font-medium text-gray-700">
                     Hình ảnh
                   </span>
                   <div className="grid grid-cols-4 gap-2">
-                    {item.filesImages && item.filesImages.length > 0 ? (
-                      item.filesImages.map((img, idx) => {
-                        return (
+                    {dataPatientProfile[currentIndex].filesImages &&
+                    dataPatientProfile[currentIndex].filesImages.length > 0 ? (
+                      dataPatientProfile[currentIndex].filesImages.map(
+                        (img, idx) => (
                           <div key={idx} className="relative col-span-1">
                             <img
                               src={img.urlImage || "default-image.jpg"}
@@ -182,26 +191,45 @@ function Tabprofile() {
                               alt={img.description || "Hình ảnh bệnh án"}
                             />
                           </div>
-                        );
-                      })
+                        )
+                      )
                     ) : (
                       <p className="text-gray-500">Không có hình ảnh</p>
                     )}
                   </div>
-                  <div className="my-4 flex justify-center">
-                    <button
-                      type="submit"
-                      className="px-4 py-2 bg-[red] text-[#fff] rounded-lg hover:scale-[0.9]"
-                    >
-                      Đóng{" "}
-                    </button>
-                  </div>
+                </div>
+                <div className="my-4 flex justify-center">
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-[red] text-[#fff] rounded-lg hover:scale-[0.9]"
+                    onClick={() => handlePopupDetail()}
+                  >
+                    Đóng{" "}
+                  </button>
+                </div>
+                {/* Next and Previous Buttons */}
+                <div className="flex justify-between">
+                  <button
+                    onClick={handlePrevious}
+                    disabled={currentIndex === 0}
+                    className="px-4 py-2 bg-[#00b5f1] text-white rounded-lg disabled:bg-gray-400"
+                  >
+                    Previous
+                  </button>
+                  <div className="mt-4 font-semibold">{currentIndex+1}/{dataPatientProfile.length }</div>
+                  <button
+                    onClick={handleNext}
+                    disabled={currentIndex === dataPatientProfile.length - 1}
+                    className="px-4 py-2 bg-[#00b5f1] text-white rounded-lg disabled:bg-gray-400"
+                  >
+                    Next
+                  </button>
                 </div>
               </span>
             </div>
           </div>
         </div>
-      ))}
+      )}
     </div>
   );
 }
