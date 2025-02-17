@@ -108,7 +108,7 @@ function AccountDoctor(props) {
                 </div>
             </div>
             <div className="container-fluid">
-                <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-6 max-h-96 overflow-y-auto">
+                <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-6 max-h-screen overflow-y-auto">
                     {/* Repeat for each card */}
                     {displaydoctor.map((item, index) => (
                         <div key={index} className="shadow-lg border mb-3 p-0 rounded-md z-0">
@@ -116,14 +116,15 @@ function AccountDoctor(props) {
                                 <div
                                     className="absolute inset-0 bg-center bg-no-repeat opacity-25 filter grayscale"
                                     style={{
-                                        backgroundImage: `url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDUWB51JwETzUH9_F2hZJzagg0LKEV6dYi8g&s')`,
+                                        backgroundImage: item.avatar ? `url(${item.avatar})` : "none",
                                     }}
                                 />
+
                                 <div className="relative z-10 text-center">
                                     <div className="inline-block mr-2">
                                         <div className="w-14 h-14 rounded-full border-4 border-white overflow-hidden">
                                             <img
-                                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDUWB51JwETzUH9_F2hZJzagg0LKEV6dYi8g&s"
+                                                src={item.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDUWB51JwETzUH9_F2hZJzagg0LKEV6dYi8g&s"}
                                                 alt="Avatar of Tuan"
                                                 className="object-cover w-full h-full"
                                             />

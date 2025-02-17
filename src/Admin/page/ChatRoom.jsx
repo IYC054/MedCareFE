@@ -2,44 +2,66 @@ import React, { useState, useEffect, useRef } from 'react';
 import SockJS from 'sockjs-client';
 import { over } from 'stompjs';
 
+import Stomp from 'stompjs';
 const ChatRoom = () => {
   const [message, setMessage] = useState('');
   const [receivedMessages, setReceivedMessages] = useState([]);
-  const [stompClient, setStompClient] = useState(null);
+  // const [stompClient, setStompClient] = useState(null);
 
-  const messagesEndRef = useRef(null);  
+  const messagesEndRef = useRef(null);  // Ref to scroll to latest message
+
+
+  const socket = new SockJS('http://localhost:8080/ws'); // Kiểm tra URL có đúng không
+  const stompClient = Stomp.over(socket);
+  console.log("socket", socket);
+  console.log("stomp", stompClient);
+  socket.onopen = () => {
+    console.log("✅ WebSocket connected!");
+  };
+
+  socket.onerror = (error) => {
+    console.error("❌ WebSocket error:", error);
+  };
+
+  socket.onclose = (event) => {
+    console.log("❌ WebSocket closed:", event.reason);
+  };
+  stompClient.connect({}, (frame) => {
+    console.log('Connected: ' + frame);
+  }, (error) => {
+    console.error('Connection error:', error);
+  });
 
   // Connect to WebSocket when component mounts
-  useEffect(() => {
-    const socket = new SockJS("http://localhost:8080/ws", null, {
-        withCredentials: true,  // Cần thiết để gửi thông tin xác thực như cookies hoặc token
-      });
-      console.log("socket",socket);
-    const client = over(socket);
-    console.log("client",socket);
-    // Connect to WebSocket server
-    client.connect({}, (frame) => {
-      console.log('Connected: ' + frame);
+  // useEffect(() => {
+  //   const socket = new SockJS("http://localhost:9090/ws", null, {
+  //     withCredentials: true,  // Cần thiết để gửi thông tin xác thực như cookies hoặc token
+  //   });
+  //   const client = over(socket);
 
-      // Subscribe to message queue ("/user/queue/messages" là destination của bạn)
-      client.subscribe('/user/queue/messages', (messageOutput) => {
-        const receivedMessage = JSON.parse(messageOutput.body);
-        setReceivedMessages((prevMessages) => [
-          ...prevMessages,
-          receivedMessage,
-        ]);
-      });
-    });
+  //   // Connect to WebSocket server
+  //   client.connect({}, (frame) => {
+  //     console.log('Connected: ' + frame);
 
-    setStompClient(client); // Lưu stomp client để sử dụng sau
+  //     // Subscribe to message queue ("/user/queue/messages" là destination của bạn)
+  //     client.subscribe('/user/queue/messages', (messageOutput) => {
+  //       const receivedMessage = JSON.parse(messageOutput.body);
+  //       setReceivedMessages((prevMessages) => [
+  //         ...prevMessages,
+  //         receivedMessage,
+  //       ]);
+  //     });
+  //   });
 
-    return () => {
-      if (stompClient) {
-        stompClient.disconnect(); // Disconnect khi component unmount
-      }
-    };
-  }, []);
-console.log(">",stompClient)
+  //   setStompClient(client); // Lưu stomp client để sử dụng sau
+
+  //   return () => {
+  //     if (stompClient) {
+  //       stompClient.disconnect(); // Disconnect khi component unmount
+  //     }
+  //   };
+  // }, []);
+
   // Gửi tin nhắn
   const handleSendMessage = () => {
     if (!message.trim()) return;

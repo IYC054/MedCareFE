@@ -48,7 +48,7 @@ function DoctorDetail() {
                 <h1 className="text-3xl font-extrabold mb-6 text-[#da624a] text-center">Doctor Information</h1>
                 <div className="mb-6 flex items-center gap-8">
                     <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-[#da624a] shadow-lg">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDUWB51JwETzUH9_F2hZJzagg0LKEV6dYi8g&s" alt="Doctor Avatar" className="w-full h-full object-cover" />
+                        <img src={doctor.account.avatar || ""} alt="Doctor Avatar" className="w-full h-full object-cover" />
                     </div>
                     <div>
                         {doctor ? (

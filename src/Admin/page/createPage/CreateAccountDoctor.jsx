@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { getToken } from "../../../components/Authentication/authService";
+import { useNavigate } from "react-router-dom";
 
 function CreateAccountDoctor() {
     const token = getToken();
@@ -112,8 +113,8 @@ function CreateAccountDoctor() {
                         }
                     }
                 );
-
-                console.log("Doctor Created Successfully:", doctorResponse.data);
+                alert("Doctor Created Successfully");
+                natigave("/admin/doctor")
             } catch (error) {
                 console.error("Error creating doctor:", error.message);
             }
@@ -124,7 +125,8 @@ function CreateAccountDoctor() {
 
 
     };
-
+    
+    const natigave = useNavigate();
 
     return (
         <div className="max-h-full pb-3 flex " id="goup">
