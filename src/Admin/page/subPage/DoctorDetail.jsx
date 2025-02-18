@@ -4,15 +4,11 @@ import { useParams } from 'react-router-dom';
 import { getToken } from '../../../components/Authentication/authService';
 import DatePicker from 'react-datepicker';
 import { format } from 'date-fns';
-<<<<<<< HEAD
 import { enUS } from "date-fns/locale";
-=======
->>>>>>> 1d541e29c3f70fa5e75ddc5222dca8a915ccbe15
 function DoctorDetail() {
     const { id } = useParams(); // Lấy ID bác sĩ từ URL
     const [doctor, setDoctor] = useState(null);
     const [patientFile, setPatientFile] = useState([]);
-<<<<<<< HEAD
     const [selectedShift, setSelectedShift] = useState(null);
     const [workingHours, setWorkingHours] = useState([]);
     const [startDate, setStartDate] = useState(null);
@@ -195,107 +191,6 @@ function DoctorDetail() {
                     },
                 }),
             ]);
-=======
-    const [isOpen, setIsOpen] = useState(false);
-    const [loading, setLoading] = useState(true);
-
-    const [selectedShift, setSelectedShift] = useState(null);
-    const [selectedDates, setSelectedDates] = useState([]);
-
-    // Chuyển shift thành startTime & endTime
-    const shiftTimes = {
-        morning: { startTime: "08:00:00", endTime: "12:00:00" },
-        afternoon: { startTime: "13:00:00", endTime: "16:00:00" },
-        both: [
-            { startTime: "08:00:00", endTime: "12:00:00" },
-            { startTime: "13:00:00", endTime: "16:00:00" },
-        ],
-    };
-
-    // Khi chọn ca làm việc
-    const handleShiftSelect = (shift) => {
-        setSelectedShift(shift);
-    };
-
-    // Khi chọn ngày làm việc
-
-
-    const handleDateChange = (dates) => {
-        let formattedDates = [];
-
-        if (Array.isArray(dates)) {
-            // Nếu dates là một mảng, xử lý từng ngày trong mảng
-            formattedDates = dates.map(date => format(date, "yyyy-MM-dd"));
-        } else if (dates instanceof Date) {
-            // Nếu dates là một ngày đơn lẻ, định dạng nó
-            formattedDates = [format(dates, "yyyy-MM-dd")];
-        } else {
-            console.error("Invalid date format", dates);
-        }
-
-        console.log("Formatted Dates:", formattedDates);
-        setSelectedDates(formattedDates);
-    };
-
-    // Tạo danh sách lịch làm việc để gửi API
-    const handleSaveSchedule = () => {
-        if (!selectedShift || selectedDates.length === 0) {
-            alert("Vui lòng chọn ca làm việc và ngày làm!");
-            return;
-        }
-
-        const workSchedule = []; // Khởi tạo mảng workSchedule
-
-        selectedDates.forEach((date) => {
-            if (selectedShift === "both") {
-                shiftTimes.both.forEach((shift) => {
-                    workSchedule.push({
-                        workDate: date, 
-                        startTime: shift.startTime,
-                        endTime: shift.endTime,
-                        doctor_id: id,
-                    });
-                });
-            } else {
-                workSchedule.push({
-                    workDate: date, // Sử dụng date đã định dạng
-                    startTime: shiftTimes[selectedShift].startTime,
-                    endTime: shiftTimes[selectedShift].endTime,
-                    doctor_id: id,
-                });
-            }
-        });
-
-        console.log("Lịch làm việc gửi API:", workSchedule);
-        // TODO: Gọi API lưu dữ liệu vào hệ thống
-        setIsOpen(false);
-    };
-
-
-    const token = getToken();
-    useEffect(() => {
-        const fetchDoctorData = async () => {
-            try {
-                // Lấy danh sách bác sĩ
-                const response = await axios.get('http://localhost:8080/api/doctors');
-                const doctorData = response.data.find(doc => doc.account.id === parseInt(id));
-                if (doctorData) {
-                    setDoctor(doctorData);
-                    const patientfileResponse = await axios.get('http://localhost:8080/api/patientsfile');
-                    const patientsForDoctor = patientfileResponse.data.filter(
-                        pa => pa.doctor_id === parseInt(id)
-                    );
-                    setPatientFile(patientsForDoctor);
-                } else {
-                    console.error("Doctor not found for ID:", id);
-                }
-            } catch (error) {
-                console.error("Error fetching doctor data:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
->>>>>>> 1d541e29c3f70fa5e75ddc5222dca8a915ccbe15
 
             // Lọc bác sĩ theo id
             const doctorData = doctorResponse.data.find(doc => doc.account.id === parseInt(id));
@@ -323,7 +218,6 @@ function DoctorDetail() {
     }, [id]);
     console.log(doctor);
     console.log("patientFile", patientFile);
-<<<<<<< HEAD
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedShiftId, setSelectedShiftId] = useState(null);
     const [selectedWorkDate, setSelectedWorkDate] = useState(null);
@@ -370,8 +264,6 @@ function DoctorDetail() {
         setSelectedWorkDate(workDate);
         setIsModalOpen(true); // Mở modal chỉnh sửa
     };
-=======
->>>>>>> 1d541e29c3f70fa5e75ddc5222dca8a915ccbe15
     if (loading) {
         return <div className="text-center text-gray-600 mt-10">Loading data...</div>;
     }
@@ -586,19 +478,11 @@ function DoctorDetail() {
             </div>
             {isOpen && (
                 <div
-<<<<<<< HEAD
                     className="fixed inset-0 z-20 bg-black bg-opacity-50  backdrop-blur-sm flex items-center justify-center"
                     onClick={() => setIsOpen(false)}
                 >
                     <div
                         className="bg-white p-6 rounded-lg shadow-lg w-[700px]"
-=======
-                    className="fixed inset-0 z-20 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center"
-                    onClick={() => setIsOpen(false)}
-                >
-                    <div
-                        className="bg-white p-6 rounded-lg shadow-lg w-[500px]"
->>>>>>> 1d541e29c3f70fa5e75ddc5222dca8a915ccbe15
                         onClick={(e) => e.stopPropagation()}
                     >
                         <h2 className="text-2xl font-bold mb-4 text-center">Thiết lập giờ làm</h2>
@@ -607,19 +491,11 @@ function DoctorDetail() {
                         <div className="mb-6">
                             <label className="block text-gray-700 font-medium mb-2 text-lg">Chọn ca làm việc:</label>
                             <div className="flex gap-3 justify-center">
-<<<<<<< HEAD
                                 {["morning", "afternoon"].map((shift) => {
                                     const shiftLabel = {
                                         morning: "Ca sáng (08:00 - 12:00)",
                                         afternoon: "Ca chiều (13:00 - 16:00)",
 
-=======
-                                {["morning", "afternoon", "both"].map((shift) => {
-                                    const shiftLabel = {
-                                        morning: "Ca sáng (08:00 - 12:00)",
-                                        afternoon: "Ca chiều (13:00 - 16:00)",
-                                        both: "Cả 2 ca",
->>>>>>> 1d541e29c3f70fa5e75ddc5222dca8a915ccbe15
                                     }[shift];
 
                                     const isSelected = selectedShift === shift;
@@ -645,7 +521,6 @@ function DoctorDetail() {
                             <div className="mb-6">
                                 <label className="block text-gray-700 font-medium mb-2 text-lg">Chọn ngày làm việc:</label>
                                 <div className="border p-4 rounded-md bg-gray-100">
-<<<<<<< HEAD
                                     <div className="flex justify-between space-x-4">
                                         {/* Chọn ngày bắt đầu */}
                                         <div className="w-1/2">
@@ -686,17 +561,6 @@ function DoctorDetail() {
                                         <p><strong>Ngày bắt đầu:</strong> {formatDate(startDate)}</p>
                                         <p><strong>Ngày kết thúc:</strong> {formatDate(endDate)}</p>
                                     </div>
-=======
-                                    <DatePicker
-                                        selected={null}
-                                        onChange={handleDateChange}
-                                        highlightDates={selectedDates}
-                                        inline
-                                        multiple
-                                        minDate={new Date()} // Chỉ cho phép chọn từ ngày hôm nay trở đi
-                                    />
-
->>>>>>> 1d541e29c3f70fa5e75ddc5222dca8a915ccbe15
                                 </div>
                             </div>
                         )}
@@ -719,7 +583,6 @@ function DoctorDetail() {
                     </div>
                 </div>
             )}
-<<<<<<< HEAD
             {isOpenEdit && (
                 <div
                     className="fixed inset-0 z-20 bg-black bg-opacity-50  backdrop-blur-sm flex items-center justify-center"
@@ -827,8 +690,6 @@ function DoctorDetail() {
                     </div>
                 </div>
             )}
-=======
->>>>>>> 1d541e29c3f70fa5e75ddc5222dca8a915ccbe15
         </div>
     );
 }
