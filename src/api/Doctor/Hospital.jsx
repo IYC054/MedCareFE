@@ -1,5 +1,4 @@
 import axios from "axios";
-import token from "../token";
 
 const GetHospital = async () => {
   try {
