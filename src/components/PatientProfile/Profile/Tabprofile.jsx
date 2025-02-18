@@ -14,6 +14,7 @@ import {
   profilebyaccount,
 } from "../../../api/Profile/profilebyaccount";
 import { AppContext } from "../../Context/AppProvider";
+import { enqueueSnackbar } from "notistack";
 
 function Tabprofile() {
   const [dataProfile, setDataProfile] = useState([]);
@@ -31,7 +32,15 @@ function Tabprofile() {
     } else {
       const res = await PatientProfileByProfileId(patientfileid);
       console.log("res: ", res);
-      setDataPatientProfile([res]); // Đảm bảo có dữ liệu để render
+      if (!res || res.length === 0) {
+        enqueueSnackbar("Chưa có hồ sơ bệnh án", {
+          variant: "warning",
+          autoHideDuration: 3000,
+        });
+        return;
+      }
+      setDataPatientProfile(Array.isArray(res) ? res : [res]);
+      // Đảm bảo có dữ liệu để render
       setPopup(true);
     }
     console.log("popup state: ", popup);
@@ -160,7 +169,7 @@ function Tabprofile() {
                     id="description"
                     className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                     rows="4"
-                    value={item[0].description}
+                    value={item[0]?.description || ""}
                     readOnly="true"
                     placeholder="Nhập mô tả..."
                   />

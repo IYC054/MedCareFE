@@ -52,6 +52,8 @@ function TabAppointment(props) {
                         ? "bg-[#F1C40F]"
                         : app.status == "Hoàn tiền"
                         ? "bg-[#C0392B]"
+                        : app.status == "Chưa thanh toán"
+                        ? "bg-[#F1C40F]"
                         : ""
                     } rounded-xl text-[#fff] font-medium`}
                   >
