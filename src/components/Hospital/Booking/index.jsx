@@ -6,7 +6,7 @@ import React, {
   useState,
 } from "react";
 import Breadcrumbs from "../Breadcrumbs";
-import { FaBuilding, FaRegCalendarAlt, FaStethoscope } from "react-icons/fa";
+import { FaBuilding, FaRegCalendarAlt, FaStethoscope, FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import { FaMagnifyingGlass, FaUserDoctor } from "react-icons/fa6";
 import { BsCalendar2DateFill, BsGenderAmbiguous } from "react-icons/bs";
 import { MdAttachMoney } from "react-icons/md";
@@ -25,6 +25,7 @@ import {
 } from "../../../api/Doctor/specialty";
 import { checkslotAppointment } from "../../../api/Doctor/appointment";
 import { enqueueSnackbar } from "notistack";
+import axios from "axios";
 
 const faketime2 = [
   { id: 1, settime: "13:30 - 14:30" },
@@ -166,14 +167,14 @@ function Booking() {
   const filteredDoctors =
     queryType === "doctor"
       ? dataDoctor.filter((doctor) => {
-          const name = doctor.account.name.toLowerCase();
-          return name.includes(searchQuery.toLowerCase());
-        })
+        const name = doctor.account.name.toLowerCase();
+        return name.includes(searchQuery.toLowerCase());
+      })
       : dataDoctor.filter((doctor) => {
-          return doctor.specialties.some((specialty) =>
-            specialty.name.toLowerCase().includes(searchQuery.toLowerCase())
-          );
-        });
+        return doctor.specialties.some((specialty) =>
+          specialty.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      });
   useEffect(() => {
     const fetchSpecialty = async () => {
       const data = await getallSpecialty();
@@ -191,7 +192,7 @@ function Booking() {
       if (filterDoctorbyspecialtyId.length > 0) {
         const randomDoctor =
           filterDoctorbyspecialtyId[
-            Math.floor(Math.random() * filterDoctorbyspecialtyId.length)
+          Math.floor(Math.random() * filterDoctorbyspecialtyId.length)
           ];
         console.log("randomDoctor" + JSON.stringify(randomDoctor.account.name));
         setdoctorId(randomDoctor.id);
@@ -202,6 +203,58 @@ function Booking() {
     }
   }, [typeselect, dataDoctor, txnSpecialtyId]);
 
+  const [doctorRatings, setDoctorRatings] = useState({});
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/api/rates")
+      .then((response) => {
+        const data = response.data;
+        const ratingsMap = {};
+
+        data.forEach((rating) => {
+          const doctorId = rating.doctor_id.id;
+          const rate = rating.rate;
+
+          if (!ratingsMap[doctorId]) {
+            ratingsMap[doctorId] = { totalRate: 0, count: 0 };
+          }
+
+          ratingsMap[doctorId].totalRate += rate;
+          ratingsMap[doctorId].count += 1;
+        });
+
+        const calculatedRatings = {};
+        Object.keys(ratingsMap).forEach((doctorId) => {
+          calculatedRatings[doctorId] = (
+            ratingsMap[doctorId].totalRate / ratingsMap[doctorId].count
+          ).toFixed(1);
+        });
+
+        setDoctorRatings(calculatedRatings);
+      })
+      .catch((error) => console.error("Lỗi khi gọi API đánh giá:", error));
+  }, []);
+
+  // Hàm render số sao với màu sắc phù hợp
+  const renderStars = (rating) => {
+    const fullStars = Math.floor(rating); // Số sao vàng đầy đủ ⭐
+    const halfStar = rating % 1 !== 0; // Kiểm tra có nửa sao không ⭐️½
+    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0); // Số sao xám ⭐
+
+    return (
+      <span className="flex">
+        {[...Array(fullStars)].map((_, i) => (
+          <FaStar key={i} className="text-yellow-400" />
+        ))}
+        {halfStar && <FaStarHalfAlt className="text-yellow-400" />}
+        {[...Array(emptyStars)].map((_, i) => (
+          <FaRegStar key={i} className="text-gray-300" />
+        ))}
+      </span>
+    );
+  };
+
+  console.log(doctorRatings)
   // useEffect(() => {
   //   console.log("txnSpecialtyId: " + txnSpecialtyId);
   // }, [txnSpecialtyId])
@@ -486,17 +539,15 @@ function Booking() {
                   <div className="w-full h-[435px] bg-[#fff] px-4 pt-10 rounded-lg overflow-hidden">
                     <div className="flex items-center gap-4 mb-2">
                       <span
-                        className={`font-medium cursor-pointer ${
-                          queryType === "doctor" ? "text-[#00e0ff]" : ""
-                        }`}
+                        className={`font-medium cursor-pointer ${queryType === "doctor" ? "text-[#00e0ff]" : ""
+                          }`}
                         onClick={() => setQueryType("doctor")}
                       >
                         Tìm bác sĩ
                       </span>
                       <span
-                        className={`font-medium cursor-pointer ${
-                          queryType === "specialty" ? "text-[#00e0ff]" : ""
-                        }`}
+                        className={`font-medium cursor-pointer ${queryType === "specialty" ? "text-[#00e0ff]" : ""
+                          }`}
                         onClick={() => setQueryType("specialty")}
                       >
                         Tìm chuyên khoa
@@ -529,28 +580,27 @@ function Booking() {
                       {filteredDoctors.map((item, index) => (
                         <div
                           key={index}
-                          className="w-full bg-white p-4 list-none text-[#053353] mb-4 rounded-xl border-soid border-[1px] border-[#00e0ff] cursor-pointer"
+                          className="w-full bg-white p-4 list-none text-[#053353] mb-4 rounded-xl border-solid border-[1px] border-[#00e0ff] cursor-pointer"
                           id="goup"
-                          onClick={() =>
-                            HandleChooseDoctor(item.account.name, item.id)
-                          }
+                          onClick={() => HandleChooseDoctor(item.account.name, item.id)}
                         >
                           <li className="w-full text-[#ffb54a] text-[20px] flex gap-2 items-center mb-2">
                             <FaUserDoctor />
-                            <span className="font-medium text-[18px]">
-                              BS. {item.account.name}
-                            </span>
+                            <span className="font-medium text-[18px]">BS. {item.account.name}</span>
+                            <span className="text-[14px] flex items-center gap-2">
+                             
+                             {doctorRatings[item.id] ? renderStars(parseFloat(doctorRatings[item.id])) : "Chưa có đánh giá"}
+                           </span>
                           </li>
-                          <li className="w-full text-[18px] flex gap-2 items-center mb-2 ">
+                         
+                          <li className="w-full text-[18px] flex gap-2 items-center mb-2">
                             <BsGenderAmbiguous />
-                            <span className="text-[14px]">
-                              Giới Tính : {item.account.gender}
-                            </span>
+                            <span className="text-[14px]">Giới Tính: {item.account.gender}</span>
                           </li>
-                          <li className="w-full text-[18px] flex gap-2 items-center mb-2 ">
+                          <li className="w-full text-[18px] flex gap-2 items-center mb-2">
                             <FaStethoscope />
                             <span className="text-[14px]">
-                              Chuyên khoa :{" "}
+                              Chuyên khoa:{" "}
                               {item.specialties.map((specialty, index) => (
                                 <span key={index}>
                                   {specialty.description}

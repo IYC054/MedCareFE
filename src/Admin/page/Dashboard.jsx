@@ -28,8 +28,11 @@ function Dashboard() {
         setActiveChart2(tab);
     };
     const [user, setUser] = useState([])
+    const [doctor, setDoctor] = useState([])
+    const [rate, setRate] = useState([])
     const [book, setBook] = useState([])
     const [money, setMoney] = useState([])
+    const [doctorAvgRates, setDoctorAvgRates] = useState({});
     useEffect(() => {
         const fetch = async () => {
 
@@ -42,6 +45,89 @@ function Dashboard() {
                 account.role.some(r => r.name === "PATIENTS"));
             setUser(filteredUsers);
             console.log("ueser", user);
+
+            const responseRate = await axios.get('http://localhost:8080/api/rates', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            // Lấy tất cả các đánh giá
+            const rates = responseRate.data;
+
+            // Bước 1: Nhóm các đánh giá theo doctor_id
+            const doctorRatings = {};
+
+            rates.forEach(rate => {
+                const doctorId = rate.doctor_id.id; // Lấy doctor_id từ dữ liệu
+                if (!doctorRatings[doctorId]) {
+                    doctorRatings[doctorId] = {
+                        totalRate: 0,
+                        count: 0
+                    };
+                }
+
+                // Cộng điểm vào tổng điểm và đếm số lượng đánh giá
+                doctorRatings[doctorId].totalRate += rate.rate;
+                doctorRatings[doctorId].count += 1;
+            });
+
+            // Bước 2: Tính điểm trung bình cho mỗi bác sĩ và giới hạn trong phạm vi 1 - 5
+            const doctorAvgRates = Object.keys(doctorRatings).map(doctorId => {
+                const { totalRate, count } = doctorRatings[doctorId];
+                let avgRate = totalRate / count;
+
+                // Giới hạn điểm trung bình trong phạm vi 1 - 5
+                avgRate = Math.max(1, Math.min(5, avgRate));
+
+                return {
+                    doctorId,
+                    avgRate: Math.round(avgRate * 10) / 10
+                };
+            });
+
+            setDoctorAvgRates(doctorAvgRates);
+            console.log(doctorAvgRates);
+            // Bước 3: Lấy thông tin tài khoản bác sĩ theo doctorId
+            const doctorIds = doctorAvgRates.map(rate => rate.doctorId); // Lấy danh sách doctorId từ doctorAvgRates
+
+            // Tạo một hàm để gọi API cho từng bác sĩ
+            const fetchDoctorData = async (doctorId) => {
+                try {
+                    const response = await axios.get(`http://localhost:8080/api/account/${doctorId}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    });
+                    return response.data; // Trả về thông tin bác sĩ
+                } catch (error) {
+                    console.error("Error fetching doctor data", error);
+                    return null; // Nếu có lỗi, trả về null
+                }
+            };
+            const getDoctors = async () => {
+                const doctorsData = [];
+
+                for (let doctorId of doctorIds) {
+                    const doctorData = await fetchDoctorData(doctorId); // Gọi API cho từng bác sĩ
+                    if (doctorData) {
+                        doctorsData.push(doctorData); // Thêm thông tin bác sĩ vào danh sách
+                    }
+                }
+                setDoctor(doctorsData);
+                console.log("Doctors data with avg rate:", doctorsData);
+            };
+            getDoctors();
+            // console.log(responseDoc.data.result);
+            // const filteredDocs = responseDoc.data.result.filter(account =>
+            //     account.role.some(r => r.name === "DOCTOR") &&
+            //     doctorAvgRates.some(rate => rate.doctorId === account.id)
+            // );
+
+            // setDoctor(filteredDocs);
+            // console.log("Doctors", filteredDocs);
+
+
             const responseBook = await axios.get('http://localhost:8080/api/appointment', {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -208,25 +294,49 @@ function Dashboard() {
                                             </div>
                                         </div>
                                         <h6 className='text-sm text-gray-500 font-semibold uppercase'>
-                                            Người dùng hàng đầu
+                                            Bác sĩ được đánh giá
                                         </h6>
-                                        <div className='space-y-2 max-h-40 overflow-y-auto pt-2 '>
-                                            {user.map((user, index) => (
-                                                <div key={index} className='flex items-center justify-between space-x-3'>
-                                                    <div className='flex' >
-                                                        <img
-                                                            className='rounded-full w-10 h-10 m-2'
-                                                            src={user.avatar}
-                                                            alt="Avatar"
-                                                        />
-                                                        <div>
-                                                            <div className="font-semibold">{user.name}</div>
-                                                            
+                                        <div className="space-y-2 max-h-40 overflow-y-auto pt-2">
+                                            {doctor
+                                                .sort((a, b) => {
+                                                    // Lấy điểm trung bình của bác sĩ từ doctorAvgRates
+                                                    const avgRateA = doctorAvgRates.find(rate => rate.doctorId === String(a.id))?.avgRate || 0;
+                                                    const avgRateB = doctorAvgRates.find(rate => rate.doctorId === String(b.id))?.avgRate || 0;
+
+
+                                                    // Sắp xếp theo điểm đánh giá giảm dần
+                                                    return avgRateB - avgRateA;
+                                                })
+
+                                                .map((doctor, index) => {
+                                                    // Tìm điểm trung bình của bác sĩ
+                                                    const avgRate = doctorAvgRates.find(rate => rate.doctorId === String(doctor.id))?.avgRate || 'N/A';
+                                                    console.log("doctorAvgRates:", doctorAvgRates);
+                                                    console.log("doctor list:", doctor);
+
+                                                    return (
+                                                        <div key={index} className="flex items-center justify-between space-x-3">
+                                                            <div className="flex">
+                                                                <img
+                                                                    className="rounded-full w-10 h-10 m-2"
+                                                                    src={doctor.avatar || "https://img.freepik.com/premium-vector/doctor-icon-avatar-white_136162-58.jpg"} // Default placeholder image
+                                                                    alt="Avatar"
+                                                                />
+                                                                <div>
+                                                                    <div className="font-semibold">{doctor.name}</div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="ml-24 font-semibold">
+                                                                {avgRate !== 'N/A' ? (
+                                                                    <div>{avgRate} ⭐</div> // Hiển thị điểm trung bình
+                                                                ) : (
+                                                                    <div>Chưa có đánh giá</div>
+                                                                )}
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div className="ml-24 font-semibold">129</div>
-                                                </div>
-                                            ))}
+                                                    );
+                                                })}
+
                                         </div>
                                     </div>
                                 </div>
