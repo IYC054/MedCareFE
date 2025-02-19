@@ -78,19 +78,19 @@ function Transactions() {
 
                 // Calculate metrics
                 const totalRevenue = limitedTransactions.reduce(
-                    (sum, item) => (item.status === 'Hoàn thành' ? sum + item.amount : sum),
+                    (sum, item) => (item.status === 'Đã thanh toán' ? sum + item.amount : sum),
                     0
                 );
                 const successfulTransactions = limitedTransactions.filter(
-                    (item) => item.status === 'Hoàn thành'
+                    (item) => item.status === 'Đã thanh toán'
                 ).length;
 
                 const totalfail = limitedTransactions.reduce(
-                    (sum, item) => (item.status === 'Thất bại' ? sum + item.amount : sum),
+                    (sum, item) => (item.status === 'Chưa thanh toán' ? sum + item.amount : sum),
                     0
                 );
                 const failedTransactions = limitedTransactions.filter(
-                    (item) => item.status === 'Thất bại'
+                    (item) => item.status === 'Chưa thanh toán'
                 ).length;
 
                 const totalpending = limitedTransactions.reduce(
@@ -257,7 +257,7 @@ function Transactions() {
 
 
                 const filteredTransactions = transactionsFromAPI.filter((item) =>
-                    ["Hoàn thành", "Thất bại", "Chờ xử lý", "Hoàn tiền"].includes(item.status)
+                    ["Đã thanh toán", "Chưa thanh toán", "Chờ xử lý", "Hoàn tiền"].includes(item.status)
                 );
 
 
@@ -265,19 +265,19 @@ function Transactions() {
 
 
                 const totalRevenue = limitedTransactions.reduce(
-                    (sum, item) => (item.status === "Hoàn thành" ? sum + item.amount : sum),
+                    (sum, item) => (item.status === "Đã thanh toán" ? sum + item.amount : sum),
                     0
                 );
                 const successfulTransactions = limitedTransactions.filter(
-                    (item) => item.status === "Hoàn thành"
+                    (item) => item.status === "Đã thanh toán"
                 ).length;
 
                 const totalfail = limitedTransactions.reduce(
-                    (sum, item) => (item.status === "Thất bại" ? sum + item.amount : sum),
+                    (sum, item) => (item.status === "Chưa thanh toán" ? sum + item.amount : sum),
                     0
                 );
                 const failedTransactions = limitedTransactions.filter(
-                    (item) => item.status === "Thất bại"
+                    (item) => item.status === "Chưa thanh toán"
                 ).length;
 
                 const totalpending = limitedTransactions.reduce(
@@ -444,9 +444,9 @@ function Transactions() {
                                 onChange={(e) => setStatus(e.target.value)}
                             >
                                 <option value="">All</option>
-                                <option value="Hoàn thành">Hoàn thành</option>
+                                <option value="Đã thanh toán">Đã thanh toán</option>
                                 <option value="Chờ xử lý">Chờ xử lý</option>
-                                <option value="Thất bại">Thất bại</option>
+                                <option value="Chưa thanh toán">Chưa thanh toán</option>
                                 <option value="Hoàn tiền">Hoàn tiền</option>
                             </select>
                         </div>
@@ -542,7 +542,7 @@ function Transactions() {
                 </div>
                 <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
                     <div className="text-sm font-medium text-gray-900 border-1 bg-[#ffebe9] rounded-lg p-3">
-                        <i className="bi bi-exclamation-circle px-3 text-red-700 text-lg"></i>GIAO DỊCH THẤT BẠI
+                        <i className="bi bi-exclamation-circle px-3 text-red-700 text-lg"></i>GIAO DỊCH Chưa thanh toán
                     </div>
                     <div className='flex align-center justify-between'>
                         <div className="text-md text-gray-600 pl-4 pr-4 text-center py-3">
@@ -604,7 +604,7 @@ function Transactions() {
                                             <td className="p-4 text-sm">{t.amount} ₫</td>
                                             <td className="p-4">
                                                 <span
-                                                    className={`px-2 py-1 rounded text-sm ${t.status === 'Hoàn thành'
+                                                    className={`px-2 py-1 rounded text-sm ${t.status === 'Đã thanh toán'
                                                         ? "bg-green-100 text-green-800"
                                                         : t.status === "Chờ xử lý"
                                                             ? "bg-yellow-100 text-yellow-800"

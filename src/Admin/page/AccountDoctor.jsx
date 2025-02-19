@@ -13,14 +13,12 @@ function AccountDoctor(props) {
     useEffect(() => {
         const fetchdoctorAccounts = async () => {
 
-            const response = await axios.get('http://localhost:8080/api/account', {
+            const response = await axios.get('http://localhost:8080/api/doctors', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-            const filtereddoctors = response.data.result.filter(account =>
-                account.role.some(r => r.name === "DOCTOR")
-            );
+            const filtereddoctors = response.data
             setdoctor(filtereddoctors);
 
         };
@@ -36,9 +34,9 @@ function AccountDoctor(props) {
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const doctorsPerPage = 10;
-
+    // console.log("ASDSAA" + JSON.stringify(doctor[0].account.name));
     const filtereddoctors = doctor.filter(doctor =>
-        doctor.name.toLowerCase().includes(searchTerm.toLowerCase())
+        doctor.account.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     const totalPages = Math.ceil(filtereddoctors.length / doctorsPerPage);
@@ -85,7 +83,7 @@ function AccountDoctor(props) {
                                     className="absolute inset-0 bg-center bg-no-repeat opacity-25 filter grayscale"
                                     style={{
                                         backgroundImage: item.avatar
-                                            ? `url(${item.avatar})`
+                                            ? `url(${item.account.avatar})`
                                             : "url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq89CiAzo83k2OJHzwV4hsrgE7Cm0sAWlkpw&s)"
                                     }}
                                 />
@@ -100,7 +98,7 @@ function AccountDoctor(props) {
                                         </div>
                                     </div>
                                     <div>
-                                        <h5 className="text-white text-xl font-medium">{item.name}</h5>
+                                        <h5 className="text-white text-xl font-medium">{item.account.name}</h5>
                                     </div>
                                     <div className="flex justify-center space-x-2 mt-2" onClick={() => handleDetailClick(item.id)}>
                                         <button className="btn btn-info btn-sm text-white">View Profile</button>

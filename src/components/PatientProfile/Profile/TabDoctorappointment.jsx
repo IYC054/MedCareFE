@@ -21,7 +21,7 @@ function TabDoctorappointment() {
   // const [selectedPatientId, setSelectedPatientId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [appointmentsPerPage] = useState(7);
-  const statusoption = ["Xác nhận", "Huỷ bỏ", "Chờ xử lý", "Thành công"];
+  const statusoption = ["Xác nhận", "Huỷ bỏ", "Chờ xử lý", "Hoàn thành"];
   const fetchAppointments = async () => {
     try {
       const doctorId = await getDoctorbyId(User?.id);
@@ -70,7 +70,7 @@ function TabDoctorappointment() {
           {},
           {
             headers: {
-              A: `Bearer ${getToken()}`,
+              Authorization: `Bearer ${getToken()}`,
               "Content-Type": "application/json",
             },
           }

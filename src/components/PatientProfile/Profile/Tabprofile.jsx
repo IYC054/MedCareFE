@@ -19,6 +19,7 @@ import { AppContext } from "../../Context/AppProvider";
 import { enqueueSnackbar } from "notistack";
 import RateDoctor from "../../../api/Profile/RateDoctor";
 import axios from "axios";
+import { getpatientbyaccountid } from "../../../api/Doctor/patient";
 
 function Tabprofile() {
   const [dataProfile, setDataProfile] = useState([]);
@@ -91,8 +92,8 @@ function Tabprofile() {
 
       try {
         const result = await DoctorByProfileId(resid);
-        console.log("res", result.account.id);
-        setDoctorId(result.account.id);
+        console.log("res", result.id);
+        setDoctorId(result.id);
         setDoctor(result.account);
       } catch (error) {
         console.error("Lỗi khi lấy doctorId:", error);
@@ -111,8 +112,10 @@ function Tabprofile() {
       return;
     }
     try {
-      await RateDoctor(description, rating, doctorId, userid);
-      console.log({ description, rating, doctorId, userid })
+      const result = await getpatientbyaccountid(User?.id);
+
+      await RateDoctor(description, rating, doctorId, result[0].id);
+      // console.log({ description, rating, doctorId, result[0].id })
       alert(" 🎉 Cảm ơn bạn đã đánh giá!");
       setShowRatingCard(!showRatingCard);
       
