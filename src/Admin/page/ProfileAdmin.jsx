@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
-
+import React, { useContext, useState } from 'react';
+import { AppContext } from '../../components/Context/AppProvider';
 function ProfileAdmin() {
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [avatar, setAvatar] = useState("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDUWB51JwETzUH9_F2hZJzagg0LKEV6dYi8g&s");
+    const [image, setAvatar] = useState("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDUWB51JwETzUH9_F2hZJzagg0LKEV6dYi8g&s");
     const [email, setEmail] = useState("tuann@gmail.com");
 
+    const { User } = useContext(AppContext);
+    console.log(User);
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
     };
@@ -36,7 +38,7 @@ function ProfileAdmin() {
                 <div
                     className="absolute inset-0 bg-cover bg-center opacity-60"
                     style={{
-                        backgroundImage: `url('${avatar}')`,
+                        backgroundImage: `url('${User.avatar || image}')`,
                         backgroundSize: 'cover',
                     }}
                 ></div>
@@ -46,7 +48,7 @@ function ProfileAdmin() {
                         <div className="  w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-lg relative group" onClick={() => document.getElementById("avatarInput").click()}>
 
                             <img
-                                src={avatar}
+                                src={User.avatar || image}
                                 alt="Avatar"
                                 className="object-cover w-full h-full cursor-pointer"
 
@@ -65,7 +67,7 @@ function ProfileAdmin() {
                             </div>
                         </div>
                         <div>
-                            <h1 className="text-3xl font-semibold text-white">Tuan</h1>
+                            <h1 className="text-3xl font-semibold text-white">{User.name}</h1>
                             <span className="text-md text-gray-200">Admin</span>
                         </div>
                     </div>
@@ -79,20 +81,12 @@ function ProfileAdmin() {
                     <div className="bg-white rounded-md p-6 shadow-xl">
                         <h2 className="text-lg font-bold text-gray-700 mb-4">Account Info</h2>
                         <div className="flex space-x-4 mb-6">
-                            <div className="w-1/2">
-                                <label className="block text-sm text-gray-700 mb-1">Username:</label>
-                                <input
-                                    type="text"
-                                    value="tuanlk42"
-                                    readOnly
-                                    className="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-md border border-gray-300"
-                                />
-                            </div>
-                            <div className="w-1/2">
+                          
+                            <div className="w-full">
                                 <label className="block text-sm text-gray-700 mb-1">Email:</label>
                                 <input
                                     type="email"
-                                    value={email}
+                                    value={User.email}
                                     onChange={handleEmailChange}
                                     className="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-md border border-gray-300"
                                 />

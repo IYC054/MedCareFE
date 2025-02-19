@@ -1,18 +1,34 @@
-import { useEffect, useState } from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Sidebar from '../Admin/Sidebar';
 import './scss/rootLayoutAdmin.scss';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { AppContext } from "../components/Context/AppProvider";
+import axios from 'axios';
+import { getToken } from '../components/Authentication/authService';
+import { logout } from '../components/Authentication/authService';
 // import 'bootstrap/dist/css/bootstrap.min.css'
 const RootLayoutAdmin = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [activeMenu, setActiveMenu] = useState('Analytics');
   const [isClosed, setIsClosed] = useState(window.innerWidth <= 780);
   const [profile, setProfife] = useState(false)
-
+  const { User } = useContext(AppContext);
+  const [feedback,setFeedbackBox] = useState([]);
   const showProfile = () => {
     setProfife(!profile);
   }
+  const token = getToken();
+  useEffect(() => {
+    const fetchFeedbackBox = async () => {
+        const response = await axios.get('http://localhost:8080/api/feedbacks/', {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        const newFeedbacks = response.data.filter(feedback => feedback.status === 'NEW');
+        setFeedbackBox(newFeedbacks);
+    };
+    fetchFeedbackBox();
+}, []);
   useEffect(() => {
     const handleResize = () => {
       setIsClosed(window.innerWidth <= 780);
@@ -25,8 +41,13 @@ const RootLayoutAdmin = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+  const navigator = useNavigate();
+  const Logout =() => {
+    logout();
+    navigator("/");
+    window.location.reload();
+  }
   const location = useLocation();
-
   let title = '';
   let description = '';
 
@@ -100,14 +121,10 @@ const RootLayoutAdmin = () => {
           </div>
           <div className='app-header-right'>
             <div className='header-btn-lg pr-0'>
+
               <div className='dropdown'>
                 <button className='p-0 mr-2 btn btn-link'>
-                  <i className="bi bi-menu-up"></i>
-                </button>
-              </div>
-              <div className='dropdown'>
-                <button className='p-0 mr-2 btn btn-link'>
-                  <i className="bi bi-bell"></i>
+                  <i className="bi bi-bell-fill"></i>
                 </button>
               </div>
             </div>
@@ -117,10 +134,10 @@ const RootLayoutAdmin = () => {
                 <div className='widget-content-wrapper'>
                   <div className='widget-content-left'>
                     <div className='btn-group ' onClick={showProfile}>
-                      <a className='ac' >
+                      <a className='ac'>
                         <img
                           className='rounded'
-                          src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDUWB51JwETzUH9_F2hZJzagg0LKEV6dYi8g&s' />
+                          src={User.avatar || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDUWB51JwETzUH9_F2hZJzagg0LKEV6dYi8g&s'} />
                         <i className='bi bi-chevron-compact-down' ></i>
                       </a>
                     </div>
@@ -133,16 +150,16 @@ const RootLayoutAdmin = () => {
                         >
                           <img
                             className="w-12 h-12 rounded-full mr-4"
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDUWB51JwETzUH9_F2hZJzagg0LKEV6dYi8g&s"
+                            src={User.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDUWB51JwETzUH9_F2hZJzagg0LKEV6dYi8g&s"}
                             alt="User Avatar"
                           />
                           <div>
-                            <p className="font-medium text-lg">Tuuannat</p>
-                            <p className="text-sm">Profile setting</p>
+                            <p className="font-medium text-lg">{User.name}</p>
+                            <p className="text-sm">{User.email}</p>
                           </div>
                           <button
                             className="ml-auto bg-gray-800 text-white px-4 py-2 rounded-full hover:bg-gray-700"
-                            onClick={() => console.log('Logout Clicked')}
+                            onClick={Logout}
                           >
                             Logout
                           </button>
@@ -151,29 +168,21 @@ const RootLayoutAdmin = () => {
                         <div className="p-4">
                           <div className="text-gray-800 font-medium">My Account</div>
                           <ul className="list-none space-y-3 mt-2">
-                            <li>
-                              <a href="#" className="text-gray-500">Recover Password</a>
-                            </li>
+{/* 
                             <li>
                               <Link to="/admin/profileadmin" className="text-gray-500 flex justify-between items-center">
                                 Settings
-                                <span className="text-xs bg-green-500 text-white py-1 px-2 rounded-full ml-2">NEW</span>
+
+                              </Link>
+                            </li> */}
+                            <li>
+                              <Link to="/admin/feedback" className="text-gray-500 flex justify-between items-center">
+                                Feedback
+                                <span className="text-xs bg-yellow-500 text-white py-1 px-2 rounded-full ml-2">{feedback.length}</span>
                               </Link>
                             </li>
-                            <li>
-                              <a href="#" className="text-gray-500 flex justify-between items-center">
-                                Messages
-                                <span className="text-xs bg-yellow-500 text-white py-1 px-2 rounded-full ml-2">512</span>
-                              </a>
-                            </li>
                           </ul>
-
-                          {/* Các nút */}
-                          <div className="mt-4">
-                            <button className="bg-orange-500 text-white py-2 px-4 w-full rounded-full hover:bg-orange-600">
-                              Open Messages
-                            </button>
-                          </div>
+                         
                         </div>
                       </div>
                     )}

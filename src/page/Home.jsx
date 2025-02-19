@@ -687,7 +687,7 @@ const Home = () => {
             {/* phan 4 */}
             <div className="w-1/3  ">
               <ul className="text-sm">
-                <li className="flex gap-1  mt-3 -ml-10 bg-green-300">
+                <li className="flex gap-1  mt-3 -ml-10">
                   <div>
                     <img
                       className="w-20"
@@ -703,8 +703,8 @@ const Home = () => {
                     </p>
                   </div>
                 </li>
-                <li className="flex gap-5 w-full  mt-9 ml-2 bg-red-500">
-                <div className="w-40 h-auto bg-red-600 ">
+                <li className="flex gap-5 w-full  mt-9 ml-2">
+                <div className="w-40 h-auto ">
                     <img
                      
                       src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fprod-partner%2Fbae71420-d9ef-48b7-91a9-0151c50c73da-fcf47d13-a9c5-4be8-aa6c-4d4e9b162c19-icon_dang_ky.svg.svg&w=1920&q=75"
@@ -717,7 +717,7 @@ const Home = () => {
                   </div>
                 </li>
                 <li className="flex gap-1 mt-16 -ml-6">
-                  <div className="w-40 h-auto bg-red-600 ">
+                  <div className="w-40 h-auto ">
                     <img
                       className="w-20"
                       src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn-pkh.longvan.net%2Fprod-partner%2Fbae71420-d9ef-48b7-91a9-0151c50c73da-fcf47d13-a9c5-4be8-aa6c-4d4e9b162c19-icon_dang_ky.svg.svg&w=1920&q=75"
@@ -733,11 +733,6 @@ const Home = () => {
             </div>
           </div>
           <div className="p-9"></div>
-         
-        
-          <div onClick={()=>{setisShow(true);setContent(<Advertisement/>)}}>Nghi</div>
-      
-         
         </div>
       </div>
     </div>

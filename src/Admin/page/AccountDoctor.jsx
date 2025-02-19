@@ -26,26 +26,7 @@ function AccountDoctor(props) {
         };
         fetchdoctorAccounts();
     }, []);
-    const [specialties, setSpecialties] = useState([]);
-    const [selectedSpecialty, setSelectedSpecialty] = useState('');
-
-    useEffect(() => {
-        const fetchSpecialties = async () => {
-            try {
-                const response = await axios.get('http://localhost:8080/api/specialty');
-                setSpecialties(response.data);
-            } catch (error) {
-                console.error("Error fetching specialties:", error);
-            }
-        };
-
-        fetchSpecialties();
-    }, []); // Fetch data once when the component mounts
-    console.log(specialties);
-    // Handle specialty selection
-    const handleSpecialtyChange = (e) => {
-        setSelectedSpecialty(e.target.value);
-    };
+   
     const navigate = useNavigate();
 
     const handleDetailClick = (id) => {
@@ -80,20 +61,7 @@ function AccountDoctor(props) {
                     </Link>
                 </div>
                 <div className='flex'>
-                    <div className='place-content-center'>
-                        <select
-                            className="form-select px-5 py-3 border rounded-md"
-                            value={selectedSpecialty}
-                            onChange={handleSpecialtyChange}
-                        >
-                            <option value="">Chọn một bộ phận</option>
-                            {specialties.map((specialty) => (
-                                <option key={specialty.id} value={specialty.id}>
-                                    {specialty.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+                   
                     <div className='input-group px-4 py-6 flex' >
                         <button className='input-group-prepend  border px-3 py-2 rounded-l-md bg-[#faeae7]'>
                             <div className='input-group-text'>
@@ -116,15 +84,16 @@ function AccountDoctor(props) {
                                 <div
                                     className="absolute inset-0 bg-center bg-no-repeat opacity-25 filter grayscale"
                                     style={{
-                                        backgroundImage: item.avatar ? `url(${item.avatar})` : "none",
+                                        backgroundImage: item.avatar
+                                            ? `url(${item.avatar})`
+                                            : "url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq89CiAzo83k2OJHzwV4hsrgE7Cm0sAWlkpw&s)"
                                     }}
                                 />
-
                                 <div className="relative z-10 text-center">
                                     <div className="inline-block mr-2">
                                         <div className="w-14 h-14 rounded-full border-4 border-white overflow-hidden">
                                             <img
-                                                src={item.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDUWB51JwETzUH9_F2hZJzagg0LKEV6dYi8g&s"}
+                                                src={item.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq89CiAzo83k2OJHzwV4hsrgE7Cm0sAWlkpw&s"}
                                                 alt="Avatar of Tuan"
                                                 className="object-cover w-full h-full"
                                             />

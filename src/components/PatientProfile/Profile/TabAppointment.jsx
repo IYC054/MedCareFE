@@ -3,24 +3,29 @@ import { FaHandHoldingMedical, FaHospital } from "react-icons/fa";
 import { FaKitMedical } from "react-icons/fa6";
 import loading from "../../../../asset/loading.gif";
 import { getpatientbyaccountid } from "../../../api/Doctor/patient";
-import { getAppointmentByPatientId } from "../../../api/Doctor/appointment";
+import { getAppointmentByPatientId,getAppointmentByIdUser } from "../../../api/Doctor/appointment";
 import { getallPaymentByAppoint } from "../../../api/Bank/payment";
 import { AppContext } from "../../Context/AppProvider";
 import { Link } from "react-router-dom";
 
 function TabAppointment(props) {
   const [appointment, setAppointment] = useState([]);
+  const [appointmentAcc, setAppointmentAcc] = useState([]);
   const { User } = useContext(AppContext);
   useEffect(() => {
     const getPatient = async () => {
       try {
         const result = await getpatientbyaccountid(User?.id);
+
         const resultAppointment = await getAppointmentByPatientId(
           result[0]?.id
         );
         setAppointment(resultAppointment);
+        const getappointmentAcc = await getAppointmentByIdUser(User?.id);
+        setAppointmentAcc(getappointmentAcc);
+        console.log("nghị lo",appointmentAcc[0]?.doctor?.account?.name);
       } catch (error) {
-        // console.log("Error fetching patient by account ID:", error);
+       
       }
     };
     getPatient();
@@ -57,22 +62,28 @@ function TabAppointment(props) {
                         : ""
                     } rounded-xl text-[#fff] font-medium`}
                   >
-                    {app.status}
+                    {app.status=="Hoàn thành"
+                    ?"Đã Thanh Toán"
+                    :"Chưa Thanh Toán"}
                   </button>
                 </div>
               </div>
               <div className="w-full">
-                <span className="text-[20px] font-semibold">Thanh Phong</span>
+                <p className="text-[20px] ">- Họ và tên:  {appointmentAcc[0]?.patientprofile?.fullname}</p>
+                <p className="text-[20px] ">- Ngày sinh:  {appointmentAcc[0]?.patientprofile?.birthdate}</p>
+                <p className="text-[20px] ">- Số BHYT:  {appointmentAcc[0]?.patientprofile?.codeBhyt}</p>
+                <p className="text-[20px] ">- Bác Sĩ Khám:  {appointmentAcc[0]?.doctor?.account?.name}</p>
               </div>
               <hr className="h-[2px] mt-4 border-0 border-t-2 border-dashed border-[#00b5f1]" />
               <div className="w-full my-4">
                 <div className="flex items-center text-[#00b5f1] gap-4 text-[24px]">
                   <FaHospital className="text-[25px] " />
-                  <span className="uppercase">Bệnh viện chợ rẫy</span>
+                  <span className="uppercase">Bệnh viện MEDCARE</span>
                 </div>
                 <div className="flex items-center gap-4 text-[15px] my-2">
                   <div className="flex items-center gap-4">
                     <FaKitMedical className="text-[18px] text-[#F1C40F]" />
+
                     <span>Chuyên khoa: </span>
                   </div>
                   <span>

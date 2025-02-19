@@ -273,10 +273,7 @@ function DoctorDetail() {
             <div className="container mx-auto bg-white rounded-lg shadow-lg p-6">
                 {/* Doctor Details Section */}
                 <h1 className="text-3xl font-extrabold mb-6 text-[#da624a] text-center">Doctor Information</h1>
-                <div className="w-60 flex items-center justify-center px-2 py-2 mb-4 text-base font-medium text-white bg-[#da624a] border-primary rounded-md hover:bg-[#b2503c] transition"
-                    onClick={() => setIsOpen(true)}  >
-                    Tạo giờ làm
-                </div>
+               
                 <div className="mb-6 flex items-center gap-8">
                     <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-[#da624a] shadow-lg">
                         <img src={doctor.account.avatar || ""} alt="Doctor Avatar" className="w-full h-full object-cover" />
