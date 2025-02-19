@@ -98,6 +98,17 @@ const checkslotAppointment = async (doctorid, worktimeid) => {
     return [];
   }
 };
+const  getAppointmentByIdUser= async (iduser) => {
+  try {
+    const res = await axios.get(
+      `http://localhost:8080/api/appointment/patient/${iduser}`
+    );
+    return res.data;
+  } catch (error) {
+    // console.error(error);
+    return [];
+  }
+};
 export {
   CreateAppointment,
   getAppointmentByPatientId,
@@ -105,5 +116,6 @@ export {
   UpdateStatusAppointment,
   checkslotAppointment,
   getVIPAppointmentByDoctorId,
-  UpdateStatusVipAppointment
+  UpdateStatusVipAppointment,
+  getAppointmentByIdUser
 };
