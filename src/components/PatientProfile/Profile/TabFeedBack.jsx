@@ -1,11 +1,12 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { getToken } from "../../Authentication/authService";
+import { AppContext } from "../../Context/AppProvider";
 
 function TabFeedBack() {
   const [feedback, setFeedback] = useState("");
   const token = getToken();
-  const [userId, setUserId] = useState(localStorage.getItem("user_id"));
+  const {User} = useContext(AppContext)
   const sendFeedback = async (event) => {
     event.preventDefault(); // Ngăn form reload
 
@@ -14,8 +15,8 @@ function TabFeedBack() {
       const response = await axios.post(
         `http://localhost:8080/api/feedbacks/10`,
         {
-          message: feedback, // Lấy nội dung từ state
-          recipient: { id: userId },
+          message: feedback, 
+          recipient: { id: User.id },
         },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -28,7 +29,6 @@ function TabFeedBack() {
       console.error("Error sending feedback:", error);
     }
   };
-console.log(userId);
   return (
     <div className="w-full h-full border-l border-[#00b5f1] p-10">
       <span className="text-[24px] font-medium">Feedback</span>
