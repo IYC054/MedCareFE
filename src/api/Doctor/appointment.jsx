@@ -15,7 +15,7 @@ const CreateAppointment = async (
       patientId: patientId,
       doctorId: doctorId,
       type: "Khám " + speciltyname.data.name,
-      status: "Pending",
+      status: "Chờ xử lý",
       amount: 150000.0,
       worktimeId: worktimeId,
       patientProfileId: patientProfileId,

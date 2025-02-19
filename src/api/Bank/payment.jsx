@@ -10,6 +10,7 @@ const BankPayment = async (amount, description, transactionCode, appointmentId) 
         transactionDescription: description,
         transactionCode: transactionCode,
         appointmentId: appointmentId,
+        status: "Đã thanh toán"
       })
       .then((respone) => {
       })
