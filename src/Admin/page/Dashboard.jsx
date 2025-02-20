@@ -30,6 +30,7 @@ function Dashboard() {
     const [user, setUser] = useState([])
     const [doctor, setDoctor] = useState([])
     const [rate, setRate] = useState([])
+    const [dc, setDC] = useState([])
     const [book, setBook] = useState([])
     const [money, setMoney] = useState([])
     const [doctorAvgRates, setDoctorAvgRates] = useState({});
@@ -46,6 +47,14 @@ function Dashboard() {
             setUser(filteredUsers);
             console.log("ueser", user);
 
+            const responseDoctor = await axios.get('http://localhost:8080/api/doctors', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            const dc = responseDoctor.data
+            setDC(dc);
+            console.log("ueser", user);
             const responseRate = await axios.get('http://localhost:8080/api/rates', {
                 headers: {
                     Authorization: `Bearer ${token}`

@@ -12,6 +12,18 @@ const profilebyaccount = async (accountid) => {
     return [];
   }
 };
+
+const getallprofile = async () => {
+  try {
+    const res = await axios.get(
+      `http://localhost:8080/api/patientsprofile`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
 const ProfilebypatientprofileId = async (id) => {
   try {
     const res = await axios.get(
@@ -47,4 +59,4 @@ const DoctorByProfileId = async (id) => {
     return [];
   }
 };
-export { profilebyaccount, ProfilebypatientprofileId, PatientProfileByProfileId, DoctorByProfileId };
+export { profilebyaccount, ProfilebypatientprofileId, PatientProfileByProfileId, DoctorByProfileId, getallprofile };

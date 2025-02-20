@@ -170,9 +170,9 @@ function PatientProfile() {
                       } cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}
                     >
                       <FaCalendarDays className="text-[20px]" />
-                      Quản lý lịch hẹn thường
+                      Quản lý lịch hẹn
                     </li>
-                    <li
+                    {/* <li
                       onClick={() => handleTab("quanlydatlichvip")}
                       className={`my-4 flex justify-center hover:bg-[#fff] ${
                         selectTabVIPAppointment ? "isactive" : ""
@@ -180,7 +180,7 @@ function PatientProfile() {
                     >
                       <FaCalendarDays className="text-[20px]" />
                       Quản lý lịch hẹn VIP
-                    </li>
+                    </li> */}
                     <li
                       onClick={() => handleTab("quanlybenhnhan")}
                       className={`my-4 flex justify-center hover:bg-[#fff] ${
