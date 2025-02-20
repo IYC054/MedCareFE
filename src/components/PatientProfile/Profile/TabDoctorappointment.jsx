@@ -17,6 +17,7 @@ import { enqueueSnackbar } from "notistack";
 import { AppContext } from "../../Context/AppProvider";
 import { getDoctorbyId } from "../../../api/Doctor/doctor";
 import { getToken } from "../../Authentication/authService";
+import { data } from "autoprefixer";
 
 function TabDoctorappointment() {
   const { User } = useContext(AppContext);
@@ -64,14 +65,6 @@ function TabDoctorappointment() {
       console.error("Error fetching appointments:", error);
     }
   };
-
-  useEffect(() => {
-    const getdataprofile = async () => {
-      const result = await getallprofile();
-      setDataProfile(result);
-    };
-    getdataprofile();
-  }, []);
   const indexOfLastAppointment = currentPage * appointmentsPerPage;
   const indexOfFirstAppointment = indexOfLastAppointment - appointmentsPerPage;
 
@@ -109,6 +102,19 @@ function TabDoctorappointment() {
             },
           }
         );
+        // cập nhật status pay 
+        const updatePaymentStatus = await axios.put(
+          `http://localhost:8080/api/payments/status/${appointments[0]?.paymentDetails[0].id}`,
+          {
+            status: "Hoàn thành", // Set the status to "Đã thanh toán"
+          },
+          {
+            headers: {
+              "Content-Type": "application/json"
+            },
+          }
+        );
+        //
         if (checksuccess != null) {
           enqueueSnackbar("Cập nhật thành công!", {
             variant: "success",
