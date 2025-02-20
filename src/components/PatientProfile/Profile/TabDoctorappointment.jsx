@@ -1,13 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import {
   getAppointmentByDoctorId,
+  getVIPAppointmentByDoctorId,
   UpdateStatusAppointment,
 } from "../../../api/Doctor/appointment";
 import { getpatientbyid } from "../../../api/Doctor/patient";
 import { getallPaymentByAppoint } from "../../../api/Bank/payment";
 import { Select } from "antd";
 import { Option } from "antd/es/mentions";
-import { ProfilebypatientprofileId } from "../../../api/Profile/profilebyaccount";
+import {
+  getallprofile,
+  ProfilebypatientprofileId,
+} from "../../../api/Profile/profilebyaccount";
 import axios from "axios";
 import { enqueueSnackbar } from "notistack";
 import { AppContext } from "../../Context/AppProvider";
@@ -15,18 +19,23 @@ import { getDoctorbyId } from "../../../api/Doctor/doctor";
 import { getToken } from "../../Authentication/authService";
 
 function TabDoctorappointment() {
-  const [appointments, setAppointments] = useState([]);
   const { User } = useContext(AppContext);
+  const [dataProfile, setDataProfile] = useState([]);
 
   // const [selectedPatientId, setSelectedPatientId] = useState(null);
+  const [appointments, setAppointments] = useState([]);
+  const [vipAppointments, setVipAppointments] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [appointmentsPerPage] = useState(7);
+  const [appointmentsPerPage] = useState(5);
+
   const statusoption = ["Xác nhận", "Huỷ bỏ", "Chờ xử lý", "Hoàn thành"];
+
   const fetchAppointments = async () => {
     try {
       const doctorId = await getDoctorbyId(User?.id);
-      // if (User[0]?.role.name == "DOCTOR") {
       const data = await getAppointmentByDoctorId(doctorId?.id);
+      const vipData = await getVIPAppointmentByDoctorId(doctorId?.id);
+
       if (data && data.length > 0) {
         const enrichedAppointments = await Promise.all(
           data.map(async (appointment) => {
@@ -39,17 +48,42 @@ function TabDoctorappointment() {
         );
         setAppointments(enrichedAppointments);
       }
-      // }
+
+      if (vipData && vipData.length > 0) {
+        const enrichedVIPAppointments = await Promise.all(
+          vipData.map(async (vipAppointment) => {
+            const patientDetails = await ProfilebypatientprofileId(
+              vipAppointment.patientprofile.id
+            );
+            return { ...vipAppointment, patientDetails };
+          })
+        );
+        setVipAppointments(enrichedVIPAppointments);
+      }
     } catch (error) {
       console.error("Error fetching appointments:", error);
     }
   };
+
+  useEffect(() => {
+    const getdataprofile = async () => {
+      const result = await getallprofile();
+      setDataProfile(result);
+    };
+    getdataprofile();
+  }, []);
   const indexOfLastAppointment = currentPage * appointmentsPerPage;
   const indexOfFirstAppointment = indexOfLastAppointment - appointmentsPerPage;
+
   const currentAppointments = appointments.slice(
     indexOfFirstAppointment,
     indexOfLastAppointment
   );
+  const currentVipAppointments = vipAppointments.slice(
+    indexOfFirstAppointment,
+    indexOfLastAppointment
+  );
+
   // Fetch appointments once on component mount
   useEffect(() => {
     fetchAppointments();
@@ -94,13 +128,21 @@ function TabDoctorappointment() {
       console.error("Error updating status:", error);
     }
   };
-  const totalPages = Math.ceil(appointments.length / appointmentsPerPage);
+  const totalPages = Math.ceil(
+    (appointments.length + vipAppointments.length) / appointmentsPerPage
+  );
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
   return (
     <div className="w-full h-full  border-l border-[#00b5f1] pl-10 ">
       <span className="text-[24px] font-medium">
         Quản lý lịch hẹn đặt khám{" "}
       </span>
-      <div className="flex gap-2">
+      {/* <div className="flex gap-2">
         <div
           className=" p-2 bg-[#00b5f1] text-[#fff] rounded-lg"
           style={{ width: "fit-content" }}
@@ -125,7 +167,7 @@ function TabDoctorappointment() {
           {appointments.filter((item) => item.status === "Huỷ bỏ").length} cuộc
           hẹn
         </div>
-      </div>
+      </div> */}
       <div className="mt-4 w-full h-[500px] bg-[#fff] rounded-lg shadow-lg">
         <div className="flex flex-col w-full h-full text-gray-700 bg-white overflow-auto overflow-y-hidden shadow-md rounded-xl bg-clip-border">
           <table className="w-full text-left table-auto min-w-max">
@@ -162,63 +204,65 @@ function TabDoctorappointment() {
               </tr>
             </thead>
             <tbody className="">
-              {currentAppointments.map((item, index) => (
-                <tr key={index}>
-                  <td className="p-4 border-b border-blue-gray-50">
-                    <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900 capitalize">
-                      {item.patientDetails.fullname}
-                    </p>
-                  </td>
-                  <td className="p-4 border-b border-blue-gray-50">
-                    <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
-                      {item.type}
-                    </p>
-                  </td>
-                  <td className="p-4 border-b border-blue-gray-50">
-                    <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
-                      {item.paymentDetails.map((payment, index) => (
-                        <div key={index}>{payment.transactionCode}</div>
-                      ))}
-                    </p>
-                  </td>
-                  <td className="p-4 border-b border-blue-gray-50">
-                    <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
-                      {item.worktime.startTime} - {item.worktime.endTime}
-                    </p>
-                  </td>
-                  <td className="p-4 border-b border-blue-gray-50">
-                    <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
-                      {/* {item.status} */}
-                      <Select
-                        className="w-full"
-                        value={item.status}
-                        onChange={(value) =>
-                          handleUpdateStauts(
-                            item.id,
-                            value,
-                            item.doctor.id,
-                            item.patientDetails.id,
-                            item.id
-                          )
-                        }
-                      >
-                        {statusoption.map((status) => (
-                          <Option
-                            key={status}
-                            value={status}
+              {currentAppointments.map((item, index) => {
+                return (
+                  <Fragment key={index}>
+                    <tr>
+                      <td className="p-4 border-b border-blue-gray-50">
+                        <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900 capitalize">
+                          {item.patientDetails.fullname}
+                        </p>
+                      </td>
+                      <td className="p-4 border-b border-blue-gray-50">
+                        <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
+                          {item.type}
+                        </p>
+                      </td>
+                      <td className="p-4 border-b border-blue-gray-50">
+                        <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
+                          {item.paymentDetails.map((payment, index) => (
+                            <div key={index}>{payment.transactionCode}</div>
+                          ))}
+                        </p>
+                      </td>
+                      <td className="p-4 border-b border-blue-gray-50">
+                        <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
+                          {item.worktime.startTime} - {item.worktime.endTime}
+                        </p>
+                      </td>
+                      <td className="p-4 border-b border-blue-gray-50">
+                        <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
+                          {/* {item.status} */}
+                          <Select
                             className="w-full"
-                            disabled={
-                              item.status === "Thành công" &&
-                              item.status !== status
+                            value={item.status}
+                            onChange={(value) =>
+                              handleUpdateStauts(
+                                item.id,
+                                value,
+                                item.doctor.id,
+                                item.patientDetails.id,
+                                item.id
+                              )
                             }
                           >
-                            {item.status === status ? item.status : status}
-                          </Option>
-                        ))}
-                      </Select>
-                    </p>
-                  </td>
-                  {/* <td className="p-4 border-b border-blue-gray-50">
+                            {statusoption.map((status) => (
+                              <Option
+                                key={status}
+                                value={status}
+                                className="w-full"
+                                disabled={
+                                  item.status === "Thành công" &&
+                                  item.status !== status
+                                }
+                              >
+                                {item.status === status ? item.status : status}
+                              </Option>
+                            ))}
+                          </Select>
+                        </p>
+                      </td>
+                      {/* <td className="p-4 border-b border-blue-gray-50">
                     <button
                       className="p-2 bg-[#00b5f1] block font-sans text-sm antialiased font-medium leading-normal text-[#fff] rounded-xl"
                       onClick={(e) => {
@@ -229,8 +273,83 @@ function TabDoctorappointment() {
                       Edit
                     </button>
                   </td> */}
-                </tr>
-              ))}
+                    </tr>
+                  </Fragment>
+                );
+              })}
+            </tbody>
+            <tbody>
+              {currentVipAppointments.map((vip, vipindex) => {
+                return (
+                  <tr key={vipindex}>
+                    <td className="p-4 border-b border-blue-gray-50">
+                      <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900 capitalize">
+                        {vip.patientprofile.fullname}
+                      </p>
+                    </td>
+                    <td className="p-4 border-b border-blue-gray-50">
+                      <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
+                        {vip.type}
+                      </p>
+                    </td>
+                    <td className="p-4 border-b border-blue-gray-50">
+                      <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
+                        {vip.payments.map((payment, index) => (
+                          <div key={index}>{payment.transactionCode}</div>
+                        ))}
+                      </p>
+                    </td>
+                    <td className="p-4 border-b border-blue-gray-50">
+                      <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
+                        {vip.startTime} - {vip.endTime}
+                      </p>
+                    </td>
+                    <td className="p-4 border-b border-blue-gray-50">
+                      <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
+                        {/* {vip.status} */}
+                        <Select
+                          className="w-full"
+                          value={vip.status}
+                          onChange={(value) =>
+                            handleUpdateStauts(
+                              vip.id,
+                              value,
+                              vip.doctor.id,
+                              vip.patientDetails.id,
+                              vip.id
+                            )
+                          }
+                        >
+                          {statusoption.map((status) => (
+                            <Option
+                              key={status}
+                              value={status}
+                              className="w-full"
+                              disabled={
+                                vip.status === "Thành công" &&
+                                vip.status !== status
+                              }
+                            >
+                              {vip.status === status ? vip.status : status}
+                            </Option>
+                          ))}
+                        </Select>
+                      </p>
+                    </td>
+                    {/* <td className="p-4 border-b border-blue-gray-50">
+                    <button
+                      className="p-2 bg-[#00b5f1] block font-sans text-sm antialiased font-medium leading-normal text-[#fff] rounded-xl"
+                      onClick={(e) => {
+                        console.log("Selected ID:", item.patientDetails.id);
+                        handlePopupDetail(item.patientDetails.id);
+                      }}
+                    >
+                      Edit
+                    </button>
+                  </td> */}
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -241,7 +360,7 @@ function TabDoctorappointment() {
           disabled={currentPage === 1}
           className="px-4 py-2 border rounded mr-2"
         >
-          Previous
+          Trang sau
         </button>
         <span className="py-2 px-4">{`Page ${currentPage} of ${totalPages}`}</span>
         <button
@@ -253,7 +372,7 @@ function TabDoctorappointment() {
           disabled={currentPage === totalPages}
           className="px-4 py-2 border rounded ml-2"
         >
-          Next
+          Trang trước
         </button>
       </div>
       {/* <div
