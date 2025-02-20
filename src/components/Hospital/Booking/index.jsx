@@ -210,7 +210,7 @@ function Booking() {
       .then((response) => {
         const data = response.data;
         const ratingsMap = {};
-
+        
         data.forEach((rating) => {
           const doctorId = rating.doctor_id.id;
           const rate = rating.rate;
@@ -254,7 +254,7 @@ function Booking() {
     );
   };
 
-  console.log(doctorRatings)
+  console.log( "asd",doctorRatings);
   // useEffect(() => {
   //   console.log("txnSpecialtyId: " + txnSpecialtyId);
   // }, [txnSpecialtyId])
