@@ -23,7 +23,7 @@ function TabAppointment(props) {
         setAppointment(resultAppointment);
         const getappointmentAcc = await getAppointmentByIdUser(User?.id);
         setAppointmentAcc(getappointmentAcc);
-        console.log("nghị lo",appointmentAcc[0]?.doctor?.account?.name);
+       
       } catch (error) {
        
       }
@@ -31,6 +31,7 @@ function TabAppointment(props) {
     getPatient();
   }, []);
   console.log("dss",appointment);
+  console.log("nghị lo",appointmentAcc);
   return (
     <div className="w-full h-full border-l border-[#00b5f1] pl-10">
       <span className="text-[24px] font-medium">Danh sách phiếu khám bệnh</span>
@@ -51,28 +52,26 @@ function TabAppointment(props) {
                 <div>
                   <button
                     className={`px-4 py-2 ${
-                      app.status == "Hoàn thành"
+                      app.status == "Đã thanh toán"
                         ? "bg-[#03C03C]"
-                        : app.status == "Chờ xử lý"
-                        ? "bg-[#F1C40F]"
-                        : app.status == "Hoàn tiền"
-                        ? "bg-[#C0392B]"
                         : app.status == "Chưa thanh toán"
                         ? "bg-[#F1C40F]"
+                       // : app.status == "Hoàn tiền"
+                     //   ? "bg-[#C0392B]"
+                       // : app.status == "Chưa thanh toán"
+                       // ? "bg-[#F1C40F]"
                         : ""
                     } rounded-xl text-[#fff] font-medium`}
                   >
-                    {app.status=="Hoàn thành"
-                    ?"Đã Thanh Toán"
-                    :"Chưa Thanh Toán"}
+                    {app.status}
                   </button>
                 </div>
               </div>
               <div className="w-full">
-                <p className="text-[20px] ">- Họ và tên:  {appointmentAcc[0]?.patientprofile?.fullname}</p>
-                <p className="text-[20px] ">- Ngày sinh:  {appointmentAcc[0]?.patientprofile?.birthdate}</p>
-                <p className="text-[20px] ">- Số BHYT:  {appointmentAcc[0]?.patientprofile?.codeBhyt}</p>
-                <p className="text-[20px] ">- Bác Sĩ Khám:  {appointmentAcc[0]?.doctor?.account?.name}</p>
+                <p className="text-[20px] ">- Họ và tên:  {appointmentAcc[index]?.patientprofile?.fullname}</p>
+                <p className="text-[20px] ">- Ngày sinh:  {appointmentAcc[index]?.patientprofile?.birthdate}</p>
+                <p className="text-[20px] ">- Số BHYT:  {appointmentAcc[index]?.patientprofile?.codeBhyt}</p>
+                <p className="text-[20px] ">- Bác Sĩ Khám:  {appointmentAcc[index]?.doctor?.account?.name}</p>
               </div>
               <hr className="h-[2px] mt-4 border-0 border-t-2 border-dashed border-[#00b5f1]" />
               <div className="w-full my-4">
