@@ -73,6 +73,7 @@ const UpdateStatusAppointment = async (id, status) => {
     return [];
   }
 };
+
 const UpdateStatusVipAppointment = async (id, status) => {
   try {
     const res = await axios.put(
