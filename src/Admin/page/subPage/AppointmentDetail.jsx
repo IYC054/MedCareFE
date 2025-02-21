@@ -1,20 +1,37 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-
-function AppointmentDetail({ roomId, onClose }) {
+function AppointmentDetail({ roomId, isVIP, onClose }) {
     const [appointmentDetails, setAppointmentDetails] = useState(null);
     const [loading, setLoading] = useState(true);
- 
+
     useEffect(() => {
         const fetchDetails = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get(
-                    `http://localhost:8080/api/appointment/${roomId}`,
+                const apiUrl = isVIP
+                    ? `http://localhost:8080/api/vip-appointments/${roomId}`
+                    : `http://localhost:8080/api/appointment/${roomId}`;
 
-                );
-                setAppointmentDetails(response.data);
+                const response = await axios.get(apiUrl);
+                let appointmentData = response.data;
+                if (isVIP) {
+                    const { patient_id, doctor_id } = appointmentData;
+
+                    // Gọi song song 2 API
+                    const [patientRes, doctorRes] = await Promise.all([
+                        axios.get(`http://localhost:8080/api/patients/${patient_id}`),
+                        axios.get(`http://localhost:8080/api/doctors/${doctor_id}`)
+                    ]);
+
+                    // Gán thông tin vào dữ liệu cuộc hẹn
+                    appointmentData = {
+                        ...appointmentData,
+                        patient: patientRes.data,
+                        doctor: doctorRes.data
+                    };
+                }
+                setAppointmentDetails(appointmentData);
             } catch (error) {
                 console.error("Error fetching appointment details:", error);
             } finally {
@@ -25,13 +42,13 @@ function AppointmentDetail({ roomId, onClose }) {
         if (roomId) {
             fetchDetails();
         }
-    }, [roomId]);
-
+    }, [roomId, isVIP]);
+    console.log(appointmentDetails);
     if (loading) {
         return (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
                 <div className="bg-white p-6 rounded shadow text-center">
-                    <p className="text-gray-700 font-semibold">Loading...</p>
+                    <p className="text-gray-700 font-semibold">Đang tải...</p>
                 </div>
             </div>
         );
@@ -41,7 +58,7 @@ function AppointmentDetail({ roomId, onClose }) {
         return (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
                 <div className="bg-white p-6 rounded shadow text-center">
-                    <p className="text-red-600 font-semibold">Error: Could not load appointment details</p>
+                    <p className="text-red-600 font-semibold">Error: Không tìm thấy cuộc hẹn</p>
                     <button
                         className="mt-4 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 focus:outline-none"
                         onClick={onClose}
@@ -55,11 +72,11 @@ function AppointmentDetail({ roomId, onClose }) {
 
     const getStatusClass = (status) => {
         switch (status) {
-            case "Completed":
+            case "Hoàn thành":
                 return "bg-green-100 text-green-600";
-            case "Pending":
+            case "Chờ xử lý":
                 return "bg-yellow-100 text-yellow-600";
-            case "Cancelled":
+            case "Huỷ bỏ":
                 return "bg-red-100 text-red-600";
             default:
                 return "bg-gray-100 text-gray-600";
@@ -70,7 +87,7 @@ function AppointmentDetail({ roomId, onClose }) {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
             <div className="w-full max-w-3xl bg-white rounded-lg shadow-lg p-6">
                 <h1 className="text-2xl font-bold text-[#da624a] mb-4 text-center">
-                    Appointment Details
+                    Chi tiết lịch đặt {isVIP ? "(VIP)" : ""}
                 </h1>
                 <div className="space-y-4">
                     <div className="grid grid-cols-3 gap-4">
@@ -96,23 +113,24 @@ function AppointmentDetail({ roomId, onClose }) {
                                 {appointmentDetails?.status || "N/A"}
                             </span>
                         </div>
-                    </div>
-                    <div>
-                        <h3 className="font-medium text-gray-700">Hồ sơ bệnh nhân:</h3>
-                        {appointmentDetails?.patientFiles &&
-                            appointmentDetails.patientFiles.filter(file => file.appointment_id === roomId).length > 0 ? (
-                            <ul className="list-disc pl-6 space-y-2">
-                                {appointmentDetails.patientFiles
-                                    .filter(file => file.appointment_id === roomId)
-                                    .map((file) => (
-                                        <li key={file.id} className="text-gray-600">
-                                            <span className="font-semibold text-gray-600">{file.description}</span>
-                                        </li>
-                                    ))}
-                            </ul>
-                        ) : (
-                            <p className="text-gray-600">Không có hồ sơ bệnh nhân</p>
-                        )}
+                        <div>
+                            <h3 className="font-medium text-gray-700">Ngày đặt:</h3>
+                            <p className="text-gray-600">
+                                {isVIP
+                                    ? appointmentDetails?.workDate || "N/A"
+                                    : appointmentDetails?.worktime?.workDate || "N/A"
+                                }
+                            </p>
+                        </div>
+                        <div>
+                            <h3 className="font-medium text-gray-700">Giờ đặt:</h3>
+                            <p className="text-gray-600">
+                                {isVIP
+                                    ? appointmentDetails?.startTime || "N/A"
+                                    : appointmentDetails?.worktime?.startTime + "-" + appointmentDetails?.worktime?.endTime   || "N/A"
+                                }
+                            </p>
+                        </div>
                     </div>
 
                 </div>

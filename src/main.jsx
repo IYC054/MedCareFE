@@ -48,6 +48,7 @@ import FeedbackDetail from "./Admin/page/subPage/FeedbackDetail";
 import FeedbackReponse from "./Admin/page/subPage/FeedbackReponse";
 // import Chat from "./Admin/page/Chat";
 import Contract from "./components/Contract/Contract";
+import PatienfileAdmin from "./Admin/page/PatienfileAdmin";
 // import ChatRoom from "./Admin/page/ChatRoom";
 // import ChatRoomlogin from "./Admin/page/ChatRoomlogin";
 
@@ -178,6 +179,10 @@ const router = createBrowserRouter([
         path: "/admin/news/detail/:id",
         element: <NewDetail />,
       },
+      {
+        path: "/admin/patientfileAdmin",
+        element: <PatienfileAdmin/>
+      }
     ],
   },
   {

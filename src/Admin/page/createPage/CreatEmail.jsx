@@ -34,7 +34,7 @@ function CreateEmail() {
         }
       );
 
-      alert("Email sent successfully!");
+      alert("Email Gửi thành công!");
       navigate("/admin/feedback");
       setSenderEmail("");
       setMessage("");
@@ -58,18 +58,18 @@ function CreateEmail() {
             onChange={(e) => setSenderEmail(e.target.value)}
             className="mt-2 w-full p-2 border border-[#da624a] rounded-md focus:ring-2 focus:ring-[#da624a]"
             required
-            placeholder="Enter your email"
+            placeholder="Nhập email cần gửi"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Message</label>
+          <label className="block text-sm font-medium text-gray-700">Lời nhắn</label>
           <textarea
             className="w-full p-2 border rounded-md"
             rows="4"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder="Enter your message..."
+            placeholder="Nhập lời nhắn..."
             required
           />
         </div>
@@ -102,10 +102,10 @@ function CreateEmail() {
                     d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8z"
                   ></path>
                 </svg>
-                Sending...
+                Đang gửi...
               </>
             ) : (
-              "Send Email"
+              "Gửi"
             )}
           </button>
         </div>

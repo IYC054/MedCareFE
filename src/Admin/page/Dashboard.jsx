@@ -34,6 +34,7 @@ function Dashboard() {
     const [book, setBook] = useState([])
     const [money, setMoney] = useState([])
     const [doctorAvgRates, setDoctorAvgRates] = useState({});
+
     useEffect(() => {
         const fetch = async () => {
 
@@ -45,7 +46,7 @@ function Dashboard() {
             const filteredUsers = responseUser.data.result.filter(account =>
                 account.role.some(r => r.name === "PATIENTS"));
             setUser(filteredUsers);
-            console.log("ueser", user);
+
 
             const responseDoctor = await axios.get('http://localhost:8080/api/doctors', {
                 headers: {
@@ -54,7 +55,7 @@ function Dashboard() {
             });
             const dc = responseDoctor.data
             setDC(dc);
-            console.log("ueser", user);
+
             const responseRate = await axios.get('http://localhost:8080/api/rates', {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -97,60 +98,49 @@ function Dashboard() {
 
             setDoctorAvgRates(doctorAvgRates);
             console.log(doctorAvgRates);
-            // Bước 3: Lấy thông tin tài khoản bác sĩ theo doctorId
-            const doctorIds = doctorAvgRates.map(rate => rate.doctorId); // Lấy danh sách doctorId từ doctorAvgRates
 
-            // Tạo một hàm để gọi API cho từng bác sĩ
-            const fetchDoctorData = async (doctorId) => {
-                try {
-                    const response = await axios.get(`http://localhost:8080/api/account/${doctorId}`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    });
-                    return response.data; // Trả về thông tin bác sĩ
-                } catch (error) {
-                    console.error("Error fetching doctor data", error);
-                    return null; // Nếu có lỗi, trả về null
-                }
-            };
-            const getDoctors = async () => {
-                const doctorsData = [];
+            const doctorIds = doctorAvgRates.map(d => d.doctorId);
+            const doctorRequests = doctorIds.map(id =>
+                axios.get(`http://localhost:8080/api/doctors/${id}`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                })
+            );
 
-                for (let doctorId of doctorIds) {
-                    const doctorData = await fetchDoctorData(doctorId); // Gọi API cho từng bác sĩ
-                    if (doctorData) {
-                        doctorsData.push(doctorData); // Thêm thông tin bác sĩ vào danh sách
-                    }
-                }
-                setDoctor(doctorsData);
-                console.log("Doctors data with avg rate:", doctorsData);
-            };
-            getDoctors();
-            // console.log(responseDoc.data.result);
-            // const filteredDocs = responseDoc.data.result.filter(account =>
-            //     account.role.some(r => r.name === "DOCTOR") &&
-            //     doctorAvgRates.some(rate => rate.doctorId === account.id)
-            // );
+            // Chờ tất cả request hoàn thành
+            const responses = await Promise.all(doctorRequests);
 
-            // setDoctor(filteredDocs);
-            // console.log("Doctors", filteredDocs);
-
-
+            // Lưu dữ liệu vào state
+            setDoctor(responses.map(res => res.data));
+            console.log(doctor);
             const responseBook = await axios.get('http://localhost:8080/api/appointment', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
+
             setBook(responseBook.data);
+            console.log("bo", book);
             const responseMoney = await axios.get('http://localhost:8080/api/payments', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-            const filteredMoney = responseMoney.data.filter(payment => payment.status === 'Hoàn thành');
+
+            const currentYear = new Date().getFullYear();
+
+            const filteredMoney = responseMoney.data.filter(payment => {
+                const paymentDate = new Date(payment.transactionDate);
+                return paymentDate.getFullYear() === currentYear && payment.status === 'Đã thanh toán';
+            });
+
             const totalMoney = filteredMoney.reduce((sum, payment) => sum + payment.amount, 0);
-            setMoney(totalMoney);
+
+            // Định dạng số tiền với dấu phân cách hàng nghìn
+            const formattedMoney = totalMoney.toLocaleString('vi-VN');
+            setMoney(formattedMoney);
+
+
+
 
         };
         fetch();
@@ -248,7 +238,7 @@ function Dashboard() {
                                 <div>
                                     <div className='text-xl font-semibold'>Thu nhập
                                     </div>
-                                    <div className='text-sm'>Tháng này
+                                    <div className='text-sm'>Năm nay
                                     </div>
                                 </div>
                                 <div>
@@ -269,35 +259,30 @@ function Dashboard() {
                                         <li>
                                             <button
                                                 className={`px-4 py-2 rounded-md ${activeTab === 'whole year' ? 'border-b-4 rounded-sm border-[#da624a] text-[#da624a]' : 'text-gray-500  hover:border-b-4 hover:rounded-sm hover:border-[#da624a] hover:text-[#da624a] transition-all duration-300'}`}
-                                                onClick={() => handleTabClick('whole year')}
-                                            >
+                                                onClick={() => handleTabClick('whole year')}>
                                                 Năm nay
                                             </button>
                                         </li>
                                         <li>
                                             <button
                                                 className={`px-4 py-2 rounded-md ${activeTab === 'this month' ? 'border-b-4  rounded-sm border-[#da624a] text-[#da624a]' : 'text-gray-500  hover:border-b-4 hover:rounded-sm hover:border-[#da624a] hover:text-[#da624a]  transition-all duration-300'}`}
-                                                onClick={() => handleTabClick('this month')}
-                                            >
+                                                onClick={() => handleTabClick('this month')}>
                                                 Tuần này
                                             </button>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
-
                             <div className='card-body'>
                                 <div className='tab-content'>
                                     <div className='tab-pane fade active show' id="tabs-eg-77">
                                         <div className='card mb-3 widget-chart text-left border-2'>
                                             <div className='p-3'>
-
                                             </div>
-
                                             <div className='m-0 '>
                                                 <div className='widget-chart-wrapper '>
                                                     <div className='light'>
-                                                        {activeChart === 'this month' ? <ChartWeek /> : <ChartMonth />}
+                                                        {activeChart === 'whole year' ? <ChartMonth /> : <ChartWeek />}
                                                     </div>
                                                 </div>
                                             </div>
@@ -320,24 +305,21 @@ function Dashboard() {
                                                 .map((doctor, index) => {
                                                     // Tìm điểm trung bình của bác sĩ
                                                     const avgRate = doctorAvgRates.find(rate => rate.doctorId === String(doctor.id))?.avgRate || 'N/A';
-                                                    console.log("doctorAvgRates:", doctorAvgRates);
-                                                    console.log("doctor list:", doctor);
+
 
                                                     return (
                                                         <div key={index} className="flex items-center justify-between space-x-3">
                                                             <div className="flex">
                                                                 <img
                                                                     className="rounded-full w-10 h-10 m-2"
-                                                                    src={doctor.avatar || "https://img.freepik.com/premium-vector/doctor-icon-avatar-white_136162-58.jpg"} // Default placeholder image
+                                                                    src={doctor.account.avatar || "https://img.freepik.com/premium-vector/doctor-icon-avatar-white_136162-58.jpg"} // Default placeholder image
                                                                     alt="Avatar"
                                                                 />
-                                                                <div>
-                                                                    <div className="font-semibold">{doctor.name}</div>
-                                                                </div>
+                                                                <div className="font-semibold flex items-center ">{doctor.account.name}</div>
                                                             </div>
                                                             <div className="ml-24 font-semibold">
                                                                 {avgRate !== 'N/A' ? (
-                                                                    <div>{avgRate} ⭐</div> // Hiển thị điểm trung bình
+                                                                    <div>{avgRate} ⭐</div>
                                                                 ) : (
                                                                     <div>Chưa có đánh giá</div>
                                                                 )}
@@ -345,13 +327,11 @@ function Dashboard() {
                                                         </div>
                                                     );
                                                 })}
-
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                         <div className='card w-100 h-350 border-2 bg-white'>
                             <div className='card-header'>
                                 <div className='flex justify-between pt-6'>
@@ -453,36 +433,36 @@ function Dashboard() {
                         </div>
                     </div>
 
-                    <div className='card-body mx-auto flex py-4 h-[300px] '>
-                        <div className='w-full border-2 bg-white text-green-400  mr-4 pt-6 hover:drop-shadow-2xl'>
-                            <div className="chart-title font-extrabold pl-6">
-                                Received Messages
+                    {/* <div className='card-body mx-auto flex py-4 h-[300px] '>
+                            <div className='w-full border-2 bg-white text-green-400  mr-4 pt-6 hover:drop-shadow-2xl'>
+                                <div className="chart-title font-extrabold pl-6">
+                                    Received Messages
+                                </div>
+                                <div className="chart-placeholder ">
+                                    <ChartMess />
+                                </div>
                             </div>
-                            <div className="chart-placeholder ">
-                                <ChartMess />
-                            </div>
-                        </div>
-                        <div className='w-full border-2 bg-white text-red-400   mx-4 pt-6 hover:drop-shadow-2xl'>
-                            <div className="chart-title  font-extrabold pl-6">
-                                Sent Messages
+                            <div className='w-full border-2 bg-white text-red-400   mx-4 pt-6 hover:drop-shadow-2xl'>
+                                <div className="chart-title  font-extrabold pl-6">
+                                    Sent Messages
 
-                            </div>
+                                </div>
 
-                            <div className="chart-placeholder">
-                                <ChartMessSent />
+                                <div className="chart-placeholder">
+                                    <ChartMessSent />
+                                </div>
                             </div>
-                        </div>
-                        <div className='w-full border-2 bg-[#343a40] text-yellow-400  ml-4 pt-6 hover:drop-shadow-2xl'>
-                            <div className="chart-title  font-extrabold pl-6">
-                                Inbox Total
+                            <div className='w-full border-2 bg-[#343a40] text-yellow-400  ml-4 pt-6 hover:drop-shadow-2xl'>
+                                <div className="chart-title  font-extrabold pl-6">
+                                    Inbox Total
 
-                            </div>
+                                </div>
 
-                            <div className="chart-placeholder">
-                                <ChartMessInbox />
+                                <div className="chart-placeholder">
+                                    <ChartMessInbox />
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        </div> */}
                 </div>
             </div>
         </div >

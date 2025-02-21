@@ -43,7 +43,7 @@ function Specialty() {
                 <div className="mb-4 w-60">
                     <input
                         type="text"
-                        placeholder="Search by name..."
+                        placeholder="Tìm theo tên..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="w-full px-4 py-2 border rounded shadow focus:outline-none focus:ring-2 focus:ring-[#da624a]"

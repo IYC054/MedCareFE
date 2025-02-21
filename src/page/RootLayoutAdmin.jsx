@@ -14,21 +14,21 @@ const RootLayoutAdmin = () => {
   const [isClosed, setIsClosed] = useState(window.innerWidth <= 780);
   const [profile, setProfife] = useState(false)
   const { User } = useContext(AppContext);
-  const [feedback,setFeedbackBox] = useState([]);
+  const [feedback, setFeedbackBox] = useState([]);
   const showProfile = () => {
     setProfife(!profile);
   }
   const token = getToken();
   useEffect(() => {
     const fetchFeedbackBox = async () => {
-        const response = await axios.get('http://localhost:8080/api/feedbacks/', {
-            headers: { Authorization: `Bearer ${token}` },
-        });
-        const newFeedbacks = response.data.filter(feedback => feedback.status === 'NEW');
-        setFeedbackBox(newFeedbacks);
+      const response = await axios.get('http://localhost:8080/api/feedbacks/', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const newFeedbacks = response.data.filter(feedback => feedback.status === 'NEW');
+      setFeedbackBox(newFeedbacks);
     };
     fetchFeedbackBox();
-}, []);
+  }, []);
   useEffect(() => {
     const handleResize = () => {
       setIsClosed(window.innerWidth <= 780);
@@ -42,7 +42,7 @@ const RootLayoutAdmin = () => {
     };
   }, []);
   const navigator = useNavigate();
-  const Logout =() => {
+  const Logout = () => {
     logout();
     navigator("/");
     window.location.reload();
@@ -94,6 +94,9 @@ const RootLayoutAdmin = () => {
   else if (location.pathname === '/admin/news') {
     title = 'Tin tức';
     description = 'Quản lý và cập nhật tin tức liên quan đến y tế và bệnh viện.';
+  } else if (location.pathname === '/admin/patientfileAdmin') {
+    title = 'Quản lý hồ sơ bệnh nhân';
+    description = 'Quản lý hồ sơ bệnh nhân liên quan đến y tế và bệnh viện.';
   }
   else {
     title = '';
@@ -122,11 +125,20 @@ const RootLayoutAdmin = () => {
           <div className='app-header-right'>
             <div className='header-btn-lg pr-0'>
 
-              <div className='dropdown'>
-                <button className='p-0 mr-2 btn btn-link'>
-                  <i className="bi bi-bell-fill"></i>
-                </button>
+              <div className="relative dropdown">
+                {/* Biểu tượng chuông */}
+                <Link to="/admin/feedback" className="p-0 mr-2 btn btn-link relative">
+                  <i className="bi bi-bell-fill text-xl"></i>
+
+                  {/* Badge thông báo */}
+
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-semibold px-1.5 py-0.5 rounded-full">
+                    {feedback.length}
+                  </span>
+
+                </Link>
               </div>
+
             </div>
 
             <div className='header-btn-lg pr-0'>
@@ -138,7 +150,6 @@ const RootLayoutAdmin = () => {
                         <img
                           className='rounded'
                           src={User.avatar || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDUWB51JwETzUH9_F2hZJzagg0LKEV6dYi8g&s'} />
-                        <i className='bi bi-chevron-compact-down' ></i>
                       </a>
                     </div>
                     {profile && (
@@ -164,17 +175,14 @@ const RootLayoutAdmin = () => {
                             Logout
                           </button>
                         </div>
-
-                        <div className="p-4">
+                        {/* <div className="p-4">
                           <div className="text-gray-800 font-medium">My Account</div>
-                          <ul className="list-none space-y-3 mt-2">
-{/* 
+                          <ul className="list-none space-y-3 mt-2">                        
                             <li>
                               <Link to="/admin/profileadmin" className="text-gray-500 flex justify-between items-center">
                                 Settings
-
                               </Link>
-                            </li> */}
+                            </li> 
                             <li>
                               <Link to="/admin/feedback" className="text-gray-500 flex justify-between items-center">
                                 Feedback
@@ -182,8 +190,7 @@ const RootLayoutAdmin = () => {
                               </Link>
                             </li>
                           </ul>
-                         
-                        </div>
+                        </div> */}
                       </div>
                     )}
                   </div>

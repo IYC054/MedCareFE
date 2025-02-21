@@ -82,7 +82,7 @@ function AccountUser() {
                                     <td className="border px-4 py-2">{user.phone}</td>
                                     <td className='border px-4 py-2'>{user.gender}</td>
                                     <td className="border px-4 py-2">
-                                        <button className="bg-[#da624a] text-white px-4 py-2 rounded shadow hover:bg-[#c75240] transition" onClick={() => handleDetailClick(user.id)}>Detail</button>
+                                        <button className="bg-[#da624a] text-white px-4 py-2 rounded shadow hover:bg-[#c75240] transition" onClick={() => handleDetailClick(user.id)}>Chi tiết</button>
                                     </td>
                                 </tr>
                             ))}

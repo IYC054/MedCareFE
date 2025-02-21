@@ -254,16 +254,10 @@ function Transactions() {
             .then((response) => {
                 const transactionsFromAPI = response.data;
                 console.log("Filtered transactions from API:", transactionsFromAPI);
-
-
                 const filteredTransactions = transactionsFromAPI.filter((item) =>
                     ["Đã thanh toán", "Chưa thanh toán", "Chờ xử lý", "Hoàn tiền"].includes(item.status)
                 );
-
-
                 const limitedTransactions = filteredTransactions.slice(0, 50);
-
-
                 const totalRevenue = limitedTransactions.reduce(
                     (sum, item) => (item.status === "Đã thanh toán" ? sum + item.amount : sum),
                     0

@@ -22,7 +22,7 @@ const Chart12Months = () => {
 
                 payments.forEach((payment) => {
                     const paymentDate = new Date(payment.transactionDate); // Đảm bảo sử dụng `transactionDate`
-                    if (paymentDate.getFullYear() === currentYear && payment.status === 'Hoàn thành') {
+                    if (paymentDate.getFullYear() === currentYear && payment.status === 'Đã thanh toán') {
                         const month = paymentDate.getMonth(); // 0 (Jan) -> 11 (Dec)
                         monthlyTotals[month] += payment.amount; // Cộng dồn doanh thu theo tháng
                     }
