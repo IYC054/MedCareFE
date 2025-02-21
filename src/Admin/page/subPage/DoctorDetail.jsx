@@ -274,7 +274,7 @@ function DoctorDetail() {
   };
   if (loading) {
     return (
-      <div className="text-center text-gray-600 mt-10">Loading data...</div>
+      <div className="text-center text-gray-600 mt-10">Tải dữ liệu...</div>
     );
   }
 
@@ -282,14 +282,14 @@ function DoctorDetail() {
     <div className="bg-gray-100 min-h-screen p-6 relative" id="goup">
       <div className="container mx-auto bg-white rounded-lg shadow-lg p-6">
         {/* Doctor Details Section */}
-        <h1 className="text-3xl font-extrabold mb-6 text-[#da624a] text-center">
-          Doctor Information
+        <h1 className="text-3xl font-extrabold mb-6 text-[#4A90E2] text-center">
+          Thông tin bác sĩ
         </h1>
 
         <div className="mb-6 flex items-center gap-8">
-          <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-[#da624a] shadow-lg">
+          <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-[#4A90E2] shadow-lg">
             <img
-              src={doctor.account.avatar || ""}
+              src={doctor.account.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq89CiAzo83k2OJHzwV4hsrgE7Cm0sAWlkpw&s"}
               alt="Doctor Avatar"
               className="w-full h-full object-cover"
             />
@@ -305,20 +305,20 @@ function DoctorDetail() {
                   {doctor.account.email}
                 </p>
                 <p className="text-gray-600 text-lg mb-2">
-                  <span className="font-medium">Phone:</span>{" "}
+                  <span className="font-medium">Số điện thoại:</span>{" "}
                   {doctor.account.phone}
                 </p>
                 <p className="text-gray-600 text-lg mb-2">
-                  <span className="font-medium">Gender:</span>{" "}
+                  <span className="font-medium">Giới tính:</span>{" "}
                   {doctor.account.gender}
                 </p>
                 <p className="text-gray-600 text-lg mb-2">
-                  <span className="font-medium">Experience Years:</span>{" "}
+                  <span className="font-medium">Năm kinh nghiệm:</span>{" "}
                   {doctor.experienceYears}
                 </p>
 
                 <p className="text-gray-600 text-lg">
-                  <span className="font-medium">Specialty:</span>
+                  <span className="font-medium">Chuyên về khoa:</span>
                   {doctor.specialties.length > 0 ? (
                     doctor.specialties.map((specialty, index) => (
                       <span key={specialty.id}>
@@ -332,13 +332,13 @@ function DoctorDetail() {
                 </p>
               </>
             ) : (
-              <p className="text-gray-500">Doctor information not available.</p>
+              <p className="text-gray-500">Không có thông tin Bác sĩ.</p>
             )}
           </div>
         </div>
         <div className="mb-6 flex justify-center">
           <button
-            className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
+            className="bg-[#4A90E2] text-white px-4 py-2 rounded-md hover:bg-[#4A90E2] transition"
             onClick={() => setIsOpenEdit(true)}
           >
             Cập nhật lịch làm việc

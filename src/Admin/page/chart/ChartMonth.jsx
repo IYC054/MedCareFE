@@ -11,32 +11,34 @@ const ChartMonth = () => {
   useEffect(() => {
     const fetchMonthlyData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/appointment', {
-          headers: {
-              Authorization: `Bearer ${token}`
-          }
-      });
+        const response = await axios.get("http://localhost:8080/api/appointment", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+
         const appointments = response.data;
 
         // Lấy năm hiện tại
         const currentYear = new Date().getFullYear();
 
-        // Tính tổng số liệu của từng tháng trong năm hiện tại
+        // Mảng lưu số lượng cuộc hẹn theo từng tháng
         const monthlyData = new Array(12).fill(0);
-        appointments.forEach(appointment => {
-          const appointmentDate = new Date(appointment.date);
-          const appointmentYear = appointmentDate.getFullYear();
 
-          // Kiểm tra xem cuộc hẹn có thuộc năm hiện tại không
-          if (appointmentYear === currentYear) {
-            const monthIndex = appointmentDate.getMonth(); // Tháng từ 0 (Jan) đến 11 (Dec)
-            monthlyData[monthIndex]++;
+        appointments.forEach(appointment => {
+          if (appointment.worktime?.workDate) {
+            const appointmentDate = new Date(appointment.worktime.workDate);
+            if (!isNaN(appointmentDate)) {
+              const appointmentYear = appointmentDate.getFullYear();
+              if (appointmentYear === currentYear) {
+                const monthIndex = appointmentDate.getMonth(); // 0 (Jan) -> 11 (Dec)
+                monthlyData[monthIndex]++;
+              }
+            }
           }
         });
 
         setChartData(monthlyData);
       } catch (error) {
-        console.error('Error fetching appointments:', error);
+        console.error("Error fetching appointments:", error);
       }
     };
 

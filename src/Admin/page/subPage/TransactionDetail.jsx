@@ -85,7 +85,7 @@ function TransactionDetail() {
                             <span className="min-w-[250px]">Trạng thái:</span>
                             <span
                                 className={`px-2 py-1 rounded text-sm ${
-                                    tran.status === 'Hoàn thành'
+                                    tran.status === 'Đã thanh toán'
                                         ? "bg-green-100 text-green-800"
                                         : tran.status === "Chờ xử lý"
                                         ? "bg-yellow-100 text-yellow-800"

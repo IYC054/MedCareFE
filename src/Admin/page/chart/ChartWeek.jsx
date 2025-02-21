@@ -16,38 +16,44 @@ const ChartWeek = () => {
             Authorization: `Bearer ${token}`
           }
         });
+
         const appointments = response.data;
 
-        // Tính ngày đầu tuần (Thứ Hai) và ngày cuối tuần (Chủ Nhật)
+        // Lấy ngày hiện tại
         const today = new Date();
-        const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 1)); // Thứ Hai
-        const lastDayOfWeek = new Date(today.setDate(firstDayOfWeek.getDate() + 6)); // Chủ Nhật
 
-        // Đặt mốc thời gian của ngày đầu và cuối tuần để dễ so sánh
+        // Xác định ngày đầu tuần (Thứ Hai) và ngày cuối tuần (Chủ Nhật)
+        const firstDayOfWeek = new Date(today);
+        firstDayOfWeek.setDate(today.getDate() - today.getDay() + 1); // Thứ Hai
         firstDayOfWeek.setHours(0, 0, 0, 0);
+
+        const lastDayOfWeek = new Date(firstDayOfWeek);
+        lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 6); // Chủ Nhật
         lastDayOfWeek.setHours(23, 59, 59, 999);
 
-        // Lọc các cuộc hẹn chỉ trong tuần hiện tại
+        // Lọc các cuộc hẹn có `workDate` trong tuần hiện tại
         const filteredAppointments = appointments.filter(appointment => {
-          const appointmentDate = new Date(appointment.date);
+          const appointmentDate = new Date(appointment.worktime.workDate); // Lấy ngày từ `workDate`
           return appointmentDate >= firstDayOfWeek && appointmentDate <= lastDayOfWeek;
         });
 
-        // Tính số lượng cuộc hẹn trong tuần theo từng ngày
+        // Tạo mảng đếm số lượng cuộc hẹn theo từng ngày trong tuần
         const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
         const appointmentCounts = new Array(7).fill(0);
 
         filteredAppointments.forEach(appointment => {
-          const date = new Date(appointment.date);
+          const date = new Date(appointment.worktime.workDate);
           const dayIndex = date.getDay(); // 0 (Sun) to 6 (Sat)
           const mappedIndex = dayIndex === 0 ? 6 : dayIndex - 1; // Map Sun (0) to 6, Mon (1) to 0
           appointmentCounts[mappedIndex]++;
         });
 
         setChartData(appointmentCounts);
+
       } catch (error) {
         console.error('Failed to fetch appointments', error);
       }
+
     };
 
     fetchAppointments();

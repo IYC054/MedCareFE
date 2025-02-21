@@ -75,13 +75,8 @@ function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to="/admin/specialty" className={activeMenu === 'Specialty' ? 'mm-active' : ''} onClick={() => handleMenuClick('Specialty')}>
-                                        Các khoa khám
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link to="/admin/news" className={activeMenu === 'News' ? 'mm-active' : ''} onClick={() => handleMenuClick('News')}>
-                                        Tin tức
+                                    <Link to="/admin/patientfileAdmin" className={activeMenu === 'patientfileAdmin' ? 'mm-active' : ''} onClick={() => handleMenuClick('patientfileAdmin')}>
+                                        Quản lý hồ sơ bệnh nhân
                                     </Link>
                                 </li>
                             </ul>
@@ -101,15 +96,27 @@ function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
                                     </Link>
                                 </li>
                                 <li>
+                                    <Link to="/admin/specialty" className={activeMenu === 'Specialty' ? 'mm-active' : ''} onClick={() => handleMenuClick('Specialty')}>
+                                        Các khoa khám
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/admin/news" className={activeMenu === 'News' ? 'mm-active' : ''} onClick={() => handleMenuClick('News')}>
+                                        Tin tức
+                                    </Link>
+                                </li>
+                                <li>
                                     <Link to="/admin/doctor" className={activeMenu === 'Doctor' ? 'mm-active' : ''} onClick={() => handleMenuClick('Doctor')}>
                                         Bác sĩ
                                     </Link>
                                 </li>
+                              
                                 <li>
                                     <Link to="/admin/transaction" className={activeMenu === 'Transaction' ? 'mm-active' : ''} onClick={() => handleMenuClick('Transaction')}>
                                         Báo cáo giao dịch
                                     </Link>
                                 </li>
+                               
                                 {/* <li>
                                     <Link to="/admin/chat" className={activeMenu === 'Chat' ? 'mm-active' : ''} onClick={() => handleMenuClick('Chat')}>
                                         Tin nhắn

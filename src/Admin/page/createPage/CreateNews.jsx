@@ -93,7 +93,7 @@ function CreateNews() {
                             type="text"
                             value={formData.title}
                             onChange={handleChange}
-                            placeholder="Enter title"
+                            placeholder="Nhập tiêu đề"
                             className="mt-2 w-full p-2 border border-[#da624a] rounded-md focus:ring-2 focus:ring-[#da624a]"
                             required
                         />

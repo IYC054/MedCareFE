@@ -29,7 +29,7 @@ const Chart1Week = () => {
 
         payments.forEach((payment) => {
           const paymentDate = new Date(payment.transactionDate); // Đúng trường JSON API
-          if (paymentDate >= startOfWeek && paymentDate <= endOfWeek && payment.status === 'Hoàn thành') {
+          if (paymentDate >= startOfWeek && paymentDate <= endOfWeek && payment.status === 'Đã thanh toán') {
             const dayIndex = paymentDate.getDay(); // Duy trì thứ tự mặc định (0 = Sunday, 6 = Saturday)
             dailyData[dayIndex] += payment.amount; // Cộng dồn `amount` cho ngày tương ứng
           }

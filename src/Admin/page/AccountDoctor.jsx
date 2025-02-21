@@ -24,7 +24,7 @@ function AccountDoctor(props) {
         };
         fetchdoctorAccounts();
     }, []);
-   
+
     const navigate = useNavigate();
 
     const handleDetailClick = (id) => {
@@ -59,7 +59,7 @@ function AccountDoctor(props) {
                     </Link>
                 </div>
                 <div className='flex'>
-                   
+
                     <div className='input-group px-4 py-6 flex' >
                         <button className='input-group-prepend  border px-3 py-2 rounded-l-md bg-[#faeae7]'>
                             <div className='input-group-text'>
@@ -77,40 +77,48 @@ function AccountDoctor(props) {
                 <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-6 max-h-screen overflow-y-auto">
                     {/* Repeat for each card */}
                     {displaydoctor.map((item, index) => (
-                        <div key={index} className="shadow-lg border mb-3 p-0 rounded-md z-0">
-                            <div className="bg-[#da624a] p-4 rounded-t-md relative z-6">
+                        <div key={index} className="shadow-lg border border-gray-200 mb-4 rounded-lg overflow-hidden bg-white">
+                            {/* Header với ảnh nền mờ */}
+                            <div className="relative bg-[#4A90E2] p-6 rounded-t-lg">
                                 <div
-                                    className="absolute inset-0 bg-center bg-no-repeat opacity-25 filter grayscale"
+                                    className="absolute inset-0 bg-cover bg-center opacity-20 blur-sm"
                                     style={{
-                                        backgroundImage: item.avatar
+                                        backgroundImage: item.account?.avatar
                                             ? `url(${item.account.avatar})`
                                             : "url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq89CiAzo83k2OJHzwV4hsrgE7Cm0sAWlkpw&s)"
                                     }}
                                 />
-                                <div className="relative z-10 text-center">
-                                    <div className="inline-block mr-2">
-                                        <div className="w-14 h-14 rounded-full border-4 border-white overflow-hidden">
-                                            <img
-                                                src={item.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq89CiAzo83k2OJHzwV4hsrgE7Cm0sAWlkpw&s"}
-                                                alt="Avatar of Tuan"
-                                                className="object-cover w-full h-full"
-                                            />
-                                        </div>
+
+                                {/* Nội dung phía trên ảnh nền */}
+                                <div className="relative text-center">
+                                    {/* Avatar */}
+                                    <div className="w-16 h-16 mx-auto rounded-full border-4 border-white overflow-hidden shadow-md">
+                                        <img
+                                            src={item.account?.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq89CiAzo83k2OJHzwV4hsrgE7Cm0sAWlkpw&s"}
+                                            alt="Avatar"
+                                            className="w-full h-full object-cover"
+                                        />
                                     </div>
-                                    <div>
-                                        <h5 className="text-white text-xl font-medium">{item.account.name}</h5>
-                                    </div>
-                                    <div className="flex justify-center space-x-2 mt-2" onClick={() => handleDetailClick(item.id)}>
-                                        <button className="btn btn-info btn-sm text-white">View Profile</button>
-                                        <button className="btn btn-warning btn-sm text-white">
-                                            <i className="bi bi-gear"></i>
-                                        </button>
-                                    </div>
+
+                                    {/* Tên tài khoản */}
+                                    <h5 className="text-white text-lg font-semibold mt-3">{item.account?.name || "N/A"}</h5>
                                 </div>
                             </div>
 
-
+                            {/* Thông tin và nút */}
+                            <div className="bg-white p-4 text-center">
+                                <div className="flex justify-center space-x-3">
+                                    <button
+                                        className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-md shadow-md transition duration-300"
+                                        onClick={() => handleDetailClick(item.id)}
+                                    >
+                                        Xem thông tin
+                                    </button>
+                                </div>
+                            </div>
                         </div>
+
+
                     ))}
                 </div>
                 <div className="flex justify-center mt-4">

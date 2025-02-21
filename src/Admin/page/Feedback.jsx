@@ -64,7 +64,7 @@ function Feedback() {
                                 onClick={handleFeedbackBoxClick}
                             >
                                 <i className="bi bi-inbox mr-2"></i>
-                                <span>Feedback Box</span>
+                                <span>Hộp thư</span>
                             </button>
                         </li>
                         <li className="py-2">
@@ -73,7 +73,7 @@ function Feedback() {
                                 onClick={handleFeedbackGivenClick}
                             >
                                 <i className="bi bi-send mr-2"></i>
-                                <span>Feedback Khác</span>
+                                <span>Hộp thư Khác</span>
                             </button>
                         </li>
                     </ul>
