@@ -90,6 +90,7 @@ function TabDoctorappointment() {
     appointment_id
   ) => {
     try {
+      console.log("thay dổi",appointments[id-1])
       const data = await UpdateStatusAppointment(id, status);
       if (status === "Hoàn thành") {
         const checksuccess = axios.post(
@@ -104,9 +105,9 @@ function TabDoctorappointment() {
         );
         // cập nhật status pay 
         const updatePaymentStatus = await axios.put(
-          `http://localhost:8080/api/payments/status/${appointments[0]?.paymentDetails[0].id}`,
+          `http://localhost:8080/api/payments/status/${appointments[id-1]?.paymentDetails[0].id}`,
           {
-            status: "Hoàn thành", // Set the status to "Đã thanh toán"
+            status: "Đã thanh toán", // Set the status to "Đã thanh toán"
           },
           {
             headers: {
@@ -143,6 +144,7 @@ function TabDoctorappointment() {
       setCurrentPage(newPage);
     }
   };
+   console.log("currentAppointments",currentAppointments[0]?.patientDetails?.id)
   return (
     <div className="w-full h-full  border-l border-[#00b5f1] pl-10 ">
       <span className="text-[24px] font-medium">
