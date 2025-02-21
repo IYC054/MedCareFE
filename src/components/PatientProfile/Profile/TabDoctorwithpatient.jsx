@@ -1,12 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import { getAppointmentByDoctorId } from "../../../api/Doctor/appointment";
 import {
   deteleimage,
   getfileimagebypatientprofileid,
   getpatientbydoctorid,
-  getpatientbyid,
 } from "../../../api/Doctor/patient";
-import { getallPaymentByAppoint } from "../../../api/Bank/payment";
 import { ProfilebypatientprofileId } from "../../../api/Profile/profilebyaccount";
 import axios from "axios";
 import { useSnackbar } from "notistack";
@@ -25,7 +22,6 @@ function TabDoctorwithpatient() {
   const [selectPatientFileId, setSelectPatientFileId] = useState();
   const [queryName, setQueryName] = useState("");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState(null);
   const { User } = useContext(AppContext);
 
   const openModal = (urlImage) => {

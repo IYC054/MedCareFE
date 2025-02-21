@@ -29,7 +29,7 @@ function TabDoctorappointment() {
   const [currentPage, setCurrentPage] = useState(1);
   const [appointmentsPerPage] = useState(5);
 
-  const statusoption = ["Xác nhận", "Huỷ bỏ", "Chờ xử lý", "Hoàn thành"];
+  const statusoption = ["Xác nhận", "Huỷ bỏ", "Hoàn thành"];
 
   const fetchAppointments = async () => {
     try {
@@ -92,6 +92,7 @@ function TabDoctorappointment() {
     try {
       console.log("thay dổi",appointments[id-1])
       const data = await UpdateStatusAppointment(id, status);
+      console.log("starus hiện tại",status);
       if (status === "Hoàn thành") {
         const checksuccess = axios.post(
           `http://localhost:8080/api/patientsfile?doctors_id=${doctorid}&patients_profile_id=${patientfile_id}&appointment_id=${appointment_id}`,
@@ -115,7 +116,6 @@ function TabDoctorappointment() {
             },
           }
         );
-        //
         if (checksuccess != null) {
           enqueueSnackbar("Cập nhật thành công!", {
             variant: "success",
@@ -130,6 +130,63 @@ function TabDoctorappointment() {
           });
         }
       }
+      // hủy bỏ
+       if(status === "Huỷ bỏ"){
+        const updatePaymentStatus = await axios.put(
+          `http://localhost:8080/api/payments/status/${appointments[id-1]?.paymentDetails[0].id}`,
+          {
+            status: "Hoàn tiền", // Set the status to "Đã thanh toán"
+          },
+          {
+            headers: {
+              "Content-Type": "application/json"
+            },
+          }
+        );
+        if (updatePaymentStatus != null) {
+          enqueueSnackbar("Cập nhật thành công!", {
+            variant: "success",
+            autoHideDuration: 5000,
+            anchorOrigin: { vertical: "top", horizontal: "right" },
+          });
+        } else {
+          enqueueSnackbar("Cập nhật không thành công!", {
+            variant: "error",
+            autoHideDuration: 5000,
+            anchorOrigin: { vertical: "top", horizontal: "right" },
+          });
+        }
+        console.log("hủy bỏ nè nghị ơi ")
+      }
+  // Xác nhận
+  if(status === "Xác nhận"){
+    const updatePaymentStatus = await axios.put(
+      `http://localhost:8080/api/payments/status/${appointments[id-1]?.paymentDetails[0].id}`,
+      {
+        status: "Chờ xử lý", // Set the status to "Đã thanh toán"
+      },
+      {
+        headers: {
+          "Content-Type": "application/json"
+        },
+      }
+    );
+    if (updatePaymentStatus != null) {
+      enqueueSnackbar("Cập nhật thành công!", {
+        variant: "success",
+        autoHideDuration: 5000,
+        anchorOrigin: { vertical: "top", horizontal: "right" },
+      });
+    } else {
+      enqueueSnackbar("Cập nhật không thành công!", {
+        variant: "error",
+        autoHideDuration: 5000,
+        anchorOrigin: { vertical: "top", horizontal: "right" },
+      });
+    }
+    console.log("hủy bỏ nè nghị ơi ")
+  }
+
       fetchAppointments();
     } catch (error) {
       console.error("Error updating status:", error);
@@ -203,6 +260,11 @@ function TabDoctorappointment() {
                 </th>
                 <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
                   <p className="block font-sans text-sm antialiased font-bold leading-none text-blue-gray-900 opacity-70">
+                    Bệnh Án
+                  </p>
+                </th>
+                <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
+                  <p className="block font-sans text-sm antialiased font-bold leading-none text-blue-gray-900 opacity-70">
                     Trạng thái
                   </p>
                 </th>
@@ -236,6 +298,11 @@ function TabDoctorappointment() {
                       <td className="p-4 border-b border-blue-gray-50">
                         <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
                           {item.worktime.startTime} - {item.worktime.endTime}
+                        </p>
+                      </td>
+                      <td className="p-4 border-b border-blue-gray-50">
+                        <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
+                           <span className="px-4 py-2 bg-green-300 rounded-lg">Điều Trị</span>
                         </p>
                       </td>
                       <td className="p-4 border-b border-blue-gray-50">
