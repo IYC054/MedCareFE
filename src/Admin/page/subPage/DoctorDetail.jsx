@@ -5,6 +5,7 @@ import { getToken } from "../../../components/Authentication/authService";
 import DatePicker from "react-datepicker";
 import { format } from "date-fns";
 import { enUS } from "date-fns/locale";
+import { FaCrown } from "react-icons/fa";
 function DoctorDetail() {
   const { id } = useParams(); // Lấy ID bác sĩ từ URL
   const [doctor, setDoctor] = useState(null);
@@ -71,15 +72,15 @@ function DoctorDetail() {
     }
 
     try {
-    //   const deleteResponse = await axios.delete(
-    //     `http://localhost:8080/api/workinghours/doctor/${id}`,
-    //     {
-    //       headers: {
-    //         Authorization: `Bearer ${token}`,
-    //       },
-    //     }
-    //   );
-    //   console.log("Lịch cũ đã được xóa:", deleteResponse.data);
+      //   const deleteResponse = await axios.delete(
+      //     `http://localhost:8080/api/workinghours/doctor/${id}`,
+      //     {
+      //       headers: {
+      //         Authorization: `Bearer ${token}`,
+      //       },
+      //     }
+      //   );
+      //   console.log("Lịch cũ đã được xóa:", deleteResponse.data);
 
       for (let shift of shiftsToPost) {
         const body = {
@@ -282,12 +283,12 @@ function DoctorDetail() {
     <div className="bg-gray-100 min-h-screen p-6 relative" id="goup">
       <div className="container mx-auto bg-white rounded-lg shadow-lg p-6">
         {/* Doctor Details Section */}
-        <h1 className="text-3xl font-extrabold mb-6 text-[#4A90E2] text-center">
+        <h1 className="text-3xl font-extrabold mb-6 text-[#da624a] text-center">
           Thông tin bác sĩ
         </h1>
 
         <div className="mb-6 flex items-center gap-8">
-          <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-[#4A90E2] shadow-lg">
+          <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-[#da624a] shadow-lg">
             <img
               src={doctor.account.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq89CiAzo83k2OJHzwV4hsrgE7Cm0sAWlkpw&s"}
               alt="Doctor Avatar"
@@ -298,7 +299,12 @@ function DoctorDetail() {
             {doctor ? (
               <>
                 <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-                  Dr. {doctor.account.name}
+                  {doctor.vip && (
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <span>Dr. {doctor.account.name}</span>
+                      <FaCrown style={{ color: "gold", marginLeft: "5px" }} />
+                    </div>
+                  )}
                 </h2>
                 <p className="text-gray-600 text-lg mb-2">
                   <span className="font-medium">Email:</span>{" "}
@@ -338,7 +344,7 @@ function DoctorDetail() {
         </div>
         <div className="mb-6 flex justify-center">
           <button
-            className="bg-[#4A90E2] text-white px-4 py-2 rounded-md hover:bg-[#4A90E2] transition"
+            className="bg-[#da624a] text-white px-4 py-2 rounded-md hover:bg-[#da624a] transition"
             onClick={() => setIsOpenEdit(true)}
           >
             Cập nhật lịch làm việc
@@ -378,12 +384,12 @@ function DoctorDetail() {
                       </td>
                       <td className="px-4 py-2 text-gray-700">
                         {shift.startTime === "08:00:00" &&
-                        shift.endTime === "12:00:00"
+                          shift.endTime === "12:00:00"
                           ? "Ca sáng (08:00 - 12:00)"
                           : shift.startTime === "13:00:00" &&
                             shift.endTime === "16:00:00"
-                          ? "Ca chiều (13:00 - 16:00)"
-                          : "Cả 2 ca"}
+                            ? "Ca chiều (13:00 - 16:00)"
+                            : "Cả 2 ca"}
                       </td>
                       <td className="px-4 py-2 text-gray-700">
                         {shift.startTime}
@@ -451,11 +457,10 @@ function DoctorDetail() {
                         return (
                           <button
                             key={shift}
-                            className={`px-5 py-3 text-lg font-medium rounded-md transition ${
-                              isSelected
-                                ? "bg-[#da624a] text-white"
-                                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-                            }`}
+                            className={`px-5 py-3 text-lg font-medium rounded-md transition ${isSelected
+                              ? "bg-[#da624a] text-white"
+                              : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                              }`}
                             onClick={() => setSelectedShift(shift)}
                           >
                             {shiftLabel}
@@ -473,7 +478,7 @@ function DoctorDetail() {
                       Hủy
                     </button>
                     <button
-                      className="bg-blue-500 text-white px-5 py-3 rounded-md text-lg hover:bg-blue-600"
+                      className="bg-[#da624a] text-white px-5 py-3 rounded-md text-lg hover:bg-[#da624a]"
                       onClick={handleShiftUpdate} // Lưu lịch làm việc
                     >
                       Cập nhật
@@ -582,11 +587,10 @@ function DoctorDetail() {
                   return (
                     <button
                       key={shift}
-                      className={`px-5 py-3 text-lg font-medium rounded-md transition ${
-                        isSelected
-                          ? "bg-[#da624a] text-white"
-                          : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-                      }`}
+                      className={`px-5 py-3 text-lg font-medium rounded-md transition ${isSelected
+                        ? "bg-[#da624a] text-white"
+                        : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                        }`}
                       onClick={() => handleShiftSelect(shift)}
                     >
                       {shiftLabel}
@@ -703,11 +707,10 @@ function DoctorDetail() {
                   return (
                     <button
                       key={shift}
-                      className={`px-5 py-3 text-lg font-medium rounded-md transition ${
-                        isSelected
-                          ? "bg-[#da624a] text-white"
-                          : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-                      }`}
+                      className={`px-5 py-3 text-lg font-medium rounded-md transition ${isSelected
+                        ? "bg-[#da624a] text-white"
+                        : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                        }`}
                       onClick={() => handleShiftSelect(shift)}
                     >
                       {shiftLabel}

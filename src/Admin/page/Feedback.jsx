@@ -10,8 +10,7 @@ function Feedback() {
     const [feedbackGiven, setFeedbackGiven] = useState([]); // Dữ liệu Feedback Khác
     const [isFeedbackBox, setIsFeedbackBox] = useState(true); // Trạng thái hiển thị danh sách
     const token = getToken();
-    const navigate = useNavigate();
-
+    const navigate = useNavigate(); 
     // Lấy dữ liệu Feedback Box
     useEffect(() => {
         const fetchFeedbackBox = async () => {
@@ -107,13 +106,13 @@ function Feedback() {
                                         <td className="py-3 pl-4">
                                             <div className="flex items-center">
                                                 <img
-                                                    src={item.account?.avatar || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeUUz1pW3PpdJVcOvcwfYWdKFK4wBGL_UvcA&s'}
+                                                    src={item.recipient?.avatar || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeUUz1pW3PpdJVcOvcwfYWdKFK4wBGL_UvcA&s'}
                                                     alt="Avatar"
                                                     className="w-10 h-10 rounded-full"
                                                 />
                                                 <div className="ml-2">
                                                     <div className="font-semibold text-gray-600">
-                                                        {item.account?.name || item.sender_email}
+                                                        {item.recipient?.name || item.sender_email}
                                                     </div>
                                                     <div className="text-sm text-gray-500">
                                                         {item.createdAt ? format(new Date(item.createdAt), 'dd/MM/yyyy HH:mm') : 'N/A'}

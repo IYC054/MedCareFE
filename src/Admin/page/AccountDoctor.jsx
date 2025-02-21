@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 // import '../scss/AccountDoctor.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { getToken } from '../../components/Authentication/authService';
-
+import { FaCrown } from "react-icons/fa";
 
 function AccountDoctor(props) {
     const token = getToken();
@@ -76,10 +76,18 @@ function AccountDoctor(props) {
             <div className="container-fluid">
                 <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-6 max-h-screen overflow-y-auto">
                     {/* Repeat for each card */}
+
+
                     {displaydoctor.map((item, index) => (
-                        <div key={index} className="shadow-lg border border-gray-200 mb-4 rounded-lg overflow-hidden bg-white">
+                        <div
+                            key={index}
+                            className={`shadow-lg border mb-4 rounded-lg overflow-hidden 
+            bg-white transition duration-300 
+            ${item.vip ? "border-yellow-400 bg-yellow-100" : "border-gray-200"}
+        `}
+                        >
                             {/* Header với ảnh nền mờ */}
-                            <div className="relative bg-[#4A90E2] p-6 rounded-t-lg">
+                            <div className={`relative p-6 rounded-t-lg ${item.vip ? "bg-[#4A90E2]" : "bg-[#4A90E2]"}`}>
                                 <div
                                     className="absolute inset-0 bg-cover bg-center opacity-20 blur-sm"
                                     style={{
@@ -92,16 +100,25 @@ function AccountDoctor(props) {
                                 {/* Nội dung phía trên ảnh nền */}
                                 <div className="relative text-center">
                                     {/* Avatar */}
-                                    <div className="w-16 h-16 mx-auto rounded-full border-4 border-white overflow-hidden shadow-md">
+                                    <div className="relative w-16 h-16 mx-auto rounded-full border-4 border-white overflow-hidden shadow-md">
                                         <img
                                             src={item.account?.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq89CiAzo83k2OJHzwV4hsrgE7Cm0sAWlkpw&s"}
                                             alt="Avatar"
                                             className="w-full h-full object-cover"
                                         />
-                                    </div>
 
+                                        {/* Hiển thị icon vương miện nếu là VIP */}
+
+                                    </div>
+                                    {item.vip && (
+                                        <FaCrown
+                                            className="absolute top-1 left-14 transform -translate-x-1/3 -translate-y-1/3 text-yellow-600 drop-shadow-lg"
+                                            size={24}
+                                        />
+                                    )}
                                     {/* Tên tài khoản */}
-                                    <h5 className="text-white text-lg font-semibold mt-3">{item.account?.name || "N/A"}</h5>
+                                    <h5 className="text-white text-lg font-semibold mt-3"> {item.vip ? `${item.account?.name} (VIP)` : item.account?.name || "N/A"}
+                                    </h5>
                                 </div>
                             </div>
 
@@ -117,9 +134,8 @@ function AccountDoctor(props) {
                                 </div>
                             </div>
                         </div>
-
-
                     ))}
+
                 </div>
                 <div className="flex justify-center mt-4">
                     {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (

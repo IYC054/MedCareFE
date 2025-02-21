@@ -99,7 +99,7 @@ function ResponseBackFeedback() {
                         type="submit"
                         className="px-6 py-2 bg-[#da624a] text-white rounded-md hover:bg-[#c85138]"
                     >
-                        Send Email
+                        Gửi mail
                     </button>
                 </div>
             </form>

@@ -25,14 +25,15 @@ function PatientProfileAdmin() {
         fetchPatients();
     }, []);
 
-    const filteredPatients = patients.filter((patient) =>
-        patient.fullname.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredPatients = patients?.filter((patient) =>
+        patient?.identificationCard?.toLowerCase().includes(searchTerm?.toLowerCase() || "")
+    ) || [];
+
 
     return (
         <div className="container mx-auto p-6">
             <div className='place-content-center'>
-                <Link to="/admin/doctor/CreateDoctor" className="w-[250px] flex items-center justify-center mb-5 px-4 py-2 text-base font-medium text-white bg-[#da624a] border-primary rounded-md hover:bg-[#b2503c] transition"
+                <Link to="/admin/profileadmin/create" className="w-[250px] flex items-center justify-center mb-5 px-4 py-2 text-base font-medium text-white bg-[#da624a] border-primary rounded-md hover:bg-[#b2503c] transition"
                 >
                     Tạo hồ sơ cho bệnh nhân
                 </Link>
@@ -55,7 +56,7 @@ function PatientProfileAdmin() {
                     <thead className="bg-gray-100 text-gray-700">
                         <tr>
                             <th className="p-3">Họ Tên</th>
-                            <th className="p-3">Ngày Sinh</th>
+                            <th className="p-3">Mã cccd</th>
                             <th className="p-3">Giới Tính</th>
                             <th className="p-3">Số Điện Thoại</th>
                             <th className="p-3">Địa Chỉ</th>
@@ -67,7 +68,12 @@ function PatientProfileAdmin() {
                             filteredPatients.map((patient) => (
                                 <tr key={patient.id} className="border-b hover:bg-gray-50">
                                     <td className="p-3">{patient.fullname}</td>
-                                    <td className="p-3">{patient.birthdate}</td>
+                                    <td className="p-3">
+                                        {patient.identificationCard
+                                            ? `${patient.identificationCard.slice(0, 4)} **** ${patient.identificationCard.slice(-3)}`
+                                            : "Không có dữ liệu"}
+                                    </td>
+
                                     <td className="p-3">{patient.gender}</td>
                                     <td className="p-3">{patient.phone}</td>
                                     <td className="p-3">{patient.address}</td>
@@ -102,7 +108,7 @@ function PatientProfileAdmin() {
                         <p><strong>Giới tính:</strong> {selectedPatient.gender}</p>
                         <p><strong>Số điện thoại:</strong> {selectedPatient.phone}</p>
                         <p><strong>Địa chỉ:</strong> {selectedPatient.address}</p>
-                        <p><strong>Mã bảo hiểm y tế:</strong> {selectedPatient.codeBhyt}</p>
+                        <p><strong>Mã cccd:</strong> {selectedPatient.identificationCard}</p>
                         <p><strong>Dân tộc:</strong> {selectedPatient.nation}</p>
                         <div className="mt-4 flex justify-end">
                             <button

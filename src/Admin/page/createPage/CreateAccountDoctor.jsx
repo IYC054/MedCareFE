@@ -12,6 +12,7 @@ function CreateAccountDoctor() {
         password: "",
         phone: "",
         gender: "",
+
         birthdate: "",
         role: "DOCTOR",
         avatar: null,
@@ -19,7 +20,8 @@ function CreateAccountDoctor() {
     });
     const [formData2, setFormData2] = useState({
         experienceYears: 0,
-        status: "Available",
+        status: "Hoạt động",
+        vip: "",
         account: 0,
         selectedSpecialties: [],
     });
@@ -46,6 +48,7 @@ function CreateAccountDoctor() {
             ...prevState,
             [name]: value,
         }));
+
     };
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -60,7 +63,7 @@ function CreateAccountDoctor() {
         }
     };
 
-
+    console.log()
 
     const handleSpecialtyChange = (e) => {
         const selectedIds = Array.from(e.target.selectedOptions, (option) => option.value);
@@ -78,7 +81,7 @@ function CreateAccountDoctor() {
         formDataToSend.append("gender", formData.gender);
         formDataToSend.append("birthdate", formData.birthdate);
         formDataToSend.append("role", formData.role);
-        formDataToSend.append("avatar", formData.avatar); 
+        formDataToSend.append("avatar", formData.avatar);
         // Gửi tên file
         formDataToSend.append("lastFeedbackTime", null);
         console.log(formData);
@@ -96,6 +99,7 @@ function CreateAccountDoctor() {
             const formDataToSend2 = {
                 experienceYears: formData2.experienceYears,
                 status: "Available",
+                vip: formData2.vip,
                 account: {
                     id: accountId
                 },
@@ -116,16 +120,18 @@ function CreateAccountDoctor() {
                 alert("Doctor Created Successfully");
                 natigave("/admin/doctor")
             } catch (error) {
-                console.error("Error creating doctor:", error.message);
+                console.error("Error creating doctor:", error);
+                alert(`Lỗi tạo bác sĩ: ${error.response?.data?.message || error.message}`);
             }
 
         } catch (error) {
-            console.error("Error submitting form:", error.message);
+            console.error("Error submitting form:", error);
+            alert(`Lỗi gửi form: ${error.response?.data?.message || error.message}`);
         }
 
 
     };
-    
+
     const natigave = useNavigate();
 
     return (
@@ -145,7 +151,7 @@ function CreateAccountDoctor() {
                             type="email"
                             value={formData.email}
                             onChange={handleChange}
-                            placeholder="Enter email"
+                            placeholder="Nhập email"
                             className="mt-2 w-full p-2 border border-[#da624a] rounded-md focus:ring-2 focus:ring-[#da624a]"
                             required
                         />
@@ -154,7 +160,7 @@ function CreateAccountDoctor() {
                     {/* Name Field */}
                     <div>
                         <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                            Name
+                            Họ và Tên
                         </label>
                         <input
                             id="name"
@@ -162,7 +168,7 @@ function CreateAccountDoctor() {
                             type="text"
                             value={formData.name}
                             onChange={handleChange}
-                            placeholder="Enter name"
+                            placeholder="Nhập họ và tên"
                             className="mt-2 w-full p-2 border border-[#da624a] rounded-md focus:ring-2 focus:ring-[#da624a]"
                             required
                         />
@@ -171,7 +177,7 @@ function CreateAccountDoctor() {
                     {/* Password Field */}
                     <div>
                         <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                            Password
+                            Mật khẩu
                         </label>
                         <input
                             id="password"
@@ -179,7 +185,7 @@ function CreateAccountDoctor() {
                             type="password"
                             value={formData.password}
                             onChange={handleChange}
-                            placeholder="Enter password"
+                            placeholder="Nhập Mật Khẩu"
                             className="mt-2 w-full p-2 border border-[#da624a] rounded-md focus:ring-2 focus:ring-[#da624a]"
                             required
                         />
@@ -188,7 +194,7 @@ function CreateAccountDoctor() {
                     {/* Phone Field */}
                     <div>
                         <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                            Phone
+                            Số điện thoại
                         </label>
                         <input
                             id="phone"
@@ -196,14 +202,14 @@ function CreateAccountDoctor() {
                             type="text"
                             value={formData.phone}
                             onChange={handleChange}
-                            placeholder="Enter phone number"
+                            placeholder="Nhập số điện thoại"
                             className="mt-2 w-full p-2 border border-[#da624a] rounded-md focus:ring-2 focus:ring-[#da624a]"
                         />
                     </div>
 
                     {/* Gender Field */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Gender</label>
+                        <label className="block text-sm font-medium text-gray-700">Giới tính</label>
                         <div className="mt-2 flex gap-4">
                             <label>
                                 <input
@@ -213,7 +219,7 @@ function CreateAccountDoctor() {
                                     checked={formData.gender === "Male"}
                                     onChange={handleChange}
                                 />{" "}
-                                Male
+                                Nam
                             </label>
                             <label>
                                 <input
@@ -223,7 +229,7 @@ function CreateAccountDoctor() {
                                     checked={formData.gender === "Female"}
                                     onChange={handleChange}
                                 />{" "}
-                                Female
+                                Nữ
                             </label>
                         </div>
                     </div>
@@ -231,7 +237,7 @@ function CreateAccountDoctor() {
                     {/* Birthdate Field */}
                     <div>
                         <label htmlFor="birthdate" className="block text-sm font-medium text-gray-700">
-                            Birthdate
+                            Ngày sinh
                         </label>
                         <input
                             id="birthdate"
@@ -246,7 +252,7 @@ function CreateAccountDoctor() {
                     {/* Profile Image Upload */}
                     <div>
                         <label htmlFor="avatar" className="block text-sm font-medium text-gray-700">
-                            Avatar
+                            Hình chân dung
                         </label>
                         <input
                             id="avatar"
@@ -268,7 +274,7 @@ function CreateAccountDoctor() {
                     {/* Experience Years Field */}
                     <div>
                         <label htmlFor="experienceYears" className="block text-sm font-medium text-gray-700">
-                            Years of Experience
+                            Năm kinh nghiệm
                         </label>
                         <input
                             id="experienceYears"
@@ -277,17 +283,42 @@ function CreateAccountDoctor() {
                             value={formData2.experienceYears}
                             onChange={handleChange2}
 
-                            placeholder="Enter years of experience"
+                            placeholder="Nhập năm kinh nghiệm"
                             className="mt-2 w-full p-2 border border-[#da624a] rounded-md focus:ring-2 focus:ring-[#da624a]"
                         />
                     </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Bác sĩ khám</label>
+                        <div className="mt-2 flex gap-4">
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="vip"
+                                    value="true"
+                                    checked={formData2.vip === true}
+                                    onChange={(e) => handleChange2({ target: { name: "vip", value: e.target.value === "true" } })}
+                                />{" "}
+                                vip
+                            </label>
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="vip"
+                                    value="false"
+                                    checked={formData2.vip === false}
+                                    onChange={(e) => handleChange2({ target: { name: "vip", value: e.target.value === "true" } })}
+                                />{" "}
+                                thường
+                            </label>
 
+                        </div>
+                    </div>
 
 
                     {/* Specialty Selection */}
                     <div>
                         <label htmlFor="specialties" className="block text-sm font-medium text-gray-700">
-                            Specialties
+                            Chuyên khoa
                         </label>
                         <select
                             id="specialties"

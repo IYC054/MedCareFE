@@ -97,6 +97,9 @@ const RootLayoutAdmin = () => {
   } else if (location.pathname === '/admin/patientfileAdmin') {
     title = 'Quản lý hồ sơ bệnh nhân';
     description = 'Quản lý hồ sơ bệnh nhân liên quan đến y tế và bệnh viện.';
+  } else if (location.pathname === '/admin/profileadmin/create') {
+    title = 'Tạo hồ sơ';
+    description = '';
   }
   else {
     title = '';

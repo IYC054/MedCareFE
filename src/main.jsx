@@ -49,6 +49,7 @@ import FeedbackReponse from "./Admin/page/subPage/FeedbackReponse";
 // import Chat from "./Admin/page/Chat";
 import Contract from "./components/Contract/Contract";
 import PatienfileAdmin from "./Admin/page/PatienfileAdmin";
+import CreatePatientFile from "./Admin/page/createPage/CreatePatientFile";
 // import ChatRoom from "./Admin/page/ChatRoom";
 // import ChatRoomlogin from "./Admin/page/ChatRoomlogin";
 
@@ -153,6 +154,10 @@ const router = createBrowserRouter([
       {
         path: "/admin/feedback/responsefeedback",
         element: <ResponseBackFeedback />,
+      },
+      {
+        path: "/admin/profileadmin/create",
+        element: <CreatePatientFile />,
       },
       {
         path: "/admin/profileadmin",

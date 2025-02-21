@@ -13,7 +13,7 @@ function TabFeedBack() {
     try {
    
       const response = await axios.post(
-        `http://localhost:8080/api/feedbacks/10`,
+        `http://localhost:8080/api/feedbacks/11`,
         {
           message: feedback, 
           recipient: { id: User.id },
@@ -41,6 +41,7 @@ function TabFeedBack() {
           placeholder="Nhập nội dung feedback..."
           value={feedback}
           onChange={(e) => setFeedback(e.target.value)}
+          required
         ></textarea>
         <button
           type="submit"

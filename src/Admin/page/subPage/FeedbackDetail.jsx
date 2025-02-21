@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { getToken } from "../../../components/Authentication/authService";
 
+import { AppContext } from "../../../components/Context/AppProvider";
 
 const FeedbackDetail = () => {
     const { id } = useParams();
     const [feedback, setFeedback] = useState(null);
     const [reply, setReply] = useState("");
     const token = getToken();
+    const {User} = useContext(AppContext)
     const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
         const fetchNews = async () => {
@@ -36,7 +38,7 @@ const FeedbackDetail = () => {
 
         axios.post(`http://localhost:8080/api/feedbacks/${feedback.recipient.id}`, {
             message: reply,
-            recipient: { id: 10 },
+            recipient: { id: User.id },
             status: "OLD"
         }, {
             headers: { Authorization: `Bearer ${token}` }
@@ -70,15 +72,16 @@ const FeedbackDetail = () => {
 
     if (!feedback) return <p>Loading...</p>;
 
+    
 
     return (
         <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-lg">
-            <h2 className="text-xl font-semibold mb-4">Feedback Của {feedback.account.name}</h2>
+            <h2 className="text-xl font-semibold mb-4">Feedback Của {feedback.recipient.name}</h2>
             <div className="mb-4">
 
-                <p><strong>Email:</strong> {feedback.account.email}</p>
+                <p><strong>Email:</strong> {feedback.recipient.email}</p>
                 <p><strong>Thời gian:</strong>  {new Date(feedback.createdAt).toLocaleString()}</p>
-                <p><strong>Số liên lạc:</strong> {feedback.account.phone}</p>
+                <p><strong>Số liên lạc:</strong> {feedback.recipient.phone}</p>
                 <p><strong>Nội dung:</strong> {feedback.message}</p>
             </div>
             <textarea
@@ -87,7 +90,7 @@ const FeedbackDetail = () => {
                 value={reply}
 
                 onChange={(e) => setReply(e.target.value)}
-                placeholder="Enter your reply..."
+                placeholder="Nhập nôi dung phản hồi..."
             />
             <button
                 className="mt-2  px-6 py-2 bg-[#da624a] text-white rounded-md hover:bg-[#c85138]"
@@ -116,10 +119,10 @@ const FeedbackDetail = () => {
                                 d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8z"
                             ></path>
                         </svg>
-                        Sending...
+                        Đang gửi...
                     </>
                 ) : (
-                    "Send Email"
+                    "Gửi"
                 )}
             </button>
         </div>
