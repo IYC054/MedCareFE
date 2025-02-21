@@ -56,10 +56,10 @@ function TabAppointment(props) {
                         ? "bg-[#03C03C]"
                         : app.status == "Chưa thanh toán"
                         ? "bg-[#F1C40F]"
-                       // : app.status == "Hoàn tiền"
-                     //   ? "bg-[#C0392B]"
-                       // : app.status == "Chưa thanh toán"
-                       // ? "bg-[#F1C40F]"
+                        : app.status == "Hoàn tiền"
+                        ? "bg-[#C0392B]"
+                        : app.status == "Chờ xử lý"
+                        ? "bg-[#F1C40F]"
                         : ""
                     } rounded-xl text-[#fff] font-medium`}
                   >
