@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 function CreateAccountDoctor() {
     const token = getToken();
     const [specialties, setSpecialties] = useState([]);
+    const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
         email: "",
         name: "",
@@ -65,9 +67,15 @@ function CreateAccountDoctor() {
 
     console.log()
 
-    const handleSpecialtyChange = (e) => {
-        const selectedIds = Array.from(e.target.selectedOptions, (option) => option.value);
-        setFormData2({ ...formData2, selectedSpecialties: selectedIds });
+    const handleSpecialtyChange = (id) => {
+        setFormData2((prevData) => {
+            // Nếu specialty đã được chọn, bỏ chọn nó
+            const newSelectedSpecialties = prevData.selectedSpecialties.includes(id)
+                ? prevData.selectedSpecialties.filter((specialtyId) => specialtyId !== id)
+                : [...prevData.selectedSpecialties, id]; // Nếu chưa chọn, thêm nó vào
+
+            return { ...prevData, selectedSpecialties: newSelectedSpecialties };
+        });
     };
     console.log(formData);
     const handleSubmit = async (e) => {
@@ -85,17 +93,27 @@ function CreateAccountDoctor() {
         // Gửi tên file
         formDataToSend.append("lastFeedbackTime", null);
         console.log(formData);
+        if (formData2.selectedSpecialties.length === 0) {
+            setError("Vui lòng chọn ít nhất một  chuyên khoa!");
+            return;
+        }
+
+        setIsLoading(true);
+        setError(""); // Xóa thông báo lỗi nếu có
+
         try {
+            // Gửi yêu cầu API đầu tiên (Tạo tài khoản)
             const response = await axios.post("http://localhost:8080/api/account", formDataToSend, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "multipart/form-data",
                 },
-
             });
 
             console.log("Form Data Submitted Successfully:", response.data.result);
             const accountId = response.data.result.id;
+
+            // Sau khi tạo tài khoản thành công, tiếp tục gọi API thứ hai (Tạo bác sĩ)
             const formDataToSend2 = {
                 experienceYears: formData2.experienceYears,
                 status: "Available",
@@ -106,33 +124,35 @@ function CreateAccountDoctor() {
                 specialties: formData2.selectedSpecialties.map(id => ({ id }))
             };
 
-            try {
-                const doctorResponse = await axios.post(
-                    "http://localhost:8080/api/doctors",
-                    formDataToSend2,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            "Content-Type": "application/json"
-                        }
+            // Gửi yêu cầu API thứ hai (Tạo bác sĩ)
+            const doctorResponse = await axios.post(
+                "http://localhost:8080/api/doctors",
+                formDataToSend2,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json"
                     }
-                );
-                alert("Doctor Created Successfully");
-                natigave("/admin/doctor")
-            } catch (error) {
-                console.error("Error creating doctor:", error);
-                alert(`Lỗi tạo bác sĩ: ${error.response?.data?.message || error.message}`);
-            }
+                }
+            );
+
+            // Nếu cả 2 API thành công, hiển thị thông báo thành công
+            alert("Tạo thành công!");
+            navigate("/admin/doctor");
 
         } catch (error) {
             console.error("Error submitting form:", error);
-            alert(`Lỗi gửi form: ${error.response?.data?.message || error.message}`);
+
+            setError(`Lỗi: ${error.response?.data?.message || error.message}`);
+         
+        } finally {
+            setIsLoading(false); // Kết thúc trạng thái loading
         }
 
 
     };
 
-    const natigave = useNavigate();
+    const navigate = useNavigate();
 
     return (
         <div className="max-h-full pb-3 flex " id="goup">
@@ -313,32 +333,35 @@ function CreateAccountDoctor() {
 
                         </div>
                     </div>
-
-
-                    {/* Specialty Selection */}
                     <div>
-                        <label htmlFor="specialties" className="block text-sm font-medium text-gray-700">
+                        <label htmlFor="experienceYears" className="block text-sm font-medium text-gray-700">
                             Chuyên khoa
                         </label>
-                        <select
-                            id="specialties"
-
-                            value={formData2.selectedSpecialties}
-                            onChange={handleSpecialtyChange}
-                            className="mt-2 w-full p-2 border border-[#da624a] rounded-md focus:ring-2 focus:ring-[#da624a]"
-                        >
-
-
+                        {/* Specialty Selection */}
+                        <div className="flex flex-wrap gap-2">
                             {specialties.map((specialty) => (
-                                <option key={specialty.id} value={specialty.id}>{specialty.name}</option>
+                                <div
+                                    key={specialty.id}
+                                    onClick={() => handleSpecialtyChange(specialty.id)} // Cập nhật với id của specialty
+                                    className={`px-4 py-2 border rounded-md cursor-pointer ${formData2.selectedSpecialties.includes(specialty.id)
+                                        ? "bg-[#da624a] text-white font-bold"
+                                        : "bg-white text-[#da624a]"
+                                        }`}
+                                >
+                                    {specialty.name}
+                                </div>
                             ))}
-                        </select>
+                        </div>
                     </div>
-
+                    {error && (
+                        <div className="text-red-500 mb-2 p-2 border border-red-500 bg-red-100 rounded-md">
+                            {error}
+                        </div>
+                    )}
                     {/* Submit Button */}
                     <div className="flex items-center justify-between mt-6">
-                        <button type="submit" className="px-6 py-2 bg-[#da624a] text-white rounded-md">
-                            Submit
+                        <button type="submit" className="px-6 py-2 bg-[#da624a] text-white rounded-md " disabled={isLoading}>
+                            {isLoading ? "Đang xử lý..." : "Tạo"}
                         </button>
                     </div>
                 </form>

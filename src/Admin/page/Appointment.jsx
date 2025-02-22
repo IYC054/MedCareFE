@@ -222,7 +222,7 @@ function Appointment() {
                                         <td className="border p-2">{room.patient?.account?.name || 'Unknown'}</td>
                                         <td className="border p-2">{room.type}</td>
                                         <td className="border p-2">{room.workDate}</td>
-                                        <td className="border p-2">{room.amount} VNĐ</td>
+                                        <td className="border p-2">{room.payments[0].amount} VNĐ</td>
                                         <td className="border p-2">{room.status}</td>
                                         <td className="border p-2">
                                             {isVIP ? "VIP" : "Thường"}

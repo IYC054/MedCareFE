@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import { useNavigate } from 'react-router-dom';
 import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
+import { getToken } from '../../components/Authentication/authService';
 function Transactions() {
     const [transactions, setTransactions] = useState([]);
     const [appointment, setAppointment] = useState([]);
@@ -23,7 +24,7 @@ function Transactions() {
         successfulTransactions: 0,
         failedTransactions: 0,
     });
-
+    const token = getToken();
     useEffect(() => {
         const fetchTransactions = async () => {
             try {
@@ -48,7 +49,11 @@ function Transactions() {
                 const patientAccountIds = matchingAppointments.map((appointment) => appointment.patient.account_id);
 
                 // Fetch all patients
-                const responsePatients = await axios.get('http://localhost:8080/api/account');
+                const responsePatients = await axios.get('http://localhost:8080/api/account', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
                 const patientData = responsePatients.data.result;
                 setPatient(patientData);
 
@@ -75,7 +80,7 @@ function Transactions() {
 
                 // Limit to 50 transactions
                 const limitedTransactions = todaysTransactions.slice(0, 50);
-
+                console.log("50", limitedTransactions)
                 // Calculate metrics
                 const totalRevenue = limitedTransactions.reduce(
                     (sum, item) => (item.status === 'Đã thanh toán' ? sum + item.amount : sum),
@@ -139,7 +144,7 @@ function Transactions() {
 
         fetchTransactions();
     }, []);
-
+    console.log("50", transactions);
     const [transactionCode, setTransactionCode] = useState("");
     const [status, setStatus] = useState("");
 

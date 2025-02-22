@@ -139,7 +139,7 @@ function AppointmentDetail({ roomId, isVIP, onClose }) {
                         className="px-6 py-2 bg-gray-500 text-white font-semibold rounded hover:bg-gray-600 focus:outline-none"
                         onClick={onClose}
                     >
-                        Close
+                        Đóng
                     </button>
                 </div>
             </div>

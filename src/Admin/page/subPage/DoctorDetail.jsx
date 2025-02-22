@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getToken } from "../../../components/Authentication/authService";
 import DatePicker from "react-datepicker";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 import { enUS } from "date-fns/locale";
 import { FaCrown } from "react-icons/fa";
 function DoctorDetail() {
@@ -224,47 +224,54 @@ function DoctorDetail() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedShiftId, setSelectedShiftId] = useState(null);
   const [selectedWorkDate, setSelectedWorkDate] = useState(null);
+  const [error, setError] = useState("");
   const handleShiftUpdate = async () => {
+
     try {
-      const updatedShift = {
-        startTime: selectedShift === "morning" ? "08:00:00" : "13:00:00",
-        endTime: selectedShift === "morning" ? "12:00:00" : "16:00:00",
-        workDate: selectedWorkDate,
-      };
-      // Gửi yêu cầu cập nhật
-      await axios.put(
-        `http://localhost:8080/api/workinghours/${selectedShiftId}`,
-        {
-          startTime: selectedShift === "morning" ? "08:00:00" : "13:00:00",
-          endTime: selectedShift === "morning" ? "12:00:00" : "16:00:00",
-          workDate: selectedWorkDate,
-        },
+      const response = await axios.get(
+        `http://localhost:8080/api/appointment/check?workDate=${selectedWorkDate}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      setWorkingHours((prevState) =>
-        prevState.map((item) => {
-          // Nếu ID khớp, cập nhật thông tin ca làm việc
-          if (item.id === selectedShiftId) {
-            return {
-              ...item,
-              startTime: updatedShift.startTime,
-              endTime: updatedShift.endTime,
-              workDate: updatedShift.workDate,
-            };
-          }
-          return item;
-        })
+
+      if (response.data) {
+        setError("Không thể cập nhật! Đã có bệnh nhân đặt lịch vào ngày này.");
+        return; // Dừng xử lý nếu đã có bệnh nhân đặt lịch
+      }
+
+      // Nếu không có lịch hẹn, tiếp tục cập nhật
+      const updatedShift = {
+        startTime: selectedShift === "morning" ? "08:00:00" : "13:00:00",
+        endTime: selectedShift === "morning" ? "12:00:00" : "16:00:00",
+        workDate: selectedWorkDate,
+      };
+
+      await axios.put(
+        `http://localhost:8080/api/workinghours/${selectedShiftId}`,
+        updatedShift,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
-      // Đóng modal sau khi cập nhật thành công
+      setWorkingHours((prevState) =>
+        prevState.map((item) =>
+          item.id === selectedShiftId
+            ? { ...item, ...updatedShift }
+            : item
+        )
+      );
+      alert("Cập nhập thành công!");
       setIsModalOpen(false);
     } catch (error) {
       console.error("Lỗi cập nhật giờ làm việc", error);
     }
+
   };
 
   const openUpdateModal = (shift, shiftId, workDate) => {
@@ -272,6 +279,7 @@ function DoctorDetail() {
     setSelectedShiftId(shiftId);
     setSelectedWorkDate(workDate);
     setIsModalOpen(true); // Mở modal chỉnh sửa
+    setError("");
   };
   if (loading) {
     return (
@@ -431,7 +439,7 @@ function DoctorDetail() {
             {/* Modal */}
             {isModalOpen && (
               <div
-                className="fixed inset-0 z-20 bg-black bg-opacity-50  backdrop-blur-sm flex items-center justify-center"
+                className="fixed inset-0 z-50 bg-black bg-opacity-50  backdrop-blur-sm flex items-center justify-center"
                 onClick={() => setIsModalOpen(false)}
               >
                 <div
@@ -445,6 +453,8 @@ function DoctorDetail() {
                     <label className="block text-gray-700 font-medium mb-2">
                       Chọn ca làm việc:
                     </label>
+                    {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
+
                     <div className="flex gap-3 justify-center">
                       {["morning", "afternoon"].map((shift) => {
                         const shiftLabel = {
