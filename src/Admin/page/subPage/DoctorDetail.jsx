@@ -229,7 +229,7 @@ function DoctorDetail() {
 
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/appointment/check?workDate=${selectedWorkDate}`,
+        `http://localhost:8080/api/appointment/check?workDate=${selectedWorkDate}&doctorId=${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -397,7 +397,7 @@ function DoctorDetail() {
                           : shift.startTime === "13:00:00" &&
                             shift.endTime === "16:00:00"
                             ? "Ca chiều (13:00 - 16:00)"
-                            : "Cả 2 ca"}
+                            :   `Ca từ ${shift.startTime} đến ${shift.endTime}`}
                       </td>
                       <td className="px-4 py-2 text-gray-700">
                         {shift.startTime}
