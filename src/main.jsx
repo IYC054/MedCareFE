@@ -50,6 +50,8 @@ import FeedbackReponse from "./Admin/page/subPage/FeedbackReponse";
 import Contract from "./components/Contract/Contract";
 import PatienfileAdmin from "./Admin/page/PatienfileAdmin";
 import CreatePatientFile from "./Admin/page/createPage/CreatePatientFile";
+import Chat from "./Admin/page/Chat";
+import EditDoctor from "./Admin/page/editPage/EditDoctor";
 // import ChatRoom from "./Admin/page/ChatRoom";
 // import ChatRoomlogin from "./Admin/page/ChatRoomlogin";
 
@@ -140,12 +142,20 @@ const router = createBrowserRouter([
         element: <Feedback />,
       },
       {
+        path : "/admin/editdoctor/:id",
+        element: <EditDoctor />
+      },
+      {
         path: "/admin/feedback/reponse/:id",
         element: <FeedbackDetail />,
       },
       {
         path: "/admin/feedback/wasReponse/:id",
         element: <FeedbackReponse />,
+      },
+      {
+        path: "/admin/chat",
+        element: <Chat />,
       },
       {
         path: "/admin/feedback/sendfeedback",

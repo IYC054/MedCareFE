@@ -66,17 +66,15 @@ function AccountDoctor(props) {
                                 <i className='bi bi-search '></i>
                             </div>
                         </button>
-                        <input placeholder="Search..."
+                        <input placeholder="Tìm theo tên  ..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             type="text" className="form-control px-3 border rounded-r-md " />
                     </div>
-                </div>
+                </div> 
             </div>
             <div className="container-fluid">
                 <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-6 max-h-screen overflow-y-auto">
-                    {/* Repeat for each card */}
-
 
                     {displaydoctor.map((item, index) => (
                         <div

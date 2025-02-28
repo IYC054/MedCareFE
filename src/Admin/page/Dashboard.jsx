@@ -106,7 +106,7 @@ function Dashboard() {
                 })
             );
 
-            // Chờ tất cả request hoàn thành
+            // Chờ tất cả request
             const responses = await Promise.all(doctorRequests);
 
             // Lưu dữ liệu vào state
@@ -161,7 +161,8 @@ function Dashboard() {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                const payments = response.data;
+                const paidPayments = response.data;
+                const payments = paidPayments.filter(payment => payment.status === "Đã thanh toán");
 
                 const currentDate = new Date();
                 const currentYear = currentDate.getFullYear();

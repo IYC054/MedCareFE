@@ -1,11 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getToken } from "../../../components/Authentication/authService";
 import DatePicker from "react-datepicker";
 import { format, set } from "date-fns";
 import { enUS } from "date-fns/locale";
 import { FaCrown } from "react-icons/fa";
+import EditCv from "../editPage/EditCv";
 function DoctorDetail() {
   const { id } = useParams(); // Lấy ID bác sĩ từ URL
   const [doctor, setDoctor] = useState(null);
@@ -16,6 +17,9 @@ function DoctorDetail() {
   const [endDate, setEndDate] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenEdit, setIsOpenEdit] = useState(false);
+
+
+  const [selectedImage, setSelectedImage] = useState(null);
   // Chuyển shift thành startTime & endTime
   const shiftTimes = {
     morning: { startTime: "08:00:00", endTime: "12:00:00" },
@@ -72,15 +76,7 @@ function DoctorDetail() {
     }
 
     try {
-      //   const deleteResponse = await axios.delete(
-      //     `http://localhost:8080/api/workinghours/doctor/${id}`,
-      //     {
-      //       headers: {
-      //         Authorization: `Bearer ${token}`,
-      //       },
-      //     }
-      //   );
-      //   console.log("Lịch cũ đã được xóa:", deleteResponse.data);
+
 
       for (let shift of shiftsToPost) {
         const body = {
@@ -179,6 +175,7 @@ function DoctorDetail() {
         await Promise.all([
           axios.get("http://localhost:8080/api/doctors"),
           axios.get("http://localhost:8080/api/patientsfile"),
+
           axios.get("http://localhost:8080/api/workinghours", {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -218,6 +215,7 @@ function DoctorDetail() {
   };
   useEffect(() => {
     fetchDoctorData();
+    
   }, [id]);
   console.log(doctor);
   console.log("patientFile", patientFile);
@@ -266,7 +264,7 @@ function DoctorDetail() {
             : item
         )
       );
-      alert("Cập nhập thành công!");
+      alert("Cập nhật thành công!");
       setIsModalOpen(false);
     } catch (error) {
       console.error("Lỗi cập nhật giờ làm việc", error);
@@ -281,11 +279,22 @@ function DoctorDetail() {
     setIsModalOpen(true); // Mở modal chỉnh sửa
     setError("");
   };
+  const [showEditCv, setShowEditCv] = useState(false);
+  const [selectedImage2, setSelectedImage2] = useState(null);
+  const navigate = useNavigate();
+
+
+ 
+
+
   if (loading) {
     return (
       <div className="text-center text-gray-600 mt-10">Tải dữ liệu...</div>
     );
   }
+
+
+
 
   return (
     <div className="bg-gray-100 min-h-screen p-6 relative" id="goup">
@@ -295,44 +304,58 @@ function DoctorDetail() {
           Thông tin bác sĩ
         </h1>
 
-        <div className="mb-6 flex items-center gap-8">
-          <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-[#da624a] shadow-lg">
-            <img
-              src={doctor.account.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq89CiAzo83k2OJHzwV4hsrgE7Cm0sAWlkpw&s"}
-              alt="Doctor Avatar"
-              className="w-full h-full object-cover"
-            />
+        <div className="mb-6 flex items-start gap-8">
+          {/* Avatar & Chỉnh sửa */}
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-[#da624a] shadow-lg">
+              <img
+                src={doctor.account.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq89CiAzo83k2OJHzwV4hsrgE7Cm0sAWlkpw&s"}
+                alt="Doctor Avatar"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded-md"
+              onClick={() => navigate(`/admin/editdoctor/${doctor.id}`)}
+            >
+              Cập nhật lại thông tin
+            </button>
           </div>
-          <div>
+
+          {/* Thông tin bác sĩ */}
+          <div className="flex-1">
             {doctor ? (
               <>
                 <h2 className="text-2xl font-semibold text-gray-800 mb-2">
                   {doctor.vip && (
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                    <div className="flex items-center">
                       <span>Dr. {doctor.account.name}</span>
-                      <FaCrown style={{ color: "gold", marginLeft: "5px" }} />
+                      <FaCrown className="text-gold ml-2" />
                     </div>
                   )}
                 </h2>
                 <p className="text-gray-600 text-lg mb-2">
-                  <span className="font-medium">Email:</span>{" "}
-                  {doctor.account.email}
+                  <span className="font-medium">Email:</span> {doctor.account.email}
                 </p>
                 <p className="text-gray-600 text-lg mb-2">
-                  <span className="font-medium">Số điện thoại:</span>{" "}
-                  {doctor.account.phone}
+                  <span className="font-medium">Số điện thoại:</span> {doctor.account.phone}
                 </p>
                 <p className="text-gray-600 text-lg mb-2">
                   <span className="font-medium">Giới tính:</span>{" "}
-                  {doctor.account.gender}
-                </p>
-                <p className="text-gray-600 text-lg mb-2">
-                  <span className="font-medium">Năm kinh nghiệm:</span>{" "}
-                  {doctor.experienceYears}
+                  {doctor.account.gender === "Female" ? "Nữ" : doctor.account.gender === "Male" ? "Nam" : "Không xác định"}
                 </p>
 
+                <p className="text-gray-600 text-lg mb-2">
+                  <span className="font-medium">Năm kinh nghiệm:</span> {doctor.experienceYears}
+                </p>
+                <p className="text-gray-600 text-lg mb-2">
+                  <span className="font-medium">Địa chỉ:</span> {doctor.address}
+                </p>
+                <p className="text-gray-600 text-lg mb-2">
+                  <span className="font-medium">Số CCCD:</span> {doctor.cccd}
+                </p>
                 <p className="text-gray-600 text-lg">
-                  <span className="font-medium">Chuyên về khoa:</span>
+                  <span className="font-medium">Chuyên khoa:</span>{" "}
                   {doctor.specialties.length > 0 ? (
                     doctor.specialties.map((specialty, index) => (
                       <span key={specialty.id}>
@@ -349,7 +372,48 @@ function DoctorDetail() {
               <p className="text-gray-500">Không có thông tin Bác sĩ.</p>
             )}
           </div>
+
+          {/* Cập nhật hình & Ảnh bác sĩ (Căn bên phải) */}
+          <div className="flex flex-col items-end space-y-4 ml-auto">
+            {doctor.filesImages && doctor.filesImages.length > 0 ? (
+              <div className="grid grid-cols-2 gap-4">
+                {doctor.filesImages.map((file, index) => (
+                  <img
+                    key={index}
+                    src={file.urlImage}
+                    alt={`Doctor Image ${index + 1}`}
+                    className="w-24 h-24 object-cover rounded-lg shadow-md cursor-pointer hover:scale-105 transition-transform"
+                    onClick={() => setSelectedImage2(file.urlImage)}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-500">Chưa có thông tin CV</p>
+            )}
+            <button
+              onClick={() => setShowEditCv(true)}
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
+            >
+              Cập nhật lại hình CV
+            </button>
+            {showEditCv && <EditCv onClose={() => setShowEditCv(false)} doctorId={doctor.id} fileImages={doctor.filesImages} onUpdate={fetchDoctorData} />}
+          </div>
         </div>
+
+        {selectedImage2 && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
+            <div className="relative">
+              <button
+                className="absolute top-2 right-2 bg-gray-700 text-white p-2 rounded-full hover:bg-gray-900"
+                onClick={() => setSelectedImage2(null)}
+              >
+                ✕
+              </button>
+              <img src={selectedImage2} alt="Selected" className="max-w-full max-h-[90vh] rounded-lg shadow-lg" />
+            </div>
+          </div>
+        )}
+
         <div className="mb-6 flex justify-center">
           <button
             className="bg-[#da624a] text-white px-4 py-2 rounded-md hover:bg-[#da624a] transition"
@@ -397,7 +461,7 @@ function DoctorDetail() {
                           : shift.startTime === "13:00:00" &&
                             shift.endTime === "16:00:00"
                             ? "Ca chiều (13:00 - 16:00)"
-                            :   `Ca từ ${shift.startTime} đến ${shift.endTime}`}
+                            : `Ca từ ${shift.startTime} đến ${shift.endTime}`}
                       </td>
                       <td className="px-4 py-2 text-gray-700">
                         {shift.startTime}
