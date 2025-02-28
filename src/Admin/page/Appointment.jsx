@@ -263,7 +263,7 @@ function Appointment() {
                         Sau
                     </button>
                     <span>
-                        Trang {currentPage} of {totalPages}
+                        Trang {currentPage} / {totalPages}
                     </span>
                     <button
                         onClick={handleNextPage}

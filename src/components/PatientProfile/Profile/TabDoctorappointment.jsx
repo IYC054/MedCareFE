@@ -18,6 +18,7 @@ import { AppContext } from "../../Context/AppProvider";
 import { getDoctorbyId } from "../../../api/Doctor/doctor";
 import { getToken } from "../../Authentication/authService";
 import { data } from "autoprefixer";
+import ColumnGroup from "antd/es/table/ColumnGroup";
 
 function TabDoctorappointment() {
   const { User } = useContext(AppContext);
@@ -28,6 +29,200 @@ function TabDoctorappointment() {
   const [vipAppointments, setVipAppointments] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [appointmentsPerPage] = useState(5);
+  const [popup, setPopup] = useState(false);
+  // bệnh nhận đang được chọn
+  const [Selectedpatients, setSelectedpatients] = useState(null);
+
+
+  const [description, setDescription] = useState("");  // Lưu giá trị nhập vào
+  const [suggestions, setSuggestions] = useState([]);  // Lưu gợi ý
+  const [isSuggestionVisible, setIsSuggestionVisible] = useState(false); 
+  // kiếm đại 300 loại thu
+  const drugList = [
+    "Paracetamol 500mg",
+    "Ibuprofen 200mg",
+    "Aspirin 100mg",
+    "Amoxicillin 500mg",
+    "Ciprofloxacin 500mg",
+    "Metformin 500mg",
+    "Atorvastatin 10mg",
+    "Lisinopril 10mg",
+    "Omeprazole 20mg",
+    "Clopidogrel 75mg",
+    "Levothyroxine 50mcg",
+    "Prednisone 5mg",
+    "Furosemide 20mg",
+    "Diazepam 5mg",
+    "Lorazepam 1mg",
+    "Doxycycline 100mg",
+    "Sertraline 50mg",
+    "Alprazolam 0.5mg",
+    "Hydrochlorothiazide 25mg",
+    "Gabapentin 300mg",
+    "Tamsulosin 0.4mg",
+    "Simvastatin 20mg",
+    "Folic Acid 400mcg",
+    "Ranitidine 150mg",
+    "Montelukast 10mg",
+    "Bisoprolol 5mg",
+    "Hydrocodone 5mg",
+    "Acetaminophen 500mg",
+    "Tramadol 50mg",
+    "Amlodipine 5mg",
+    "Losartan 50mg",
+    "Vitamins C 500mg",
+    "Vitamin D 1000 IU",
+    "Prednisolone 5mg",
+    "Erythromycin 250mg",
+    "Tetracycline 500mg",
+    "Cephalexin 500mg",
+    "Amoxicillin-Clavulanate 500mg",
+    "Diphenhydramine 25mg",
+    "Levocetirizine 5mg",
+    "Loratadine 10mg",
+    "Cetirizine 10mg",
+    "Guaifenesin 200mg",
+    "Hydrocortisone 25mg",
+    "Chlorpheniramine 4mg",
+    "Diphenhydramine 50mg",
+    "Fluconazole 150mg",
+    "Ketoconazole 200mg",
+    "Itraconazole 100mg",
+    "Fluticasone 50mcg",
+    "Mometasone 50mcg",
+    "Beclometasone 200mcg",
+    "Budesonide 200mcg",
+    "Salbutamol 100mcg",
+    "Albuterol 90mcg",
+    "Tiotropium 18mcg",
+    "Ipratropium 20mcg",
+    "Montelukast 10mg",
+    "Methylprednisolone 4mg",
+    "Clonazepam 0.5mg",
+    "Fentanyl 12mcg/hr",
+    "Codeine 30mg",
+    "Oxycodone 10mg",
+    "Morphine 10mg",
+    "Hydromorphone 2mg",
+    "Carbamazepine 200mg",
+    "Phenytoin 100mg",
+    "Valproic Acid 500mg",
+    "Topiramate 25mg",
+    "Levetiracetam 500mg",
+    "Lamotrigine 100mg",
+    "Pregabalin 75mg",
+    "Risperidone 1mg",
+    "Olanzapine 10mg",
+    "Aripiprazole 15mg",
+    "Quetiapine 25mg",
+    "Citalopram 20mg",
+    "Escitalopram 10mg",
+    "Fluoxetine 20mg",
+    "Paroxetine 10mg",
+    "Venlafaxine 75mg",
+    "Duloxetine 30mg",
+    "Bupropion 150mg",
+    "Mirtazapine 15mg",
+    "Trazodone 50mg",
+    "Lithium Carbonate 300mg",
+    "Dantrolene 25mg",
+    "Methocarbamol 500mg",
+    "Cyclobenzaprine 10mg",
+    "Benzonatate 100mg",
+    "Hydroxychloroquine 200mg",
+    "Methotrexate 10mg",
+    "Sulfasalazine 500mg",
+    "Hydralazine 25mg",
+    "Isosorbide Mononitrate 30mg",
+    "Nitroglycerin 0.4mg",
+    "Carvedilol 12.5mg",
+    "Metoprolol 50mg",
+    "Propranolol 40mg",
+    "Atenolol 25mg",
+    "Chlorthalidone 25mg",
+    "Spironolactone 25mg",
+    "Triamterene 75mg",
+    "Bumetanide 1mg",
+    "Eplerenone 25mg",
+    "Mannitol 250mg",
+    "Glyburide 5mg",
+    "Glipizide 5mg",
+    "Pioglitazone 15mg",
+    "Rosiglitazone 4mg",
+    "Repaglinide 1mg",
+    "Sitagliptin 100mg",
+    "Metformin 1000mg",
+    "Canagliflozin 100mg",
+    "Dapagliflozin 10mg",
+    "Liraglutide 0.6mg",
+    "Exenatide 5mcg",
+    "Glimepiride 2mg",
+    "Nateglinide 120mg",
+    "Insulin Glargine 100 IU",
+    "Insulin Lispro 100 IU",
+    "Insulin Aspart 100 IU",
+    "Insulin NPH 100 IU",
+    "Insulin Detemir 100 IU",
+    "Insulin Regular 100 IU",
+    "Insulin Glulisine 100 IU",
+    "Bromocriptine 2.5mg",
+    "Cabergoline 0.5mg",
+    "Levodopa 100mg",
+    "Carbidopa 25mg",
+    "Ropinirole 0.5mg",
+    "Pramipexole 0.125mg",
+    "Entacapone 200mg",
+    "Tolcapone 100mg",
+    "Selegiline 5mg",
+    "Donepezil 5mg",
+    "Rivastigmine 1.5mg",
+    "Galantamine 8mg",
+    "Memantine 10mg",
+    "Buspirone 10mg",
+    "Hydroxyzine 25mg",
+    "Prochlorperazine 5mg",
+    "Promethazine 25mg",
+    "Meclizine 25mg",
+    "Dimenhydrinate 50mg",
+    "Pyridoxine 10mg",
+    "Thiamine 100mg",
+    "Niacin 500mg",
+    "Vitamin B12 1000mcg",
+    "Vitamin B6 25mg",
+    "Folic Acid 800mcg",
+    "Vitamin A 10000 IU",
+    "Vitamin E 400 IU",
+    "Vitamin K 100mcg",
+    "Sodium Chloride 0.9%",
+    "Calcium Carbonate 500mg",
+    "Magnesium Oxide 400mg",
+    "Iron 65mg",
+    "Zinc 50mg",
+    "Potassium Chloride 10mEq",
+    "Sodium Bicarbonate 650mg",
+    "Phosphorus 250mg",
+    "Aluminum Hydroxide 250mg",
+    "Magnesium Hydroxide 200mg",
+    "Sodium Phosphate 10mg",
+    "Potassium Phosphate 15mEq",
+    "Calcium Citrate 300mg",
+    "Calcium Gluconate 1g",
+    "Acetate 0.5%",
+    "Sodium Acetate 1g",
+    "Sodium Chloride 100mg",
+    "Calcium Sulfate 1g",
+    "Sodium Hydroxide 100mg",
+    "5 viên",
+    "10 viên",
+    "15 viên",
+    "20 viên",
+    "30 viên",
+    "50 viên",
+    "100 viên"
+  ];
+  
+
+  console.log(Selectedpatients)
 
   const statusoption = ["Xác nhận", "Huỷ bỏ", "Hoàn thành"];
 
@@ -90,7 +285,7 @@ function TabDoctorappointment() {
     appointment_id
   ) => {
     try {
-      console.log("thay dổi",appointments[id-1])
+      console.log("thay dổi",doctorid , patientfile_id , appointment_id)
       const data = await UpdateStatusAppointment(id, status);
       console.log("starus hiện tại",status);
       if (status === "Hoàn thành") {
@@ -116,7 +311,7 @@ function TabDoctorappointment() {
             },
           }
         );
-        if (checksuccess != null) {
+        if (updatePaymentStatus != null) {
           enqueueSnackbar("Cập nhật thành công!", {
             variant: "success",
             autoHideDuration: 5000,
@@ -202,6 +397,42 @@ function TabDoctorappointment() {
     }
   };
    console.log("currentAppointments",currentAppointments[0]?.patientDetails?.id)
+
+   const handleOpenPopup =(index)=>{
+     setPopup(true);
+     setSelectedpatients(currentAppointments[index])
+
+   }
+
+    // Hàm xử lý khi người dùng nhập liệu
+  const handleInputChange = (e) => {
+    const inputText = e.target.value;
+    setDescription(inputText);
+
+    // Lấy các ký tự đầu tiên (hoặc vài ký tự) của inputText để tìm kiếm tên thuốc
+    const searchTerm = inputText.slice(-3).toLowerCase();  // Lấy 3 ký tự cuối cùng từ input
+
+    // Tìm kiếm thuốc trong danh sách theo 3 ký tự cuối cùng
+    if (inputText.length >= 3) {
+      const filteredSuggestions = drugList.filter((drug) =>
+        drug.toLowerCase().startsWith(searchTerm)
+      );
+      setSuggestions(filteredSuggestions);
+      setIsSuggestionVisible(filteredSuggestions.length > 0);  // Hiển thị gợi ý nếu có kết quả
+    } else {
+      setSuggestions([]);
+      setIsSuggestionVisible(false);  // Ẩn gợi ý nếu không đủ ký tự
+    }
+  };
+
+  // Hàm xử lý khi người dùng chọn gợi ý thuốc
+  const handleSuggestionClick = (suggestion) => {
+    const currentText = description.slice(0, description.length - 3); // Giữ lại phần trước đó
+    const newText = `${currentText}${suggestion}`; // Thêm tên thuốc đã chọn vào cuối phần mô tả
+    setDescription(newText);
+    setSuggestions([]);  // Ẩn gợi ý khi chọn tên thuốc
+    setIsSuggestionVisible(false);  // Ẩn gợi ý khi đã chọn
+  };
   return (
     <div className="w-full h-full  border-l border-[#00b5f1] pl-10 ">
       <span className="text-[24px] font-medium">
@@ -302,7 +533,7 @@ function TabDoctorappointment() {
                       </td>
                       <td className="p-4 border-b border-blue-gray-50">
                         <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
-                           <span className="px-4 py-2 bg-green-300 rounded-lg">Điều Trị</span>
+                           <span className="px-4 py-2 bg-green-300 rounded-lg" onClick={()=>handleOpenPopup(index)}>Điều Trị</span>
                         </p>
                       </td>
                       <td className="p-4 border-b border-blue-gray-50">
@@ -450,31 +681,104 @@ function TabDoctorappointment() {
           Trang trước
         </button>
       </div>
-      {/* <div
-        className={w-full h-screen ${
-          popup ? "fixed" : "hidden"
-        } z-20 bg-slate-400/60 top-0 right-0}
-        onClick={() => handlePopupDetail()} // Đóng popup khi click vào nền
-      >
+       {/* popup */}
+       <div
+      className={`w-full h-screen ${popup ? "fixed" : "hidden"} z-20 bg-slate-400/60 top-0 right-0`}
+    >
+      <div className="w-full h-full flex justify-center items-center">
+        <div className="w-2/5 p-4 bg-[#fff] rounded-xl shadow-lg border border-solid border-[#c2c2c2]">
+          <div className="w-full flex justify-end cursor-pointer hover:text-[red]">
+            X
+          </div>
+          <span className="text-[18px]">
+            <h3 className="font-bold text-center">Thông Tin Bệnh Nhân</h3>
+            <p> -Bệnh nhân: {Selectedpatients?.patientDetails?.fullname}</p>
+            <p> -Sinh ngày: {Selectedpatients?.patientDetails?.birthdate}</p>
+            <p> -Số BHYT: {Selectedpatients?.patientDetails?.codeBhyt}</p>
+            <span className="text-[#00b5f1] font-medium text-[20px] capitalize"></span>
+
+            <form>
+              {/* Mô tả khám bệnh và đơn thuốc */}
+              <div className="mt-4">
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Mô Tả Khám Bệnh Và Đơn Thuốc
+                </label>
+                <textarea
+                  id="description"
+                  value={description}
+                  onChange={handleInputChange}  // Xử lý khi nhập liệu
+                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                  rows="4"
+                  placeholder="Nhập mô tả thuốc, tên thuốc và số lượng..."
+                />
+              </div>
+
+              {/* Gợi ý thuốc */}
+              {isSuggestionVisible && suggestions.length > 0 && (
+                <div className="mt-2 bg-white border border-gray-300 rounded-md shadow-md max-h-40 overflow-y-auto">
+                  <ul className="space-y-1">
+                    {suggestions.map((suggestion, index) => (
+                      <li
+                        key={index}
+                        className="p-2 cursor-pointer hover:bg-gray-200"
+                        onClick={() => handleSuggestionClick(suggestion)}
+                      >
+                        {suggestion}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Chọn hình ảnh */}
+              <div className="mt-4">
+                <label htmlFor="image" className="block text-sm font-medium text-gray-700">
+                  Hình ảnh
+                </label>
+                <input
+                  type="file"
+                  id="image"
+                  multiple
+                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                />
+              </div>
+
+              <div className="my-4 flex justify-center">
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-[#00b5f1] text-[#fff] rounded-lg hover:scale-[0.9]"
+                >
+                  Cập nhật
+                </button>
+              </div>
+            </form>
+          </span>
+        </div>
+      </div>
+    </div>
+      {/* {selectedImage && (
         <div
-          className="w-full h-full flex justify-center items-center"
-           // Ngăn chặn sự kiện nổi từ vùng nội dung popup
+          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+          onClick={closeModal}
         >
-          <div className="w-2/5 h-[500px] p-4 bg-[#fff] rounded-xl shadow-lg border border-solid border-[#c2c2c2]" onClick={(e) => e.stopPropagation()}>
-          <div className="w-full flex justify-end cursor-pointer hover:text-[red]" onClick={() => handlePopupDetail()}>X</div>
-            <span className="text-[18px]">
-              Bệnh nhân:{" "}
-              <span className="text-[#00b5f1] font-medium text-[20px] capitalize">
-                {appointments.map(item => {
-                  if(item.patientDetails.id == selectedPatientId){
-                    return item.patientDetails.account.name
-                  }
-                })}
-              </span>
-            </span>
+          <div className="relative" onClick={(e) => e.stopPropagation()}>
+            <button
+              onClick={closeModal}
+              className="absolute top-0 right-0 text-white text-2xl font-bold mr-4 mt-2"
+            >
+              X
+            </button>
+            <img
+              src={selectedImage}
+              alt="Selected Image"
+              className="w-[400px] object-center"
+            />
           </div>
         </div>
-      </div> */}
+      )} */}
     </div>
   );
 }

@@ -71,12 +71,12 @@ function Sidebar({ isOpen, setIsOpen, activeMenu, setActiveMenu }) {
                                 </li>
                                 <li>
                                     <Link to="/admin/appointment" className={activeMenu === 'Appointment' ? 'mm-active' : ''} onClick={() => handleMenuClick('Appointment')}>
-                                        Các Lịch đặt hẹn
+                                        Lịch đặt hẹn
                                     </Link>
                                 </li>
                                 <li>
                                     <Link to="/admin/patientfileAdmin" className={activeMenu === 'patientfileAdmin' ? 'mm-active' : ''} onClick={() => handleMenuClick('patientfileAdmin')}>
-                                        Quản lý hồ sơ bệnh nhân
+                                        Hồ sơ bệnh nhân
                                     </Link>
                                 </li>
                             </ul>
