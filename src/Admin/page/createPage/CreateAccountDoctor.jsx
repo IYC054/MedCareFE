@@ -92,9 +92,38 @@ function CreateAccountDoctor() {
             return { ...prevData, selectedSpecialties: newSelectedSpecialties };
         });
     };
-    console.log(formData);
+    const checkCCCDExists = async (cccd) => {  // Đổi 'formData2.cccd' thành 'cccd'
+        try {
+            const response = await axios.get(`http://localhost:8080/api/patientsprofile/card?identification_card=${cccd}`);
+            return response.data; // true nếu CCCD đã tồn tại
+        } catch (error) {
+            console.error("Lỗi kiểm tra CCCD:", error);
+            return true; // Trả về true để tránh lỗi nếu request thất bại
+        }
+    };
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (formData2.cccd.length !== 12 || isNaN(formData2.cccd)) {
+            setError("CCCD phải có đúng 12 số!");
+            return;
+        }
+        const isExists = await checkCCCDExists(formData2.cccd);
+        if (isExists) {
+            setError("CCCD này đã tồn tại trong hệ thống!");
+            return;
+        }
+        
+        if (formData2.selectedSpecialties.length === 0) {
+            setError("Vui lòng chọn ít nhất một chuyên khoa!");
+            return;
+        }
+
+        if (!formData3.cvImages || formData3.cvImages.length === 0) {
+            setError("Vui lòng chọn ảnh CV!");
+            return;
+        }
 
         const formDataToSend = new FormData();
         formDataToSend.append("email", formData.email);
@@ -107,16 +136,7 @@ function CreateAccountDoctor() {
         formDataToSend.append("avatar", formData.avatar);
         formDataToSend.append("lastFeedbackTime", null);
 
-        if (formData2.selectedSpecialties.length === 0) {
-            setError("Vui lòng chọn ít nhất một chuyên khoa!");
-            return;
-        }
-
-        if (!formData3.cvImages || formData3.cvImages.length === 0) {
-            setError("Vui lòng chọn ảnh CV!");
-            return;
-        }
-
+      
         setIsLoading(true);
         setError("");
 

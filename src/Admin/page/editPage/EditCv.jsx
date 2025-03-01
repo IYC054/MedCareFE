@@ -32,7 +32,6 @@ function EditCv({ onClose, doctorId, fileImages, onUpdate }) {
         for (let file of files) {
             formDataUpload.append("url_image", file);
         }
-
         try {
             await axios.post("http://localhost:8080/api/cvimage", formDataUpload, {
                 headers: {
@@ -48,7 +47,6 @@ function EditCv({ onClose, doctorId, fileImages, onUpdate }) {
             console.error("Lỗi khi tải lên hình ảnh:", error);
         }
     };
-
     const handleUpload = async () => {
         if (files.length > 0) {
             await deleteOldImages();

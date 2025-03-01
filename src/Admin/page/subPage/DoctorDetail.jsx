@@ -330,7 +330,7 @@ function DoctorDetail() {
                   {doctor.vip && (
                     <div className="flex items-center">
                       <span>Dr. {doctor.account.name}</span>
-                      <FaCrown className="text-gold ml-2" />
+                      <FaCrown className="text-[gold] ml-2" />
                     </div>
                   )}
                 </h2>
