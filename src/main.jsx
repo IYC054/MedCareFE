@@ -49,7 +49,8 @@ import FeedbackReponse from "./Admin/page/subPage/FeedbackReponse";
 import Contract from "./components/Contract/Contract";
 import PatienfileAdmin from "./Admin/page/PatienfileAdmin";
 import CreatePatientFile from "./Admin/page/createPage/CreatePatientFile";
-import Chat from "./Admin/page/Chat";
+import TabCheckBHYT from "./components/PatientProfile/Profile/TabBHYT";
+// import Chat from "./Admin/page/Chat";
 import EditDoctor from "./Admin/page/editPage/EditDoctor";
 // import ChatRoom from "./Admin/page/ChatRoom";
 // import ChatRoomlogin from "./Admin/page/ChatRoomlogin";
@@ -76,6 +77,7 @@ const router = createBrowserRouter([
       { path: "/payment-success", element: <PaymentSuccess /> },
       { path: "/invoice", element: <Invoice /> },
       { path: "/contract", element: <Contract /> },
+      { path: "/bhyt", element: <TabCheckBHYT /> },
       { path: "/hospital/form-appointment", element: <FormAppointment /> },
       { path: "*", element: <Notfound /> },
     ],

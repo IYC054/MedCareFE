@@ -23,7 +23,7 @@ function ConfirmPayment(props) {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const orderid = "MedCare 0337218288";
-  const [amount, setAmount] = useState(2000);
+  const [amount, setAmount] = useState(1000);
   const doctorid = queryParams.get("doctor");
   const workid = queryParams.get("work");
   const specialty = queryParams.get("specialty");
