@@ -36,8 +36,9 @@ function ConfirmInfo() {
     const fetchDoctor = async () => {
       const data = await getDoctorbyId(doctorid);
       setDataDoctor(data);
+      console.log("BÁc SĨ: " + JSON.stringify(data));
     };
-
+    
     fetchDoctor();
   }, [doctorid]);
   useEffect(() => {
@@ -127,7 +128,7 @@ function ConfirmInfo() {
                         <td className="text-center pt-5">1</td>
                         <td className="px-2 pt-5">Khám {dataSpecialty.name}</td>
                         <td className="pt-5">Khám Tự Chọn Yêu Cầu</td>
-                        <td className="pt-5">{dataDoctor.name}</td>
+                        <td className="pt-5">{dataDoctor.account?.name}</td>
                         <td className="pt-5">{TimeFormatted(dataWork.startTime)} - {TimeFormatted(dataWork.endTime)} <br /> {formartDate(dataWork.workDate)}</td>
                         <td className="pt-5">Thanh toán tại Bệnh viện</td>
                       </tr>

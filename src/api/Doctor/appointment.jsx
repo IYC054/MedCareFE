@@ -19,6 +19,8 @@ const CreateAppointment = async (
       amount: 2000,
       worktimeId: worktimeId,
       patientProfileId: patientProfileId,
+      firestoreUserId: null,
+      doctorEmail: null
     });
     return response.data;
   } catch (error) {
