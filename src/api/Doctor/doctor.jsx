@@ -16,4 +16,13 @@ const getDoctorbyId = async (doctorid) => {
     return []; 
   }
 };
-export {doctorApi, getDoctorbyId};
+const getDoctorbyIds = async (doctorid) => {
+  try {
+    const res = await axios.get(`http://localhost:8080/api/doctors/account/${doctorid}`);
+    return res.data; 
+  } catch (error) {
+    console.error(error);
+    return []; 
+  }
+};
+export {doctorApi, getDoctorbyId, getDoctorbyIds};

@@ -15,7 +15,7 @@ import {
 import axios from "axios";
 import { enqueueSnackbar } from "notistack";
 import { AppContext } from "../../Context/AppProvider";
-import { getDoctorbyId } from "../../../api/Doctor/doctor";
+import { getDoctorbyId, getDoctorbyIds } from "../../../api/Doctor/doctor";
 import { getToken } from "../../Authentication/authService";
 import { data } from "autoprefixer";
 import ColumnGroup from "antd/es/table/ColumnGroup";
@@ -228,7 +228,8 @@ function TabDoctorappointment() {
 
   const fetchAppointments = async () => {
     try {
-      const doctorId = await getDoctorbyId(User?.id);
+      const doctorId = await getDoctorbyIds(User?.id);
+      console.log("DOCTIRID: " + JSON.stringify(doctorId));
       const data = await getAppointmentByDoctorId(doctorId?.id);
       const vipData = await getVIPAppointmentByDoctorId(doctorId?.id);
 
