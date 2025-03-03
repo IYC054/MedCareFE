@@ -132,7 +132,6 @@ function Tabprofile() {
 
   return (
     <div className="w-full h-full border-l border-[#00b5f1] pl-10">
-    
       <span className="text-[24px] font-medium">Hồ Sơ Bệnh Nhân</span>
       {dataProfile && Object.keys(dataProfile).length > 0 ? (
         dataProfile.map((item, index) => (
