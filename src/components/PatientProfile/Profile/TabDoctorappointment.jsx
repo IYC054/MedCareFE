@@ -271,6 +271,7 @@ function TabDoctorappointment() {
     indexOfFirstAppointment,
     indexOfLastAppointment
   );
+   console.log("vip nè:",currentVipAppointments[1])
 
   // Fetch appointments once on component mount
   useEffect(() => {
@@ -393,6 +394,12 @@ function TabDoctorappointment() {
      setPopup(true);
      setSelectedpatients(currentAppointments[index])
 
+   }
+
+   const handleOpenPopupVip =(index)=>{
+    setPopup(true);
+    console.log("thứ tự",index)
+    setSelectedpatients(currentVipAppointments[index])
    }
 
     // Hàm xử lý khi người dùng nhập liệu
@@ -539,7 +546,7 @@ function TabDoctorappointment() {
                     </td>
                     <td className="p-4 border-b border-blue-gray-50">
                         <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
-                           <span className="px-4 py-2 bg-green-300 rounded-lg" onClick={()=>handleOpenPopup(index)}>Điều Trị</span>
+                           <span className="px-4 py-2 bg-green-300 rounded-lg" onClick={()=>handleOpenPopupVip(vipindex)}>Điều Trị</span>
                         </p>
                       </td>
                     <td className="p-4 border-b border-blue-gray-50">
