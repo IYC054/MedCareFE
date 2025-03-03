@@ -7,7 +7,7 @@ const MomoPayment = async (fee, phone,doctorid, workid, profileid, specialtyid) 
       "http://localhost:8080/api/payments/momo",
       {
         amount: fee,
-        orderInfo: `MedCare ${phone}`,
+        orderInfo: `Thanh toán MEDCARE`,
         doctorId: doctorid,
         workId: workid,
         profileId: profileid,

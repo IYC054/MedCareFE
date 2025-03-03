@@ -22,7 +22,6 @@ import Feedback from './Admin/page/Feedback'
 import ConfirmInfo from "./components/Hospital/Confirm_information";
 import ProfileChoose from "./components/Hospital/ProfileChoose";
 import ChoosePayment from "./components/Hospital/ChoosePayment";
-import CheckEmail from "./components/Authentication/CheckEmail";
 import CreatEmail from "./Admin/page/createPage/CreatEmail";
 import ResponseBackFeedback from "./Admin/page/createPage/ResponseBackFeedback";
 import ConfirmPayment from "./components/Hospital/ChoosePayment/ConfirmPayment";
@@ -43,14 +42,12 @@ import News from "./Admin/page/News";
 import CreateNews from "./Admin/page/createPage/CreateNews";
 import NewDetail from "./Admin/page/subPage/NewDetail";
 import NewDetails from "./page/NewDetails";
-// import Chat from "./Admin/page/Chat";
-import FeedbackDetail from "./Admin/page/subPage/FeedbackDetail";
+import Chat from "./Admin/page/Chat";
 import FeedbackReponse from "./Admin/page/subPage/FeedbackReponse";
-// import Chat from "./Admin/page/Chat";
 import Contract from "./components/Contract/Contract";
 import PatienfileAdmin from "./Admin/page/PatienfileAdmin";
 import CreatePatientFile from "./Admin/page/createPage/CreatePatientFile";
-import Chat from "./Admin/page/Chat";
+import TabCheckBHYT from "./components/PatientProfile/Profile/TabBHYT";
 import EditDoctor from "./Admin/page/editPage/EditDoctor";
 // import ChatRoom from "./Admin/page/ChatRoom";
 // import ChatRoomlogin from "./Admin/page/ChatRoomlogin";
@@ -77,6 +74,7 @@ const router = createBrowserRouter([
       { path: "/payment-success", element: <PaymentSuccess /> },
       { path: "/invoice", element: <Invoice /> },
       { path: "/contract", element: <Contract /> },
+      { path: "/bhyt", element: <TabCheckBHYT /> },
       { path: "/hospital/form-appointment", element: <FormAppointment /> },
       { path: "*", element: <Notfound /> },
     ],
@@ -145,10 +143,7 @@ const router = createBrowserRouter([
         path : "/admin/editdoctor/:id",
         element: <EditDoctor />
       },
-      {
-        path: "/admin/feedback/reponse/:id",
-        element: <FeedbackDetail />,
-      },
+  
       {
         path: "/admin/feedback/wasReponse/:id",
         element: <FeedbackReponse />,

@@ -43,7 +43,7 @@ const FeedbackReponse = () => {
             headers: { Authorization: `Bearer ${token}` }
         })
             .then(() => {
-                alert("Reply sent successfully!");
+                alert("Gửi thành công !");
 
                 return axios.delete(`http://localhost:8080/api/sendmail/${id}`, {
                     headers: { Authorization: `Bearer ${token}` }
@@ -69,7 +69,7 @@ const FeedbackReponse = () => {
     };
 
 
-    if (!feedback) return <p>Loading...</p>;
+    if (!feedback) return <p>Đang tải...</p>;
 
 
     return (
@@ -117,10 +117,10 @@ const FeedbackReponse = () => {
                                 d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8z"
                             ></path>
                         </svg>
-                        Sending...
+                        Đang gửi...
                     </>
                 ) : (
-                    "Send Email"
+                    "Gửi Email"
                 )}
             </button>
         </div>

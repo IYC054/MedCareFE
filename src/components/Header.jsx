@@ -481,7 +481,7 @@ const Header = () => {
         </div>
       </div>
 
-      <div className="bg-[#ffb340] gap-10 h-9 w-full flex items-center overflow-hidden font-semibold text-white text-[13px]">
+      {/* <div className="bg-[#ffb340] gap-10 h-9 w-full flex items-center overflow-hidden font-semibold text-white text-[13px]">
         <span className="scrolling-text">
           Đặt khám liền tay - nhận ngay ưu đãi hoàn tiền lên đến 5%! 💥
         </span>
@@ -503,7 +503,7 @@ const Header = () => {
         <span className="scrolling-text">
           Đặt khám liền tay - nhận ngay ưu đãi hoàn tiền lên đến 5%! 💥
         </span>
-      </div>
+      </div> */}
     </div>
   );
 };

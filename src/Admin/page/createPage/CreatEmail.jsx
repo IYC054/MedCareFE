@@ -47,9 +47,9 @@ function CreateEmail() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg border border-[#da624a]">
+    <div className="max-w-5xl full mx-auto p-6 bg-white rounded-lg shadow-lg border border-[#da624a]">
       <h3 className="text-xl font-semibold text-[#da624a] mb-4">Gửi mail</h3>
-      <form onSubmit={handleSendEmail} className="space-y-4">
+      <form onSubmit={handleSendEmail} className="space-y-4 ">
         <div>
           <label className="block text-sm font-medium text-gray-700">Gửi tới</label>
           <input

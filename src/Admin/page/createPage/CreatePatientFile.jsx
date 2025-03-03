@@ -87,7 +87,10 @@ function CreatePatientFile() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMessage("");
-
+        if (formData.identification_card.length !== 12 || isNaN(formData.identification_card)) {
+            setMessage("CCCD phải có đúng 12 số!");
+            return;
+        }
         // Kiểm tra CCCD trước khi thêm
         const isExists = await checkCCCDExists(formData.identification_card);
         if (isExists) {
@@ -118,9 +121,9 @@ function CreatePatientFile() {
     return (
         <div className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-lg mt-10">
             <h2 className="text-2xl font-semibold text-center mb-4 text-[#da624a]">Thêm Hồ Sơ Bệnh Nhân</h2>
-            
+
             {message && <p className={`text-center font-semibold ${message.includes("thành công") ? "text-green-600" : "text-red-600"}`}>{message}</p>}
-            
+
             <div className="pb-2">
                 <label className="block font-medium text-gray-700">Tải ảnh CMND/CCCD</label>
                 <input type="file" accept="image/*" onChange={handleUploadImage} className="w-full p-2 border border-gray-300 rounded" />
@@ -137,10 +140,20 @@ function CreatePatientFile() {
                     <input type="date" name="birthdate" value={formData.birthdate} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded" required disabled={isFetched} />
                 </div>
 
-               
+
                 <div>
                     <label className="block font-medium text-gray-700">CMND/CCCD</label>
-                    <input type="text" placeholder="Nhập CCCD" name="identification_card" value={formData.identification_card} className="w-full p-2 border border-gray-300 rounded" required disabled />
+                    <input
+                        type="text"
+                        placeholder="Nhập CCCD"
+                        name="identification_card"
+                        value={formData.identification_card}
+                        onChange={handleChange}
+                      
+                        className="w-full p-2 border border-gray-300 rounded"
+                        required
+                        disabled={isFetched && formData.identification_card !== ""} // Chỉ disable nếu CCCD có dữ liệu từ API
+                    />
                 </div>
                 <div>
                     <label className="block font-medium text-gray-700">Giới tính</label>
@@ -151,11 +164,11 @@ function CreatePatientFile() {
                 </div>
                 <div>
                     <label className="block font-medium text-gray-700">Số điện thoại</label>
-                    <input type="text" name="phone"  placeholder="Nhập số điện thoại" value={formData.phone} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded" required />
+                    <input type="text" name="phone" placeholder="Nhập số điện thoại" value={formData.phone} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded" required />
                 </div>
                 <div>
                     <label className="block font-medium text-gray-700">Dân tộc</label>
-                    <input type="text"  placeholder="Nhập Dân tộc" name="nation" value={formData.nation} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded" required  />
+                    <input type="text" placeholder="Nhập Dân tộc" name="nation" value={formData.nation} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded" required />
                 </div>
 
                 <div>
@@ -163,7 +176,7 @@ function CreatePatientFile() {
                     <input type="text" placeholder="Nhập Địa chỉ" name="address" value={formData.address} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded" required disabled={isFetched} />
                 </div>
 
-               
+
 
                 <button type="submit" className="w-full bg-[#da624a] text-white p-2 rounded-lg hover:bg-[#923624]">Thêm hồ sơ</button>
             </form>

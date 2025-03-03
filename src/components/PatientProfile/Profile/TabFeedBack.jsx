@@ -2,37 +2,56 @@ import axios from "axios";
 import React, { useContext, useState } from "react";
 import { getToken } from "../../Authentication/authService";
 import { AppContext } from "../../Context/AppProvider";
+import { useNavigate } from "react-router-dom";
 
 function TabFeedBack() {
   const [feedback, setFeedback] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const token = getToken();
-  const {User} = useContext(AppContext)
-  const sendFeedback = async (event) => {
-    event.preventDefault(); // Ngăn form reload
+  const navigate = useNavigate();
+  const { User } = useContext(AppContext);
+
+  const handleSendFeedback = async (e) => {
+    e.preventDefault();
+
+    if (!feedback.trim()) {
+      alert("Vui lòng nhập nội dung feedback!");
+      return;
+    }
+
+    setIsLoading(true);
 
     try {
-   
-      const response = await axios.post(
-        `http://localhost:8080/api/feedbacks/11`,
+      await axios.post(
+        "http://localhost:8080/api/sendmail/other",
         {
-          message: feedback, 
-          recipient: { id: User.id },
+          message: feedback,
+          fullname: User.name,
+          phone: User.phone,
+          sender_email: User.email,
+          status: "NEW",
         },
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
-      setFeedback(""); // Xóa nội dung sau khi gửi
-      console.log("Feedback sent successfully:", response.data);
+      alert("Feedback gửi thành công!");
+      setFeedback("");
     } catch (error) {
-      console.error("Error sending feedback:", error);
+      alert(`Lỗi: ${error.response?.data?.message || "Đã xảy ra lỗi!"}`);
+      console.error("Lỗi khi gửi feedback:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
+
   return (
     <div className="w-full h-full border-l border-[#00b5f1] p-10">
       <span className="text-[24px] font-medium">Feedback</span>
-      <form onSubmit={sendFeedback} className="mt-6">
+      <form onSubmit={handleSendFeedback} className="mt-6">
         <label className="block text-gray-700 text-sm font-bold mb-2">
           Nhập feedback của bạn:
         </label>
@@ -46,8 +65,9 @@ function TabFeedBack() {
         <button
           type="submit"
           className="mt-4 bg-[#00b5f1] text-white py-2 px-6 rounded-lg hover:bg-[#0099d6] transition"
+          disabled={isLoading}
         >
-          Gửi Feedback
+          {isLoading ? "Đang gửi..." : "Gửi Feedback"}
         </button>
       </form>
     </div>

@@ -19,6 +19,7 @@ function Contract() {
                 sender_email: email,
                 phone: phone,
                 fullname: fullname,
+                status: "OTHER",
             }, {
                 headers: { Authorization: `Bearer ${token}` },
             });

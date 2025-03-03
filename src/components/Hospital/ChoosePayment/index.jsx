@@ -34,7 +34,7 @@ function ChoosePayment() {
   const [dataSpecialty, setdataSpecialty] = useState({});
   const [dataProfile, setdataProfile] = useState({});
   const [showQR, setShowQR] = useState(false);
-  const [fee, setFee] = useState(2000);
+  const [fee, setFee] = useState(1000);
   //
   const doctorid = getParams.get("doctor");
   const workid = getParams.get("work");

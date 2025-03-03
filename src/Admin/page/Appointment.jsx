@@ -146,7 +146,7 @@ function Appointment() {
                 "Tên bệnh nhân": room.patient?.account?.name || 'Unknown',
                 "Chuyên khoa": room.type,
                 "Mô tả": descriptions || 'No description',
-                "Số tiền": room.amount,
+                // "Số tiền": room.payment[0].amount,
                 "Bác sĩ": room.doctor.account.name,
                 "Trạng thái": room.status,
                 "Loại cuộc hẹn": room.isVIP ? "VIP" : "Thường",
@@ -222,7 +222,7 @@ function Appointment() {
                                         <td className="border p-2">{room.patient?.account?.name || 'Unknown'}</td>
                                         <td className="border p-2">{room.type}</td>
                                         <td className="border p-2">{room.workDate}</td>
-                                        <td className="border p-2">{room.payments[0].amount} VNĐ</td>
+                                        <td className="border p-2">{room.amount} VNĐ</td>
                                         <td className="border p-2">{room.status}</td>
                                         <td className="border p-2">
                                             {isVIP ? "VIP" : "Thường"}
