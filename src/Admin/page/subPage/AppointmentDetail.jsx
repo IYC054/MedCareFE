@@ -76,7 +76,7 @@ function AppointmentDetail({ roomId, isVIP, onClose }) {
                 return "bg-green-100 text-green-600";
             case "Chờ xử lý":
                 return "bg-yellow-100 text-yellow-600";
-            case "Huỷ bỏ":
+            case "Đã huỷ":
                 return "bg-red-100 text-red-600";
             default:
                 return "bg-gray-100 text-gray-600";
@@ -105,7 +105,7 @@ function AppointmentDetail({ roomId, isVIP, onClose }) {
                         </div>
                         <div>
                             <h3 className="font-medium text-gray-700">Số tiền:</h3>
-                            <p className="text-gray-600">{appointmentDetails?.amount ? `${appointmentDetails.amount} VNĐ` : "N/A"}</p>
+                            <p className="text-gray-600">{appointmentDetails.payments[0]?.amount ? `${appointmentDetails.payments[0]?.amount} VNĐ` : "N/A"}</p>
                         </div>
                         <div>
                             <h3 className="font-medium text-gray-700">Trạng thái:</h3>
