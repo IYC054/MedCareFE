@@ -13,7 +13,7 @@ function Appointment() {
     const [statusFilter, setStatusFilter] = useState('Tất cả');
     const roomsPerPage = 10;
 
-    const statusoption = ["Tất cả",  "Huỷ bỏ", "Chờ xử lý", "Hoàn thành"];
+    const statusoption = ["Tất cả",  "Đã huỷ", "Chờ xử lý", "Hoàn thành"];
     useEffect(() => {
         const fetchAppointments = async () => {
             try {
@@ -117,6 +117,7 @@ function Appointment() {
         setSelectedRoomId(roomId);
         setIsVIP(isVIP);
         setShowDetail(true);
+        console.log(roomId);
     };
 
 
@@ -222,7 +223,7 @@ function Appointment() {
                                         <td className="border p-2">{room.patient?.account?.name || 'Unknown'}</td>
                                         <td className="border p-2">{room.type}</td>
                                         <td className="border p-2">{room.workDate}</td>
-                                        <td className="border p-2">{room.amount} VNĐ</td>
+                                        <td className="border p-2">{room.payments[0]?.amount} VND </td>
                                         <td className="border p-2">{room.status}</td>
                                         <td className="border p-2">
                                             {isVIP ? "VIP" : "Thường"}

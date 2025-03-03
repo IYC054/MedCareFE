@@ -11,6 +11,7 @@ import {
   FaSearch,
   FaUserCircle,
   FaUserPlus,
+  FaCommentDots ,
 } from "react-icons/fa";
 import { FaCalendarDays, FaLocationDot, FaUserDoctor } from "react-icons/fa6";
 import { MdGroups } from "react-icons/md";
@@ -25,11 +26,13 @@ import { AppContext } from "../../Context/AppProvider";
 import { enqueueSnackbar } from "notistack";
 import TabFeedBack from "./TabFeedBack";
 import TabDoctorvipappointment from "./TabDoctorvipappointment";
+import TabChat from "./TabChat";
 
 function PatientProfile() {
   const [selectTabProfile, setSelectTabProfile] = useState(true);
   const [selectTabAppointment, setSelectTabAppointment] = useState(false);
   const [selectTabVIPAppointment, setSelectTabVIPAppointment] = useState(false);
+  const [selectTabChat, setSelectTabChat] = useState(false);
 
   const [selectTabFeedback, setSelectTabFeedback] = useState(false);
   const navigator = useNavigate();
@@ -56,6 +59,7 @@ function PatientProfile() {
       setSelectTabDoctorWithPatient(false);
       setSelectTabFeedback(false);
       setSelectTabVIPAppointment(false);
+      setSelectTabChat(false);
     } else if (value == "phieukhambenh") {
       setSelectTabAppointment(true);
       setSelectTabProfile(false);
@@ -63,6 +67,7 @@ function PatientProfile() {
       setSelectTabDoctorAppointment(false);
       setSelectTabFeedback(false);
       setSelectTabVIPAppointment(false);
+      setSelectTabChat(false);
 
     } else if (value == "quanlydatlich") {
       setSelectTabDoctorAppointment(true);
@@ -71,6 +76,7 @@ function PatientProfile() {
       setSelectTabAppointment(false);
       setSelectTabFeedback(false);
       setSelectTabVIPAppointment(false);
+      setSelectTabChat(false);
 
     } else if (value == "quanlybenhnhan") {
       setSelectTabAppointment(false);
@@ -79,6 +85,7 @@ function PatientProfile() {
       setSelectTabDoctorWithPatient(true);
       setSelectTabFeedback(false);
       setSelectTabVIPAppointment(false);
+      setSelectTabChat(false);
 
     } else if (value == "feedback") {
       setSelectTabAppointment(false);
@@ -87,15 +94,27 @@ function PatientProfile() {
       setSelectTabDoctorWithPatient(false);
       setSelectTabVIPAppointment(false);
       setSelectTabFeedback(true);
-    }else if (value == "quanlydatlichvip") {
+      setSelectTabChat(false);
+
+    } else if (value == "quanlydatlichvip") {
       setSelectTabDoctorAppointment(false);
       setSelectTabProfile(false);
       setSelectTabDoctorWithPatient(false);
       setSelectTabAppointment(false);
       setSelectTabFeedback(false);
       setSelectTabVIPAppointment(true);
+      setSelectTabChat(false);
 
-    } 
+    } else if (value == "chat") {
+      setSelectTabDoctorAppointment(false);
+      setSelectTabProfile(false);
+      setSelectTabDoctorWithPatient(false);
+      setSelectTabAppointment(false);
+      setSelectTabFeedback(false);
+      setSelectTabVIPAppointment(false);
+      setSelectTabChat(true);
+
+    }
   };
 
   return (
@@ -131,30 +150,35 @@ function PatientProfile() {
                   <Fragment>
                     <li
                       onClick={() => handleTab("hosobenhnhan")}
-                      className={`my-4 flex justify-center hover:bg-[#fff] ${
-                        selectTabProfile ? "isactive" : ""
-                      } cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}
+                      className={`my-4 flex justify-center hover:bg-[#fff] ${selectTabProfile ? "isactive" : ""
+                        } cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}
                     >
                       <FaUserPlus className="text-[20px]" />
                       Hồ sơ bệnh nhân
                     </li>
                     <li
                       onClick={() => handleTab("phieukhambenh")}
-                      className={`my-4 flex justify-center hover:bg-[#fff] ${
-                        selectTabAppointment ? "isactive" : ""
-                      } cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}
+                      className={`my-4 flex justify-center hover:bg-[#fff] ${selectTabAppointment ? "isactive" : ""
+                        } cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}
                     >
                       <FaFileMedical className="text-[20px]" />
                       Phiếu khám bệnh
                     </li>
                     <li
                       onClick={() => handleTab("feedback")}
-                      className={`my-4 flex justify-center hover:bg-[#fff] ${
-                        selectTabFeedback ? "isactive" : ""
-                      } cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}
+                      className={`my-4 flex justify-center hover:bg-[#fff] ${selectTabFeedback ? "isactive" : ""
+                        } cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}
                     >
                       <FaUserPlus className="text-[20px]" />
                       Feedback
+                    </li>
+                    <li
+                      onClick={() => handleTab("chat")}
+                      className={`my-4 flex justify-center hover:bg-[#fff] ${selectTabChat ? "isactive" : ""
+                        } cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}
+                    >
+                      <FaCommentDots  className="text-[20px]" />
+                      Chat
                     </li>
                   </Fragment>
                 ) : (
@@ -165,9 +189,8 @@ function PatientProfile() {
                   <Fragment>
                     <li
                       onClick={() => handleTab("quanlydatlich")}
-                      className={`my-4 flex justify-center hover:bg-[#fff] ${
-                        selectTabDoctorAppointment ? "isactive" : ""
-                      } cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}
+                      className={`my-4 flex justify-center hover:bg-[#fff] ${selectTabDoctorAppointment ? "isactive" : ""
+                        } cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}
                     >
                       <FaCalendarDays className="text-[20px]" />
                       Quản lý lịch hẹn
@@ -183,9 +206,8 @@ function PatientProfile() {
                     </li> */}
                     <li
                       onClick={() => handleTab("quanlybenhnhan")}
-                      className={`my-4 flex justify-center hover:bg-[#fff] ${
-                        selectTabDoctorWithPatient ? "isactive" : ""
-                      } cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}
+                      className={`my-4 flex justify-center hover:bg-[#fff] ${selectTabDoctorWithPatient ? "isactive" : ""
+                        } cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}
                     >
                       <FaCalendarDays className="text-[20px]" />
                       Quản lý bệnh nhân
@@ -208,8 +230,14 @@ function PatientProfile() {
               <Fragment />
             )}
             {selectTabFeedback &&
-            ["PATIENTS", "DOCTOR"].includes(User?.role?.[0]?.name) ? (
+              ["PATIENTS", "DOCTOR"].includes(User?.role?.[0]?.name) ? (
               <TabFeedBack />
+            ) : (
+              <Fragment />
+            )}
+            {selectTabChat &&
+              ["PATIENTS", "DOCTOR"].includes(User?.role?.[0]?.name) ? (
+              <TabChat />
             ) : (
               <Fragment />
             )}
