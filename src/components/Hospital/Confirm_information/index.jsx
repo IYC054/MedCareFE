@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Breadcrumbs from "../Breadcrumbs";
 import { FaAddressCard, FaBuilding } from "react-icons/fa";
 import {
@@ -18,27 +18,30 @@ import { getDoctorbyId } from "../../../api/Doctor/doctor";
 import { getSpecialtyById } from "../../../api/Doctor/specialty";
 import { getWorkTimeDoctorbyId } from "../../../api/Doctor/workinghour";
 import { ProfilebypatientprofileId } from "../../../api/Profile/profilebyaccount";
+import { AppContext } from "../../Context/AppProvider";
 function ConfirmInfo() {
   const location = useLocation();
   const getParams = new URLSearchParams(location.search);
-  // data 
+  // data
   const [dataDoctor, setDataDoctor] = useState({});
   const [dataWork, setdataWork] = useState({});
   const [dataSpecialty, setdataSpecialty] = useState({});
   const [dataProfile, setdataProfile] = useState({});
-  // 
+  //
   const doctorid = getParams.get("doctor");
   const workid = getParams.get("work");
   const specialtyid = getParams.get("specialty");
   const profileid = getParams.get("profile");
-
+  const { setDoctorEmail } = useContext(AppContext);
+  console.log()
   useEffect(() => {
     const fetchDoctor = async () => {
       const data = await getDoctorbyId(doctorid);
       setDataDoctor(data);
-      console.log("BÁc SĨ: " + JSON.stringify(data));
+      console.log("BÁc SĨ: " + JSON.stringify(data.account?.email));
+      setDoctorEmail(data.account?.email);
     };
-    
+
     fetchDoctor();
   }, [doctorid]);
   useEffect(() => {
@@ -65,19 +68,18 @@ function ConfirmInfo() {
 
     fetchDoctor();
   }, [profileid]);
-  const TimeFormatted = (time) => new Date(
-    `1970-01-01T${time}`
-  ).toLocaleTimeString("vi-VN", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const TimeFormatted = (time) =>
+    new Date(`1970-01-01T${time}`).toLocaleTimeString("vi-VN", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   const formartDate = (date) => {
     const d = new Date(date);
     const day = d.getDay();
     const month = d.getMonth();
     const year = d.getFullYear();
     return `${day}/${month}/${year}`;
-  }
+  };
   return (
     <div className="flex justify-center py-5">
       <div className="w-4/5 ">
@@ -129,7 +131,11 @@ function ConfirmInfo() {
                         <td className="px-2 pt-5">Khám {dataSpecialty.name}</td>
                         <td className="pt-5">Khám Tự Chọn Yêu Cầu</td>
                         <td className="pt-5">{dataDoctor.account?.name}</td>
-                        <td className="pt-5">{TimeFormatted(dataWork.startTime)} - {TimeFormatted(dataWork.endTime)} <br /> {formartDate(dataWork.workDate)}</td>
+                        <td className="pt-5">
+                          {TimeFormatted(dataWork.startTime)} -{" "}
+                          {TimeFormatted(dataWork.endTime)} <br />{" "}
+                          {formartDate(dataWork.workDate)}
+                        </td>
                         <td className="pt-5">Thanh toán tại Bệnh viện</td>
                       </tr>
                     </tbody>
@@ -196,7 +202,9 @@ function ConfirmInfo() {
                           <span>Mã số BHYT :</span>
                         </span>
                         <span className="text-[14px] font-medium text-[#003553]">
-                          {dataProfile.codeBhyt != null ? dataProfile.codeBhyt : "Chưa cập nhật"}
+                          {dataProfile.codeBhyt != null
+                            ? dataProfile.codeBhyt
+                            : "Chưa cập nhật"}
                         </span>
                       </li>
                       <li className="flex w-full items-center gap-2 text-[#003553] my-1 settingli">
@@ -223,7 +231,9 @@ function ConfirmInfo() {
               </div>
             </div>
             <div className="w-full h-[40px] flex items-center justify-end my-5">
-              <Link to={`/choose-payment?doctor=${doctorid}&work=${workid}&specialty=${specialtyid}&profile=${profileid}`}>
+              <Link
+                to={`/choose-payment?doctor=${doctorid}&work=${workid}&specialty=${specialtyid}&profile=${profileid}`}
+              >
                 <button
                   className="py-2 flex items-center justify-center gap-2 px-6 bg-gradient-to-r from-[#00b5f1] to-[#00e0ff] rounded-lg text-[#fff]"
                   id="godown"
