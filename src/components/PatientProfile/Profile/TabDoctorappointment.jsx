@@ -34,7 +34,7 @@ function TabDoctorappointment() {
   const [Selectedpatients, setSelectedpatients] = useState(null);
 
 
-  const [description, setDescription] = useState("");  // Lưu giá trị nhập vào
+  const [description, setDescription] = useState(""); // Lưu giá trị nhập vào
   const [suggestions, setSuggestions] = useState([]);  // Lưu gợi ý
   const [isSuggestionVisible, setIsSuggestionVisible] = useState(false); 
   // kiếm đại 300 loại thu
@@ -222,7 +222,7 @@ function TabDoctorappointment() {
   ];
   
 
-  console.log(Selectedpatients)
+  console.log("dang chon ne",Selectedpatients)
 
   const statusoption = ["Xác nhận", "Huỷ bỏ", "Hoàn thành"];
 
@@ -289,16 +289,7 @@ function TabDoctorappointment() {
       const data = await UpdateStatusAppointment(id, status);
       console.log("starus hiện tại",status);
       if (status === "Hoàn thành") {
-        const checksuccess = axios.post(
-          `http://localhost:8080/api/patientsfile?doctors_id=${doctorid}&patients_profile_id=${patientfile_id}&appointment_id=${appointment_id}`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${getToken()}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
+       
         // cập nhật status pay 
         const updatePaymentStatus = await axios.put(
           `http://localhost:8080/api/payments/status/${appointments[id-1]?.paymentDetails[0].id}`,
@@ -433,6 +424,22 @@ function TabDoctorappointment() {
     setSuggestions([]);  // Ẩn gợi ý khi chọn tên thuốc
     setIsSuggestionVisible(false);  // Ẩn gợi ý khi đã chọn
   };
+ //Summit form 
+ const SubmitPatientFile = async (e) => {
+  e.preventDefault();
+  const checksuccess = axios.post(
+    `http://localhost:8080/api/patientsfile?doctors_id=${Selectedpatients.doctor.account.id}&patients_profile_id=${patientfile_id}&appointment_id=${appointment_id}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+
+};
   return (
     <div className="w-full h-full  border-l border-[#00b5f1] pl-10 ">
       <span className="text-[24px] font-medium">
@@ -504,6 +511,84 @@ function TabDoctorappointment() {
                 </th>
               </tr>
             </thead>
+            <tbody>
+              {currentVipAppointments.map((vip, vipindex) => {
+                return (
+                  <tr key={vipindex} className="bg-yellow-300/50">
+                    <td className="p-4 border-b border-blue-gray-50">
+                      <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900 capitalize">
+                        {vip.patientprofile.fullname}
+                      </p>
+                    </td>
+                    <td className="p-4 border-b border-blue-gray-50">
+                      <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
+                        {vip.type}
+                      </p>
+                    </td>
+                    <td className="p-4 border-b border-blue-gray-50">
+                      <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
+                        {vip.payments.map((payment, index) => (
+                          <div key={index}>{payment.transactionCode}</div>
+                        ))}
+                      </p>
+                    </td>
+                    <td className="p-4 border-b border-blue-gray-50">
+                      <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
+                        {vip.startTime} - {vip.endTime}
+                      </p>
+                    </td>
+                    <td className="p-4 border-b border-blue-gray-50">
+                        <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
+                           <span className="px-4 py-2 bg-green-300 rounded-lg" onClick={()=>handleOpenPopup(index)}>Điều Trị</span>
+                        </p>
+                      </td>
+                    <td className="p-4 border-b border-blue-gray-50">
+                      <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
+                        {/* {vip.status} */}
+                        <Select
+                          className="w-full"
+                          value={vip.status}
+                          onChange={(value) =>
+                            handleUpdateStauts(
+                              vip.id,
+                              value,
+                              vip.doctor.id,
+                              vip.patientDetails.id,
+                              vip.id
+                            )
+                          }
+                        >
+                          {statusoption.map((status) => (
+                            <Option
+                              key={status}
+                              value={status}
+                              className="w-full"
+                              disabled={
+                                vip.status === "Thành công" &&
+                                vip.status !== status
+                              }
+                            >
+                              {vip.status === status ? vip.status : status}
+                            </Option>
+                          ))}
+                        </Select>
+                      </p>
+                    </td>
+                    {/* <td className="p-4 border-b border-blue-gray-50">
+                    <button
+                      className="p-2 bg-[#00b5f1] block font-sans text-sm antialiased font-medium leading-normal text-[#fff] rounded-xl"
+                      onClick={(e) => {
+                        console.log("Selected ID:", item.patientDetails.id);
+                        handlePopupDetail(item.patientDetails.id);
+                      }}
+                    >
+                      Edit
+                    </button>
+                  </td> */}
+                  </tr>
+                );
+              })}
+            </tbody>
             <tbody className="">
               {currentAppointments.map((item, index) => {
                 return (
@@ -584,79 +669,7 @@ function TabDoctorappointment() {
                 );
               })}
             </tbody>
-            <tbody>
-              {currentVipAppointments.map((vip, vipindex) => {
-                return (
-                  <tr key={vipindex}>
-                    <td className="p-4 border-b border-blue-gray-50">
-                      <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900 capitalize">
-                        {vip.patientprofile.fullname}
-                      </p>
-                    </td>
-                    <td className="p-4 border-b border-blue-gray-50">
-                      <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
-                        {vip.type}
-                      </p>
-                    </td>
-                    <td className="p-4 border-b border-blue-gray-50">
-                      <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
-                        {vip.payments.map((payment, index) => (
-                          <div key={index}>{payment.transactionCode}</div>
-                        ))}
-                      </p>
-                    </td>
-                    <td className="p-4 border-b border-blue-gray-50">
-                      <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
-                        {vip.startTime} - {vip.endTime}
-                      </p>
-                    </td>
-                    <td className="p-4 border-b border-blue-gray-50">
-                      <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
-                        {/* {vip.status} */}
-                        <Select
-                          className="w-full"
-                          value={vip.status}
-                          onChange={(value) =>
-                            handleUpdateStauts(
-                              vip.id,
-                              value,
-                              vip.doctor.id,
-                              vip.patientDetails.id,
-                              vip.id
-                            )
-                          }
-                        >
-                          {statusoption.map((status) => (
-                            <Option
-                              key={status}
-                              value={status}
-                              className="w-full"
-                              disabled={
-                                vip.status === "Thành công" &&
-                                vip.status !== status
-                              }
-                            >
-                              {vip.status === status ? vip.status : status}
-                            </Option>
-                          ))}
-                        </Select>
-                      </p>
-                    </td>
-                    {/* <td className="p-4 border-b border-blue-gray-50">
-                    <button
-                      className="p-2 bg-[#00b5f1] block font-sans text-sm antialiased font-medium leading-normal text-[#fff] rounded-xl"
-                      onClick={(e) => {
-                        console.log("Selected ID:", item.patientDetails.id);
-                        handlePopupDetail(item.patientDetails.id);
-                      }}
-                    >
-                      Edit
-                    </button>
-                  </td> */}
-                  </tr>
-                );
-              })}
-            </tbody>
+           
           </table>
         </div>
       </div>
@@ -687,7 +700,9 @@ function TabDoctorappointment() {
     >
       <div className="w-full h-full flex justify-center items-center">
         <div className="w-2/5 p-4 bg-[#fff] rounded-xl shadow-lg border border-solid border-[#c2c2c2]">
-          <div className="w-full flex justify-end cursor-pointer hover:text-[red]">
+          <div className="w-full flex justify-end cursor-pointer hover:text-[red]"
+           onClick={()=>{setPopup(false)}}
+          >
             X
           </div>
           <span className="text-[18px]">
@@ -697,7 +712,7 @@ function TabDoctorappointment() {
             <p> -Số BHYT: {Selectedpatients?.patientDetails?.codeBhyt}</p>
             <span className="text-[#00b5f1] font-medium text-[20px] capitalize"></span>
 
-            <form>
+            <form  onSubmit={SubmitPatientFile}>
               {/* Mô tả khám bệnh và đơn thuốc */}
               <div className="mt-4">
                 <label
