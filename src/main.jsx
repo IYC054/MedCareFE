@@ -42,15 +42,15 @@ import News from "./Admin/page/News";
 import CreateNews from "./Admin/page/createPage/CreateNews";
 import NewDetail from "./Admin/page/subPage/NewDetail";
 import NewDetails from "./page/NewDetails";
-import Chat from "./Admin/page/Chat";
+
 import FeedbackReponse from "./Admin/page/subPage/FeedbackReponse";
 import Contract from "./components/Contract/Contract";
 import PatienfileAdmin from "./Admin/page/PatienfileAdmin";
 import CreatePatientFile from "./Admin/page/createPage/CreatePatientFile";
 import TabCheckBHYT from "./components/PatientProfile/Profile/TabBHYT";
 import EditDoctor from "./Admin/page/editPage/EditDoctor";
-// import ChatRoom from "./Admin/page/ChatRoom";
-// import ChatRoomlogin from "./Admin/page/ChatRoomlogin";
+import Chat from "./Admin/page/Chat";
+
 
 
 
@@ -86,10 +86,10 @@ const router = createBrowserRouter([
         path: "/admin",
         element: <Dashboard />,
       },
-      // {
-      //   path: "/admin/chat",
-      //   element: <Chat/>,
-      // },
+      {
+        path: "/admin/chat",
+        element: <Chat/>,
+      },
       // {
       //   path: "/admin/chatroom",
       //   element: <ChatRoom/>
@@ -147,10 +147,6 @@ const router = createBrowserRouter([
       {
         path: "/admin/feedback/wasReponse/:id",
         element: <FeedbackReponse />,
-      },
-      {
-        path: "/admin/chat",
-        element: <Chat />,
       },
       {
         path: "/admin/feedback/sendfeedback",
