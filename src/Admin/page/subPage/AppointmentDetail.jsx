@@ -15,21 +15,28 @@ function AppointmentDetail({ roomId, isVIP, onClose }) {
 
                 const response = await axios.get(apiUrl);
                 let appointmentData = response.data;
+                console.log(appointmentData);
                 if (isVIP) {
-                    const { patient_id, doctor_id } = appointmentData;
+                    const { patient_id,  } = appointmentData || {};
 
-                    // Gọi song song 2 API
-                    const [patientRes, doctorRes] = await Promise.all([
+                    // Kiểm tra nếu doctor_id tồn tại trước khi gọi API
+                    if (!patient_id) {
+                        throw new Error("Invalid patient_id");
+                    }
+
+                    // Gọi song song 2 API để lấy thông tin bệnh nhân và bác sĩ
+                    const [patientRes] = await Promise.all([
                         axios.get(`http://localhost:8080/api/patients/${patient_id}`),
-                        axios.get(`http://localhost:8080/api/doctors/${doctor_id}`)
+                        
                     ]);
 
                     // Gán thông tin vào dữ liệu cuộc hẹn
                     appointmentData = {
                         ...appointmentData,
                         patient: patientRes.data,
-                        doctor: doctorRes.data
+                       
                     };
+                    console.log("da",appointmentData);
                 }
                 setAppointmentDetails(appointmentData);
             } catch (error) {
@@ -43,7 +50,8 @@ function AppointmentDetail({ roomId, isVIP, onClose }) {
             fetchDetails();
         }
     }, [roomId, isVIP]);
-    console.log(appointmentDetails);
+
+  
     if (loading) {
         return (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
@@ -127,7 +135,7 @@ function AppointmentDetail({ roomId, isVIP, onClose }) {
                             <p className="text-gray-600">
                                 {isVIP
                                     ? appointmentDetails?.startTime || "N/A"
-                                    : appointmentDetails?.worktime?.startTime + "-" + appointmentDetails?.worktime?.endTime   || "N/A"
+                                    : appointmentDetails?.worktime?.startTime + "-" + appointmentDetails?.worktime?.endTime || "N/A"
                                 }
                             </p>
                         </div>

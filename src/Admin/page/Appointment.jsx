@@ -70,9 +70,9 @@ function Appointment() {
                     isVIP: true, // Đánh dấu VIP
                     workDate: item.workDate || 'Không có dữ liệu',
                     patient: typeof item.patient_id === "number" ? (patientMap[item.patient_id] || {}) : item.patient_id,
-                    doctor: typeof item.doctor_id === "number" ? (doctorMap[item.doctor_id] || {}) : item.doctor_id
+                    doctor_id: typeof item.doctor.id === "number" ? (doctorMap[item.doctor.id] || {}) : item.doctor.id
                 }));
-
+               
                 // Gộp danh sách và sắp xếp theo ngày mới nhất
                 setAppointments([...appointments, ...vipAppointments])
             } catch (error) {
@@ -84,7 +84,6 @@ function Appointment() {
     }, []);
 
 
-    console.log(appointments);
     const filteredRooms = appointments.filter((room) => {
         const matchesName = room.patient?.account?.name.toLowerCase().includes(searchQuery.toLowerCase());
         const matchesStatus =
@@ -93,12 +92,12 @@ function Appointment() {
         const matchesDate = !searchDate || room.workDate === searchDate || (!searchDate && room.isVIP && room.workDate === searchDate);
         return matchesName && matchesStatus && matchesDate;
     });
-    console.log("sd", filteredRooms);
+ 
 
 
     const totalPages = Math.ceil(filteredRooms.length / roomsPerPage);
     const paginatedRooms = filteredRooms.slice((currentPage - 1) * roomsPerPage, currentPage * roomsPerPage);
-    console.log("paginatedRooms", paginatedRooms);
+   
     const handlePrevPage = () => {
         if (currentPage > 1) setCurrentPage(currentPage - 1);
     };
@@ -125,7 +124,7 @@ function Appointment() {
         setShowDetail(false);
         setSelectedRoomId(null);
     };
-    console.log("Appointments:", appointments);
+  
 
     const handleExportExcel = () => {
         if (filteredRooms.length === 0) {
