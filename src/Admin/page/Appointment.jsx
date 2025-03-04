@@ -5,6 +5,7 @@ import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
 import AppointmentDetail from './subPage/AppointmentDetail';
 import { Select } from "antd";
+import { constrainPoint } from '@fullcalendar/core/internal';
 function Appointment() {
     const [appointments, setAppointments] = useState([]);
     const [searchDate, setSearchDate] = useState('');
@@ -13,91 +14,103 @@ function Appointment() {
     const [statusFilter, setStatusFilter] = useState('Tất cả');
     const roomsPerPage = 10;
 
-    const statusoption = ["Tất cả",  "Đã huỷ", "Chờ xử lý", "Hoàn thành"];
+    const statusoption = ["Tất cả", "Đã huỷ", "Chờ xử lý", "Hoàn thành"];
+    const [activeTab, setActiveTab] = useState("normal"); // 'normal' hoặc 'vip'
+
     useEffect(() => {
-        const fetchAppointments = async () => {
-            try {
-                const [appointmentsRes, vipAppointmentsRes] = await Promise.all([
-                    axios.get('http://localhost:8080/api/appointment'),
-                    axios.get('http://localhost:8080/api/vip-appointments')
-                ]);
+        fetchAppointments();
+    }, [activeTab]); // Gọi lại API khi activeTab thay đổi
 
-                let vipAppointmentsaccount = vipAppointmentsRes.data;
+    const fetchAppointments = async () => {
+        try {
+            const apiUrl =
+                activeTab === "vip"
+                    ? "http://localhost:8080/api/vip-appointments"
+                    : "http://localhost:8080/api/appointment";
 
-                // Lọc danh sách ID bệnh nhân từ VIP appointments (chỉ lấy ID hợp lệ)
-                const patientIds = [...new Set(vipAppointmentsaccount
-                    .filter(item => typeof item.patient_id === "number")
-                    .map(item => item.patient_id)
-                )];
+            const response = await axios.get(apiUrl);
 
-                // Gọi API lấy thông tin bệnh nhân theo từng ID (nếu có ID)
-                const patientResponses = patientIds.length > 0
-                    ? await Promise.all(patientIds.map(id => axios.get(`http://localhost:8080/api/patients/${id}`)))
-                    : [];
+            let fetchedAppointments = response.data;
 
-                // Lọc danh sách ID bác sĩ từ VIP appointments
-                const doctorIds = [...new Set(vipAppointmentsaccount
-                    .filter(item => typeof item.doctor_id === "number")
-                    .map(item => item.doctor_id)
-                )];
+            if (activeTab === "vip") {
+                // Xử lý dữ liệu VIP
+                const patientIds = [
+                    ...new Set(
+                        fetchedAppointments
+                            .filter((item) => typeof item.patient_id === "number")
+                            .map((item) => item.patient_id)
+                    ),
+                ];
 
-                // Gọi API lấy thông tin bác sĩ theo từng ID (nếu có ID)
-                const doctorResponses = doctorIds.length > 0
-                    ? await Promise.all(doctorIds.map(id => axios.get(`http://localhost:8080/api/doctors/${id}`)))
-                    : [];
+                const doctorIds = [
+                    ...new Set(
+                        fetchedAppointments
+                            .filter((item) => typeof item.doctor_id === "number")
+                            .map((item) => item.doctor_id)
+                    ),
+                ];
 
-                // Tạo map từ ID -> thông tin bệnh nhân
+                const patientResponses =
+                    patientIds.length > 0
+                        ? await Promise.all(
+                            patientIds.map((id) =>
+                                axios.get(`http://localhost:8080/api/patients/${id}`)
+                            )
+                        )
+                        : [];
+
+                const doctorResponses =
+                    doctorIds.length > 0
+                        ? await Promise.all(
+                            doctorIds.map((id) =>
+                                axios.get(`http://localhost:8080/api/doctors/${id}`)
+                            )
+                        )
+                        : [];
                 const patientMap = {};
                 patientResponses.forEach((res, index) => {
                     patientMap[patientIds[index]] = res.data;
                 });
-
-                // Tạo map từ ID -> thông tin bác sĩ
                 const doctorMap = {};
                 doctorResponses.forEach((res, index) => {
                     doctorMap[doctorIds[index]] = res.data;
                 });
-
-                // Chuẩn hóa dữ liệu từ API thường
-                const appointments = appointmentsRes.data.map(item => ({
+                fetchedAppointments = fetchedAppointments.map((item) => ({
                     ...item,
-                    workDate: item.worktime?.workDate || 'Không có dữ liệu'
+                    isVIP: true,
+                    workDate: item.workDate || "Không có dữ liệu",
+                    patient: typeof item.patient_id === "number" ? patientMap[item.patient_id] || {} : item.patient_id,
+                    doctor: typeof item.doctor_id === "number" ? doctorMap[item.doctor_id] || {} : item.doctor_id,
                 }));
-
-                // Chuẩn hóa dữ liệu từ API VIP
-                const vipAppointments = vipAppointmentsaccount.map(item => ({
+            } else {
+                // Đối với khám thường, lấy `worktime.workDate`
+                fetchedAppointments = fetchedAppointments.map((item) => ({
                     ...item,
-                    isVIP: true, // Đánh dấu VIP
-                    workDate: item.workDate || 'Không có dữ liệu',
-                    patient: typeof item.patient_id === "number" ? (patientMap[item.patient_id] || {}) : item.patient_id,
-                    doctor_id: typeof item.doctor.id === "number" ? (doctorMap[item.doctor.id] || {}) : item.doctor.id
+                    workDate: item.worktime?.workDate || "Không có dữ liệu",
+                    isVIP: false
                 }));
-               
-                // Gộp danh sách và sắp xếp theo ngày mới nhất
-                setAppointments([...appointments, ...vipAppointments])
-            } catch (error) {
-                console.error('Failed to fetch appointments:', error);
             }
-        };
-
-        fetchAppointments();
-    }, []);
+            setAppointments(fetchedAppointments);
+        } catch (error) {
+            console.error("Failed to fetch appointments:", error);
+        }
+    };
 
 
     const filteredRooms = appointments.filter((room) => {
         const matchesName = room.patient?.account?.name.toLowerCase().includes(searchQuery.toLowerCase());
         const matchesStatus =
             statusFilter === 'Tất cả' ||
-            room.status === statusFilter ;
+            room.status === statusFilter;
         const matchesDate = !searchDate || room.workDate === searchDate || (!searchDate && room.isVIP && room.workDate === searchDate);
         return matchesName && matchesStatus && matchesDate;
     });
- 
+    console.log(appointments);
 
 
     const totalPages = Math.ceil(filteredRooms.length / roomsPerPage);
     const paginatedRooms = filteredRooms.slice((currentPage - 1) * roomsPerPage, currentPage * roomsPerPage);
-   
+
     const handlePrevPage = () => {
         if (currentPage > 1) setCurrentPage(currentPage - 1);
     };
@@ -124,7 +137,7 @@ function Appointment() {
         setShowDetail(false);
         setSelectedRoomId(null);
     };
-  
+
 
     const handleExportExcel = () => {
         if (filteredRooms.length === 0) {
@@ -146,7 +159,7 @@ function Appointment() {
                 "Tên bệnh nhân": room.patient?.account?.name || 'Unknown',
                 "Chuyên khoa": room.type,
                 "Mô tả": descriptions || 'No description',
-                // "Số tiền": room.payment[0].amount,
+                "Số tiền": room.payment[0]?.amount,
                 "Bác sĩ": room.doctor.account.name,
                 "Trạng thái": room.status,
                 "Loại cuộc hẹn": room.isVIP ? "VIP" : "Thường",
@@ -168,6 +181,30 @@ function Appointment() {
             {/* Main Content */}
             <div className="flex-1 p-6">
                 <div className="flex justify-between items-center mb-4">
+                    <div >
+                        <button
+                            onClick={() => setActiveTab("normal")}
+                            className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 mx-4 
+                                    ${activeTab === "normal"
+                                    ? "bg-[#da624a] text-white shadow-lg"
+                                    : "bg-gray-300 text-gray-700 hover:bg-gray-400"}
+                                `}
+                        >
+                            Khám Thường
+                        </button>
+                        <button
+                            onClick={() => setActiveTab("vip")}
+                            className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 
+                             ${activeTab === "vip"
+                                    ? "bg-yellow-500 text-white shadow-lg"
+                                    : "bg-gray-300 text-gray-700 hover:bg-gray-400"}
+                              `}
+                        >
+                            Khám VIP
+                        </button>
+                    </div>
+
+
                     <div>
                         <input
                             type="text"
@@ -177,7 +214,7 @@ function Appointment() {
                             className="p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#da624a]"
                         />
                     </div>
-                    <div className='gap-20'> 
+                    <div className='gap-20'>
                         <input
                             type="date"
                             value={searchDate}

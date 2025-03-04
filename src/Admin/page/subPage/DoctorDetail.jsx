@@ -18,7 +18,6 @@ function DoctorDetail() {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenEdit, setIsOpenEdit] = useState(false);
 
-
   const [selectedImage, setSelectedImage] = useState(null);
   // Chuyển shift thành startTime & endTime
   const shiftTimes = {
@@ -187,7 +186,7 @@ function DoctorDetail() {
       const doctorData = doctorResponse.data.find(
         (doc) => doc.id === parseInt(id)
       );
-      console.log("ASDADSSA " + JSON.stringify(doctorData));
+
       if (doctorData) {
         setDoctor(doctorData);
 
@@ -201,7 +200,6 @@ function DoctorDetail() {
         const doctorWorkingHours = workingHoursResponse.data.filter(
           (item) => item.doctor_id === parseInt(id)
         );
-        console.log("ASDADSdsadsadasSA " + JSON.stringify(doctorWorkingHours));
 
         setWorkingHours(doctorWorkingHours);
       } else {
@@ -213,9 +211,10 @@ function DoctorDetail() {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     fetchDoctorData();
-    
+
   }, [id]);
   console.log(doctor);
   console.log("patientFile", patientFile);
@@ -264,6 +263,7 @@ function DoctorDetail() {
             : item
         )
       );
+
       alert("Cập nhật thành công!");
       setIsModalOpen(false);
     } catch (error) {
@@ -284,7 +284,7 @@ function DoctorDetail() {
   const navigate = useNavigate();
 
 
- 
+
 
 
   if (loading) {
@@ -563,73 +563,6 @@ function DoctorDetail() {
             )}
           </div>
         </div>
-        {/* Patient History Section */}
-        {/* <div className="mt-6">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">
-            Patient History
-          </h2>
-          <div className="overflow-x-auto max-h-96 overflow-y-auto">
-            <table className="min-w-full bg-white border border-gray-200 rounded-lg">
-              <thead className="sticky top-0 z-10">
-                <tr className="bg-gray-50">
-                  <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">
-                    No.
-                  </th>
-                  <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">
-                    Patient Name
-                  </th>
-                  <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">
-                    Price
-                  </th>
-                  <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">
-                    Prescription
-                  </th>
-                  <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">
-                    Images
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {patientFile.length > 0 ? (
-                  patientFile.map((patient, index) => (
-                    <tr key={index} className="bg-gray-50 border-b">
-                      <td className="px-4 py-2 text-gray-700">{index + 1}</td>
-                      <td className="px-4 py-2 text-gray-700">
-                        {patient.patients.account.name}
-                      </td>
-                      <td className="px-4 py-2 text-gray-700">
-                        {patient.totalPrice} VNĐ
-                      </td>
-                      <td className="px-4 py-2 text-gray-700">
-                        {patient.prescription}
-                      </td>
-                      <td className="px-4 py-2 text-gray-700">
-                        {patient.patients.imageUrl ? (
-                          <img
-                            src={patient.patients.imageUrl}
-                            alt="Patient"
-                            className="w-12 h-12 rounded"
-                          />
-                        ) : (
-                          <span>No image</span>
-                        )}
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td
-                      colSpan="5"
-                      className="px-4 py-6 text-center text-gray-500"
-                    >
-                      No patient history available.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div> */}
       </div>
       {isOpen && (
         <div
@@ -644,35 +577,37 @@ function DoctorDetail() {
               Thiết lập giờ làm
             </h2>
 
-            {/* Chọn ca làm việc */}
-            <div className="mb-6">
-              <label className="block text-gray-700 font-medium mb-2 text-lg">
-                Chọn ca làm việc:
-              </label>
-              <div className="flex gap-3 justify-center">
-                {["morning", "afternoon"].map((shift) => {
-                  const shiftLabel = {
-                    morning: "Ca sáng (08:00 - 12:00)",
-                    afternoon: "Ca chiều (13:00 - 16:00)",
-                  }[shift];
+            {!doctor.vip && (
+              <div className="mb-6">
+                <label className="block text-gray-700 font-medium mb-2 text-lg">
+                  Chọn ca làm việc:
+                </label>
+                <div className="flex gap-3 justify-center">
+                  {["morning", "afternoon"].map((shift) => {
+                    const shiftLabel = {
+                      morning: "Ca sáng (08:00 - 12:00)",
+                      afternoon: "Ca chiều (13:00 - 16:00)",
+                    }[shift];
 
-                  const isSelected = selectedShift === shift;
+                    const isSelected = selectedShift === shift;
 
-                  return (
-                    <button
-                      key={shift}
-                      className={`px-5 py-3 text-lg font-medium rounded-md transition ${isSelected
-                        ? "bg-[#da624a] text-white"
-                        : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-                        }`}
-                      onClick={() => handleShiftSelect(shift)}
-                    >
-                      {shiftLabel}
-                    </button>
-                  );
-                })}
+                    return (
+                      <button
+                        key={shift}
+                        className={`px-5 py-3 text-lg font-medium rounded-md transition ${isSelected
+                            ? "bg-[#da624a] text-white"
+                            : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                          }`}
+                        onClick={() => handleShiftSelect(shift)}
+                      >
+                        {shiftLabel}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            )}
+
 
             {/* Chọn ngày làm việc */}
             {selectedShift && (
