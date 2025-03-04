@@ -15,7 +15,7 @@ import {
 import axios from "axios";
 import { enqueueSnackbar } from "notistack";
 import { AppContext } from "../../Context/AppProvider";
-import { getDoctorbyId } from "../../../api/Doctor/doctor";
+import { getDoctorbyId, getDoctorbyIds } from "../../../api/Doctor/doctor";
 import { getToken } from "../../Authentication/authService";
 import { data } from "autoprefixer";
 import ColumnGroup from "antd/es/table/ColumnGroup";
@@ -29,14 +29,16 @@ function TabDoctorappointment() {
   const [vipAppointments, setVipAppointments] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [appointmentsPerPage] = useState(5);
+  const [patientfile_ids, setpatientfile_ids] = useState(0);
+  const [appointment_ids, setappointment_ids] = useState(0);
+  
   const [popup, setPopup] = useState(false);
   // bệnh nhận đang được chọn
   const [Selectedpatients, setSelectedpatients] = useState(null);
 
-
   const [description, setDescription] = useState(""); // Lưu giá trị nhập vào
-  const [suggestions, setSuggestions] = useState([]);  // Lưu gợi ý
-  const [isSuggestionVisible, setIsSuggestionVisible] = useState(false); 
+  const [suggestions, setSuggestions] = useState([]); // Lưu gợi ý
+  const [isSuggestionVisible, setIsSuggestionVisible] = useState(false);
   // kiếm đại 300 loại thu
   const drugList = [
     "Paracetamol 500mg",
@@ -218,19 +220,24 @@ function TabDoctorappointment() {
     "20 viên",
     "30 viên",
     "50 viên",
-    "100 viên"
+    "100 viên",
   ];
-  
 
-  console.log("dang chon ne",Selectedpatients)
+  console.log("dang chon ne", Selectedpatients);
 
   const statusoption = ["Xác nhận", "Huỷ bỏ", "Hoàn thành"];
 
   const fetchAppointments = async () => {
     try {
-      const doctorId = await getDoctorbyId(User?.id);
-      const data = await getAppointmentByDoctorId(doctorId?.id);
-      const vipData = await getVIPAppointmentByDoctorId(doctorId?.id);
+      const doctorId = await getDoctorbyIds(User?.id);
+      console.log("DOCTIRID: " + JSON.stringify(doctorId));
+      var data = [];
+      var vipData = [];
+      if (doctorId.vip == true) {
+        vipData = await getVIPAppointmentByDoctorId(doctorId?.id);
+      } else {
+        data = await getAppointmentByDoctorId(doctorId?.id);
+      }
 
       if (data && data.length > 0) {
         const enrichedAppointments = await Promise.all(
@@ -271,7 +278,7 @@ function TabDoctorappointment() {
     indexOfFirstAppointment,
     indexOfLastAppointment
   );
-   console.log("vip nè:",currentVipAppointments[1])
+  console.log("vip nè:", currentVipAppointments[1]);
 
   // Fetch appointments once on component mount
   useEffect(() => {
@@ -286,20 +293,21 @@ function TabDoctorappointment() {
     appointment_id
   ) => {
     try {
-      console.log("thay dổi",doctorid , patientfile_id , appointment_id)
+      console.log("thay dổi", doctorid, patientfile_id, appointment_id);
       const data = await UpdateStatusAppointment(id, status);
-      console.log("starus hiện tại",status);
+      console.log("starus hiện tại", status);
       if (status === "Hoàn thành") {
-       
-        // cập nhật status pay 
+        // cập nhật status pay
         const updatePaymentStatus = await axios.put(
-          `http://localhost:8080/api/payments/status/${appointments[id-1]?.paymentDetails[0].id}`,
+          `http://localhost:8080/api/payments/status/${
+            appointments[id - 1]?.paymentDetails[0].id
+          }`,
           {
             status: "Đã thanh toán", // Set the status to "Đã thanh toán"
           },
           {
             headers: {
-              "Content-Type": "application/json"
+              "Content-Type": "application/json",
             },
           }
         );
@@ -318,15 +326,17 @@ function TabDoctorappointment() {
         }
       }
       // hủy bỏ
-       if(status === "Huỷ bỏ"){
+      if (status === "Huỷ bỏ") {
         const updatePaymentStatus = await axios.put(
-          `http://localhost:8080/api/payments/status/${appointments[id-1]?.paymentDetails[0].id}`,
+          `http://localhost:8080/api/payments/status/${
+            appointments[id - 1]?.paymentDetails[0].id
+          }`,
           {
             status: "Hoàn tiền", // Set the status to "Đã thanh toán"
           },
           {
             headers: {
-              "Content-Type": "application/json"
+              "Content-Type": "application/json",
             },
           }
         );
@@ -343,36 +353,38 @@ function TabDoctorappointment() {
             anchorOrigin: { vertical: "top", horizontal: "right" },
           });
         }
-        console.log("hủy bỏ nè nghị ơi ")
+        console.log("hủy bỏ nè nghị ơi ");
       }
-  // Xác nhận
-  if(status === "Xác nhận"){
-    const updatePaymentStatus = await axios.put(
-      `http://localhost:8080/api/payments/status/${appointments[id-1]?.paymentDetails[0].id}`,
-      {
-        status: "Chờ xử lý", // Set the status to "Đã thanh toán"
-      },
-      {
-        headers: {
-          "Content-Type": "application/json"
-        },
+      // Xác nhận
+      if (status === "Xác nhận") {
+        const updatePaymentStatus = await axios.put(
+          `http://localhost:8080/api/payments/status/${
+            appointments[id - 1]?.paymentDetails[0].id
+          }`,
+          {
+            status: "Chờ xử lý", // Set the status to "Đã thanh toán"
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (updatePaymentStatus != null) {
+          enqueueSnackbar("Cập nhật thành công!", {
+            variant: "success",
+            autoHideDuration: 5000,
+            anchorOrigin: { vertical: "top", horizontal: "right" },
+          });
+        } else {
+          enqueueSnackbar("Cập nhật không thành công!", {
+            variant: "error",
+            autoHideDuration: 5000,
+            anchorOrigin: { vertical: "top", horizontal: "right" },
+          });
+        }
+        console.log("hủy bỏ nè nghị ơi ");
       }
-    );
-    if (updatePaymentStatus != null) {
-      enqueueSnackbar("Cập nhật thành công!", {
-        variant: "success",
-        autoHideDuration: 5000,
-        anchorOrigin: { vertical: "top", horizontal: "right" },
-      });
-    } else {
-      enqueueSnackbar("Cập nhật không thành công!", {
-        variant: "error",
-        autoHideDuration: 5000,
-        anchorOrigin: { vertical: "top", horizontal: "right" },
-      });
-    }
-    console.log("hủy bỏ nè nghị ơi ")
-  }
 
       fetchAppointments();
     } catch (error) {
@@ -388,27 +400,31 @@ function TabDoctorappointment() {
       setCurrentPage(newPage);
     }
   };
-   console.log("currentAppointments",currentAppointments[0]?.patientDetails?.id)
+  console.log(
+    "currentAppointments",
+    currentAppointments[0]?.patientDetails?.id
+  );
 
-   const handleOpenPopup =(index)=>{
-     setPopup(true);
-     setSelectedpatients(currentAppointments[index])
-
-   }
-
-   const handleOpenPopupVip =(index)=>{
+  const handleOpenPopup = (index) => {
     setPopup(true);
-    console.log("thứ tự",index)
-    setSelectedpatients(currentVipAppointments[index])
-   }
+    setSelectedpatients(currentAppointments[index]);
+  };
 
-    // Hàm xử lý khi người dùng nhập liệu
+  const handleOpenPopupVip = (index, patientfile_id, appointment_ids) => {
+    setPopup(true);
+    console.log("thứ tự patientfileid" + patientfile_id );
+    setpatientfile_ids(patientfile_id);
+    setappointment_ids(appointment_ids);
+    setSelectedpatients(currentVipAppointments[index]);
+  };
+
+  // Hàm xử lý khi người dùng nhập liệu
   const handleInputChange = (e) => {
     const inputText = e.target.value;
     setDescription(inputText);
 
     // Lấy các ký tự đầu tiên (hoặc vài ký tự) của inputText để tìm kiếm tên thuốc
-    const searchTerm = inputText.slice(-3).toLowerCase();  // Lấy 3 ký tự cuối cùng từ input
+    const searchTerm = inputText.slice(-3).toLowerCase(); // Lấy 3 ký tự cuối cùng từ input
 
     // Tìm kiếm thuốc trong danh sách theo 3 ký tự cuối cùng
     if (inputText.length >= 3) {
@@ -416,10 +432,10 @@ function TabDoctorappointment() {
         drug.toLowerCase().startsWith(searchTerm)
       );
       setSuggestions(filteredSuggestions);
-      setIsSuggestionVisible(filteredSuggestions.length > 0);  // Hiển thị gợi ý nếu có kết quả
+      setIsSuggestionVisible(filteredSuggestions.length > 0); // Hiển thị gợi ý nếu có kết quả
     } else {
       setSuggestions([]);
-      setIsSuggestionVisible(false);  // Ẩn gợi ý nếu không đủ ký tự
+      setIsSuggestionVisible(false); // Ẩn gợi ý nếu không đủ ký tự
     }
   };
 
@@ -428,25 +444,24 @@ function TabDoctorappointment() {
     const currentText = description.slice(0, description.length - 3); // Giữ lại phần trước đó
     const newText = `${currentText}${suggestion}`; // Thêm tên thuốc đã chọn vào cuối phần mô tả
     setDescription(newText);
-    setSuggestions([]);  // Ẩn gợi ý khi chọn tên thuốc
-    setIsSuggestionVisible(false);  // Ẩn gợi ý khi đã chọn
+    setSuggestions([]); // Ẩn gợi ý khi chọn tên thuốc
+    setIsSuggestionVisible(false); // Ẩn gợi ý khi đã chọn
   };
- //Summit form 
- const SubmitPatientFile = async (e) => {
-  e.preventDefault();
-  const checksuccess = axios.post(
-    `http://localhost:8080/api/patientsfile?doctors_id=${Selectedpatients.doctor.account.id}&patients_profile_id=${patientfile_id}&appointment_id=${appointment_id}`,
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`,
-        "Content-Type": "application/json",
-      },
-    }
-  );
-
-
-};
+  //Summit form
+  const SubmitPatientFile = async (e) => {
+    e.preventDefault();
+    const checksuccess = axios.post(
+      `http://localhost:8080/api/patientsfile?doctors_id=${Selectedpatients.doctor.account.id}&patients_profile_id=${patientfile_ids}&appointment_id=${appointment_ids}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log("PATIENT FILE  " + JSON.stringify(checksuccess))
+  };
   return (
     <div className="w-full h-full  border-l border-[#00b5f1] pl-10 ">
       <span className="text-[24px] font-medium">
@@ -545,10 +560,15 @@ function TabDoctorappointment() {
                       </p>
                     </td>
                     <td className="p-4 border-b border-blue-gray-50">
-                        <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
-                           <span className="px-4 py-2 bg-green-300 rounded-lg" onClick={()=>handleOpenPopupVip(vipindex)}>Điều Trị</span>
-                        </p>
-                      </td>
+                      <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
+                        <span
+                          className="px-4 py-2 bg-green-300 rounded-lg"
+                          onClick={() => handleOpenPopupVip(vipindex, vip.patientprofile.id, vip.id)}
+                        >
+                          Điều Trị
+                        </span>
+                      </p>
+                    </td>
                     <td className="p-4 border-b border-blue-gray-50">
                       <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
                         {/* {vip.status} */}
@@ -625,7 +645,12 @@ function TabDoctorappointment() {
                       </td>
                       <td className="p-4 border-b border-blue-gray-50">
                         <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
-                           <span className="px-4 py-2 bg-green-300 rounded-lg" onClick={()=>handleOpenPopup(index)}>Điều Trị</span>
+                          <span
+                            className="px-4 py-2 bg-green-300 rounded-lg"
+                            onClick={() => handleOpenPopup(index)}
+                          >
+                            Điều Trị
+                          </span>
                         </p>
                       </td>
                       <td className="p-4 border-b border-blue-gray-50">
@@ -676,7 +701,6 @@ function TabDoctorappointment() {
                 );
               })}
             </tbody>
-           
           </table>
         </div>
       </div>
@@ -701,86 +725,94 @@ function TabDoctorappointment() {
           Trang trước
         </button>
       </div>
-       {/* popup */}
-       <div
-      className={`w-full h-screen ${popup ? "fixed" : "hidden"} z-20 bg-slate-400/60 top-0 right-0`}
-    >
-      <div className="w-full h-full flex justify-center items-center">
-        <div className="w-2/5 p-4 bg-[#fff] rounded-xl shadow-lg border border-solid border-[#c2c2c2]">
-          <div className="w-full flex justify-end cursor-pointer hover:text-[red]"
-           onClick={()=>{setPopup(false)}}
-          >
-            X
-          </div>
-          <span className="text-[18px]">
-            <h3 className="font-bold text-center">Thông Tin Bệnh Nhân</h3>
-            <p> -Bệnh nhân: {Selectedpatients?.patientDetails?.fullname}</p>
-            <p> -Sinh ngày: {Selectedpatients?.patientDetails?.birthdate}</p>
-            <p> -Số BHYT: {Selectedpatients?.patientDetails?.codeBhyt}</p>
-            <span className="text-[#00b5f1] font-medium text-[20px] capitalize"></span>
+      {/* popup */}
+      <div
+        className={`w-full h-screen ${
+          popup ? "fixed" : "hidden"
+        } z-20 bg-slate-400/60 top-0 right-0`}
+      >
+        <div className="w-full h-full flex justify-center items-center">
+          <div className="w-2/5 p-4 bg-[#fff] rounded-xl shadow-lg border border-solid border-[#c2c2c2]">
+            <div
+              className="w-full flex justify-end cursor-pointer hover:text-[red]"
+              onClick={() => {
+                setPopup(false);
+              }}
+            >
+              X
+            </div>
+            <span className="text-[18px]">
+              <h3 className="font-bold text-center">Thông Tin Bệnh Nhân</h3>
+              <p> -Bệnh nhân: {Selectedpatients?.patientDetails?.fullname}</p>
+              <p> -Sinh ngày: {Selectedpatients?.patientDetails?.birthdate}</p>
+              <p> -Số BHYT: {Selectedpatients?.patientDetails?.codeBhyt}</p>
+              <span className="text-[#00b5f1] font-medium text-[20px] capitalize"></span>
 
-            <form  onSubmit={SubmitPatientFile}>
-              {/* Mô tả khám bệnh và đơn thuốc */}
-              <div className="mt-4">
-                <label
-                  htmlFor="description"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Mô Tả Khám Bệnh Và Đơn Thuốc
-                </label>
-                <textarea
-                  id="description"
-                  value={description}
-                  onChange={handleInputChange}  // Xử lý khi nhập liệu
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                  rows="4"
-                  placeholder="Nhập mô tả thuốc, tên thuốc và số lượng..."
-                />
-              </div>
-
-              {/* Gợi ý thuốc */}
-              {isSuggestionVisible && suggestions.length > 0 && (
-                <div className="mt-2 bg-white border border-gray-300 rounded-md shadow-md max-h-40 overflow-y-auto">
-                  <ul className="space-y-1">
-                    {suggestions.map((suggestion, index) => (
-                      <li
-                        key={index}
-                        className="p-2 cursor-pointer hover:bg-gray-200"
-                        onClick={() => handleSuggestionClick(suggestion)}
-                      >
-                        {suggestion}
-                      </li>
-                    ))}
-                  </ul>
+              <form onSubmit={SubmitPatientFile}>
+                {/* Mô tả khám bệnh và đơn thuốc */}
+                <div className="mt-4">
+                  <label
+                    htmlFor="description"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Mô Tả Khám Bệnh Và Đơn Thuốc
+                  </label>
+                  <textarea
+                    id="description"
+                    value={description}
+                    onChange={handleInputChange} // Xử lý khi nhập liệu
+                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                    rows="4"
+                    placeholder="Nhập mô tả thuốc, tên thuốc và số lượng..."
+                  />
                 </div>
-              )}
 
-              {/* Chọn hình ảnh */}
-              <div className="mt-4">
-                <label htmlFor="image" className="block text-sm font-medium text-gray-700">
-                  Hình ảnh
-                </label>
-                <input
-                  type="file"
-                  id="image"
-                  multiple
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                />
-              </div>
+                {/* Gợi ý thuốc */}
+                {isSuggestionVisible && suggestions.length > 0 && (
+                  <div className="mt-2 bg-white border border-gray-300 rounded-md shadow-md max-h-40 overflow-y-auto">
+                    <ul className="space-y-1">
+                      {suggestions.map((suggestion, index) => (
+                        <li
+                          key={index}
+                          className="p-2 cursor-pointer hover:bg-gray-200"
+                          onClick={() => handleSuggestionClick(suggestion)}
+                        >
+                          {suggestion}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
-              <div className="my-4 flex justify-center">
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-[#00b5f1] text-[#fff] rounded-lg hover:scale-[0.9]"
-                >
-                  Cập nhật
-                </button>
-              </div>
-            </form>
-          </span>
+                {/* Chọn hình ảnh */}
+                <div className="mt-4">
+                  <label
+                    htmlFor="image"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Hình ảnh
+                  </label>
+                  <input
+                    type="file"
+                    id="image"
+                    multiple
+                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+
+                <div className="my-4 flex justify-center">
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-[#00b5f1] text-[#fff] rounded-lg hover:scale-[0.9]"
+                  >
+                    Cập nhật
+                  </button>
+                </div>
+              </form>
+            </span>
+          </div>
         </div>
       </div>
-    </div>
       {/* {selectedImage && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"

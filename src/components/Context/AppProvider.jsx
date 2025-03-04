@@ -22,6 +22,7 @@ const AppProvider = ({ children }) => {
   });
   const [isShow, setisShow] = useState(false);
   const [content, setContent] = useState();
+  const [doctorEmail, setDoctorEmail] = useState("");
   const [specialtyid, setspecialtyid] = useState(0);
   console.log(isShow, content);
 
@@ -48,6 +49,8 @@ const AppProvider = ({ children }) => {
         userRole,
         User,
         setUser,
+        doctorEmail,
+        setDoctorEmail,
       }}
     >
       {children}

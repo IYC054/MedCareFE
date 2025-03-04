@@ -5,7 +5,8 @@ import Register from "./Register";
 import CheckOTP from "./CheckOTP";
 import { loginToken, getToken, usePopup } from "./authService";
 import { useEffect, useState, memo, useContext } from "react";
-
+import { jwtDecode } from "jwt-decode";
+import { GoogleLogin } from "@react-oauth/google";
 function CheckEmail({ close }) {
   const [next, setNext] = useState(false);
   const [exist, setExist] = useState(false);
@@ -41,7 +42,7 @@ function CheckEmail({ close }) {
       setError("Email không hợp lệ.");
       return;
     }
-  
+
     try {
       const response = await fetch(
         `http://localhost:8080/api/account/find?email=${email}`,
@@ -53,14 +54,14 @@ function CheckEmail({ close }) {
           },
         }
       );
-  
+
       if (!response.ok) {
         throw new Error("Lỗi khi kiểm tra email!");
       }
-  
+
       const exists = await response.json(); // Nhận `true` hoặc `false`
       setExist(exists); // Lưu trạng thái email có tồn tại hay không
-  
+
       if (exists) {
         console.log("Email đã tồn tại.");
         setExist(!exist);
@@ -77,12 +78,13 @@ function CheckEmail({ close }) {
     }
   };
 
-  
   const handleSendOTP = async () => {
-    if(email){
-      try{
+    if (email) {
+      try {
         const response = await fetch(
-          `http://localhost:8080/api/auth/send?email=${encodeURIComponent(email)}`,
+          `http://localhost:8080/api/auth/send?email=${encodeURIComponent(
+            email
+          )}`,
           {
             method: "POST",
             headers: {
@@ -94,35 +96,64 @@ function CheckEmail({ close }) {
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
-            if(data.message){
-              setSuccess(data.message)
+            if (data.message) {
+              setSuccess(data.message);
             }
           })
           .catch((error) => {
-            setError(error.message)
+            setError(error.message);
           });
-          //goi api xong het xoay
-          setLoading(false);
-          if (!response.ok) {
-            // Nếu HTTP status không OK, lấy lỗi dưới dạng text trước
-            const errorText = await response.text();
-            throw new Error(`HTTP ${response.status}: ${errorText}`);
-          }
-      
-          // Nếu có nội dung, lấy JSON
-          const data = await response.json();
-          console.log("OTP response:", data)
+        //goi api xong het xoay
+        setLoading(false);
+        if (!response.ok) {
+          // Nếu HTTP status không OK, lấy lỗi dưới dạng text trước
+          const errorText = await response.text();
+          throw new Error(`HTTP ${response.status}: ${errorText}`);
+        }
 
-      }catch (error){
+        // Nếu có nội dung, lấy JSON
+        const data = await response.json();
+        console.log("OTP response:", data);
+      } catch (error) {
         console.error("Error fetching:", error);
       }
-      }
-  }
+    }
+  };
   if (loading) {
-    return <div className="flex-1 p-8 items-center justify-center flex flex-col">
-      <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-    </div>;
+    return (
+      <div className="flex-1 p-8 items-center justify-center flex flex-col">
+        <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
   }
+  const handleGoogleLogin = async (credentialResponse) => {
+    try {
+      const decoded = jwtDecode(credentialResponse.credential);
+      console.log("Google User Info:", decoded);
+
+      const response = await fetch("http://localhost:8080/api/account/google", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: credentialResponse.credential }),
+      });
+
+      if (!response.ok) throw new Error("Đăng nhập Google thất bại!");
+
+      const data = await response.json();
+      if (data != null) {
+        console.log("Server response:", data);
+        localStorage.setItem("user", JSON.stringify(data));
+        localStorage.setItem("token", data.token);
+        alert("Login successfully");
+
+        console.log("Reloading...");
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error("Google Login Error:", error);
+    }
+  };
+
   return (
     //  <div className="bg-white rounded-lg p-6 shadow-lg w-9/12 h-4/5 z-50">
     //  <div className="flex h-full items-center justify-center bg-gray-100 ">
@@ -140,42 +171,59 @@ function CheckEmail({ close }) {
               placeholder="Nhập email của bạn"
               className="flex-1 px-4 py-2 focus:outline-none"
             />
-          
           </div>
-          {error && <div className="w-full flex items-center overflow-hidden mb-2">
-           <p className="text-red-500 text-sm">{error}</p>
-          </div>}
-          {success && <div className="w-full flex items-center overflow-hidden mb-2">
-           <p className="text-green-500 text-sm">{success}</p>
-          </div>}
-          <button className="w-full py-2 bg-blue-600 text-white rounded-md mb-4 hover:bg-blue-700" onClick={handleCheckEmail}>
+          {error && (
+            <div className="w-full flex items-center overflow-hidden mb-2">
+              <p className="text-red-500 text-sm">{error}</p>
+            </div>
+          )}
+          {success && (
+            <div className="w-full flex items-center overflow-hidden mb-2">
+              <p className="text-green-500 text-sm">{success}</p>
+            </div>
+          )}
+          <button
+            className="w-full py-2 bg-blue-600 text-white rounded-md mb-4 hover:bg-blue-700"
+            onClick={handleCheckEmail}
+          >
             Tiếp tục
           </button>
-          <div className="text-center text-gray-500 mb-4">Hoặc đăng nhập bằng tài khoản</div>
-          <button className="w-full py-2 bg-red-600 text-white rounded-md mb-4 hover:bg-red-700">
-            Đăng nhập với Google
-          </button>
-          <button className="w-full py-2 bg-blue-800 text-white rounded-md hover:bg-blue-900">
-            Đăng nhập với Facebook
-          </button>
+          <div className="text-center text-gray-500 mb-4">
+            Hoặc đăng nhập bằng tài khoản
+          </div>
+          <GoogleLogin
+            onSuccess={handleGoogleLogin}
+            onError={() => console.log("Đăng nhập Google thất bại")}
+          />
         </div>
       )}
-      {exist ? next && <Login email={email} close={close}/> : next && <CheckOTP email={email} />}
-
+      {exist
+        ? next && <Login email={email} close={close} />
+        : next && <CheckOTP email={email} />}
 
       {/* Hình ảnh bên phải */}
 
       <div className="hidden lg:flex flex-1 bg-gray-50 flex-col items-center justify-center relative">
-        <button onClick={close} className="text-gray-500 hover:text-gray-700 h-fit w-fit absolute right-3 top-3">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        <button
+          onClick={close}
+          className="text-gray-500 hover:text-gray-700 h-fit w-fit absolute right-3 top-3"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-7 w-7"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
-        <img
-          src={ImgAuth}
-          alt="Illustration"
-          className="w-full h-auto"
-        />
+        <img src={ImgAuth} alt="Illustration" className="w-full h-auto" />
         <p className="absolute bottom-8 text-center text-gray-700 italic text-lg">
           “Không còn: <br />
           <span className="line-through">xếp hàng</span> <br />
@@ -186,7 +234,6 @@ function CheckEmail({ close }) {
     </div>
     //  </div>
     // </div>
-
   );
 }
 export default CheckEmail;

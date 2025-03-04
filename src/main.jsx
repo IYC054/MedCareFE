@@ -11,14 +11,14 @@ import AccountUser from "./Admin/page/AccountUser";
 import AccountDoctor from "./Admin/page/AccountDoctor";
 import Appointment from "./Admin/page/Appointment";
 
-import Hopsital from './components/Hospital'
+import Hopsital from "./components/Hospital";
 
-import Booking from './components/Hospital/Booking'
-import AppProvider from './components/Context/AppProvider'
-import AddProfile from './components/PatientProfile/AddProfile'
-import PatientProfile from './components/PatientProfile/Profile'
-import CreateAccountDoctor from './Admin/page/createPage/createAccountDoctor'
-import Feedback from './Admin/page/Feedback'
+import Booking from "./components/Hospital/Booking";
+import AppProvider from "./components/Context/AppProvider";
+import AddProfile from "./components/PatientProfile/AddProfile";
+import PatientProfile from "./components/PatientProfile/Profile";
+import CreateAccountDoctor from "./Admin/page/createPage/createAccountDoctor";
+import Feedback from "./Admin/page/Feedback";
 import ConfirmInfo from "./components/Hospital/Confirm_information";
 import ProfileChoose from "./components/Hospital/ProfileChoose";
 import ChoosePayment from "./components/Hospital/ChoosePayment";
@@ -50,10 +50,7 @@ import CreatePatientFile from "./Admin/page/createPage/CreatePatientFile";
 import TabCheckBHYT from "./components/PatientProfile/Profile/TabBHYT";
 import EditDoctor from "./Admin/page/editPage/EditDoctor";
 import Chat from "./Admin/page/Chat";
-
-
-
-
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const router = createBrowserRouter([
   {
@@ -88,7 +85,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/admin/chat",
-        element: <Chat/>,
+        element: <Chat />,
       },
       // {
       //   path: "/admin/chatroom",
@@ -124,7 +121,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/admin/doctor/CreateDoctor",
-        element: <CreateAccountDoctor />
+        element: <CreateAccountDoctor />,
       },
       {
         path: "/admin/appointment",
@@ -140,10 +137,10 @@ const router = createBrowserRouter([
         element: <Feedback />,
       },
       {
-        path : "/admin/editdoctor/:id",
-        element: <EditDoctor />
+        path: "/admin/editdoctor/:id",
+        element: <EditDoctor />,
       },
-  
+
       {
         path: "/admin/feedback/wasReponse/:id",
         element: <FeedbackReponse />,
@@ -187,19 +184,21 @@ const router = createBrowserRouter([
       },
       {
         path: "/admin/patientfileAdmin",
-        element: <PatienfileAdmin/>
-      }
+        element: <PatienfileAdmin />,
+      },
     ],
   },
   {
     path: "/loginAdmin",
     element: <LoginAdmin />,
-  }
+  },
 ]);
 window.global = window;
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
   <AppProvider>
-    <RouterProvider router={router} />
+    <GoogleOAuthProvider clientId="970946806223-8adh46gug50inbvcsmg82puc0qlnmrsh.apps.googleusercontent.com">
+      <RouterProvider router={router} />
+    </GoogleOAuthProvider>
   </AppProvider>
 );

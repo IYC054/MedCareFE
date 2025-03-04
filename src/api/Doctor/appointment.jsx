@@ -1,26 +1,32 @@
 /* eslint-disable react-refresh/only-export-components */
 import axios from "axios";
+import { useContext } from "react";
+import { AppContext } from "../../components/Context/AppProvider";
 
 const CreateAppointment = async (
   patientId,
   doctorId,
   worktimeId,
   patientProfileId,
-  specialty
+  specialty,
+  doctorEmail
 ) => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   try {
-    console.log("patientId" + patientId)
-    const speciltyname = await axios.get(`http://localhost:8080/api/specialty/${specialty}`)
+    console.log("patientId" + patientId);
+    const speciltyname = await axios.get(
+      `http://localhost:8080/api/specialty/${specialty}`
+    );
     const response = await axios.post("http://localhost:8080/api/appointment", {
       patientId: patientId,
       doctorId: doctorId,
       type: "Khám " + speciltyname.data.name,
       status: "Chờ xử lý",
-      amount: 2000,
+      amount: 1000,
       worktimeId: worktimeId,
       patientProfileId: patientProfileId,
-      firestoreUserId: null,
-      doctorEmail: null
+      firestoreUserId: "asdasdads",
+      doctorEmail: doctorEmail,
     });
     return response.data;
   } catch (error) {
@@ -101,7 +107,7 @@ const checkslotAppointment = async (doctorid, worktimeid) => {
     return [];
   }
 };
-const  getAppointmentByIdUser= async (iduser) => {
+const getAppointmentByIdUser = async (iduser) => {
   try {
     const res = await axios.get(
       `http://localhost:8080/api/appointment/patient/${iduser}`
@@ -120,5 +126,5 @@ export {
   checkslotAppointment,
   getVIPAppointmentByDoctorId,
   UpdateStatusVipAppointment,
-  getAppointmentByIdUser
+  getAppointmentByIdUser,
 };
