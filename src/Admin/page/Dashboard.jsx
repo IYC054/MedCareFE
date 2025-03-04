@@ -6,8 +6,7 @@ import ChartWeek from './chart/ChartWeek';
 import Chart12Months from './chart/Chart12Months';
 import Chart1Week from './chart/Chart1Week';
 import ChartMess from './chart/ChartMess';
-import ChartMessSent from './chart/ChartMessSent';
-import ChartMessInbox from './chart/ChartMessInbox';
+
 import axios from 'axios';
 import { getToken } from '../../components/Authentication/authService';
 
@@ -38,15 +37,13 @@ function Dashboard() {
     useEffect(() => {
         const fetch = async () => {
 
-            const responseUser = await axios.get('http://localhost:8080/api/account', {
+            const responseUser = await axios.get('http://localhost:8080/api/patients', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-            const filteredUsers = responseUser.data.result.filter(account =>
-                account.role.some(r => r.name === "PATIENTS"));
-            setUser(filteredUsers);
-
+            setUser(responseUser.data);
+            console.log("user", user);
 
             const responseDoctor = await axios.get('http://localhost:8080/api/doctors', {
                 headers: {
@@ -145,7 +142,7 @@ function Dashboard() {
         };
         fetch();
     }, []);
-    const [currentYear,setCurrentYear] = useState("")
+    const [currentYear, setCurrentYear] = useState("")
     const [thisMonthIncome, setThisMonthIncome] = useState(0);
     const [lastMonthIncome, setLastMonthIncome] = useState(0);
     const [thisYearIncome, setThisYearIncome] = useState(0);
@@ -215,7 +212,7 @@ function Dashboard() {
                             <div className='p-4 flex justify-between items-center'>
                                 <div>
                                     <div className='text-xl font-semibold'>Người sử dụng</div>
-                                    <div className='text-sm'> số lượng người đăng ký 
+                                    <div className='text-sm'> số lượng người đăng ký
                                     </div>
                                 </div>
                                 <div>
@@ -240,7 +237,7 @@ function Dashboard() {
                                 <div>
                                     <div className='text-xl font-semibold'>Thu nhập năm nay
                                     </div>
-                                    <div className='text-sm'>thu nhập năm {currentYear} 
+                                    <div className='text-sm'>thu nhập năm {currentYear}
                                     </div>
                                 </div>
                                 <div>
@@ -374,9 +371,10 @@ function Dashboard() {
                                                     <div className="widget-content-outer">
                                                         <div className="widget-content-wrapper flex items-center justify-between">
                                                             <div className="widget-content-left mr-6 pb-2">
-                                                                <div className="widget-numbers text-2xl text-gray-500 font-bold">
-                                                                    {monthPercentChange.toFixed(2)}%
+                                                                <div className={`widget-numbers text-2xl font-bold ${monthPercentChange >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                                    {monthPercentChange.toFixed(0)}%
                                                                 </div>
+
                                                             </div>
                                                             <div className="content-right">
                                                                 <div className="text-gray-500 text-xs opacity-60">
@@ -386,9 +384,9 @@ function Dashboard() {
                                                             </div>
                                                         </div>
                                                         <div className="widget-progress-wrapper">
-                                                            <div className="w-full bg-gray-200 rounded-full h-2 relative overflow-hidden">
+                                                            <div className="w-full bg-gray-200 rounded-full h-4 relative overflow-hidden">
                                                                 <div
-                                                                    className="bg-blue-600 h-2 rounded-full transition-all duration-500"
+                                                                    className="bg-blue-600 h-full rounded-full transition-all duration-500"
                                                                     style={{ width: `${Math.min(monthPercentChange, 100)}%` }}
                                                                 ></div>
                                                                 {/* Continuous Glowing Effect */}
@@ -404,7 +402,10 @@ function Dashboard() {
                                                         <div className="widget-content-wrapper flex items-center justify-between">
                                                             <div className="widget-content-left mr-6 pb-2">
                                                                 <div className="widget-numbers text-2xl text-gray-500 font-bold">
-                                                                    {yearPercentChange.toFixed(2)}%
+                                                                    <div className={`widget-numbers text-2xl font-bold ${yearPercentChange >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                                        {yearPercentChange.toFixed(0)}%
+                                                                    </div>
+
                                                                 </div>
                                                             </div>
                                                             <div className="content-right">
@@ -414,9 +415,9 @@ function Dashboard() {
                                                             </div>
                                                         </div>
                                                         <div className="widget-progress-wrapper">
-                                                            <div className="w-full bg-gray-200 rounded-full h-2 relative overflow-hidden">
+                                                            <div className="w-full bg-gray-200 rounded-full h-4 relative overflow-hidden">
                                                                 <div
-                                                                    className="bg-purple-600 h-2 rounded-full transition-all duration-500"
+                                                                    className="bg-purple-600 h-full rounded-full transition-all duration-500"
                                                                     style={{ width: `${Math.min(yearPercentChange, 100)}%` }}
                                                                 ></div>
                                                                 {/* Continuous Glowing Effect */}
@@ -435,39 +436,16 @@ function Dashboard() {
                         </div>
                     </div>
 
-                    {/* <div className='card-body mx-auto flex py-4 h-[300px] '>
-                            <div className='w-full border-2 bg-white text-green-400  mr-4 pt-6 hover:drop-shadow-2xl'>
-                                <div className="chart-title font-extrabold pl-6">
-                                    Received Messages
-                                </div>
-                                <div className="chart-placeholder ">
-                                    <ChartMess />
-                                </div>
-                            </div>
-                            <div className='w-full border-2 bg-white text-red-400   mx-4 pt-6 hover:drop-shadow-2xl'>
-                                <div className="chart-title  font-extrabold pl-6">
-                                    Sent Messages
+                    <div className=' w-full mx-auto flex py-4 h-auto '>
 
-                                </div>
+                        <ChartMess />
 
-                                <div className="chart-placeholder">
-                                    <ChartMessSent />
-                                </div>
-                            </div>
-                            <div className='w-full border-2 bg-[#343a40] text-yellow-400  ml-4 pt-6 hover:drop-shadow-2xl'>
-                                <div className="chart-title  font-extrabold pl-6">
-                                    Inbox Total
+                    </div>
 
-                                </div>
-
-                                <div className="chart-placeholder">
-                                    <ChartMessInbox />
-                                </div>
-                            </div>
-                        </div> */}
                 </div>
             </div>
-        </div >
+        </div>
+
     );
 }
 
