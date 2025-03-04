@@ -452,7 +452,9 @@ function TabDoctorappointment() {
     e.preventDefault();
     const checksuccess = axios.post(
       `http://localhost:8080/api/patientsfile?doctors_id=${Selectedpatients.doctor.account.id}&patients_profile_id=${patientfile_ids}&appointment_id=${appointment_ids}`,
-      {},
+      {
+         "description":description
+      },
       {
         headers: {
           Authorization: `Bearer ${getToken()}`,
@@ -461,6 +463,7 @@ function TabDoctorappointment() {
       }
     );
     console.log("PATIENT FILE  " + JSON.stringify(checksuccess))
+    setPopup(false);
   };
   return (
     <div className="w-full h-full  border-l border-[#00b5f1] pl-10 ">

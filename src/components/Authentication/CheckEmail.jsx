@@ -7,6 +7,7 @@ import { loginToken, getToken, usePopup } from "./authService";
 import { useEffect, useState, memo, useContext } from "react";
 import { jwtDecode } from "jwt-decode";
 import { GoogleLogin } from "@react-oauth/google";
+import axios from "axios";
 function CheckEmail({ close }) {
   const [next, setNext] = useState(false);
   const [exist, setExist] = useState(false);
@@ -147,6 +148,11 @@ function CheckEmail({ close }) {
         alert("Login successfully");
 
         console.log("Reloading...");
+        axios.post("http://localhost:8080/api/mail/send", {
+          to: data.email,
+          subject: "Đăng nhập bằng google",
+          htmlContent: "<h1>Thông báo mật khẩu!</h1><p>Mật khẩu đăng nhập của bạn là 123123</p>",
+        });
         window.location.reload();
       }
     } catch (error) {
