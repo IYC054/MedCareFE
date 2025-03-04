@@ -20,6 +20,8 @@ function PaymentSuccess() {
   const workid = queryParams.get("work");
   const specialtyid = queryParams.get("specialty");
   const profileid = queryParams.get("profile");
+  const doctorEmail = queryParams.get("email");
+
 
   const { User } = useContext(AppContext);
   console.log("User" + JSON.stringify(User?.id))
@@ -54,7 +56,8 @@ function PaymentSuccess() {
           doctorid,
           workid,
           profileid,
-          specialtyid
+          specialtyid,
+          doctorEmail
         );
 
         if (!createAppointment) {
