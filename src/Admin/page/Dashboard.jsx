@@ -127,7 +127,7 @@ function Dashboard() {
             });
 
             const currentYear = new Date().getFullYear();
-
+            setCurrentYear(currentYear);
             const filteredMoney = responseMoney.data.filter(payment => {
                 const paymentDate = new Date(payment.transactionDate);
                 return paymentDate.getFullYear() === currentYear && payment.status === 'Đã thanh toán';
@@ -145,7 +145,7 @@ function Dashboard() {
         };
         fetch();
     }, []);
-
+    const [currentYear,setCurrentYear] = useState("")
     const [thisMonthIncome, setThisMonthIncome] = useState(0);
     const [lastMonthIncome, setLastMonthIncome] = useState(0);
     const [thisYearIncome, setThisYearIncome] = useState(0);
@@ -215,7 +215,8 @@ function Dashboard() {
                             <div className='p-4 flex justify-between items-center'>
                                 <div>
                                     <div className='text-xl font-semibold'>Người sử dụng</div>
-                                    <div className='text-sm'>Tháng này</div>
+                                    <div className='text-sm'> số lượng người đăng ký 
+                                    </div>
                                 </div>
                                 <div>
                                     <div className='text-2xl font-bold'>{user.length}</div>
@@ -225,8 +226,8 @@ function Dashboard() {
                         <div className='card mb-3 bg-arielle-smile text-white rounded-md  '>
                             <div className='p-4 flex justify-between items-center'>
                                 <div>
-                                    <div className='text-xl font-semibold'>Đặt phòng</div>
-                                    <div className='text-sm'>cuộc hẹn khám bệnh trong tháng này
+                                    <div className='text-xl font-semibold'>Số lượng cuộc hẹn khám được đặt</div>
+                                    <div className='text-sm'> cuộc hẹn khám bệnh trong tháng này
                                     </div>
                                 </div>
                                 <div>
@@ -237,9 +238,9 @@ function Dashboard() {
                         <div className='card mb-3 bg-happy-green text-white rounded-md '>
                             <div className='p-4 flex justify-between items-center'>
                                 <div>
-                                    <div className='text-xl font-semibold'>Thu nhập
+                                    <div className='text-xl font-semibold'>Thu nhập năm nay
                                     </div>
-                                    <div className='text-sm'>Năm nay
+                                    <div className='text-sm'>thu nhập năm {currentYear} 
                                     </div>
                                 </div>
                                 <div>
@@ -254,7 +255,7 @@ function Dashboard() {
                             <div className='items-center mb-2 md:p-2 border-b-2 border-gray-300 font-bold text-sm text-[rgba(31,10,6,0.6)] bg-white whitespace-nowrap'>
                                 <div className='flex justify-between'>
                                     <div className='text-xl'>
-                                        <i className='bi bi-people'></i>Số người dùng đặt phòng
+                                        <i className='bi bi-people'></i>Biểu đồ người dùng đặt khám
                                     </div>
                                     <ul className="flex space-x-2">
                                         <li>
