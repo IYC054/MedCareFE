@@ -13,7 +13,6 @@ import {
 } from "../../../api/Bank/payment";
 import { CreateAppointment } from "../../../api/Doctor/appointment";
 import Invoice from "../../../sendmail/Invoice";
-import SendMail from "../../../api/mail/sendmail";
 import { enqueueSnackbar } from "notistack";
 import { AppContext } from "../../Context/AppProvider";
 import { getpatientbyaccountid } from "../../../api/Doctor/patient";
