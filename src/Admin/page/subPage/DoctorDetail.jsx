@@ -23,10 +23,8 @@ function DoctorDetail() {
   const shiftTimes = {
     morning: { startTime: "08:00:00", endTime: "12:00:00" },
     afternoon: { startTime: "13:00:00", endTime: "16:00:00" },
-    both: [
-      { startTime: "08:00:00", endTime: "12:00:00" },
-      { startTime: "13:00:00", endTime: "16:00:00" },
-    ],
+    both: { startTime: "06:00:00", endTime: "17:00:00" },
+
   };
 
   // Khi chọn ca làm việc
@@ -43,11 +41,9 @@ function DoctorDetail() {
       console.log("Start Time:", startTime); // "13:00:00"
       console.log("End Time:", endTime); // "16:00:00"
     } else if (shift === "both") {
-      shiftTimes.both.forEach((shift, index) => {
-        console.log(`Shift ${index + 1}:`);
-        console.log("Start Time:", shift.startTime);
-        console.log("End Time:", shift.endTime);
-      });
+      const { startTime, endTime } = shiftTimes.both;
+      console.log("Start Time:", startTime);
+      console.log("End Time:", endTime);
     }
   };
 
@@ -58,49 +54,39 @@ function DoctorDetail() {
     return format(date, "yyyy-MM-dd");
   };
   const handleEditSchedule = async () => {
-    if (!selectedShift) {
+    if (doctor.vip) {
+      setSelectedShift("both");
+    }
+
+    if (!selectedShift || !startDate || !endDate) {
       alert("Vui lòng chọn ca làm việc và ngày làm!");
       return;
     }
 
-    let shiftsToPost = [];
-    if (selectedShift === "both") {
-      shiftsToPost = [
-        { startTime: "08:00:00", endTime: "12:00:00" },
-        { startTime: "13:00:00", endTime: "16:00:00" },
-      ];
-    } else {
-      const { startTime, endTime } = shiftTimes[selectedShift];
-      shiftsToPost = [{ startTime, endTime }];
-    }
-
     try {
+      const shiftData = {
+        doctor: id,
+        workStart: formatDate(startDate),
+        workDate: formatDate(endDate),
+        startTime: shiftTimes[selectedShift].startTime,
+        endTime: shiftTimes[selectedShift].endTime,
+      };
 
+      const postResponse = await axios.post(
+        "http://localhost:8080/api/workinghours",
+        shiftData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-      for (let shift of shiftsToPost) {
-        const body = {
-          doctor: id,
-          workStart: formatDate(startDate),
-          workDate: formatDate(endDate),
-          startTime: shift.startTime,
-          endTime: shift.endTime,
-        };
-
-        const postResponse = await axios.post(
-          "http://localhost:8080/api/workinghours",
-          body,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        console.log("Lịch làm việc đã lưu:", postResponse.data);
-      }
+      console.log("Lịch làm việc đã lưu:", postResponse.data);
 
       // Sau khi POST thành công, tải lại dữ liệu để cập nhật bảng
-      fetchDoctorData(); // Gọi lại hàm để tải lại dữ liệu lịch làm việc
+      fetchDoctorData();
 
       alert("Lịch làm việc đã được lưu thành công!");
       setIsOpenEdit(false);
@@ -110,79 +96,33 @@ function DoctorDetail() {
     }
   };
 
-  // Tạo danh sách lịch làm việc để gửi API
-  const handleSaveSchedule = async () => {
-    if (!selectedShift) {
-      alert("Vui lòng chọn ca làm việc và ngày làm!");
-      return;
-    }
 
-    // Danh sách các ca làm việc cần post
-    let shiftsToPost = [];
-
-    if (selectedShift === "both") {
-      // Nếu chọn ca 'both', tạo 2 ca
-      shiftsToPost = [
-        { startTime: "08:00:00", endTime: "12:00:00" },
-        { startTime: "13:00:00", endTime: "16:00:00" },
-      ];
-    } else {
-      // Nếu chọn một ca duy nhất, chỉ cần tạo 1 ca
-      const { startTime, endTime } = shiftTimes[selectedShift];
-      shiftsToPost = [{ startTime, endTime }];
-    }
-
-    // Tạo body JSON cho từng ca và gửi đi
-    for (let shift of shiftsToPost) {
-      const body = {
-        doctor: id,
-        workStart: formatDate(startDate),
-        workDate: formatDate(endDate),
-        startTime: shift.startTime,
-        endTime: shift.endTime,
-      };
-
-      try {
-        const response = await axios.post(
-          "http://localhost:8080/api/workinghours",
-          body,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json", // Đảm bảo gửi kiểu nội dung JSON
-            },
-          }
-        );
-
-        console.log("Lịch làm việc đã lưu:", response.data);
-        alert("Lịch làm việc đã được lưu thành công!");
-        fetchDoctorData();
-        setIsOpen(false);
-      } catch (error) {
-        console.error("Lỗi khi lưu lịch làm việc:", error);
-        alert("Đã xảy ra lỗi khi lưu lịch làm việc!");
-      }
-    }
-  };
 
   const [loading, setLoading] = useState(true);
   const token = getToken();
   const fetchDoctorData = async () => {
     try {
       // Fetch dữ liệu bác sĩ, hồ sơ bệnh nhân và lịch làm việc song song
-      const [doctorResponse, patientfileResponse, workingHoursResponse] =
+      const [doctorResponse, patientfileResponse, rateResponse, workingHoursResponse] =
         await Promise.all([
           axios.get("http://localhost:8080/api/doctors"),
           axios.get("http://localhost:8080/api/patientsfile"),
-
+          axios.get('http://localhost:8080/api/rates'),
           axios.get("http://localhost:8080/api/workinghours", {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }),
         ]);
+      const rateofDoc = rateResponse.data.filter(doc => doc.doctor_id.id === parseInt(id));
 
-      // Lọc bác sĩ theo id
+      // Tính trung bình rating
+      const totalRates = rateofDoc.reduce((sum, item) => sum + item.rate, 0);
+      const averageRate = rateofDoc.length > 0 ? totalRates / rateofDoc.length : 0;
+
+      setRates(averageRate.toFixed(1)); //
+
+      console.log(rates)
       const doctorData = doctorResponse.data.find(
         (doc) => doc.id === parseInt(id)
       );
@@ -222,8 +162,8 @@ function DoctorDetail() {
   const [selectedShiftId, setSelectedShiftId] = useState(null);
   const [selectedWorkDate, setSelectedWorkDate] = useState(null);
   const [error, setError] = useState("");
+  const [rates, setRates] = useState([]);
   const handleShiftUpdate = async () => {
-
     try {
       const response = await axios.get(
         `http://localhost:8080/api/appointment/check?workDate=${selectedWorkDate}&doctorId=${id}`,
@@ -233,6 +173,7 @@ function DoctorDetail() {
           },
         }
       );
+
 
       if (response.data) {
         setError("Không thể cập nhật! Đã có bệnh nhân đặt lịch vào ngày này.");
@@ -282,9 +223,21 @@ function DoctorDetail() {
   const [showEditCv, setShowEditCv] = useState(false);
   const [selectedImage2, setSelectedImage2] = useState(null);
   const navigate = useNavigate();
+  const [start, setStart] = useState("");
+  const [end, setEnd] = useState("");
 
 
+  const sortedWorkingHours = [...workingHours].sort(
+    (a, b) => new Date(b.workDate) - new Date(a.workDate)
+  );
 
+  const filteredWorkingHours = sortedWorkingHours.filter((shift) => {
+    const shiftDate = new Date(shift.workDate);
+    const from = start ? new Date(start) : null;
+    const to = end ? new Date(end) : null;
+
+    return (!from || shiftDate >= from) && (!to || shiftDate <= to);
+  });
 
 
   if (loading) {
@@ -292,6 +245,25 @@ function DoctorDetail() {
       <div className="text-center text-gray-600 mt-10">Tải dữ liệu...</div>
     );
   }
+  const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <svg
+          key={i}
+          className={`w-4 h-4 me-1 ${i <= rating ? "text-yellow-300" : "text-gray-300"
+            }`}
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 22 20"
+        >
+          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+        </svg>
+      );
+    }
+    return stars;
+  };
 
 
 
@@ -303,7 +275,6 @@ function DoctorDetail() {
         <h1 className="text-3xl font-extrabold mb-6 text-[#da624a] text-center">
           Thông tin bác sĩ
         </h1>
-
         <div className="mb-6 flex items-start gap-8">
           {/* Avatar & Chỉnh sửa */}
           <div className="flex flex-col items-center gap-4">
@@ -314,6 +285,18 @@ function DoctorDetail() {
                 className="w-full h-full object-cover"
               />
             </div>
+            <div className=" items-center mb-2">
+              <div className="flex">
+                {renderStars(rates)}
+               
+              </div>
+              <div className="flex my-2 justify-center">
+                <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">{rates}</p>
+                <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">out of</p>
+                <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">5</p>
+              </div>
+            </div>
+
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded-md"
               onClick={() => navigate(`/admin/editdoctor/${doctor.id}`)}
@@ -426,6 +409,35 @@ function DoctorDetail() {
           <h2 className="text-xl font-semibold text-gray-700 mb-4">
             Lịch làm việc của bác sĩ
           </h2>
+          <div className="mb-4 flex gap-4">
+            {/* Chọn ngày bắt đầu */}
+            <div className="w-1/2">
+              <label className="block text-gray-700 font-medium mb-2">
+                Từ ngày:
+              </label>
+              <input
+                type="date"
+                className="border p-2 rounded-md w-full"
+                value={start}
+                onChange={(e) => setStart(e.target.value)}
+              />
+            </div>
+
+            {/* Chọn ngày kết thúc */}
+            <div className="w-1/2">
+              <label className="block text-gray-700 font-medium mb-2">
+                Đến ngày:
+              </label>
+              <input
+                type="date"
+                className="border p-2 rounded-md w-full"
+                value={end}
+                onChange={(e) => setEnd(e.target.value)}
+              />
+            </div>
+          </div>
+
+
           <div className="overflow-x-auto max-h-96 overflow-y-auto">
             <table className="min-w-full bg-white border border-gray-200 rounded-lg">
               <thead className="sticky top-0 z-10">
@@ -442,58 +454,49 @@ function DoctorDetail() {
                   <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">
                     Giờ kết thúc
                   </th>
-                  <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">
-                    Cập nhật
-                  </th>
+                  {!doctor.vip && (
+                    <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">
+                      Cập nhật
+                    </th>
+                  )}
                 </tr>
               </thead>
               <tbody>
-                {workingHours.length > 0 ? (
-                  workingHours.map((shift, index) => (
+                {filteredWorkingHours.length > 0 ? (
+                  filteredWorkingHours.map((shift, index) => (
                     <tr key={index} className="bg-gray-50 border-b">
+                      <td className="px-4 py-2 text-gray-700">{formatDate(shift.workDate)}</td>
                       <td className="px-4 py-2 text-gray-700">
-                        {formatDate(shift.workDate)}
-                      </td>
-                      <td className="px-4 py-2 text-gray-700">
-                        {shift.startTime === "08:00:00" &&
-                          shift.endTime === "12:00:00"
+                        {shift.startTime === "08:00:00" && shift.endTime === "12:00:00"
                           ? "Ca sáng (08:00 - 12:00)"
-                          : shift.startTime === "13:00:00" &&
-                            shift.endTime === "16:00:00"
+                          : shift.startTime === "13:00:00" && shift.endTime === "16:00:00"
                             ? "Ca chiều (13:00 - 16:00)"
                             : `Ca từ ${shift.startTime} đến ${shift.endTime}`}
                       </td>
-                      <td className="px-4 py-2 text-gray-700">
-                        {shift.startTime}
-                      </td>
-                      <td className="px-4 py-2 text-gray-700">
-                        {shift.endTime}
-                      </td>
-                      <td className="px-4 py-2 text-gray-700">
-                        <button
-                          className="bg-blue-500 text-white px-4 py-2 rounded-md"
-                          onClick={() =>
-                            openUpdateModal(
-                              shift.startTime === "08:00:00"
-                                ? "morning"
-                                : "afternoon",
-                              shift.id,
-                              shift.workDate
-                            )
-                          }
-                        >
-                          Cập nhật
-                        </button>
-                      </td>
+                      <td className="px-4 py-2 text-gray-700">{shift.startTime}</td>
+                      <td className="px-4 py-2 text-gray-700">{shift.endTime}</td>
+                      {!doctor.vip && (
+                        <td className="px-4 py-2 text-gray-700">
+                          <button
+                            className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                            onClick={() =>
+                              openUpdateModal(
+                                shift.startTime === "08:00:00" ? "morning" : "afternoon",
+                                shift.id,
+                                shift.workDate
+                              )
+                            }
+                          >
+                            Cập nhật
+                          </button>
+                        </td>
+                      )}
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td
-                      colSpan="5"
-                      className="px-4 py-6 text-center text-gray-500"
-                    >
-                      Không có lịch làm việc.
+                    <td colSpan="5" className="px-4 py-6 text-center text-gray-500">
+                      Không có lịch làm việc trong khoảng thời gian này.
                     </td>
                   </tr>
                 )}
@@ -564,19 +567,19 @@ function DoctorDetail() {
           </div>
         </div>
       </div>
-      {isOpen && (
+
+      {isOpenEdit && (
         <div
-          className="fixed inset-0 z-20 bg-black bg-opacity-50  backdrop-blur-sm flex items-center justify-center"
-          onClick={() => setIsOpen(false)}
+          className="fixed inset-0 z-20 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center"
+          onClick={() => setIsOpenEdit(false)}
         >
           <div
             className="bg-white p-6 rounded-lg shadow-lg w-[700px]"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="text-2xl font-bold mb-4 text-center">
-              Thiết lập giờ làm
-            </h2>
+            <h2 className="text-2xl font-bold mb-4 text-center">Thiết lập lại giờ làm</h2>
 
+            {/* Nếu không phải VIP thì hiển thị chọn ca làm việc */}
             {!doctor.vip && (
               <div className="mb-6">
                 <label className="block text-gray-700 font-medium mb-2 text-lg">
@@ -595,8 +598,8 @@ function DoctorDetail() {
                       <button
                         key={shift}
                         className={`px-5 py-3 text-lg font-medium rounded-md transition ${isSelected
-                            ? "bg-[#da624a] text-white"
-                            : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                          ? "bg-[#da624a] text-white"
+                          : "bg-gray-200 text-gray-800 hover:bg-gray-300"
                           }`}
                         onClick={() => handleShiftSelect(shift)}
                       >
@@ -608,9 +611,7 @@ function DoctorDetail() {
               </div>
             )}
 
-
-            {/* Chọn ngày làm việc */}
-            {selectedShift && (
+            {(selectedShift || doctor.vip) && (
               <div className="mb-6">
                 <label className="block text-gray-700 font-medium mb-2 text-lg">
                   Chọn ngày làm việc:
@@ -619,157 +620,33 @@ function DoctorDetail() {
                   <div className="flex justify-between space-x-4">
                     {/* Chọn ngày bắt đầu */}
                     <div className="w-1/2">
-                      <label className="block font-medium mb-2">
-                        Ngày bắt đầu:
-                      </label>
+                      <label className="block font-medium mb-2">Ngày bắt đầu:</label>
                       <DatePicker
                         selected={startDate}
                         onChange={(date) => {
                           setStartDate(date);
                           if (endDate && date > endDate) {
-                            setEndDate(null); // Reset nếu ngày bắt đầu lớn hơn ngày kết thúc
+                            setEndDate(null);
                           }
                         }}
                         selectsStart
                         startDate={startDate}
                         endDate={endDate}
-                        minDate={new Date()} // Chỉ cho phép chọn từ hôm nay trở đi
+                        minDate={new Date()}
                         inline
                       />
                     </div>
 
                     {/* Chọn ngày kết thúc */}
                     <div className="w-1/2">
-                      <label className="block font-medium mb-2">
-                        Ngày kết thúc:
-                      </label>
+                      <label className="block font-medium mb-2">Ngày kết thúc:</label>
                       <DatePicker
                         selected={endDate}
                         onChange={(date) => setEndDate(date)}
                         selectsEnd
                         startDate={startDate}
                         endDate={endDate}
-                        minDate={startDate || new Date()} // Ngày kết thúc >= ngày bắt đầu
-                        inline
-                      />
-                    </div>
-                  </div>
-
-                  {/* Hiển thị ngày đã chọn */}
-                  <div className="mt-4 p-3 bg-white rounded-md shadow">
-                    <p>
-                      <strong>Ngày bắt đầu:</strong> {formatDate(startDate)}
-                    </p>
-                    <p>
-                      <strong>Ngày kết thúc:</strong> {formatDate(endDate)}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Nút lưu */}
-            <div className="flex justify-end gap-3 mt-4">
-              <button
-                className="bg-gray-500 text-white px-5 py-3 rounded-md text-lg hover:bg-gray-600"
-                onClick={() => setIsOpen(false)}
-              >
-                Hủy
-              </button>
-              <button
-                className="bg-blue-500 text-white px-5 py-3 rounded-md text-lg hover:bg-blue-600"
-                onClick={handleSaveSchedule}
-              >
-                Lưu lịch làm
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-      {isOpenEdit && (
-        <div
-          className="fixed inset-0 z-20 bg-black bg-opacity-50  backdrop-blur-sm flex items-center justify-center"
-          onClick={() => setIsOpenEdit(false)}
-        >
-          <div
-            className="bg-white p-6 rounded-lg shadow-lg w-[700px]"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 className="text-2xl font-bold mb-4 text-center">
-              Thiết lập lại giờ làm
-            </h2>
-
-            {/* Chọn ca làm việc */}
-            <div className="mb-6">
-              <label className="block text-gray-700 font-medium mb-2 text-lg">
-                Chọn ca làm việc:
-              </label>
-              <div className="flex gap-3 justify-center">
-                {["morning", "afternoon"].map((shift) => {
-                  const shiftLabel = {
-                    morning: "Ca sáng (08:00 - 12:00)",
-                    afternoon: "Ca chiều (13:00 - 16:00)",
-                  }[shift];
-
-                  const isSelected = selectedShift === shift;
-
-                  return (
-                    <button
-                      key={shift}
-                      className={`px-5 py-3 text-lg font-medium rounded-md transition ${isSelected
-                        ? "bg-[#da624a] text-white"
-                        : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-                        }`}
-                      onClick={() => handleShiftSelect(shift)}
-                    >
-                      {shiftLabel}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Chọn ngày làm việc */}
-            {selectedShift && (
-              <div className="mb-6">
-                <label className="block text-gray-700 font-medium mb-2 text-lg">
-                  Chọn ngày làm việc:
-                </label>
-                <div className="border p-4 rounded-md bg-gray-100">
-                  <div className="flex justify-between space-x-4">
-                    {/* Chọn ngày bắt đầu */}
-                    <div className="w-1/2">
-                      <label className="block font-medium mb-2">
-                        Ngày bắt đầu:
-                      </label>
-                      <DatePicker
-                        selected={startDate}
-                        onChange={(date) => {
-                          setStartDate(date);
-                          if (endDate && date > endDate) {
-                            setEndDate(null); // Reset nếu ngày bắt đầu lớn hơn ngày kết thúc
-                          }
-                        }}
-                        selectsStart
-                        startDate={startDate}
-                        endDate={endDate}
-                        minDate={new Date()} // Chỉ cho phép chọn từ hôm nay trở đi
-                        inline
-                      />
-                    </div>
-
-                    {/* Chọn ngày kết thúc */}
-                    <div className="w-1/2">
-                      <label className="block font-medium mb-2">
-                        Ngày kết thúc:
-                      </label>
-                      <DatePicker
-                        selected={endDate}
-                        onChange={(date) => setEndDate(date)}
-                        selectsEnd
-                        startDate={startDate}
-                        endDate={endDate}
-                        minDate={startDate || new Date()} // Ngày kết thúc >= ngày bắt đầu
+                        minDate={startDate || new Date()}
                         inline
                       />
                     </div>
