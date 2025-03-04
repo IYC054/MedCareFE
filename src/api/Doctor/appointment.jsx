@@ -118,8 +118,32 @@ const getAppointmentByIdUser = async (iduser) => {
     return [];
   }
 };
+const getAllApointment = async () => {
+  try {
+    const res = await axios.get(
+      `http://localhost:8080/api/appointment`
+    );
+    return res.data;
+  } catch (error) {
+    // console.error(error);
+    return [];
+  }
+};
+const getAllVipApointment = async () => {
+  try {
+    const res = await axios.get(
+      `http://localhost:8080/api/vip-appointments`
+    );
+    return res.data;
+  } catch (error) {
+    // console.error(error);
+    return [];
+  }
+};
 export {
   CreateAppointment,
+  getAllApointment,
+  getAllVipApointment,
   getAppointmentByPatientId,
   getAppointmentByDoctorId,
   UpdateStatusAppointment,

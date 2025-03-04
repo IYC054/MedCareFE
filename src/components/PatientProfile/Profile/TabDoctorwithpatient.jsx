@@ -1,4 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import ExcelJS from "exceljs";
+
 import {
   deteleimage,
   getfileimagebypatientprofileid,
@@ -10,19 +14,74 @@ import { useSnackbar } from "notistack";
 import { AppContext } from "../../Context/AppProvider";
 import { getDoctorbyId } from "../../../api/Doctor/doctor";
 import { getToken } from "../../Authentication/authService";
+import {
+  getAllApointment,
+  getAllVipApointment,
+} from "../../../api/Doctor/appointment";
 
 function TabDoctorwithpatient() {
   const [currentPage, setCurrentPage] = useState(1);
   const [appointmentsPerPage] = useState(4);
   const { enqueueSnackbar } = useSnackbar();
   const [patient, setPatient] = useState([]);
+  const [NormalAppointment, setNormalAppointment] = useState([]);
+  const [VipAppointment, setVipAppointment] = useState([]);
   const [popup, setPopup] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectPatientId, setSelectPatientId] = useState();
   const [selectPatientFileId, setSelectPatientFileId] = useState();
   const [queryName, setQueryName] = useState("");
   const [description, setDescription] = useState("");
+
   const { User } = useContext(AppContext);
+  const exportToExcel = async () => {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Danh sách");
+
+    // Định dạng tiêu đề
+    worksheet.columns = [
+      { header: "Tên", key: "fullname", width: 25 },
+      { header: "Ghi chú", key: "description", width: 40 },
+      { header: "Ngày", key: "createdAt", width: 20 },
+      { header: "Hình ảnh", key: "image", width: 30 },
+    ];
+
+    // Lặp qua dữ liệu để thêm vào sheet
+    for (let i = 0; i < currentPatient.length; i++) {
+      const item = currentPatient[i];
+      const row = worksheet.addRow({
+        fullname: item.patientDetails.fullname,
+        description: item.description ? item.description : "Chưa cập nhật",
+        createdAt: new Date(item.createdAt).toLocaleString("vi-VN"),
+      });
+
+      // Nếu có hình ảnh thì tải xuống và chèn vào file Excel
+      if (item.fileimageDetails.length > 0) {
+        const imageUrl = item.fileimageDetails[0].urlImage;
+        console.log("image " + imageUrl)
+        try {
+          const response = await axios.get(imageUrl, {
+            responseType: "arraybuffer",
+          });
+          const imageId = workbook.addImage({
+            buffer: response.data,
+            extension: "png", // Hoặc "jpeg"
+          });
+
+          worksheet.addImage(imageId, {
+            tl: { col: 3, row: i + 1 }, // Vị trí ảnh trong ô
+            ext: { width: 60, height: 60 }, // Kích thước ảnh
+          });
+        } catch (error) {
+          console.error("Lỗi tải ảnh:", error);
+        }
+      }
+    }
+
+    // Xuất file Excel
+    const buffer = await workbook.xlsx.writeBuffer();
+    saveAs(new Blob([buffer]), "DanhSach.xlsx");
+  };
 
   const openModal = (urlImage) => {
     setSelectedImage(urlImage);
@@ -188,11 +247,21 @@ function TabDoctorwithpatient() {
                 </th>
                 <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
                   <span className="block font-sans text-sm antialiased font-bold leading-none text-blue-gray-900 opacity-70">
-                    Hình ảnh
+                    Ngày
                   </span>
                 </th>
                 <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
-                  <span className="block font-sans text-sm antialiased font-bold leading-none text-blue-gray-900 opacity-70"></span>
+                  <span className="block font-sans text-sm antialiased font-bold leading-none text-blue-gray-900 opacity-70">
+                    Hình ảnh
+                  </span>
+                </th>
+                <th className="p-4 border-b border-blue-gray-50">
+                  <button
+                    className="p-2 px-4 bg-[red] block font-sans text-sm antialiased font-medium leading-normal text-[#fff] rounded-xl"
+                    onClick={exportToExcel}
+                  >
+                    Xuất file
+                  </button>
                 </th>
               </tr>
             </thead>
@@ -220,6 +289,11 @@ function TabDoctorwithpatient() {
                       {item.description == "" || item.description == null
                         ? "Chưa cập nhật"
                         : item.description}
+                    </span>
+                  </td>
+                  <td className="p-4 border-b border-blue-gray-50">
+                    <span className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
+                      {new Date(item.createdAt).toLocaleString("vi-VN")}
                     </span>
                   </td>
                   <td className="p-4 border-b border-blue-gray-50">

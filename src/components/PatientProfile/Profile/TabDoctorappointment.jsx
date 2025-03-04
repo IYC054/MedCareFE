@@ -31,7 +31,7 @@ function TabDoctorappointment() {
   const [appointmentsPerPage] = useState(5);
   const [patientfile_ids, setpatientfile_ids] = useState(0);
   const [appointment_ids, setappointment_ids] = useState(0);
-  
+
   const [popup, setPopup] = useState(false);
   // bệnh nhận đang được chọn
   const [Selectedpatients, setSelectedpatients] = useState(null);
@@ -412,7 +412,7 @@ function TabDoctorappointment() {
 
   const handleOpenPopupVip = (index, patientfile_id, appointment_ids) => {
     setPopup(true);
-    console.log("thứ tự patientfileid" + patientfile_id );
+    console.log("thứ tự patientfileid" + patientfile_id);
     setpatientfile_ids(patientfile_id);
     setappointment_ids(appointment_ids);
     setSelectedpatients(currentVipAppointments[index]);
@@ -450,10 +450,15 @@ function TabDoctorappointment() {
   //Summit form
   const SubmitPatientFile = async (e) => {
     e.preventDefault();
-    const checksuccess = axios.post(
-      `http://localhost:8080/api/patientsfile?doctors_id=${Selectedpatients.doctor.account.id}&patients_profile_id=${patientfile_ids}&appointment_id=${appointment_ids}`,
+    const doctorId = await getDoctorbyIds(User?.id);
+    const url = doctorId.vip
+      ? `http://localhost:8080/api/patientsfile/vip-appointment?doctors_id=${Selectedpatients.doctor.account.id}&patients_profile_id=${patientfile_ids}&vipappointment_id=${appointment_ids}`
+      : `http://localhost:8080/api/patientsfile?doctors_id=${Selectedpatients.doctor.account.id}&patients_profile_id=${patientfile_ids}&appointment_id=${appointment_ids}`;
+
+    const checksuccess = await axios.post(
+      url,
       {
-         "description":description
+        description: description,
       },
       {
         headers: {
@@ -462,8 +467,39 @@ function TabDoctorappointment() {
         },
       }
     );
-    console.log("PATIENT FILE  " + JSON.stringify(checksuccess))
-    setPopup(false);
+    console.log("CHECKSUSCC" + checksuccess.data);
+    if (checksuccess != null) {
+      const formData = new FormData();
+      formData.append("patientfile_id", checksuccess.data.id);
+
+      // Lấy danh sách file từ input
+      const files = document.getElementById("image").files;
+      console.log("HINH ANH " + files);
+      // Nếu có file hình ảnh, thêm vào formData
+      if (files.length > 0) {
+        for (let i = 0; i < files.length; i++) {
+          formData.append("url_image", files[i]);
+        }
+      }
+
+      try {
+        // Nếu có hình ảnh, gửi formData lên server
+        let responeimage;
+        if (files.length > 0) {
+          responeimage = await axios.post(
+            "http://localhost:8080/api/filesimage",
+            formData,
+            {
+              headers: {
+                Authorization: `Bearer ${getToken()}`,
+              },
+            }
+          );
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
   };
   return (
     <div className="w-full h-full  border-l border-[#00b5f1] pl-10 ">
@@ -566,7 +602,13 @@ function TabDoctorappointment() {
                       <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
                         <span
                           className="px-4 py-2 bg-green-300 rounded-lg"
-                          onClick={() => handleOpenPopupVip(vipindex, vip.patientprofile.id, vip.id)}
+                          onClick={() =>
+                            handleOpenPopupVip(
+                              vipindex,
+                              vip.patientprofile.id,
+                              vip.id
+                            )
+                          }
                         >
                           Điều Trị
                         </span>
