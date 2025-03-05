@@ -40,7 +40,7 @@ function ChoosePayment() {
   const workid = getParams.get("work");
   const specialtyid = getParams.get("specialty");
   const profileid = getParams.get("profile");
-  const { User, doctorEmail } = useContext(AppContext);
+  const { User, doctorEmail, BHYT } = useContext(AppContext);
   useEffect(() => {
     const fetchDoctor = async () => {
       const data = await getDoctorbyId(doctorid);
@@ -91,7 +91,7 @@ function ChoosePayment() {
 
   const PayWithMomo = async () => {
     if (checkMethod == "momo") {
-      MomoPayment(fee, User?.phone, doctorid, workid, profileid, specialtyid, doctorEmail);
+      MomoPayment(fee, User?.phone, doctorid, workid, profileid, specialtyid, doctorEmail, BHYT);
     } else if (checkMethod == "bank") {
       // navigate(`/confirm-payment?doctor=${doctorid}&work=${workid}&specialty=${dataSpecialty.name}&profile=${profileid}`)
     } else {

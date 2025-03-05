@@ -32,8 +32,8 @@ function ConfirmInfo() {
   const workid = getParams.get("work");
   const specialtyid = getParams.get("specialty");
   const profileid = getParams.get("profile");
-  const { setDoctorEmail } = useContext(AppContext);
-  console.log()
+  const { setDoctorEmail, BHYT } = useContext(AppContext);
+  console.log("BHYT" + BHYT);
   useEffect(() => {
     const fetchDoctor = async () => {
       const data = await getDoctorbyId(doctorid);

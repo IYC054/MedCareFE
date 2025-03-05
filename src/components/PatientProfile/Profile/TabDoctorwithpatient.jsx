@@ -58,7 +58,7 @@ function TabDoctorwithpatient() {
       // Nếu có hình ảnh thì tải xuống và chèn vào file Excel
       if (item.fileimageDetails.length > 0) {
         const imageUrl = item.fileimageDetails[0].urlImage;
-        console.log("image " + imageUrl)
+        console.log("image " + imageUrl);
         try {
           const response = await axios.get(imageUrl, {
             responseType: "arraybuffer",
@@ -247,6 +247,11 @@ function TabDoctorwithpatient() {
                 </th>
                 <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
                   <span className="block font-sans text-sm antialiased font-bold leading-none text-blue-gray-900 opacity-70">
+                    Chuấn đoán
+                  </span>
+                </th>
+                <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
+                  <span className="block font-sans text-sm antialiased font-bold leading-none text-blue-gray-900 opacity-70">
                     Ngày
                   </span>
                 </th>
@@ -290,6 +295,9 @@ function TabDoctorwithpatient() {
                         ? "Chưa cập nhật"
                         : item.description}
                     </span>
+                  </td>
+                  <td className="p-4 border-b border-blue-gray-50">
+                    {item.diagnosis}
                   </td>
                   <td className="p-4 border-b border-blue-gray-50">
                     <span className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">

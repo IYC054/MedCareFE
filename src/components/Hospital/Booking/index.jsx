@@ -6,7 +6,14 @@ import React, {
   useState,
 } from "react";
 import Breadcrumbs from "../Breadcrumbs";
-import { FaBuilding, FaRegCalendarAlt, FaStethoscope, FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import {
+  FaBuilding,
+  FaRegCalendarAlt,
+  FaStethoscope,
+  FaStar,
+  FaStarHalfAlt,
+  FaRegStar,
+} from "react-icons/fa";
 import { FaMagnifyingGlass, FaUserDoctor } from "react-icons/fa6";
 import { BsCalendar2DateFill, BsGenderAmbiguous } from "react-icons/bs";
 import { MdAttachMoney } from "react-icons/md";
@@ -37,6 +44,7 @@ function Booking() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const typeselect = queryParams.get("type");
+  const { setBHYT } = useContext(AppContext);
   // chọn chuyên khoa của bác sĩ
   const [dataSpecialty, setdataSpecialty] = useState([]);
   const [specialtyDoctor, setSpecialtyDoctor] = useState([]);
@@ -124,16 +132,18 @@ function Booking() {
   };
 
   const handleBHYT = () => {
-    setSelectDate(false);
+    // setSelectDate(true);
+    console.log("BAO HIEM");
     setTitle("Vui lòng chọn ngày khám");
     // bật nếu cần thêm bhyt
-    // setSelectBHYT(true);
+    setSelectBHYT(true);
   };
   // bật nếu cần thêm bhyt
-  // const handleSelectDate = () => {
-  //   setSelectDate(false);
-  //   setTitle("Vui lòng chọn ngày khám");
-  // };
+  const handleSelectDate = (bhyt) => {
+    setSelectDate(false);
+    setTitle("Vui lòng chọn ngày khám");
+    setBHYT(bhyt);
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -167,14 +177,14 @@ function Booking() {
   const filteredDoctors =
     queryType === "doctor"
       ? dataDoctor.filter((doctor) => {
-        const name = doctor.account.name.toLowerCase();
-        return name.includes(searchQuery.toLowerCase());
-      })
+          const name = doctor.account.name.toLowerCase();
+          return name.includes(searchQuery.toLowerCase());
+        })
       : dataDoctor.filter((doctor) => {
-        return doctor.specialties.some((specialty) =>
-          specialty.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-      });
+          return doctor.specialties.some((specialty) =>
+            specialty.name.toLowerCase().includes(searchQuery.toLowerCase())
+          );
+        });
   useEffect(() => {
     const fetchSpecialty = async () => {
       const data = await getallSpecialty();
@@ -192,7 +202,7 @@ function Booking() {
       if (filterDoctorbyspecialtyId.length > 0) {
         const randomDoctor =
           filterDoctorbyspecialtyId[
-          Math.floor(Math.random() * filterDoctorbyspecialtyId.length)
+            Math.floor(Math.random() * filterDoctorbyspecialtyId.length)
           ];
         console.log("randomDoctor" + JSON.stringify(randomDoctor.account.name));
         setdoctorId(randomDoctor.id);
@@ -210,7 +220,7 @@ function Booking() {
       .then((response) => {
         const data = response.data;
         const ratingsMap = {};
-        
+
         data.forEach((rating) => {
           const doctorId = rating.doctor_id.id;
           const rate = rating.rate;
@@ -254,7 +264,7 @@ function Booking() {
     );
   };
 
-  console.log( "asd",doctorRatings);
+  console.log("BHYTaaaaaaaa", selectDate);
   // useEffect(() => {
   //   console.log("txnSpecialtyId: " + txnSpecialtyId);
   // }, [txnSpecialtyId])
@@ -360,7 +370,7 @@ function Booking() {
                           <thead className="border-solid border-b-2 border-[#f2f2f2] w-full">
                             <th className="w-10 py-5">#</th>
                             <th className="py-5">Tên dịch vụ</th>
-                            <th className="py-5">Giá tiền</th>
+                            <th className="py-5">Giá tiền ne</th>
                             <th className="py-5 "></th>
                           </thead>
                           <tbody className="w-full text-center">
@@ -381,35 +391,35 @@ function Booking() {
                             </tr>
                           </tbody>
                         </table>
-                        {/* {selectBHYT ? (
-                      <div className="w-full h-[40px] bg-[#f2f2f2]/60 px-14 flex justify-between items-center text-[#003553]">
-                        <span className="text-[17px] font-medium ">
-                          Bạn có đăng ký BHYT
-                        </span>
-                        <div className="mr-10">
-                          <input
-                            type="radio"
-                            id="yes"
-                            name="bhyt"
-                            onClick={handleSelectDate}
-                          />
-                          <label htmlFor="yes" className="mx-2">
-                            Có
-                          </label>
-                          <input
-                            type="radio"
-                            id="no"
-                            name="bhyt"
-                            onClick={handleSelectDate}
-                          />
-                          <label htmlFor="no" className="mx-2">
-                            Không
-                          </label>
-                        </div>
-                      </div>
-                    ) : (
-                      <Fragment></Fragment>
-                    )} */}
+                        {selectBHYT ? (
+                          <div className="w-full h-[40px] bg-[#f2f2f2]/60 px-14 flex justify-between items-center text-[#003553]">
+                            <span className="text-[17px] font-medium ">
+                              Bạn có đăng ký BHYT
+                            </span>
+                            <div className="mr-10">
+                              <input
+                                type="radio"
+                                id="yes"
+                                name="bhyt"
+                                onClick={() => handleSelectDate(true)}
+                              />
+                              <label htmlFor="yes" className="mx-2">
+                                Có
+                              </label>
+                              <input
+                                type="radio"
+                                id="no"
+                                name="bhyt"
+                                onClick={() => handleSelectDate(false)}
+                              />
+                              <label htmlFor="no" className="mx-2">
+                                Không
+                              </label>
+                            </div>
+                          </div>
+                        ) : (
+                          <Fragment></Fragment>
+                        )}
                       </div>
                     </div>
                     {/* back từ đặt khám */}
@@ -539,15 +549,17 @@ function Booking() {
                   <div className="w-full h-[435px] bg-[#fff] px-4 pt-10 rounded-lg overflow-hidden">
                     <div className="flex items-center gap-4 mb-2">
                       <span
-                        className={`font-medium cursor-pointer ${queryType === "doctor" ? "text-[#00e0ff]" : ""
-                          }`}
+                        className={`font-medium cursor-pointer ${
+                          queryType === "doctor" ? "text-[#00e0ff]" : ""
+                        }`}
                         onClick={() => setQueryType("doctor")}
                       >
                         Tìm bác sĩ
                       </span>
                       <span
-                        className={`font-medium cursor-pointer ${queryType === "specialty" ? "text-[#00e0ff]" : ""
-                          }`}
+                        className={`font-medium cursor-pointer ${
+                          queryType === "specialty" ? "text-[#00e0ff]" : ""
+                        }`}
                         onClick={() => setQueryType("specialty")}
                       >
                         Tìm chuyên khoa
@@ -582,20 +594,29 @@ function Booking() {
                           key={index}
                           className="w-full bg-white p-4 list-none text-[#053353] mb-4 rounded-xl border-solid border-[1px] border-[#00e0ff] cursor-pointer"
                           id="goup"
-                          onClick={() => HandleChooseDoctor(item.account.name, item.id)}
+                          onClick={() =>
+                            HandleChooseDoctor(item.account.name, item.id)
+                          }
                         >
                           <li className="w-full text-[#ffb54a] text-[20px] flex gap-2 items-center mb-2">
                             <FaUserDoctor />
-                            <span className="font-medium text-[18px]">BS. {item.account.name}</span>
+                            <span className="font-medium text-[18px]">
+                              BS. {item.account.name}
+                            </span>
                             <span className="text-[14px] flex items-center gap-2">
-                             
-                             {doctorRatings[item.id] ? renderStars(parseFloat(doctorRatings[item.id])) : "Chưa có đánh giá"}
-                           </span>
+                              {doctorRatings[item.id]
+                                ? renderStars(
+                                    parseFloat(doctorRatings[item.id])
+                                  )
+                                : "Chưa có đánh giá"}
+                            </span>
                           </li>
-                         
+
                           <li className="w-full text-[18px] flex gap-2 items-center mb-2">
                             <BsGenderAmbiguous />
-                            <span className="text-[14px]">Giới Tính: {item.account.gender}</span>
+                            <span className="text-[14px]">
+                              Giới Tính: {item.account.gender}
+                            </span>
                           </li>
                           <li className="w-full text-[18px] flex gap-2 items-center mb-2">
                             <FaStethoscope />
@@ -690,35 +711,35 @@ function Booking() {
                             </tr>
                           </tbody>
                         </table>
-                        {/* {selectBHYT ? (
-                      <div className="w-full h-[40px] bg-[#f2f2f2]/60 px-14 flex justify-between items-center text-[#003553]">
-                        <span className="text-[17px] font-medium ">
-                          Bạn có đăng ký BHYT
-                        </span>
-                        <div className="mr-10">
-                          <input
-                            type="radio"
-                            id="yes"
-                            name="bhyt"
-                            onClick={handleSelectDate}
-                          />
-                          <label htmlFor="yes" className="mx-2">
-                            Có
-                          </label>
-                          <input
-                            type="radio"
-                            id="no"
-                            name="bhyt"
-                            onClick={handleSelectDate}
-                          />
-                          <label htmlFor="no" className="mx-2">
-                            Không
-                          </label>
-                        </div>
-                      </div>
-                    ) : (
-                      <Fragment></Fragment>
-                    )} */}
+                        {selectBHYT ? (
+                          <div className="w-full h-[40px] bg-[#f2f2f2]/60 px-14 flex justify-between items-center text-[#003553]">
+                            <span className="text-[17px] font-medium ">
+                              Bạn có đăng ký BHYT
+                            </span>
+                            <div className="mr-10">
+                              <input
+                                type="radio"
+                                id="yes"
+                                name="bhyt"
+                                onClick={() => handleSelectDate(true)}
+                              />
+                              <label htmlFor="yes" className="mx-2">
+                                Có
+                              </label>
+                              <input
+                                type="radio"
+                                id="no"
+                                name="bhyt"
+                                onClick={() => handleSelectDate(false)}
+                              />
+                              <label htmlFor="no" className="mx-2">
+                                Không
+                              </label>
+                            </div>
+                          </div>
+                        ) : (
+                          <Fragment></Fragment>
+                        )}
                       </div>
                     </div>
                     {/* back từ đặt khám */}

@@ -35,7 +35,7 @@ function TabDoctorappointment() {
   const [popup, setPopup] = useState(false);
   // bệnh nhận đang được chọn
   const [Selectedpatients, setSelectedpatients] = useState(null);
-
+  const [diagnosis, setDiagnosis] = useState("");
   const [description, setDescription] = useState(""); // Lưu giá trị nhập vào
   const [suggestions, setSuggestions] = useState([]); // Lưu gợi ý
   const [isSuggestionVisible, setIsSuggestionVisible] = useState(false);
@@ -405,8 +405,10 @@ function TabDoctorappointment() {
     currentAppointments[0]?.patientDetails?.id
   );
 
-  const handleOpenPopup = (index) => {
+  const handleOpenPopup = (index, patientfile_id, appointment_ids) => {
     setPopup(true);
+    setpatientfile_ids(patientfile_id);
+    setappointment_ids(appointment_ids);
     setSelectedpatients(currentAppointments[index]);
   };
 
@@ -459,6 +461,7 @@ function TabDoctorappointment() {
       url,
       {
         description: description,
+        diagnosis: diagnosis
       },
       {
         headers: {
@@ -496,6 +499,31 @@ function TabDoctorappointment() {
             }
           );
         }
+        var appid;
+        console.log(
+          "Full checksuccess.data: ",
+          JSON.stringify(checksuccess.data)
+        );
+        console.log("Doctor VIP status: ", doctorId?.vip);
+
+        if (doctorId?.vip) {
+          appid = checksuccess.data?.appointment_id ?? null; // Nếu không có thì là null
+        } else {
+          appid =
+            checksuccess.data?.vipappointment_id ??
+            checksuccess.data?.appointment_id ??
+            null;
+        }
+
+        console.log("APPID: ", appid);
+
+        if (appid !== null) {
+          await UpdateStatusAppointment(appid, "Hoàn thành");
+        } else {
+          console.error("APPID is null or invalid!");
+        }
+
+        fetchAppointments();
       } catch (err) {
         console.error(err);
       }
@@ -692,7 +720,13 @@ function TabDoctorappointment() {
                         <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
                           <span
                             className="px-4 py-2 bg-green-300 rounded-lg"
-                            onClick={() => handleOpenPopup(index)}
+                            onClick={() =>
+                              handleOpenPopup(
+                                index,
+                                item.patientprofile.id,
+                                item.id
+                              )
+                            }
                           >
                             Điều Trị
                           </span>
@@ -790,11 +824,28 @@ function TabDoctorappointment() {
               <h3 className="font-bold text-center">Thông Tin Bệnh Nhân</h3>
               <p> -Bệnh nhân: {Selectedpatients?.patientDetails?.fullname}</p>
               <p> -Sinh ngày: {Selectedpatients?.patientDetails?.birthdate}</p>
-              <p> -Số BHYT: {Selectedpatients?.patientDetails?.codeBhyt}</p>
+              <p> -Số BHYT: {Selectedpatients?.bhyt ? "Có" : "Không"}</p>
               <span className="text-[#00b5f1] font-medium text-[20px] capitalize"></span>
 
               <form onSubmit={SubmitPatientFile}>
                 {/* Mô tả khám bệnh và đơn thuốc */}
+                <div className="mt-4">
+                  <label
+                    htmlFor="diagnosis"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Chẩn Đoán
+                  </label>
+                  <input
+                    type="text"
+                    id="diagnosis"
+                    value={diagnosis}
+                    onChange={(e) => setDiagnosis(e.target.value)} // Xử lý khi nhập liệu
+                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                    placeholder="Nhập chẩn đoán bệnh..."
+                  />
+                </div>
+
                 <div className="mt-4">
                   <label
                     htmlFor="description"

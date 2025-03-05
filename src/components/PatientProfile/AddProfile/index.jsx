@@ -3,7 +3,7 @@ import Breadcrumbs from "../../Hospital/Breadcrumbs";
 import { Select } from "antd";
 import { districtApi, provinceApi, wardApi } from "../../../api/province";
 import axios from "axios";
-import  { AppContext } from "../../Context/AppProvider";
+import { AppContext } from "../../Context/AppProvider";
 import { getToken } from "../../Authentication/authService";
 import { useNavigate } from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
@@ -27,7 +27,6 @@ function AddProfile(props) {
     phone: "",
     gender: "Male",
     occupation: "",
-    codeBhyt: "",
     email: "",
     nation: "",
     address: "",
@@ -126,8 +125,8 @@ function AddProfile(props) {
     e.preventDefault();
     const errors = validateForm();
     if (Object.keys(errors).length > 0) {
-      // If there are errors, display them and stop submission
       setErrorMessages(errors);
+      console.log(errors); // Kiểm tra lỗi trong console
       return;
     }
     const formattedDate = `${formValues.birthdate.year}-${formValues.birthdate.month}-${formValues.birthdate.day}`;
@@ -147,9 +146,9 @@ function AddProfile(props) {
         })
         .then(() => {
           enqueueSnackbar("Tạo hồ sơ thành công", {
-                  variant: "success",
-                  autoHideDuration: 3000,
-                });
+            variant: "success",
+            autoHideDuration: 3000,
+          });
           navigator("/hospital");
         })
         .catch((error) => {
@@ -312,8 +311,9 @@ function AddProfile(props) {
                         handleInputChange("occupation", value)
                       }
                     >
-                      <Select.Option value="Bác sĩ">Bác sĩ</Select.Option>
-                      <Select.Option value="Cảnh sát">Cảnh sát</Select.Option>
+                      <Select.Option value="Nhân viên">Bác sĩ</Select.Option>
+                      <Select.Option value="Học sinh">Cảnh sát</Select.Option>
+                      <Select.Option value="Khác">Khác...</Select.Option>
                     </Select>
                   </div>
                 </div>
@@ -363,7 +363,7 @@ function AddProfile(props) {
                   </div>
                 </div>
                 <div className="col-span-1">
-                  <label
+                  {/* <label
                     htmlFor="username"
                     className="text-[20px] text-[#003553]"
                   >
@@ -380,7 +380,7 @@ function AddProfile(props) {
                       }
                       className="w-full h-10 border p-2 mt-2 border-solid border-[#c2c2c2] rounded-lg focus:border-[#47bfff] focus:ring-2 focus:ring-[#1da1f2]/20 focus:outline-none"
                     />{" "}
-                  </div>
+                  </div> */}
                 </div>
                 <div className="grid grid-cols-2 gap-4 my-5 font-medium ">
                   <div className="col-span-2">
