@@ -302,73 +302,9 @@ const Header = () => {
                     <Link to={'/hospital'} className="font-medium">Đặt khám</Link>
                   </div>
                 </li>
-                <li>
-                  {" "}
-                  <DropdownMenu
-                    title={
-                      <div className="flex items-center gap-1 ">
-                        <span>Cơ sở y tế</span>
-                        <svg
-                          stroke="currentColor"
-                          fill="currentColor"
-                          strokeWidth="0"
-                          viewBox="0 0 1024 1024"
-                          height="8px"
-                          width="8px"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"></path>
-                        </svg>
-                      </div>
-                    }
-                    items={[
-                      { label: "Bệnh viện công", link: "#" },
-                      { label: "Bệnh viện tư", link: "#" },
-                      { label: "Phòng khám ", link: "#" },
-                      { label: "Phòng mạch", link: "#" },
-                      { label: "Xét nghiệm", link: "#" },
-                    ]}
-                  />
-                </li>
-                <li>
-                  {" "}
-                  <DropdownMenu
-                    title={
-                      <div className="flex items-center gap-1 ">
-                        <span>Dịch vụ y tế</span>
-                        <svg
-                          stroke="currentColor"
-                          fill="currentColor"
-                          strokeWidth="0"
-                          viewBox="0 0 1024 1024"
-                          height="8px"
-                          width="8px"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"></path>
-                        </svg>
-                      </div>
-                    }
-                    items={[
-                      { label: "Bệnh viện công", link: "#" },
-                      { label: "Bệnh viện tư", link: "#" },
-                      { label: "Phòng khám ", link: "#" },
-                      { label: "Phòng mạch", link: "#" },
-                      { label: "Xét nghiệm", link: "#" },
-                    ]}
-                  />
-                </li>
-                <li>
-                  {" "}
-                  <DropdownMenu
-                    title={
-                      <div className="flex items-center gap-1 ">
-                        <span>Khám sức khỏe doanh nghiệp</span>
-                      </div>
-                    }
-                    items={[]}
-                  />
-                </li>
+             
+               
+              
                 <li>
                   {" "}
                   <DropdownMenu
@@ -380,34 +316,7 @@ const Header = () => {
                     items={[]}
                   />
                 </li>
-                <li>
-                  {" "}
-                  <DropdownMenu
-                    title={
-                      <div className="flex items-center gap-1 ">
-                        <span>Hướng dẫn</span>
-                        <svg
-                          stroke="currentColor"
-                          fill="currentColor"
-                          strokeWidth="0"
-                          viewBox="0 0 1024 1024"
-                          height="8px"
-                          width="8px"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"></path>
-                        </svg>
-                      </div>
-                    }
-                    items={[
-                      { label: "Bệnh viện công", link: "#" },
-                      { label: "Bệnh viện tư", link: "#" },
-                      { label: "Phòng khám ", link: "#" },
-                      { label: "Phòng mạch", link: "#" },
-                      { label: "Xét nghiệm", link: "#" },
-                    ]}
-                  />
-                </li>
+             
                 <li>
                   {" "}
                   <DropdownMenu

@@ -195,7 +195,7 @@ function ChoosePayment() {
                           </div>
                           <span>Khám {dataSpecialty.name}</span>
                         </li>
-                        <li className="text-[#003553] border-b border-solid border-[#c2c2c2]/60 flex justify-between items-center settingli my-5">
+                        {/* <li className="text-[#003553] border-b border-solid border-[#c2c2c2]/60 flex justify-between items-center settingli my-5">
                           <div className="flex items-center gap-2 font-medium mb-3">
                             <span className="">
                               <FaUserDoctor className="text-[#c2c2c2]" />
@@ -203,7 +203,7 @@ function ChoosePayment() {
                             <span>Bác sĩ</span>
                           </div>
                           <span>{dataDoctor.account?.name}</span>
-                        </li>
+                        </li> */}
                         <li className="text-[#003553] border-b border-solid border-[#c2c2c2]/60 flex justify-between items-center settingli my-5">
                           <div className="flex items-center gap-2 font-medium mb-3">
                             <span className="">

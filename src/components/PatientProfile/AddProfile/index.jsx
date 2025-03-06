@@ -311,8 +311,9 @@ function AddProfile(props) {
                         handleInputChange("occupation", value)
                       }
                     >
-                      <Select.Option value="Nhân viên">Bác sĩ</Select.Option>
-                      <Select.Option value="Học sinh">Cảnh sát</Select.Option>
+                      <Select.Option value="Nhân viên">Nhân viên</Select.Option>
+                      <Select.Option value="Học sinh">Học sinh</Select.Option>
+                      <Select.Option value="Kỹ sư phần mềm">Kỹ sư phần mềm</Select.Option>
                       <Select.Option value="Khác">Khác...</Select.Option>
                     </Select>
                   </div>

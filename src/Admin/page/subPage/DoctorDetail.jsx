@@ -23,8 +23,8 @@ function DoctorDetail() {
     afternoon: { startTime: "13:00:00", endTime: "17:00:00" },
     both: [
       { startTime: "08:00:00", endTime: "12:00:00" },
-      { startTime: "13:00:00", endTime: "17:00:00" }
-    ]
+      { startTime: "13:00:00", endTime: "17:00:00" },
+    ],
   };
 
   // Khi chọn ca làm việc
@@ -72,12 +72,16 @@ function DoctorDetail() {
             endTime,
           };
 
-          await axios.post("http://localhost:8080/api/workinghours", shiftData, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          });
+          await axios.post(
+            "http://localhost:8080/api/workinghours",
+            shiftData,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
         }
       } else {
         // Nếu chỉ chọn 1 ca, gửi 1 lần POST bình thường
@@ -110,34 +114,38 @@ function DoctorDetail() {
     }
   };
 
-
-
-
   const [loading, setLoading] = useState(true);
   const token = getToken();
   const fetchDoctorData = async () => {
     try {
       // Fetch dữ liệu bác sĩ, hồ sơ bệnh nhân và lịch làm việc song song
-      const [doctorResponse, patientfileResponse, rateResponse, workingHoursResponse] =
-        await Promise.all([
-          axios.get("http://localhost:8080/api/doctors"),
-          axios.get("http://localhost:8080/api/patientsfile"),
-          axios.get('http://localhost:8080/api/rates'),
-          axios.get("http://localhost:8080/api/workinghours", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }),
-        ]);
-      const rateofDoc = rateResponse.data.filter(doc => doc.doctor_id.id === parseInt(id));
+      const [
+        doctorResponse,
+        patientfileResponse,
+        rateResponse,
+        workingHoursResponse,
+      ] = await Promise.all([
+        axios.get("http://localhost:8080/api/doctors"),
+        axios.get("http://localhost:8080/api/patientsfile"),
+        axios.get("http://localhost:8080/api/rates"),
+        axios.get("http://localhost:8080/api/workinghours", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+      ]);
+      const rateofDoc = rateResponse.data.filter(
+        (doc) => doc.doctor_id.id === parseInt(id)
+      );
 
       // Tính trung bình rating
       const totalRates = rateofDoc.reduce((sum, item) => sum + item.rate, 0);
-      const averageRate = rateofDoc.length > 0 ? totalRates / rateofDoc.length : 0;
+      const averageRate =
+        rateofDoc.length > 0 ? totalRates / rateofDoc.length : 0;
 
       setRates(averageRate.toFixed(1)); //
 
-      console.log(rates)
+      console.log(rates);
       const doctorData = doctorResponse.data.find(
         (doc) => doc.id === parseInt(id)
       );
@@ -169,7 +177,6 @@ function DoctorDetail() {
 
   useEffect(() => {
     fetchDoctorData();
-
   }, [id]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -179,7 +186,6 @@ function DoctorDetail() {
   const [rates, setRates] = useState([]);
 
   const handleShiftUpdate = async () => {
-
     if (!selectedShiftId || selectedShiftId.length === 0) {
       setError("Không có ca làm việc nào được chọn!");
       return;
@@ -200,17 +206,20 @@ function DoctorDetail() {
         }
         console.log("ID cần tìm:", id);
         const doctorId = Number(id);
-        const responsea = await axios.get("http://localhost:8080/api/vip-appointments", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const responsea = await axios.get(
+          "http://localhost:8080/api/vip-appointments",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         // Lọc ra những mục có doctorId trùng với id hiện tại
-        const doctorAppointment = responsea.data.find(appointment =>
-          appointment.doctor.id === doctorId
-          &&
-          appointment.workDate === selectedWorkDate
+        const doctorAppointment = responsea.data.find(
+          (appointment) =>
+            appointment.doctor.id === doctorId &&
+            appointment.workDate === selectedWorkDate
         );
         const bookTime = doctorAppointment.startTime;
 
@@ -219,21 +228,25 @@ function DoctorDetail() {
           return;
         }
         if (doctorAppointment) {
-
-          const response = await axios.get(`http://localhost:8080/api/vip-appointments/check`, {
-            params: {
-              workDate: selectedWorkDate,
-              bookTime: doctorAppointment.startTime,
-              startTime: startTime,
-              endTime: endTime,
-              doctorId: id,
-            },
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          const response = await axios.get(
+            `http://localhost:8080/api/vip-appointments/check`,
+            {
+              params: {
+                workDate: selectedWorkDate,
+                bookTime: doctorAppointment.startTime,
+                startTime: startTime,
+                endTime: endTime,
+                doctorId: id,
+              },
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
           if (response.data === true) {
-            alert("Đã có người đặt lịch trong khoảng thời gian này. Không thể thay đổi!");
+            alert(
+              "Đã có người đặt lịch trong khoảng thời gian này. Không thể thay đổi!"
+            );
             return;
           }
         }
@@ -292,11 +305,7 @@ function DoctorDetail() {
       console.error("Lỗi cập nhật ca làm việc:", error);
       setError("Cập nhật thất bại! Vui lòng thử lại.");
     }
-
   };
-
-
-
 
   const openUpdateModal = (shift, shiftId, workDate) => {
     console.log("Shift:", shift);
@@ -314,7 +323,6 @@ function DoctorDetail() {
   const navigate = useNavigate();
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
-
 
   const sortedWorkingHours = [...workingHours].sort(
     (a, b) => new Date(b.workDate) - new Date(a.workDate)
@@ -346,8 +354,6 @@ function DoctorDetail() {
   // Chuyển đổi thành mảng để render
   const groupedShiftArray = Object.values(groupedShifts);
 
-
-
   if (loading) {
     return (
       <div className="text-center text-gray-600 mt-10">Tải dữ liệu...</div>
@@ -359,8 +365,9 @@ function DoctorDetail() {
       stars.push(
         <svg
           key={i}
-          className={`w-4 h-4 me-1 ${i <= rating ? "text-yellow-300" : "text-gray-300"
-            }`}
+          className={`w-4 h-4 me-1 ${
+            i <= rating ? "text-yellow-300" : "text-gray-300"
+          }`}
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="currentColor"
@@ -372,9 +379,6 @@ function DoctorDetail() {
     }
     return stars;
   };
-
-
-
 
   return (
     <div className="bg-gray-100 min-h-screen p-6 relative" id="goup">
@@ -388,20 +392,26 @@ function DoctorDetail() {
           <div className="flex flex-col items-center gap-4">
             <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-[#da624a] shadow-lg">
               <img
-                src={doctor.account.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq89CiAzo83k2OJHzwV4hsrgE7Cm0sAWlkpw&s"}
+                src={
+                  doctor.account.avatar ||
+                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq89CiAzo83k2OJHzwV4hsrgE7Cm0sAWlkpw&s"
+                }
                 alt="Doctor Avatar"
                 className="w-full h-full object-cover"
               />
             </div>
             <div className=" items-center mb-2">
-              <div className="flex">
-                {renderStars(rates)}
-
-              </div>
+              <div className="flex">{renderStars(rates)}</div>
               <div className="flex my-2 justify-center">
-                <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">{rates}</p>
-                <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">out of</p>
-                <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">5</p>
+                <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">
+                  {rates}
+                </p>
+                <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">
+                  out of
+                </p>
+                <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">
+                  5
+                </p>
               </div>
             </div>
 
@@ -426,18 +436,25 @@ function DoctorDetail() {
                   )}
                 </h2>
                 <p className="text-gray-600 text-lg mb-2">
-                  <span className="font-medium">Email:</span> {doctor.account.email}
+                  <span className="font-medium">Email:</span>{" "}
+                  {doctor.account.email}
                 </p>
                 <p className="text-gray-600 text-lg mb-2">
-                  <span className="font-medium">Số điện thoại:</span> {doctor.account.phone}
+                  <span className="font-medium">Số điện thoại:</span>{" "}
+                  {doctor.account.phone}
                 </p>
                 <p className="text-gray-600 text-lg mb-2">
                   <span className="font-medium">Giới tính:</span>{" "}
-                  {doctor.account.gender === "Female" ? "Nữ" : doctor.account.gender === "Male" ? "Nam" : "Không xác định"}
+                  {doctor.account.gender === "Female"
+                    ? "Nữ"
+                    : doctor.account.gender === "Male"
+                    ? "Nam"
+                    : "Không xác định"}
                 </p>
 
                 <p className="text-gray-600 text-lg mb-2">
-                  <span className="font-medium">Năm kinh nghiệm:</span> {doctor.experienceYears}
+                  <span className="font-medium">Năm kinh nghiệm:</span>{" "}
+                  {doctor.experienceYears}
                 </p>
                 <p className="text-gray-600 text-lg mb-2">
                   <span className="font-medium">Địa chỉ:</span> {doctor.address}
@@ -487,7 +504,14 @@ function DoctorDetail() {
             >
               Cập nhật lại hình CV
             </button>
-            {showEditCv && <EditCv onClose={() => setShowEditCv(false)} doctorId={doctor.id} fileImages={doctor.filesImages} onUpdate={fetchDoctorData} />}
+            {showEditCv && (
+              <EditCv
+                onClose={() => setShowEditCv(false)}
+                doctorId={doctor.id}
+                fileImages={doctor.filesImages}
+                onUpdate={fetchDoctorData}
+              />
+            )}
           </div>
         </div>
 
@@ -500,7 +524,13 @@ function DoctorDetail() {
               >
                 ✕
               </button>
-              <img src={selectedImage2} alt="Selected" className="max-w-full max-h-[90vh] rounded-lg shadow-lg" />
+              <div className="w-[500px] h-[500px]">
+                <img
+                  src={selectedImage2}
+                  alt="Selected"
+                  className="w-full h-full rounded-lg shadow-lg"
+                />
+              </div>
             </div>
           </div>
         )}
@@ -545,7 +575,6 @@ function DoctorDetail() {
             </div>
           </div>
 
-
           <div className="overflow-x-auto max-h-96 overflow-y-auto">
             <table className="min-w-full bg-white border border-gray-200 rounded-lg">
               <thead className="sticky top-0 z-10">
@@ -566,7 +595,6 @@ function DoctorDetail() {
                   <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">
                     Cập nhật
                   </th>
-
                 </tr>
               </thead>
               <tbody>
@@ -575,35 +603,49 @@ function DoctorDetail() {
                     const { workDate, shifts } = group;
 
                     // Kiểm tra nếu có cả sáng và chiều
-                    const hasMorning = shifts.some(s => s.startTime === "08:00:00" && s.endTime === "12:00:00");
-                    const hasAfternoon = shifts.some(s => s.startTime === "13:00:00" && s.endTime === "17:00:00");
+                    const hasMorning = shifts.some(
+                      (s) =>
+                        s.startTime === "08:00:00" && s.endTime === "12:00:00"
+                    );
+                    const hasAfternoon = shifts.some(
+                      (s) =>
+                        s.startTime === "13:00:00" && s.endTime === "17:00:00"
+                    );
 
                     return (
                       <tr key={index} className="bg-gray-50 border-b">
-                        <td className="px-4 py-2 text-gray-700">{formatDate(workDate)}</td>
+                        <td className="px-4 py-2 text-gray-700">
+                          {formatDate(workDate)}
+                        </td>
                         <td className="px-4 py-2 text-gray-700">
                           {hasMorning && hasAfternoon
                             ? "Cả ngày (08:00 - 17:00)"
                             : hasMorning
-                              ? "Ca sáng (08:00 - 12:00)"
-                              : hasAfternoon
-                                ? "Ca chiều (13:00 - 17:00)"
-                                : `Ca từ ${shifts[0].startTime} đến ${shifts[0].endTime}`}
+                            ? "Ca sáng (08:00 - 12:00)"
+                            : hasAfternoon
+                            ? "Ca chiều (13:00 - 17:00)"
+                            : `Ca từ ${shifts[0].startTime} đến ${shifts[0].endTime}`}
                         </td>
-                        <td className="px-4 py-2 text-gray-700">{shifts.map(s => s.startTime).join(" / ")}</td>
-                        <td className="px-4 py-2 text-gray-700">{shifts.map(s => s.endTime).join(" / ")}</td>
+                        <td className="px-4 py-2 text-gray-700">
+                          {shifts.map((s) => s.startTime).join(" / ")}
+                        </td>
+                        <td className="px-4 py-2 text-gray-700">
+                          {shifts.map((s) => s.endTime).join(" / ")}
+                        </td>
 
                         <td className="px-4 py-2 text-gray-700">
                           <button
                             className="bg-blue-500 text-white px-4 py-2 rounded-md"
                             onClick={() => {
-                              const shiftIds = group.shifts.map(shift => shift.id);
+                              const shiftIds = group.shifts.map(
+                                (shift) => shift.id
+                              );
                               openUpdateModal(
                                 hasMorning && hasAfternoon
                                   ? "both"
                                   : hasMorning
-                                    ? "morning"
-                                    : "afternoon",
+                                  ? "morning"
+                                  : "afternoon",
                                 shiftIds,
                                 workDate
                               );
@@ -618,12 +660,14 @@ function DoctorDetail() {
                   })
                 ) : (
                   <tr>
-                    <td colSpan="5" className="px-4 py-6 text-center text-gray-500">
+                    <td
+                      colSpan="5"
+                      className="px-4 py-6 text-center text-gray-500"
+                    >
                       Không có lịch làm việc trong khoảng thời gian này.
                     </td>
                   </tr>
                 )}
-
               </tbody>
             </table>
 
@@ -644,7 +688,9 @@ function DoctorDetail() {
                     <label className="block text-gray-700 font-medium mb-2">
                       Chọn ca làm việc:
                     </label>
-                    {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
+                    {error && (
+                      <p style={{ color: "red", marginTop: "10px" }}>{error}</p>
+                    )}
 
                     <div className="flex gap-3 justify-center">
                       {["morning", "afternoon", "both"].map((shift) => {
@@ -657,10 +703,11 @@ function DoctorDetail() {
                         return (
                           <button
                             key={shift}
-                            className={`px-5 py-3 text-lg font-medium rounded-md transition ${isSelected
-                              ? "bg-[#da624a] text-white"
-                              : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-                              }`}
+                            className={`px-5 py-3 text-lg font-medium rounded-md transition ${
+                              isSelected
+                                ? "bg-[#da624a] text-white"
+                                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                            }`}
                             onClick={() => setSelectedShift(shift)}
                           >
                             {shiftLabel}
@@ -686,7 +733,6 @@ function DoctorDetail() {
                   </div>
                 </div>
               </div>
-
             )}
           </div>
         </div>
@@ -701,7 +747,9 @@ function DoctorDetail() {
             className="bg-white p-6 rounded-lg shadow-lg w-[700px]"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="text-2xl font-bold mb-4 text-center">Thiết lập lại giờ làm</h2>
+            <h2 className="text-2xl font-bold mb-4 text-center">
+              Thiết lập lại giờ làm
+            </h2>
 
             {/* Nếu không phải VIP thì hiển thị chọn ca làm việc */}
 
@@ -720,10 +768,11 @@ function DoctorDetail() {
                   return (
                     <button
                       key={shift}
-                      className={`px-5 py-3 text-lg font-medium rounded-md transition ${isSelected
-                        ? "bg-[#da624a] text-white"
-                        : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-                        }`}
+                      className={`px-5 py-3 text-lg font-medium rounded-md transition ${
+                        isSelected
+                          ? "bg-[#da624a] text-white"
+                          : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                      }`}
                       onClick={() => handleShiftSelect(shift)}
                     >
                       {shiftLabel}
@@ -741,7 +790,9 @@ function DoctorDetail() {
                   <div className="flex justify-between space-x-4">
                     {/* Chọn ngày bắt đầu */}
                     <div className="w-1/2">
-                      <label className="block font-medium mb-2">Ngày bắt đầu:</label>
+                      <label className="block font-medium mb-2">
+                        Ngày bắt đầu:
+                      </label>
                       <DatePicker
                         selected={startDate}
                         onChange={(date) => {
@@ -758,7 +809,9 @@ function DoctorDetail() {
                       />
                     </div>
                     <div className="w-1/2">
-                      <label className="block font-medium mb-2">Ngày kết thúc:</label>
+                      <label className="block font-medium mb-2">
+                        Ngày kết thúc:
+                      </label>
                       <DatePicker
                         selected={endDate}
                         onChange={(date) => setEndDate(date)}

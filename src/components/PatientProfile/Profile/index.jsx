@@ -172,14 +172,14 @@ function PatientProfile() {
                       <FaUserPlus className="text-[20px]" />
                       Feedback
                     </li>
-                    <li
+                    {/* <li
                       onClick={() => handleTab("chat")}
                       className={`my-4 flex justify-center hover:bg-[#fff] ${selectTabChat ? "isactive" : ""
                         } cursor-pointer rounded-md  hover:border-l-[3px] hover:border-[#00b5f1] hover:border-solid items-center gap-2 text-[18px] hover:text-[#00b5f1] font-medium`}
                     >
                       <FaCommentDots  className="text-[20px]" />
                       Chat
-                    </li>
+                    </li> */}
                   </Fragment>
                 ) : (
                   ""
@@ -235,12 +235,12 @@ function PatientProfile() {
             ) : (
               <Fragment />
             )}
-            {selectTabChat &&
+            {/* {selectTabChat &&
               ["PATIENTS", "DOCTOR"].includes(User?.role?.[0]?.name) ? (
               <TabChat />
             ) : (
               <Fragment />
-            )}
+            )} */}
             {selectTabAppointment && User?.role?.[0]?.name == "PATIENTS" ? (
               <TabAppointment />
             ) : (

@@ -121,7 +121,7 @@ function ConfirmInfo() {
                       <th className="w-10 py-5">#</th>
                       <th className="py-5">Chuyên khoa</th>
                       <th className="py-5">Dịch vụ</th>
-                      <th className="py-5 ">Bác sĩ</th>
+                      {/* <th className="py-5 ">Bác sĩ</th> */}
                       <th className="py-5 ">Thời gian khám</th>
                       <th className="py-5 ">Tiền khám</th>
                     </thead>
@@ -130,7 +130,7 @@ function ConfirmInfo() {
                         <td className="text-center pt-5">1</td>
                         <td className="px-2 pt-5">Khám {dataSpecialty.name}</td>
                         <td className="pt-5">Khám Tự Chọn Yêu Cầu</td>
-                        <td className="pt-5">{dataDoctor.account?.name}</td>
+                        {/* <td className="pt-5">{dataDoctor.account?.name}</td> */}
                         <td className="pt-5">
                           {TimeFormatted(dataWork.startTime)} -{" "}
                           {TimeFormatted(dataWork.endTime)} <br />{" "}

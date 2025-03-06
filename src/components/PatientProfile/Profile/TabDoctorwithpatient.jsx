@@ -12,7 +12,7 @@ import { ProfilebypatientprofileId } from "../../../api/Profile/profilebyaccount
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import { AppContext } from "../../Context/AppProvider";
-import { getDoctorbyId } from "../../../api/Doctor/doctor";
+import { getDoctorbyId, getDoctorbyIds } from "../../../api/Doctor/doctor";
 import { getToken } from "../../Authentication/authService";
 import {
   getAllApointment,
@@ -91,7 +91,7 @@ function TabDoctorwithpatient() {
   };
   const fetchPatient = async () => {
     try {
-      const doctorId = await getDoctorbyId(User?.id);
+      const doctorId = await getDoctorbyIds(User?.id);
 
       const data = await getpatientbydoctorid(doctorId?.id);
       if (data && data.length > 0) {

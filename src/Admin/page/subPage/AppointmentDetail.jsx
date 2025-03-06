@@ -105,7 +105,7 @@ function AppointmentDetail({ roomId, isVIP, onClose }) {
                         </div>
                         <div>
                             <h3 className="font-medium text-gray-700">Bệnh nhân:</h3>
-                            <p className="text-gray-600">{appointmentDetails?.patient?.account?.name || "N/A"}</p>
+                            <p className="text-gray-600">{appointmentDetails?.patientprofile.fullname || "N/A"}</p>
                         </div>
                         <div>
                             <h3 className="font-medium text-gray-700">Loại cuộc hẹn:</h3>
