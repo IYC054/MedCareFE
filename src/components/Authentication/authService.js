@@ -20,8 +20,8 @@ export const loginToken = async (email, password) => {
 
     return response.data;
   } catch (error) {
-    console.error("Login failed", error);
-    throw error;
+    console.error("Login error:", error.response ? error.response.data : error.message);
+    return null; // Trả về null nếu đăng nhập thất bại
   }
 };
 

@@ -20,7 +20,7 @@ const Login = ({ email, close }) => {
   };
 
   // Handle login logic
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault(); // Prevent the default form submission
 
     if (password.trim() === "") {
@@ -32,12 +32,32 @@ const Login = ({ email, close }) => {
       return;
     }
 
-    logout();
-    loginToken(email, password); // Call your login function
-
-    // Call your close function
-    alert("Login successfully");
-    // window.location.reload();
+    // // logout();
+    // let responseToken = await loginToken(email, password); // Call your login function
+    // console.log(responseToken);
+    // if(responseToken != null){
+    //    // Call your close function
+    //   alert("Login successfully");
+    //   window.location.reload();
+    // } else{
+    //   alert("Login Failed! Please try again");
+    // }
+    try {
+      let responseToken = await loginToken(email, password); // Gọi API login
+      console.log("Response:", responseToken);
+  
+      if (responseToken) {
+        // alert("Login successfully");
+        enqueueSnackbar("Đăng nhập thành công!", { variant: "success", autoHideDuration: 3000 });
+        window.location.reload();
+      } else {
+        enqueueSnackbar("Sai email hoặc mật khẩu!", { variant: "error", autoHideDuration: 3000 });
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      enqueueSnackbar("Lỗi kết nối đến server. Vui lòng thử lại!", { variant: "error", autoHideDuration: 3000 });
+    }
+   
   };
 
   // const token = getToken();

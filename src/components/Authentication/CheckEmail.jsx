@@ -69,8 +69,8 @@ function CheckEmail({ close }) {
         setNext(!next);
       } else {
         console.log("Email không tồn tại.");
-        handleSendOTP();
-        setLoading(!loading);
+        // handleSendOTP();
+        // setLoading(!loading);
         setNext(!next);
       }
     } catch (error) {
@@ -205,7 +205,7 @@ function CheckEmail({ close }) {
       )}
       {exist
         ? next && <Login email={email} close={close} />
-        : next && <CheckOTP email={email} />}
+        : next && <Register email={email} />}
 
       {/* Hình ảnh bên phải */}
 
