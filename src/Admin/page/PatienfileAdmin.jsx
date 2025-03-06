@@ -9,7 +9,7 @@ function PatientProfileAdmin() {
     const [selectedPatient, setSelectedPatient] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
-    
+
     const token = getToken();
 
     useEffect(() => {
@@ -31,7 +31,7 @@ function PatientProfileAdmin() {
 
     // Lọc danh sách theo tìm kiếm
     const filteredPatients = patients?.filter((patient) =>
-        patient?.identificationCard?.toLowerCase().includes(searchTerm?.toLowerCase() || "")
+        patient?.fullname?.toLowerCase().includes(searchTerm?.toLowerCase() || "")
     ) || [];
 
     // Tính toán số trang
@@ -65,7 +65,7 @@ function PatientProfileAdmin() {
                 <h2 className="text-2xl font-semibold text-gray-800">Danh sách hồ sơ bệnh nhân</h2>
                 <input
                     type="text"
-                    placeholder="Tìm kiếm CCCD..."
+                    placeholder="Tìm kiếm tên..."
                     className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
@@ -78,7 +78,7 @@ function PatientProfileAdmin() {
                     <thead className="bg-gray-100 text-gray-700">
                         <tr>
                             <th className="p-3">Họ Tên</th>
-                            <th className="p-3">Mã CCCD</th>
+                            <th className="p-3">Ngày sinh</th>
                             <th className="p-3">Giới Tính</th>
                             <th className="p-3">Số Điện Thoại</th>
                             <th className="p-3">Địa Chỉ</th>
@@ -91,9 +91,7 @@ function PatientProfileAdmin() {
                                 <tr key={patient.id} className="border-b hover:bg-gray-50">
                                     <td className="p-3">{patient.fullname}</td>
                                     <td className="p-3">
-                                        {patient.identificationCard
-                                            ? `${patient.identificationCard.slice(0, 4)} **** ${patient.identificationCard.slice(-3)}`
-                                            : "Không có dữ liệu"}
+                                        {patient.birthdate}
                                     </td>
                                     <td className="p-3">{patient.gender}</td>
                                     <td className="p-3">{patient.phone}</td>
@@ -129,7 +127,7 @@ function PatientProfileAdmin() {
                         <p><strong>Giới tính:</strong> {selectedPatient.gender}</p>
                         <p><strong>Số điện thoại:</strong> {selectedPatient.phone}</p>
                         <p><strong>Địa chỉ:</strong> {selectedPatient.address}</p>
-                        <p><strong>Mã CCCD:</strong> {selectedPatient.identificationCard}</p>
+                        {/* <p><strong>Mã CCCD:</strong> {selectedPatient.identificationCard}</p> */}
                         <p><strong>Dân tộc:</strong> {selectedPatient.nation}</p>
                         <div className="mt-4 flex justify-end">
                             <button

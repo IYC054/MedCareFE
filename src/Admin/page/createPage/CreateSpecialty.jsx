@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { getToken } from '../../../components/Authentication/authService';
 
 function CreateSpecialty(props) {
     const [formData, setFormData] = useState({
@@ -21,7 +22,7 @@ function CreateSpecialty(props) {
             [name]: value,
         }));
     };
-
+    const token = getToken();
     // Xử lý thay đổi file
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -36,7 +37,7 @@ function CreateSpecialty(props) {
         e.preventDefault();
         setLoading(true);
 
-        
+
 
         try {
             const formDataToSend = new FormData();
@@ -44,16 +45,16 @@ function CreateSpecialty(props) {
             formDataToSend.append("description", formData.description);
             formDataToSend.append("image", formData.avatar);
             const response = await axios.post(
-                'http://localhost:8080/api/specialty/create',
-                formData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                       
-                    },
-                }
+                'http://localhost:8080/api/specialty/create', formData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data',
+                },
+            },
+
+
             );
-            
+
 
             console.log('Response:', response.data);
             setSuccess('Tạo thành công');

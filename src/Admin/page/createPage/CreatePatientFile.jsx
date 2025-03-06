@@ -31,72 +31,69 @@ function CreatePatientFile() {
     };
 
     // Kiểm tra CCCD đã tồn tại hay chưa
-    const checkCCCDExists = async (identification_card) => {
-        try {
-            const response = await axios.get(`http://localhost:8080/api/patientsprofile/card?identification_card=${identification_card}`);
-            return response.data; // true nếu CCCD đã tồn tại
-        } catch (error) {
-            console.error("Lỗi kiểm tra CCCD:", error);
-            return true;
-        }
-    };
+    // const checkCCCDExists = async (identification_card) => {
+    //     try {
+    //         const response = await axios.get(`http://localhost:8080/api/patientsprofile/card?identification_card=${identification_card}`);
+    //         return response.data; // true nếu CCCD đã tồn tại
+    //     } catch (error) {
+    //         console.error("Lỗi kiểm tra CCCD:", error);
+    //         return true;
+    //     }
+    // };
 
     // Xử lý tải ảnh và gửi lên API FPT.AI
-    const handleUploadImage = async (e) => {
-        const file = e.target.files[0];
-        setImageFile(file);
+    // const handleUploadImage = async (e) => {
+    //     const file = e.target.files[0];
+    //     setImageFile(file);
 
-        const formData = new FormData();
-        formData.append("image", file);
+    //     const formData = new FormData();
+    //     formData.append("image", file);
 
-        try {
-            const response = await axios.post(
-                "https://api.fpt.ai/vision/idr/vnm",
-                formData,
-                {
-                    headers: {
-                        "api-key": "rYp5PIAiFN7HaFoeQzp2m4SIHyJFvbVD",
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
-            );
+    //     try {
+    //         const response = await axios.post(
+    //             "https://api.fpt.ai/vision/idr/vnm",
+    //             formData,
+    //             {
+    //                 headers: {
+    //                     "api-key": "rYp5PIAiFN7HaFoeQzp2m4SIHyJFvbVD",
+    //                     "Content-Type": "multipart/form-data",
+    //                 },
+    //             }
+    //         );
 
-            const data = response.data.data[0]; // Lấy thông tin đầu tiên từ API
-            console.log("Dữ liệu từ API:", data);
+    //         const data = response.data.data[0]; // Lấy thông tin đầu tiên từ API
+    //         console.log("Dữ liệu từ API:", data);
 
-            // Cập nhật state với dữ liệu từ API
-            setFormData({
-                fullname: data.name || "",
-                birthdate: data.dob ? data.dob.split("/").reverse().join("-") : "", // Chuyển ngày từ dd/mm/yyyy -> yyyy-mm-dd
-                phone: "",
-                gender: data.sex === "NAM" ? "Nam" : "Nữ",
-                nation: "",
-                address: data.address || "",
-                identification_card: data.id || "",
-                accountid: 10,
-            });
+    //         // Cập nhật state với dữ liệu từ API
+    //         setFormData({
+    //             fullname: data.name || "",
+    //             birthdate: data.dob ? data.dob.split("/").reverse().join("-") : "", // Chuyển ngày từ dd/mm/yyyy -> yyyy-mm-dd
+    //             phone: "",
+    //             gender: data.sex === "NAM" ? "Nam" : "Nữ",
+    //             nation: "",
+    //             address: data.address || "",
+    //             identification_card: data.id || "",
+    //             accountid: 10,
+    //         });
 
-            setIsFetched(true); // Đánh dấu đã lấy dữ liệu
-        } catch (error) {
-            console.error("Lỗi khi gửi ảnh:", error);
-            setMessage("Không thể nhận diện CMND/CCCD. Vui lòng thử lại!");
-        }
-    };
+    //         setIsFetched(true); // Đánh dấu đã lấy dữ liệu
+    //     } catch (error) {
+    //         console.error("Lỗi khi gửi ảnh:", error);
+    //         setMessage("Không thể nhận diện CMND/CCCD. Vui lòng thử lại!");
+    //     }
+    // };
 
     // Gửi form sau khi kiểm tra CCCD
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMessage("");
-        if (formData.identification_card.length !== 12 || isNaN(formData.identification_card)) {
-            setMessage("CCCD phải có đúng 12 số!");
-            return;
-        }
+       
         // Kiểm tra CCCD trước khi thêm
-        const isExists = await checkCCCDExists(formData.identification_card);
-        if (isExists) {
-            setMessage("CCCD này đã tồn tại trong hệ thống!");
-            return;
-        }
+        // const isExists = await checkCCCDExists(formData.identification_card);
+        // if (isExists) {
+        //     setMessage("CCCD này đã tồn tại trong hệ thống!");
+        //     return;
+        // }
 
         // Nếu CCCD chưa có, tiến hành gửi request POST
         try {
@@ -124,10 +121,10 @@ function CreatePatientFile() {
 
             {message && <p className={`text-center font-semibold ${message.includes("thành công") ? "text-green-600" : "text-red-600"}`}>{message}</p>}
 
-            <div className="pb-2">
+            {/* <div className="pb-2">
                 <label className="block font-medium text-gray-700">Tải ảnh CMND/CCCD</label>
                 <input type="file" accept="image/*" onChange={handleUploadImage} className="w-full p-2 border border-gray-300 rounded" />
-            </div>
+            </div> */}
 
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
@@ -141,7 +138,7 @@ function CreatePatientFile() {
                 </div>
 
 
-                <div>
+                {/* <div>
                     <label className="block font-medium text-gray-700">CMND/CCCD</label>
                     <input
                         type="text"
@@ -151,10 +148,10 @@ function CreatePatientFile() {
                         onChange={handleChange}
                       
                         className="w-full p-2 border border-gray-300 rounded"
-                        required
+                        
                         disabled={isFetched && formData.identification_card !== ""} // Chỉ disable nếu CCCD có dữ liệu từ API
                     />
-                </div>
+                </div> */}
                 <div>
                     <label className="block font-medium text-gray-700">Giới tính</label>
                     <select name="gender" value={formData.gender} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded" disabled={isFetched}>

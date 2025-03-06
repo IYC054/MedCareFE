@@ -18,37 +18,34 @@ function DoctorDetail() {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenEdit, setIsOpenEdit] = useState(false);
 
-  const [selectedImage, setSelectedImage] = useState(null);
-  // Chuyển shift thành startTime & endTime
   const shiftTimes = {
     morning: { startTime: "08:00:00", endTime: "12:00:00" },
-    afternoon: { startTime: "13:00:00", endTime: "16:00:00" },
-    both: { startTime: "06:00:00", endTime: "17:00:00" },
-
+    afternoon: { startTime: "13:00:00", endTime: "17:00:00" },
+    both: [
+      { startTime: "08:00:00", endTime: "12:00:00" },
+      { startTime: "13:00:00", endTime: "17:00:00" }
+    ]
   };
 
   // Khi chọn ca làm việc
   const handleShiftSelect = (shift) => {
     setSelectedShift(shift);
 
-    // Kiểm tra và lưu thời gian cho ca làm việc đã chọn
     if (shift === "morning") {
       const { startTime, endTime } = shiftTimes.morning;
-      console.log("Start Time:", startTime); // "08:00:00"
-      console.log("End Time:", endTime); // "12:00:00"
-    } else if (shift === "afternoon") {
-      const { startTime, endTime } = shiftTimes.afternoon;
-      console.log("Start Time:", startTime); // "13:00:00"
-      console.log("End Time:", endTime); // "16:00:00"
-    } else if (shift === "both") {
-      const { startTime, endTime } = shiftTimes.both;
       console.log("Start Time:", startTime);
       console.log("End Time:", endTime);
+    } else if (shift === "afternoon") {
+      const { startTime, endTime } = shiftTimes.afternoon;
+      console.log("Start Time:", startTime);
+      console.log("End Time:", endTime);
+    } else if (shift === "both") {
+      shiftTimes.both.forEach(({ startTime, endTime }, index) => {
+        console.log(`Ca ${index + 1}: ${startTime} - ${endTime}`);
+      });
     }
   };
 
-  console.log(selectedShift);
-  // Khi chọn     ngày làm việc
   const formatDate = (date) => {
     if (!date) return "";
     return format(date, "yyyy-MM-dd");
@@ -64,26 +61,43 @@ function DoctorDetail() {
     }
 
     try {
-      const shiftData = {
-        doctor: id,
-        workStart: formatDate(startDate),
-        workDate: formatDate(endDate),
-        startTime: shiftTimes[selectedShift].startTime,
-        endTime: shiftTimes[selectedShift].endTime,
-      };
+      if (selectedShift === "both") {
+        // Nếu chọn "both", gửi 2 lần POST cho 2 ca
+        for (const { startTime, endTime } of shiftTimes.both) {
+          const shiftData = {
+            doctor: id,
+            workStart: formatDate(startDate),
+            workDate: formatDate(endDate),
+            startTime,
+            endTime,
+          };
 
-      const postResponse = await axios.post(
-        "http://localhost:8080/api/workinghours",
-        shiftData,
-        {
+          await axios.post("http://localhost:8080/api/workinghours", shiftData, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          });
+        }
+      } else {
+        // Nếu chỉ chọn 1 ca, gửi 1 lần POST bình thường
+        const shiftData = {
+          doctor: id,
+          workStart: formatDate(startDate),
+          workDate: formatDate(endDate),
+          startTime: shiftTimes[selectedShift].startTime,
+          endTime: shiftTimes[selectedShift].endTime,
+        };
+
+        await axios.post("http://localhost:8080/api/workinghours", shiftData, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-        }
-      );
+        });
+      }
 
-      console.log("Lịch làm việc đã lưu:", postResponse.data);
+      console.log("Lịch làm việc đã lưu thành công!");
 
       // Sau khi POST thành công, tải lại dữ liệu để cập nhật bảng
       fetchDoctorData();
@@ -95,6 +109,7 @@ function DoctorDetail() {
       alert("Đã xảy ra lỗi khi lưu lịch làm việc!");
     }
   };
+
 
 
 
@@ -156,70 +171,144 @@ function DoctorDetail() {
     fetchDoctorData();
 
   }, [id]);
-  console.log(doctor);
-  console.log("patientFile", patientFile);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedShiftId, setSelectedShiftId] = useState(null);
   const [selectedWorkDate, setSelectedWorkDate] = useState(null);
   const [error, setError] = useState("");
   const [rates, setRates] = useState([]);
+
   const handleShiftUpdate = async () => {
+
+    if (!selectedShiftId || selectedShiftId.length === 0) {
+      setError("Không có ca làm việc nào được chọn!");
+      return;
+    }
+
     try {
-      const response = await axios.get(
-        `http://localhost:8080/api/appointment/check?workDate=${selectedWorkDate}&doctorId=${id}`,
-        {
+      if (doctor.vip) {
+        let startTime, endTime;
+        if (selectedShift === "morning") {
+          startTime = "08:00:00";
+          endTime = "12:00:00";
+        } else if (selectedShift === "afternoon") {
+          startTime = "13:00:00";
+          endTime = "17:00:00";
+        } else if (selectedShift === "both") {
+          startTime = "08:00:00";
+          endTime = "17:00:00";
+        }
+        console.log("ID cần tìm:", id);
+        const doctorId = Number(id);
+        const responsea = await axios.get("http://localhost:8080/api/vip-appointments", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+        });
+
+        // Lọc ra những mục có doctorId trùng với id hiện tại
+        const doctorAppointment = responsea.data.find(appointment =>
+          appointment.doctor.id === doctorId
+          &&
+          appointment.workDate === selectedWorkDate
+        );
+        const bookTime = doctorAppointment.startTime;
+
+        if (bookTime < startTime || bookTime > endTime) {
+          alert("Cập nhật giờ bị trùng!");
+          return;
         }
+        if (doctorAppointment) {
+
+          const response = await axios.get(`http://localhost:8080/api/vip-appointments/check`, {
+            params: {
+              workDate: selectedWorkDate,
+              bookTime: doctorAppointment.startTime,
+              startTime: startTime,
+              endTime: endTime,
+              doctorId: id,
+            },
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          if (response.data === true) {
+            alert("Đã có người đặt lịch trong khoảng thời gian này. Không thể thay đổi!");
+            return;
+          }
+        }
+      }
+      // 1. Xoá từng ca làm việc theo danh sách shiftIds
+      await Promise.all(
+        selectedShiftId.map(async (id) => {
+          await axios.delete(`http://localhost:8080/api/workinghours/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+        })
       );
 
+      // 2. Tạo lại ca làm việc mới dựa vào ca đã chọn
+      let newShifts = [];
 
-      if (response.data) {
-        setError("Không thể cập nhật! Đã có bệnh nhân đặt lịch vào ngày này.");
-        return; // Dừng xử lý nếu đã có bệnh nhân đặt lịch
+      if (selectedShift === "morning" || selectedShift === "both") {
+        newShifts.push({
+          workStart: selectedWorkDate,
+          workDate: selectedWorkDate,
+          startTime: "08:00:00",
+          endTime: "12:00:00",
+          doctor: id, // Kiểm tra xem 'id' có đúng không
+        });
       }
 
-      // Nếu không có lịch hẹn, tiếp tục cập nhật
-      const updatedShift = {
-        startTime: selectedShift === "morning" ? "08:00:00" : "13:00:00",
-        endTime: selectedShift === "morning" ? "12:00:00" : "16:00:00",
-        workDate: selectedWorkDate,
-      };
+      if (selectedShift === "afternoon" || selectedShift === "both") {
+        newShifts.push({
+          workStart: selectedWorkDate,
+          workDate: selectedWorkDate,
+          startTime: "13:00:00",
+          endTime: "17:00:00",
+          doctor: id,
+        });
+      }
 
-      await axios.put(
-        `http://localhost:8080/api/workinghours/${selectedShiftId}`,
-        updatedShift,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      // 3. Gửi từng yêu cầu POST riêng biệt nếu API không hỗ trợ mảng
+      await Promise.all(
+        newShifts.map(async (shift) => {
+          await axios.post("http://localhost:8080/api/workinghours", shift, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          });
+        })
       );
 
-      setWorkingHours((prevState) =>
-        prevState.map((item) =>
-          item.id === selectedShiftId
-            ? { ...item, ...updatedShift }
-            : item
-        )
-      );
-
-      alert("Cập nhật thành công!");
+      // 4. Đóng modal và làm mới dữ liệu
       setIsModalOpen(false);
+      alert("Cập nhật thành công!");
+      fetchDoctorData();
     } catch (error) {
-      console.error("Lỗi cập nhật giờ làm việc", error);
+      console.error("Lỗi cập nhật ca làm việc:", error);
+      setError("Cập nhật thất bại! Vui lòng thử lại.");
     }
 
   };
 
+
+
+
   const openUpdateModal = (shift, shiftId, workDate) => {
+    console.log("Shift:", shift);
+    console.log("Shift ID(s):", shiftId);
+    console.log("Work Date:", workDate);
     setSelectedShift(shift);
     setSelectedShiftId(shiftId);
     setSelectedWorkDate(workDate);
     setIsModalOpen(true); // Mở modal chỉnh sửa
     setError("");
   };
+
   const [showEditCv, setShowEditCv] = useState(false);
   const [selectedImage2, setSelectedImage2] = useState(null);
   const navigate = useNavigate();
@@ -230,14 +319,33 @@ function DoctorDetail() {
   const sortedWorkingHours = [...workingHours].sort(
     (a, b) => new Date(b.workDate) - new Date(a.workDate)
   );
+  // Nhóm các ca làm việc theo workDate
+  const groupedShifts = sortedWorkingHours
+    .filter((shift) => {
+      const shiftDate = new Date(shift.workDate);
+      const from = start ? new Date(start) : null;
+      const to = end ? new Date(end) : null;
 
-  const filteredWorkingHours = sortedWorkingHours.filter((shift) => {
-    const shiftDate = new Date(shift.workDate);
-    const from = start ? new Date(start) : null;
-    const to = end ? new Date(end) : null;
+      // Chỉ giữ lại các ca làm việc nằm trong khoảng ngày được chọn
+      return (!from || shiftDate >= from) && (!to || shiftDate <= to);
+    })
+    .reduce((acc, shift) => {
+      const { id, workDate, startTime, endTime } = shift;
 
-    return (!from || shiftDate >= from) && (!to || shiftDate <= to);
-  });
+      // Nếu ngày này chưa có trong acc, thêm vào
+      if (!acc[workDate]) {
+        acc[workDate] = { workDate, shifts: [] };
+      }
+
+      // Thêm ca vào danh sách shifts
+      acc[workDate].shifts.push({ id, startTime, endTime });
+
+      return acc;
+    }, {});
+
+  // Chuyển đổi thành mảng để render
+  const groupedShiftArray = Object.values(groupedShifts);
+
 
 
   if (loading) {
@@ -288,7 +396,7 @@ function DoctorDetail() {
             <div className=" items-center mb-2">
               <div className="flex">
                 {renderStars(rates)}
-               
+
               </div>
               <div className="flex my-2 justify-center">
                 <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">{rates}</p>
@@ -454,45 +562,60 @@ function DoctorDetail() {
                   <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">
                     Giờ kết thúc
                   </th>
-                  {!doctor.vip && (
-                    <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">
-                      Cập nhật
-                    </th>
-                  )}
+
+                  <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">
+                    Cập nhật
+                  </th>
+
                 </tr>
               </thead>
               <tbody>
-                {filteredWorkingHours.length > 0 ? (
-                  filteredWorkingHours.map((shift, index) => (
-                    <tr key={index} className="bg-gray-50 border-b">
-                      <td className="px-4 py-2 text-gray-700">{formatDate(shift.workDate)}</td>
-                      <td className="px-4 py-2 text-gray-700">
-                        {shift.startTime === "08:00:00" && shift.endTime === "12:00:00"
-                          ? "Ca sáng (08:00 - 12:00)"
-                          : shift.startTime === "13:00:00" && shift.endTime === "16:00:00"
-                            ? "Ca chiều (13:00 - 16:00)"
-                            : `Ca từ ${shift.startTime} đến ${shift.endTime}`}
-                      </td>
-                      <td className="px-4 py-2 text-gray-700">{shift.startTime}</td>
-                      <td className="px-4 py-2 text-gray-700">{shift.endTime}</td>
-                      {!doctor.vip && (
+                {groupedShiftArray.length > 0 ? (
+                  groupedShiftArray.map((group, index) => {
+                    const { workDate, shifts } = group;
+
+                    // Kiểm tra nếu có cả sáng và chiều
+                    const hasMorning = shifts.some(s => s.startTime === "08:00:00" && s.endTime === "12:00:00");
+                    const hasAfternoon = shifts.some(s => s.startTime === "13:00:00" && s.endTime === "17:00:00");
+
+                    return (
+                      <tr key={index} className="bg-gray-50 border-b">
+                        <td className="px-4 py-2 text-gray-700">{formatDate(workDate)}</td>
+                        <td className="px-4 py-2 text-gray-700">
+                          {hasMorning && hasAfternoon
+                            ? "Cả ngày (08:00 - 17:00)"
+                            : hasMorning
+                              ? "Ca sáng (08:00 - 12:00)"
+                              : hasAfternoon
+                                ? "Ca chiều (13:00 - 17:00)"
+                                : `Ca từ ${shifts[0].startTime} đến ${shifts[0].endTime}`}
+                        </td>
+                        <td className="px-4 py-2 text-gray-700">{shifts.map(s => s.startTime).join(" / ")}</td>
+                        <td className="px-4 py-2 text-gray-700">{shifts.map(s => s.endTime).join(" / ")}</td>
+
                         <td className="px-4 py-2 text-gray-700">
                           <button
                             className="bg-blue-500 text-white px-4 py-2 rounded-md"
-                            onClick={() =>
+                            onClick={() => {
+                              const shiftIds = group.shifts.map(shift => shift.id);
                               openUpdateModal(
-                                shift.startTime === "08:00:00" ? "morning" : "afternoon",
-                                shift.id,
-                                shift.workDate
-                              )
-                            }
+                                hasMorning && hasAfternoon
+                                  ? "both"
+                                  : hasMorning
+                                    ? "morning"
+                                    : "afternoon",
+                                shiftIds,
+                                workDate
+                              );
+                              console.log(shiftIds);
+                            }}
                           >
                             Cập nhật
                           </button>
                         </td>
-                      )}
-                    </tr>
-                  ))
+                      </tr>
+                    );
+                  })
                 ) : (
                   <tr>
                     <td colSpan="5" className="px-4 py-6 text-center text-gray-500">
@@ -500,18 +623,19 @@ function DoctorDetail() {
                     </td>
                   </tr>
                 )}
+
               </tbody>
             </table>
 
             {/* Modal */}
             {isModalOpen && (
               <div
-                className="fixed inset-0 z-50 bg-black bg-opacity-50  backdrop-blur-sm flex items-center justify-center"
+                className="fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center"
                 onClick={() => setIsModalOpen(false)}
               >
                 <div
                   className="bg-white p-6 rounded-lg shadow-lg w-[400px]"
-                  onClick={(e) => e.stopPropagation()} // Ngừng sự kiện để không đóng modal khi nhấn vào trong
+                  onClick={(e) => e.stopPropagation()} // Ngăn chặn sự kiện để không đóng modal khi nhấn vào trong
                 >
                   <h2 className="text-2xl font-bold mb-4 text-center">
                     Chỉnh sửa ca làm việc của ngày{" "}
@@ -523,14 +647,13 @@ function DoctorDetail() {
                     {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
 
                     <div className="flex gap-3 justify-center">
-                      {["morning", "afternoon"].map((shift) => {
+                      {["morning", "afternoon", "both"].map((shift) => {
                         const shiftLabel = {
                           morning: "Ca sáng (08:00 - 12:00)",
-                          afternoon: "Ca chiều (13:00 - 16:00)",
+                          afternoon: "Ca chiều (13:00 - 17:00)",
+                          both: "Cả hai ca (8:00 - 17:00)",
                         }[shift];
-
                         const isSelected = selectedShift === shift;
-
                         return (
                           <button
                             key={shift}
@@ -563,6 +686,7 @@ function DoctorDetail() {
                   </div>
                 </div>
               </div>
+
             )}
           </div>
         </div>
@@ -580,37 +704,34 @@ function DoctorDetail() {
             <h2 className="text-2xl font-bold mb-4 text-center">Thiết lập lại giờ làm</h2>
 
             {/* Nếu không phải VIP thì hiển thị chọn ca làm việc */}
-            {!doctor.vip && (
-              <div className="mb-6">
-                <label className="block text-gray-700 font-medium mb-2 text-lg">
-                  Chọn ca làm việc:
-                </label>
-                <div className="flex gap-3 justify-center">
-                  {["morning", "afternoon"].map((shift) => {
-                    const shiftLabel = {
-                      morning: "Ca sáng (08:00 - 12:00)",
-                      afternoon: "Ca chiều (13:00 - 16:00)",
-                    }[shift];
 
-                    const isSelected = selectedShift === shift;
-
-                    return (
-                      <button
-                        key={shift}
-                        className={`px-5 py-3 text-lg font-medium rounded-md transition ${isSelected
-                          ? "bg-[#da624a] text-white"
-                          : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-                          }`}
-                        onClick={() => handleShiftSelect(shift)}
-                      >
-                        {shiftLabel}
-                      </button>
-                    );
-                  })}
-                </div>
+            <div className="mb-6">
+              <label className="block text-gray-700 font-medium mb-2 text-lg">
+                Chọn ca làm việc:
+              </label>
+              <div className="flex gap-3 justify-center">
+                {["morning", "afternoon", "both"].map((shift) => {
+                  const shiftLabel = {
+                    morning: "Ca sáng (08:00 - 12:00)",
+                    afternoon: "Ca chiều (13:00 - 17:00)",
+                    both: "2 Ca sáng - chiều (08:00 - 17:00)",
+                  }[shift];
+                  const isSelected = selectedShift === shift;
+                  return (
+                    <button
+                      key={shift}
+                      className={`px-5 py-3 text-lg font-medium rounded-md transition ${isSelected
+                        ? "bg-[#da624a] text-white"
+                        : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                        }`}
+                      onClick={() => handleShiftSelect(shift)}
+                    >
+                      {shiftLabel}
+                    </button>
+                  );
+                })}
               </div>
-            )}
-
+            </div>
             {(selectedShift || doctor.vip) && (
               <div className="mb-6">
                 <label className="block text-gray-700 font-medium mb-2 text-lg">
@@ -636,8 +757,6 @@ function DoctorDetail() {
                         inline
                       />
                     </div>
-
-                    {/* Chọn ngày kết thúc */}
                     <div className="w-1/2">
                       <label className="block font-medium mb-2">Ngày kết thúc:</label>
                       <DatePicker
@@ -651,8 +770,6 @@ function DoctorDetail() {
                       />
                     </div>
                   </div>
-
-                  {/* Hiển thị ngày đã chọn */}
                   <div className="mt-4 p-3 bg-white rounded-md shadow">
                     <p>
                       <strong>Ngày bắt đầu:</strong> {formatDate(startDate)}

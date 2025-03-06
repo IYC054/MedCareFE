@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { getToken } from '../../../components/Authentication/authService';
 function CreateNews() {
     const [formData, setFormData] = useState({
         title: '',
@@ -15,7 +16,7 @@ function CreateNews() {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const navigate = useNavigate();
-
+    const token = getToken();
     // Xử lý thay đổi input text
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -49,7 +50,7 @@ function CreateNews() {
             const formDataToSend = new FormData();
             formDataToSend.append('date', formData.date);
             formDataToSend.append('description', formData.description);
-            
+
             formDataToSend.append('images', formData.images);
             formDataToSend.append('title', formData.title);
             console.log(formDataToSend);
@@ -58,6 +59,7 @@ function CreateNews() {
                 formDataToSend,
                 {
                     headers: {
+                        Authorization: `Bearer ${token}`,
                         'Content-Type': 'multipart/form-data',
                     },
                 }

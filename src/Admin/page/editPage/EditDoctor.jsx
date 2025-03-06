@@ -16,7 +16,7 @@ function EditDoctor() {
   const [formData, setFormData] = useState({
     email: "",
     name: "",
-    password: "", // để trống nếu không muốn đổi mật khẩu
+    password: "123123", 
     phone: "",
     gender: "",
     birthdate: "",
@@ -63,7 +63,7 @@ function EditDoctor() {
         setFormData({
           email: doctor.account.email,
           name: doctor.account.name,
-          password: "", 
+          password: "123123", 
           phone: doctor.account.phone,
           gender: doctor.account.gender,
           birthdate: doctor.account.birthdate,
@@ -218,7 +218,7 @@ function EditDoctor() {
                 onChange={handleChange}
                 placeholder="Nhập email"
                 className="mt-2 w-full p-2 border border-[#da624a] rounded-md focus:ring-2 focus:ring-[#da624a]"
-                required
+                readOnly
               />
             </div>
             <div>
@@ -232,20 +232,10 @@ function EditDoctor() {
                 placeholder="Nhập họ và tên"
                 className="mt-2 w-full p-2 border border-[#da624a] rounded-md focus:ring-2 focus:ring-[#da624a]"
                 required
+                readOnly
               />
             </div>
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">Mật khẩu</label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="Nhập mật khẩu (để trống nếu không đổi)"
-                className="mt-2 w-full p-2 border border-[#da624a] rounded-md focus:ring-2 focus:ring-[#da624a]"
-              />
-            </div>
+            
             <div>
               <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Số điện thoại</label>
               <input
@@ -258,7 +248,7 @@ function EditDoctor() {
                 className="mt-2 w-full p-2 border border-[#da624a] rounded-md focus:ring-2 focus:ring-[#da624a]"
               />
             </div>
-            <div>
+            <div className="hidden">
               <label className="block text-sm font-medium text-gray-700">Giới tính</label>
               <div className="mt-2 flex gap-4">
                 <label>
@@ -376,7 +366,7 @@ function EditDoctor() {
                 className="mt-2 w-full p-2 border border-[#da624a] rounded-md focus:ring-2 focus:ring-[#da624a]"
               />
             </div>
-            <div>
+            <div className="hidden">
               <label className="block text-sm font-medium text-gray-700">Bác sĩ khám</label>
               <div className="mt-2 flex gap-4">
                 <label>
