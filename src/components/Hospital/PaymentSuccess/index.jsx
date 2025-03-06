@@ -23,7 +23,7 @@ function PaymentSuccess() {
   const doctorEmail = queryParams.get("email");
 
 
-  const { User } = useContext(AppContext);
+  const { User, BHYT } = useContext(AppContext);
   console.log("User" + JSON.stringify(User?.id))
   useEffect(() => {
     const confirmpayment = async () => {
@@ -57,7 +57,8 @@ function PaymentSuccess() {
           workid,
           profileid,
           specialtyid,
-          doctorEmail
+          doctorEmail,
+          BHYT
         );
 
         if (!createAppointment) {

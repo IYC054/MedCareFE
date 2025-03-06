@@ -21,6 +21,7 @@ const AppProvider = ({ children }) => {
     return storedUser ? JSON.parse(storedUser) : null;
   });
   const [isShow, setisShow] = useState(false);
+  const [BHYT, setBHYT] = useState(false);
   const [content, setContent] = useState();
   const [doctorEmail, setDoctorEmail] = useState("");
   const [specialtyid, setspecialtyid] = useState(0);
@@ -51,6 +52,8 @@ const AppProvider = ({ children }) => {
         setUser,
         doctorEmail,
         setDoctorEmail,
+        BHYT,
+        setBHYT,
       }}
     >
       {children}

@@ -19,11 +19,11 @@ const Header = () => {
   const toggleSidebar = () => {
     setsidebar(!sidebar);
   };
-  const Logout =() => {
+  const Logout = () => {
     logout();
     navigator("/");
     window.location.reload();
-  }
+  };
   return (
     <div className="">
       <div className="bg-gray-50 flex items-center justify-between px-12 h-[60px] lg:h-[112px]">
@@ -124,55 +124,68 @@ const Header = () => {
                 Tải Ứng Dụng{" "}
               </button>
               {User != null ? (
-
-                  <div className="flex items-center px-3">
-                    <DropdownMenu
-                      title={
-                        <div className="border border-[00b5f1] flex gap-3 hover:bg-[#00b5f1] hover:text-white text-[#00b5f1] font-bold  px-3 py-2 rounded-full  items-center bg-white ">
-                          <svg
-                            stroke="currentColor"
-                            fill="currentColor"
-                            strokeWidth="0"
-                            viewBox="0 0 512 512"
-                            aria-label="Icon User"
-                            height="15"
-                            width="15"
-                            xmlns="http://www.w3.org/2000/svg"
+                <div className="flex items-center px-3">
+                  <DropdownMenu
+                    title={
+                      <div className="border border-[00b5f1] flex gap-3 hover:bg-[#00b5f1] hover:text-white text-[#00b5f1] font-bold  px-3 py-2 rounded-full  items-center bg-white ">
+                        <svg
+                          stroke="currentColor"
+                          fill="currentColor"
+                          strokeWidth="0"
+                          viewBox="0 0 512 512"
+                          aria-label="Icon User"
+                          height="15"
+                          width="15"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path d="M256 288c79.5 0 144-64.5 144-144S335.5 0 256 0 112 64.5 112 144s64.5 144 144 144zm128 32h-55.1c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16H128C57.3 320 0 377.3 0 448v16c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48v-16c0-70.7-57.3-128-128-128z"></path>
+                        </svg>
+                        {User.name}
+                      </div>
+                    }
+                    items={[
+                      {
+                        label: (
+                          <Link
+                            to={"/profile"}
+                            className="flex items-center justify-center text-[16px] gap-1 p-2 rounded-lg  "
                           >
-                            <path d="M256 288c79.5 0 144-64.5 144-144S335.5 0 256 0 112 64.5 112 144s64.5 144 144 144zm128 32h-55.1c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16H128C57.3 320 0 377.3 0 448v16c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48v-16c0-70.7-57.3-128-128-128z"></path>
-                          </svg>
-                          {User.name}
-                        </div>
-                      }
-                      items={[
-                        {
-                          label: (
-                            <Link to={'/profile'} className="flex items-center justify-center text-[16px] gap-1 p-2 rounded-lg  ">
-                              <span className="font-semibold text-[#00b5f1]">Hồ sơ bệnh nhân</span>
-                            </Link>
-                          ),
-                          link: "#",
-                        },
-                        {
-                          label: (
-                            <Link to={'/profile/add'} className="flex items-center justify-center text-[16px] gap-1 p-2 rounded-lg  ">
-                              <span className="font-semibold text-[#00b5f1]">Tạo hồ sơ bệnh nhân</span>
-                            </Link>
-                          ),
-                          link: "#",
-                        },
-                        {
-                          label: (
-                            <div onClick={Logout}  className="flex items-center justify-center text-[16px] gap-1 p-2 rounded-lg  ">
-                              <span className="font-semibold text-[red]">Đăng xuất</span>
-                            </div>
-                          ),
-                          link: "#",
-                        },
-                       
-                      ]}
-                    />
-                  </div>
+                            <span className="font-semibold text-[#00b5f1]">
+                              Hồ sơ bệnh nhân
+                            </span>
+                          </Link>
+                        ),
+                        link: "#",
+                      },
+                      {
+                        label: (
+                          <Link
+                            to={"/profile/add"}
+                            className="flex items-center justify-center text-[16px] gap-1 p-2 rounded-lg  "
+                          >
+                            <span className="font-semibold text-[#00b5f1]">
+                              Tạo hồ sơ bệnh nhân
+                            </span>
+                          </Link>
+                        ),
+                        link: "#",
+                      },
+                      {
+                        label: (
+                          <div
+                            onClick={Logout}
+                            className="flex items-center justify-center text-[16px] gap-1 p-2 rounded-lg  "
+                          >
+                            <span className="font-semibold text-[red]">
+                              Đăng xuất
+                            </span>
+                          </div>
+                        ),
+                        link: "#",
+                      },
+                    ]}
+                  />
+                </div>
               ) : (
                 <button
                   onClick={togglePopup}
@@ -285,6 +298,11 @@ const Header = () => {
             <div className="pr-3">
               <ul className="flex gap-3 items-center">
                 <li>
+                  <div className="flex items-center gap-1">
+                    <Link to={'/hospital'} className="font-medium">Đặt khám</Link>
+                  </div>
+                </li>
+                <li>
                   {" "}
                   <DropdownMenu
                     title={
@@ -396,15 +414,11 @@ const Header = () => {
                     title={
                       <Link to="/contract" className="flex items-center gap-1 ">
                         <span>Liên hệ hợp tác</span>
-                        
                       </Link>
                     }
-                    items={[
-                      
-                    ]}
+                    items={[]}
                   />
                 </li>
-              
               </ul>
             </div>
           </div>
@@ -473,7 +487,10 @@ const Header = () => {
                   <FaDownload />
                 </div>
               </div>
-              <div onClick={Logout} className="w-full h-[40px] bg-[red] text-[#fff] flex justify-center items-center rounded-lg">
+              <div
+                onClick={Logout}
+                className="w-full h-[40px] bg-[red] text-[#fff] flex justify-center items-center rounded-lg"
+              >
                 Đăng xuất
               </div>
             </div>

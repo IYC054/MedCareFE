@@ -9,7 +9,8 @@ const CreateAppointment = async (
   worktimeId,
   patientProfileId,
   specialty,
-  doctorEmail
+  doctorEmail,
+  BHYT,
 ) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   try {
@@ -27,6 +28,7 @@ const CreateAppointment = async (
       patientProfileId: patientProfileId,
       firestoreUserId: "asdasdads",
       doctorEmail: doctorEmail,
+      BHYT: BHYT
     });
     return response.data;
   } catch (error) {
@@ -70,7 +72,7 @@ const getVIPAppointmentByDoctorId = async (id) => {
 const UpdateStatusAppointment = async (id, status) => {
   try {
     const res = await axios.put(
-      `http://localhost:8080/api/appointment/status/${id}`,
+      `http://localhost:8080/api/appointment/status/${id}?doctorEmail=admin@gmail.com`,
       {
         status: status,
       }
@@ -118,8 +120,32 @@ const getAppointmentByIdUser = async (iduser) => {
     return [];
   }
 };
+const getAllApointment = async () => {
+  try {
+    const res = await axios.get(
+      `http://localhost:8080/api/appointment`
+    );
+    return res.data;
+  } catch (error) {
+    // console.error(error);
+    return [];
+  }
+};
+const getAllVipApointment = async () => {
+  try {
+    const res = await axios.get(
+      `http://localhost:8080/api/vip-appointments`
+    );
+    return res.data;
+  } catch (error) {
+    // console.error(error);
+    return [];
+  }
+};
 export {
   CreateAppointment,
+  getAllApointment,
+  getAllVipApointment,
   getAppointmentByPatientId,
   getAppointmentByDoctorId,
   UpdateStatusAppointment,

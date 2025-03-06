@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 
-const MomoPayment = async (fee, phone,doctorid, workid, profileid, specialtyid, doctorEmail) => {
+const MomoPayment = async (fee, phone,doctorid, workid, profileid, specialtyid, doctorEmail, bhyt) => {
   try {
     console.log("DOCTOR: " + doctorEmail);
     const response = await axios.post(
@@ -13,7 +13,8 @@ const MomoPayment = async (fee, phone,doctorid, workid, profileid, specialtyid, 
         workId: workid,
         profileId: profileid,
         specialtyId: specialtyid,
-        doctorEmail: doctorEmail
+        doctorEmail: doctorEmail,
+        bhyt: bhyt
       }
 
     );
