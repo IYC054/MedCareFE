@@ -182,7 +182,7 @@ function CheckOTP({ email, forgotPass}) {
     return (
         <div className="flex-1">
             {!next && (
-                <div className="flex-1 p-8  flex flex-col">
+                <div className="flex-1 p-8 flex flex-col">
                     {/* <div className="flex flex-col items-center justify-center h-screen bg-white-100 p-4"> */}
                     <h1 className="text-4xl font-bold text-blue-700 mb-3">medcare</h1>
                     <h2 className="mt-2 text-lg font-semibold">XIN CHÀO!</h2>
