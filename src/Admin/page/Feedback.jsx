@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import '../scss/feedback.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
@@ -10,8 +10,15 @@ function Feedback() {
     const [isFeedbackBox, setIsFeedbackBox] = useState(true); // Trạng thái hiển thị danh sách
     const token = getToken();
     const navigate = useNavigate();
+    const hasFetched = useRef(false);
 
-    // Lấy dữ liệu feedback
+    useEffect(() => {
+        if (!hasFetched.current) {
+            hasFetched.current = true;
+            fetchFeedbacks();
+        }
+    }, []); // Empty dependency array ensures it runs only once
+
     const fetchFeedbacks = async () => {
         try {
             const response = await axios.get('http://localhost:8080/api/sendmail', {
@@ -24,8 +31,8 @@ function Feedback() {
     };
 
     useEffect(() => {
-        fetchFeedbacks();
-    }, []);
+        console.log("Feedback state updated:", feedbacks);
+    }, [feedbacks]);
 
     // Lọc danh sách theo trạng thái
     const filteredFeedbacks = feedbacks.filter(feedback =>

@@ -80,7 +80,7 @@ const ChartMonth = () => {
 
   const series = [
     {
-      name: 'Appointments',
+      name: 'Lịch đặt',
       data: chartData, // Sử dụng dữ liệu theo tháng
     },
   ];
