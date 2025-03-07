@@ -17,7 +17,7 @@ function AppointmentDetail({ roomId, isVIP, onClose }) {
                 let appointmentData = response.data;
                 console.log(appointmentData);
                 if (isVIP) {
-                    const { patient_id,  } = appointmentData || {};
+                    const { patient_id, } = appointmentData || {};
 
                     // Kiểm tra nếu doctor_id tồn tại trước khi gọi API
                     if (!patient_id) {
@@ -27,16 +27,16 @@ function AppointmentDetail({ roomId, isVIP, onClose }) {
                     // Gọi song song 2 API để lấy thông tin bệnh nhân và bác sĩ
                     const [patientRes] = await Promise.all([
                         axios.get(`http://localhost:8080/api/patients/${patient_id}`),
-                        
+
                     ]);
 
                     // Gán thông tin vào dữ liệu cuộc hẹn
                     appointmentData = {
                         ...appointmentData,
                         patient: patientRes.data,
-                       
+
                     };
-                    console.log("da",appointmentData);
+                    console.log("da", appointmentData);
                 }
                 setAppointmentDetails(appointmentData);
             } catch (error) {
@@ -51,7 +51,7 @@ function AppointmentDetail({ roomId, isVIP, onClose }) {
         }
     }, [roomId, isVIP]);
 
-  
+
     if (loading) {
         return (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
@@ -99,13 +99,16 @@ function AppointmentDetail({ roomId, isVIP, onClose }) {
                 </h1>
                 <div className="space-y-4">
                     <div className="grid grid-cols-3 gap-4">
-                        <div>
-                            <h3 className="font-medium text-gray-700">Bác sĩ:</h3>
-                            <p className="text-gray-600">{appointmentDetails?.doctor?.account?.name || "N/A"}</p>
-                        </div>
+                        {appointmentDetails?.status !== "Chờ xử lý" && appointmentDetails?.doctor?.vip && (
+                            <div>
+                                <h3 className="font-medium text-gray-700">Bác sĩ:</h3>
+                                <p className="text-gray-600">{appointmentDetails?.doctor?.account?.name || "N/A"}</p>
+                            </div>
+                        )}
+
                         <div>
                             <h3 className="font-medium text-gray-700">Bệnh nhân:</h3>
-                            <p className="text-gray-600">{appointmentDetails?.patient?.account?.name || "N/A"}</p>
+                            <p className="text-gray-600">{appointmentDetails?.patientprofile.fullname || "N/A"}</p>
                         </div>
                         <div>
                             <h3 className="font-medium text-gray-700">Loại cuộc hẹn:</h3>

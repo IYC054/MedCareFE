@@ -26,6 +26,7 @@ function CreateEmail() {
         {
           message,
           sender_email: senderEmail,
+          status: "OLD"
         },
         {
           headers: {

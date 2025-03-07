@@ -84,7 +84,7 @@ function PaymentSuccess() {
 
         console.log("Kết quả thanh toán:", response);
         setPaymentStatus("Thanh toán thành công!");
-        setTimeout(() => navigator("/profile"), 3000);
+        setTimeout(() => navigator("/profile"), 1000);
       } catch (error) {
         console.error("Lỗi trong quá trình thanh toán:", error);
         setPaymentStatus("Đã xảy ra lỗi trong quá trình xác nhận thanh toán.");

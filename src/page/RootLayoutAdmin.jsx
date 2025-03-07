@@ -21,7 +21,7 @@ const RootLayoutAdmin = () => {
   const token = getToken();
   useEffect(() => {
     const fetchFeedbackBox = async () => {
-      const response = await axios.get('http://localhost:8080/api/feedbacks/', {
+      const response = await axios.get('http://localhost:8080/api/sendmail', {
         headers: { Authorization: `Bearer ${token}` },
       });
       const newFeedbacks = response.data.filter(feedback => feedback.status === 'NEW');
@@ -29,6 +29,7 @@ const RootLayoutAdmin = () => {
     };
     fetchFeedbackBox();
   }, []);
+  console.log(feedback);
   useEffect(() => {
     const handleResize = () => {
       setIsClosed(window.innerWidth <= 780);
@@ -61,8 +62,8 @@ const RootLayoutAdmin = () => {
     title = 'Lịch hẹn';
     description = 'Quản lý lịch hẹn của bệnh nhân, sắp xếp thời gian và tình trạng sẵn có của bác sĩ.';
   } else if (location.pathname === '/admin/feedback') {
-    title = 'Phản hồi';
-    description = 'Xem và quản lý phản hồi từ bệnh nhân và khách hàng để cải thiện dịch vụ.';
+    title = 'Feedback';
+    description = 'Xem và quản lý feedback từ bệnh nhân và khách hàng để cải thiện dịch vụ.';
   } else if (location.pathname === '/admin') {
     title = 'Bảng điều khiển';
     description = 'Đây là bảng điều khiển với các thành phần và tính năng quản trị.';

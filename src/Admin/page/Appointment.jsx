@@ -98,7 +98,7 @@ function Appointment() {
 
 
     const filteredRooms = appointments.filter((room) => {
-        const matchesName = room.patient?.account?.name.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesName = room.patientprofile.fullname.toLowerCase().includes(searchQuery.toLowerCase());
         const matchesStatus =
             statusFilter === 'Tất cả' ||
             room.status === statusFilter;
@@ -156,10 +156,10 @@ function Appointment() {
 
             return {
                 "STT": index + 1,
-                "Tên bệnh nhân": room.patient?.account?.name || 'Unknown',
+                "Tên bệnh nhân": room.patientprofile.fullname || 'Unknown',
                 "Chuyên khoa": room.type,
                 "Mô tả": descriptions || 'No description',
-                "Số tiền": room.payment[0]?.amount,
+                "Số tiền": room.payment?.amount,
                 "Bác sĩ": room.doctor.account.name,
                 "Trạng thái": room.status,
                 "Loại cuộc hẹn": room.isVIP ? "VIP" : "Thường",
@@ -256,7 +256,7 @@ function Appointment() {
                                 return (
                                     <tr key={room.id} className={isVIP ? "bg-yellow-200 font-bold" : ""}>
 
-                                        <td className="border p-2">{room.patient?.account?.name || 'Unknown'}</td>
+                                        <td className="border p-2">{room.patientprofile.fullname || 'Unknown'}</td>
                                         <td className="border p-2">{room.type}</td>
                                         <td className="border p-2">{room.workDate}</td>
                                         <td className="border p-2">{room.payments[0]?.amount} VND </td>

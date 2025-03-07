@@ -93,7 +93,16 @@ function PatientProfileAdmin() {
                                     <td className="p-3">
                                         {patient.birthdate}
                                     </td>
-                                    <td className="p-3">{patient.gender}</td>
+                                    <td className='border px-4 py-2'>
+                                        {patient.gender === "Nữ" || patient.gender === "Nam"
+                                            ? patient.gender
+                                            : patient.gender?.toLowerCase() === "female"
+                                                ? "Nữ"
+                                                : patient.gender?.toLowerCase() === "male"
+                                                    ? "Nam"
+                                                    : patient.gender}
+                                    </td>
+
                                     <td className="p-3">{patient.phone}</td>
                                     <td className="p-3">{patient.address}</td>
                                     <td className="p-3 text-center">

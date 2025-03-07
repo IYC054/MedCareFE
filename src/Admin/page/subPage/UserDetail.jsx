@@ -97,7 +97,16 @@ function UserDetail() {
                             <label className="block text-gray-600 text-sm mb-2">E-mail :</label>
                             <p className="text-gray-800 mb-7">{patient?.email || 'N/A'}</p>
                             <label className="block text-gray-600 text-sm mb-2">Giới tính :</label>
-                            <p className="text-gray-800">{patient?.gender || 'N/A'}</p>
+                            <p className="text-gray-800">
+                                {patient?.gender === "Nữ" || patient?.gender === "Nam"
+                                    ? patient.gender
+                                    : patient?.gender?.toLowerCase() === "female"
+                                        ? "Nữ"
+                                        : patient?.gender?.toLowerCase() === "male"
+                                            ? "Nam"
+                                            : "N/A"}
+                            </p>
+
                         </div>
                     </div>
                 </div>

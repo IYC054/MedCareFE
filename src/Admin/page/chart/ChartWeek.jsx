@@ -44,7 +44,7 @@ const ChartWeek = () => {
         filteredAppointments.forEach(appointment => {
           const date = new Date(appointment.worktime.workDate);
           const dayIndex = date.getDay(); // 0 (Sun) to 6 (Sat)
-          const mappedIndex = dayIndex === 0 ? 6 : dayIndex - 1; // Map Sun (0) to 6, Mon (1) to 0
+          const mappedIndex = dayIndex === 0 ? 6 : dayIndex - 1; 
           appointmentCounts[mappedIndex]++;
         });
 
@@ -94,7 +94,7 @@ const ChartWeek = () => {
 
   const series = [
     {
-      name: 'Appointments',
+      name: 'Lịch đặt',
       data: chartData, // Use dynamic data here
     },
   ];

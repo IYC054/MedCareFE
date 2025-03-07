@@ -96,7 +96,7 @@ function ProfileChoose(props) {
                     <span>Giới tính :</span>
                   </span>
                   <span className="text-[14px] font-medium text-[#003553]">
-                    {item.gender}
+                    {item.gender == "Female" ? "Nữ" : "Nam"}
                   </span>
                 </li>
                 <li className="flex w-full items-center gap-2 text-[#003553] my-1 settingli">

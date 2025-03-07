@@ -177,14 +177,22 @@ function Booking() {
   const filteredDoctors =
     queryType === "doctor"
       ? dataDoctor.filter((doctor) => {
-          const name = doctor.account.name.toLowerCase();
-          return name.includes(searchQuery.toLowerCase());
+          return (
+            doctor.vip === false &&
+            doctor.account.name
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase())
+          );
         })
       : dataDoctor.filter((doctor) => {
-          return doctor.specialties.some((specialty) =>
-            specialty.name.toLowerCase().includes(searchQuery.toLowerCase())
+          return (
+            doctor.vip === false &&
+            doctor.specialties.some((specialty) =>
+              specialty.name.toLowerCase().includes(searchQuery.toLowerCase())
+            )
           );
         });
+
   useEffect(() => {
     const fetchSpecialty = async () => {
       const data = await getallSpecialty();
@@ -294,7 +302,7 @@ function Booking() {
                     </span>
                   </span>
                 </li>
-                <li className="flex gap-2 mb-10 text-[#003553]">
+                {/* <li className="flex gap-2 mb-10 text-[#003553]">
                   {selectName != null ? (
                     <Fragment>
                       <FaStethoscope className="text-[#c2c2c2] text-[30px]" />
@@ -303,7 +311,7 @@ function Booking() {
                   ) : (
                     <Fragment></Fragment>
                   )}
-                </li>
+                </li> */}
                 <li className="flex gap-2 mb-10">
                   {chooseDate ? (
                     <Fragment>

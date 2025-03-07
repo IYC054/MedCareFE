@@ -69,8 +69,8 @@ function CheckEmail({ close }) {
         setNext(!next);
       } else {
         console.log("Email không tồn tại.");
-        handleSendOTP();
-        setLoading(!loading);
+        // handleSendOTP();
+        // setLoading(!loading);
         setNext(!next);
       }
     } catch (error) {
@@ -197,19 +197,19 @@ function CheckEmail({ close }) {
           <div className="text-center text-gray-500 mb-4">
             Hoặc đăng nhập bằng tài khoản
           </div>
-          <GoogleLogin
+          {/* <GoogleLogin
             onSuccess={handleGoogleLogin}
             onError={() => console.log("Đăng nhập Google thất bại")}
-          />
+          /> */}
         </div>
       )}
       {exist
         ? next && <Login email={email} close={close} />
-        : next && <CheckOTP email={email} />}
+        : next && <Register email={email} />}
 
       {/* Hình ảnh bên phải */}
 
-      <div className="hidden lg:flex flex-1 bg-gray-50 flex-col items-center justify-center relative">
+      <div className="hidden h-[520px] lg:flex flex-1 bg-gray-50 flex-col items-center justify-center relative">
         <button
           onClick={close}
           className="text-gray-500 hover:text-gray-700 h-fit w-fit absolute right-3 top-3"
@@ -229,7 +229,7 @@ function CheckEmail({ close }) {
             />
           </svg>
         </button>
-        <img src={ImgAuth} alt="Illustration" className="w-full h-auto" />
+        <img src={ImgAuth} alt="Illustration" className="w-full h-full" />
         <p className="absolute bottom-8 text-center text-gray-700 italic text-lg">
           “Không còn: <br />
           <span className="line-through">xếp hàng</span> <br />

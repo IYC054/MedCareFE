@@ -110,13 +110,21 @@ function Dashboard() {
             setDoctor(responses.map(res => res.data));
             console.log(doctor);
             const responseBook = await axios.get('http://localhost:8080/api/appointment', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            const responseBookVip = await axios.get('http://localhost:8080/api/vip-appointments', {
+                headers: { Authorization: `Bearer ${token}` }
             });
 
-            setBook(responseBook.data);
-            console.log("bo", book);
+            // Ensure both are arrays
+            const bookData = Array.isArray(responseBook.data) ? responseBook.data : [];
+            const vipBookData = Array.isArray(responseBookVip.data) ? responseBookVip.data : [];
+
+            const totalbook = bookData.length + vipBookData.length;
+            setBook(totalbook);
+
+            console.log("Total bookings:", totalbook);
+
             const responseMoney = await axios.get('http://localhost:8080/api/payments', {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -228,16 +236,16 @@ function Dashboard() {
                                     </div>
                                 </div>
                                 <div>
-                                    <div className='text-2xl font-bold'>{book.length}</div>
+                                    <div className='text-2xl font-bold'>{book}</div>
                                 </div>
                             </div>
                         </div>
                         <div className='card mb-3 bg-happy-green text-white rounded-md '>
                             <div className='p-4 flex justify-between items-center'>
                                 <div>
-                                    <div className='text-xl font-semibold'>Thu nhập năm nay
+                                    <div className='text-xl font-semibold'>Doanh thu năm nay
                                     </div>
-                                    <div className='text-sm'>thu nhập năm {currentYear}
+                                    <div className='text-sm'>Doanh thu năm {currentYear}
                                     </div>
                                 </div>
                                 <div>
@@ -372,8 +380,9 @@ function Dashboard() {
                                                         <div className="widget-content-wrapper flex items-center justify-between">
                                                             <div className="widget-content-left mr-6 pb-2">
                                                                 <div className={`widget-numbers text-2xl font-bold ${monthPercentChange >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                                                    {monthPercentChange.toFixed(0)}%
+                                                                    {Math.min(monthPercentChange, 100).toFixed(0)}%
                                                                 </div>
+
 
                                                             </div>
                                                             <div className="content-right">

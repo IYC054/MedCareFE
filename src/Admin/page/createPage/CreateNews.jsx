@@ -79,7 +79,7 @@ function CreateNews() {
     return (
         <div className="max-w-4xl pb-3 flex" id="goup">
             <div className="l bg-white shadow-lg rounded-lg p-5 border-2 border-[#da624a]">
-                <form className="space-y-4 w-full sm:px-96" onSubmit={handleSubmit}>
+                <form className="space-y-4 w-full" onSubmit={handleSubmit}>
                     <h3 className="text-xl font-semibold text-[#da624a]">Thêm Tin Tức Mới</h3>
 
                     {error && <div className="text-red-500 text-sm">{error}</div>}

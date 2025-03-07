@@ -454,14 +454,14 @@ function TabDoctorappointment() {
     e.preventDefault();
     const doctorId = await getDoctorbyIds(User?.id);
     const url = doctorId.vip
-      ? `http://localhost:8080/api/patientsfile/vip-appointment?doctors_id=${Selectedpatients.doctor.account.id}&patients_profile_id=${patientfile_ids}&vipappointment_id=${appointment_ids}`
-      : `http://localhost:8080/api/patientsfile?doctors_id=${Selectedpatients.doctor.account.id}&patients_profile_id=${patientfile_ids}&appointment_id=${appointment_ids}`;
+      ? `http://localhost:8080/api/patientsfile/vip-appointment?doctors_id=${Selectedpatients.doctor.id}&patients_profile_id=${patientfile_ids}&vipappointment_id=${appointment_ids}`
+      : `http://localhost:8080/api/patientsfile?doctors_id=${Selectedpatients.doctor.id}&patients_profile_id=${patientfile_ids}&appointment_id=${appointment_ids}`;
 
     const checksuccess = await axios.post(
       url,
       {
         description: description,
-        diagnosis: diagnosis
+        diagnosis: diagnosis,
       },
       {
         headers: {
@@ -524,6 +524,12 @@ function TabDoctorappointment() {
         }
 
         fetchAppointments();
+        enqueueSnackbar("Cập nhật thành công!", {
+          variant: "success",
+          autoHideDuration: 4000,
+          anchorOrigin: { vertical: "top", horizontal: "right" },
+        });
+        setPopup(false);
       } catch (err) {
         console.error(err);
       }
@@ -628,8 +634,13 @@ function TabDoctorappointment() {
                     </td>
                     <td className="p-4 border-b border-blue-gray-50">
                       <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
-                        <span
-                          className="px-4 py-2 bg-green-300 rounded-lg"
+                        <button
+                          disabled={vip.status == "Hoàn thành" ? true : false}
+                          className={`px-4 py-2  ${
+                            vip.status == "Hoàn thành"
+                              ? "bg-red"
+                              : "bg-green-300"
+                          } rounded-lg`}
                           onClick={() =>
                             handleOpenPopupVip(
                               vipindex,
@@ -639,7 +650,7 @@ function TabDoctorappointment() {
                           }
                         >
                           Điều Trị
-                        </span>
+                        </button>
                       </p>
                     </td>
                     <td className="p-4 border-b border-blue-gray-50">
@@ -718,8 +729,15 @@ function TabDoctorappointment() {
                       </td>
                       <td className="p-4 border-b border-blue-gray-50">
                         <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
-                          <span
-                            className="px-4 py-2 bg-green-300 rounded-lg"
+                          <button
+                            disabled={
+                              item.status == "Hoàn thành" ? true : false
+                            }
+                            className={`px-4 py-2  ${
+                              item.status == "Hoàn thành"
+                                ? "bg-red-700"
+                                : "bg-green-300"
+                            } rounded-lg`}
                             onClick={() =>
                               handleOpenPopup(
                                 index,
@@ -729,7 +747,7 @@ function TabDoctorappointment() {
                             }
                           >
                             Điều Trị
-                          </span>
+                          </button>
                         </p>
                       </td>
                       <td className="p-4 border-b border-blue-gray-50">
