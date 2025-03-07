@@ -99,7 +99,7 @@ function AppointmentDetail({ roomId, isVIP, onClose }) {
                 </h1>
                 <div className="space-y-4">
                     <div className="grid grid-cols-3 gap-4">
-                        {appointmentDetails?.status !== "Chờ xử lý" && (
+                        {appointmentDetails?.status !== "Chờ xử lý" && appointmentDetails?.doctor?.vip && (
                             <div>
                                 <h3 className="font-medium text-gray-700">Bác sĩ:</h3>
                                 <p className="text-gray-600">{appointmentDetails?.doctor?.account?.name || "N/A"}</p>
