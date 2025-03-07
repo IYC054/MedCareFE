@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import ExcelJS from "exceljs";
-import { jsPDF } from 'jspdf';
+import { jsPDF } from "jspdf";
 
 import {
   deteleimage,
@@ -19,6 +19,8 @@ import {
   getAllApointment,
   getAllVipApointment,
 } from "../../../api/Doctor/appointment";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import MedicalRecordPDF from "../../../page/scss/MedicalRecordPDF";
 
 function TabDoctorwithpatient() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -211,58 +213,61 @@ function TabDoctorwithpatient() {
     indexOfFirstAppointment,
     indexOfLastAppointment
   );
-  console.log("currentPatient",currentPatient)
+  console.log("currentPatient", currentPatient);
   const totalPages = Math.ceil(filteredPatients.length / appointmentsPerPage);
-// xuất PDF
-const handleDownloadPDF = (item) => {
-  const doc = new jsPDF();
+  // xuất PDF
+  const handleDownloadPDF = (item) => {
+    const doc = new jsPDF();
 
-  // Thông tin bệnh viện
-  const HospitalName = 'Bệnh viện Med Care';
-  // Thông tin bệnh nhân
-  const PatientInformation = 'Thông tin bệnh nhân:';
-  const PatientName = item?.patientDetails?.fullname;
-  const PatientAddress = item?.patientDetails?.address;
-  const PatientDOB = item?.patientDetails?.birthdate
-  const PatientDiagnosis = item?.diagnosis;
-  const Prescription =item?.description;
+    // Thông tin bệnh viện
+    const HospitalName = "Bệnh viện Med Care";
+    // Thông tin bệnh nhân
+    const PatientInformation = "Thông tin bệnh nhân:";
+    const PatientName = item?.patientDetails?.fullname;
+    const PatientAddress = item?.patientDetails?.address;
+    const PatientDOB = item?.patientDetails?.birthdate;
+    const PatientDiagnosis = item?.diagnosis;
+    const Prescription = item?.description;
 
-  // Tính toán vị trí căn giữa cho tên bệnh viện
-  const pageWidth = doc.internal.pageSize.width;
-  const pageHeight = doc.internal.pageSize.height;
-  
-  // Căn giữa tên bệnh viện
-  const textWidth = doc.getTextWidth(HospitalName);
-  const x = (pageWidth - textWidth) / 2;
-  const y = 20;
+    // Tính toán vị trí căn giữa cho tên bệnh viện
+    const pageWidth = doc.internal.pageSize.width;
+    const pageHeight = doc.internal.pageSize.height;
 
-  // Thêm tên bệnh viện vào PDF, in đậm và kích thước lớn
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(30);
-  doc.text(HospitalName, x, y);
+    // Căn giữa tên bệnh viện
+    const textWidth = doc.getTextWidth(HospitalName);
+    const x = (pageWidth - textWidth) / 2;
+    const y = 20;
 
-  // Thêm phần thông tin bệnh nhân
-  const indent = 10; // Khoảng cách thụt đầu dòng
-  const patientInfoX = 20 + indent; // Vị trí bắt đầu của dòng thông tin bệnh nhân
-  const patientInfoY = y + 40; // Vị trí dọc cho phần thông tin bệnh nhân
+    // Thêm tên bệnh viện vào PDF, in đậm và kích thước lớn
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(30);
+    doc.text(HospitalName, x, y);
 
-  doc.setFont("normal");
-  doc.setFontSize(18);
-  doc.text(PatientInformation, patientInfoX, patientInfoY);
-  
-  // Thêm thông tin chi tiết bệnh nhân
-  const patientDetailsY = patientInfoY + 10;
-  doc.text(`Tên: ${PatientName}`, patientInfoX, patientDetailsY);
-  doc.text(`Nơi ở: ${PatientAddress}`, patientInfoX, patientDetailsY + 10);
-  doc.text(`Ngày sinh: ${PatientDOB}`, patientInfoX, patientDetailsY + 20);
-  doc.text(`Chẩn đoán: ${PatientDiagnosis}`, patientInfoX, patientDetailsY + 30);
-  doc.text(`Toa thuốc:`, patientInfoX, patientDetailsY + 40);
-  doc.text(`${Prescription}`, patientInfoX, patientDetailsY + 50);
+    // Thêm phần thông tin bệnh nhân
+    const indent = 10; // Khoảng cách thụt đầu dòng
+    const patientInfoX = 20 + indent; // Vị trí bắt đầu của dòng thông tin bệnh nhân
+    const patientInfoY = y + 40; // Vị trí dọc cho phần thông tin bệnh nhân
 
-  // Tải file PDF xuống
-  doc.save('ho-so-kham-benh.pdf');
-};
+    doc.setFont("normal");
+    doc.setFontSize(18);
+    doc.text(PatientInformation, patientInfoX, patientInfoY);
 
+    // Thêm thông tin chi tiết bệnh nhân
+    const patientDetailsY = patientInfoY + 10;
+    doc.text(`Tên: ${PatientName}`, patientInfoX, patientDetailsY);
+    doc.text(`Nơi ở: ${PatientAddress}`, patientInfoX, patientDetailsY + 10);
+    doc.text(`Ngày sinh: ${PatientDOB}`, patientInfoX, patientDetailsY + 20);
+    doc.text(
+      `Chẩn đoán: ${PatientDiagnosis}`,
+      patientInfoX,
+      patientDetailsY + 30
+    );
+    doc.text(`Toa thuốc:`, patientInfoX, patientDetailsY + 40);
+    doc.text(`${Prescription}`, patientInfoX, patientDetailsY + 50);
+
+    // Tải file PDF xuống
+    doc.save("ho-so-kham-benh.pdf");
+  };
 
   return (
     <div className="w-full h-full  border-l border-[#00b5f1] pl-10">
@@ -389,14 +394,19 @@ const handleDownloadPDF = (item) => {
                     </button>
                   </td>
                   <td className="p-4 border-b border-blue-gray-50">
-                    <button
-                      className="p-2 bg-[#00b5f1] block font-sans text-sm antialiased font-medium leading-normal text-[#fff] rounded-xl"
-                      onClick={() =>
-                        handleDownloadPDF(item)
-                      }
+                    <PDFDownloadLink
+                      document={<MedicalRecordPDF item={item} />}
+                      fileName="ho-so-kham-benh.pdf"
                     >
-                     Tải Hồ Sơ
+                      {({ loading }) =>
+                        loading ? "Đang tạo PDF..." : <button
+                      className="p-2 bg-[red] block font-sans text-sm antialiased font-medium leading-normal text-[#fff] rounded-xl"
+                      
+                    >
+                      Tải PDF
                     </button>
+                      }
+                    </PDFDownloadLink>
                   </td>
                 </tr>
               ))}
