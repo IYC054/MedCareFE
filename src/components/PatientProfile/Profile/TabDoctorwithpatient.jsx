@@ -218,7 +218,7 @@ function TabDoctorwithpatient() {
   // xuất PDF
   const handleDownloadPDF = (item) => {
     const doc = new jsPDF();
-
+  
     // Thông tin bệnh viện
     const HospitalName = "Bệnh viện Med Care";
     // Thông tin bệnh nhân
@@ -228,46 +228,53 @@ function TabDoctorwithpatient() {
     const PatientDOB = item?.patientDetails?.birthdate;
     const PatientDiagnosis = item?.diagnosis;
     const Prescription = item?.description;
-
+  
     // Tính toán vị trí căn giữa cho tên bệnh viện
     const pageWidth = doc.internal.pageSize.width;
     const pageHeight = doc.internal.pageSize.height;
-
+  
     // Căn giữa tên bệnh viện
     const textWidth = doc.getTextWidth(HospitalName);
     const x = (pageWidth - textWidth) / 2;
     const y = 20;
-
+  
     // Thêm tên bệnh viện vào PDF, in đậm và kích thước lớn
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(30);
+    doc.setFontSize(36);  // Phóng to kích thước cho tên bệnh viện
     doc.text(HospitalName, x, y);
-
+  
     // Thêm phần thông tin bệnh nhân
     const indent = 10; // Khoảng cách thụt đầu dòng
     const patientInfoX = 20 + indent; // Vị trí bắt đầu của dòng thông tin bệnh nhân
-    const patientInfoY = y + 40; // Vị trí dọc cho phần thông tin bệnh nhân
-
-    doc.setFont("normal");
-    doc.setFontSize(18);
+    const patientInfoY = y + 50; // Vị trí dọc cho phần thông tin bệnh nhân
+  
+    // Thêm thông tin bệnh nhân in đậm
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(22);
     doc.text(PatientInformation, patientInfoX, patientInfoY);
-
-    // Thêm thông tin chi tiết bệnh nhân
+  
+    // Thêm thông tin chi tiết bệnh nhân, thụt đầu dòng
     const patientDetailsY = patientInfoY + 10;
-    doc.text(`Tên: ${PatientName}`, patientInfoX, patientDetailsY);
-    doc.text(`Nơi ở: ${PatientAddress}`, patientInfoX, patientDetailsY + 10);
-    doc.text(`Ngày sinh: ${PatientDOB}`, patientInfoX, patientDetailsY + 20);
-    doc.text(
-      `Chẩn đoán: ${PatientDiagnosis}`,
-      patientInfoX,
-      patientDetailsY + 30
-    );
-    doc.text(`Toa thuốc:`, patientInfoX, patientDetailsY + 40);
-    doc.text(`${Prescription}`, patientInfoX, patientDetailsY + 50);
-
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(18);
+  
+    doc.text(` -Tên: ${PatientName}`, patientInfoX + 10, patientDetailsY);  // Thụt đầu dòng
+    doc.text(` -Nơi ở: ${PatientAddress}`, patientInfoX + 10, patientDetailsY + 10);
+    doc.text(` -Ngày sinh: ${PatientDOB}`, patientInfoX + 10, patientDetailsY + 20);
+    doc.text(` -Chẩn đoán: ${PatientDiagnosis}`, patientInfoX + 10, patientDetailsY + 30);
+  
+    // Thêm Toa thuốc in lớn hơn
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(24);  // Kích thước lớn hơn cho toa thuốc
+    doc.text("Toa thuốc:", patientInfoX, patientDetailsY + 50);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(18);
+    doc.text(Prescription, patientInfoX + 10, patientDetailsY + 60);  // Thụt đầu dòng
+  
     // Tải file PDF xuống
-    doc.save("ho-so-kham-benh.pdf");
+    doc.save(`hoso${item?.patientDetails?.fullname}.pdf`);
   };
+  
 
   return (
     <div className="w-full h-full  border-l border-[#00b5f1] pl-10">

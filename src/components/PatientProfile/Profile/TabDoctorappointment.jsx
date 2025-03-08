@@ -222,6 +222,9 @@ function TabDoctorappointment() {
     "30 viên",
     "50 viên",
     "100 viên",
+    "Sáng",
+    "Trưa",
+    "Tối",
   ];
 
   console.log("dang chon ne", Selectedpatients);
