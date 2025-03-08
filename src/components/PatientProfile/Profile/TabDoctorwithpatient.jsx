@@ -354,7 +354,9 @@ function TabDoctorwithpatient() {
                     </span>
                   </td>
                   <td className="p-4 border-b border-blue-gray-50">
-                    {item.diagnosis}
+                    <span className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
+                      {item.diagnosis}
+                    </span>
                   </td>
                   <td className="p-4 border-b border-blue-gray-50">
                     <span className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
@@ -399,12 +401,13 @@ function TabDoctorwithpatient() {
                       fileName="ho-so-kham-benh.pdf"
                     >
                       {({ loading }) =>
-                        loading ? "Đang tạo PDF..." : <button
-                      className="p-2 bg-[red] block font-sans text-sm antialiased font-medium leading-normal text-[#fff] rounded-xl"
-                      
-                    >
-                      Tải PDF
-                    </button>
+                        loading ? (
+                          "Đang tạo PDF..."
+                        ) : (
+                          <button className="p-2 bg-[red] block font-sans text-sm antialiased font-medium leading-normal text-[#fff] rounded-xl">
+                            Tải PDF
+                          </button>
+                        )
                       }
                     </PDFDownloadLink>
                   </td>
