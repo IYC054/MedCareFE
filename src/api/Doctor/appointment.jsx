@@ -87,7 +87,7 @@ const UpdateStatusAppointment = async (id, status) => {
 const UpdateStatusVipAppointment = async (id, status) => {
   try {
     const res = await axios.put(
-      `http://localhost:8080/api/vip-appointments/status/${id}`,
+      `http://localhost:8080/api/vip-appointments/status/${id}?doctorEmail=admin@gmail.com`,
       {
         status: status,
       }

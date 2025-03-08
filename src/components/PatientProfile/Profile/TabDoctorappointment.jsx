@@ -3,6 +3,7 @@ import {
   getAppointmentByDoctorId,
   getVIPAppointmentByDoctorId,
   UpdateStatusAppointment,
+  UpdateStatusVipAppointment,
 } from "../../../api/Doctor/appointment";
 import { getpatientbyid } from "../../../api/Doctor/patient";
 import { getallPaymentByAppoint } from "../../../api/Bank/payment";
@@ -509,21 +510,18 @@ function TabDoctorappointment() {
         );
         console.log("Doctor VIP status: ", doctorId?.vip);
 
-        if (doctorId?.vip) {
+        if (!doctorId?.vip) {
           appid = checksuccess.data?.appointment_id ?? null; // Nếu không có thì là null
         } else {
-          appid =
-            checksuccess.data?.vipappointment_id ??
-            checksuccess.data?.appointment_id ??
-            null;
+          appid = checksuccess.data?.vipappointment_id ?? null;
         }
 
         console.log("APPID: ", appid);
 
-        if (appid !== null) {
+        if (!doctorId?.vip) {
           await UpdateStatusAppointment(appid, "Hoàn thành");
         } else {
-          console.error("APPID is null or invalid!");
+          await UpdateStatusVipAppointment(appid, "Hoàn thành");
         }
 
         fetchAppointments();
@@ -641,7 +639,7 @@ function TabDoctorappointment() {
                           disabled={vip.status == "Hoàn thành" ? true : false}
                           className={`px-4 py-2  ${
                             vip.status == "Hoàn thành"
-                              ? "bg-red"
+                              ? "bg-[#c2c2c2]/60"
                               : "bg-green-300"
                           } rounded-lg`}
                           onClick={() =>
@@ -843,9 +841,10 @@ function TabDoctorappointment() {
             </div>
             <span className="text-[18px]">
               <h3 className="font-bold text-center">Thông Tin Bệnh Nhân</h3>
-              <p> -Bệnh nhân: {Selectedpatients?.patientDetails?.fullname}</p>
-              <p> -Sinh ngày: {Selectedpatients?.patientDetails?.birthdate}</p>
-              <p> -Số BHYT: {Selectedpatients?.bhyt ? "Có" : "Không"}</p>
+              <p> - Bệnh nhân: {Selectedpatients?.patientDetails?.fullname}</p>
+              <p> - Sinh ngày: {Selectedpatients?.patientDetails?.birthdate}</p>
+              <p> - Số BHYT: {Selectedpatients?.bhyt ? "Có" : "Không"}</p>
+              <p> - Địa chỉ: {Selectedpatients?.patientDetails?.address}</p>
               <span className="text-[#00b5f1] font-medium text-[20px] capitalize"></span>
 
               <form onSubmit={SubmitPatientFile}>

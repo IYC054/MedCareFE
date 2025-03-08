@@ -231,7 +231,7 @@ function Dashboard() {
                         <div className='card mb-3 bg-arielle-smile text-white rounded-md  '>
                             <div className='p-4 flex justify-between items-center'>
                                 <div>
-                                    <div className='text-xl font-semibold'>Số lượng cuộc hẹn khám được đặt</div>
+                                    <div className='text-xl font-semibold'>Số lượng cuộc hẹn</div>
                                     <div className='text-sm'> cuộc hẹn khám bệnh trong tháng này
                                     </div>
                                 </div>
@@ -243,7 +243,7 @@ function Dashboard() {
                         <div className='card mb-3 bg-happy-green text-white rounded-md '>
                             <div className='p-4 flex justify-between items-center'>
                                 <div>
-                                    <div className='text-xl font-semibold'>Doanh thu năm nay
+                                    <div className='text-xl font-semibold'>Doanh thu
                                     </div>
                                     <div className='text-sm'>Doanh thu năm {currentYear}
                                     </div>
@@ -343,7 +343,7 @@ function Dashboard() {
                             <div className='card-header'>
                                 <div className='flex justify-between pt-6'>
                                     <div className='text-xl'>
-                                        <i className="bi bi-coin"></i> Thu nhập
+                                        <i className="bi bi-coin"></i> Doanh thu
 
                                     </div>
                                     <ul className='flex space-x-2'>
@@ -395,7 +395,7 @@ function Dashboard() {
                                                         <div className="widget-progress-wrapper">
                                                             <div className="w-full bg-gray-200 rounded-full h-4 relative overflow-hidden">
                                                                 <div
-                                                                    className="bg-blue-600 h-full rounded-full transition-all duration-500"
+                                                                    className="bg-pink-400 h-full rounded-full transition-all duration-500"
                                                                     style={{ width: `${Math.min(monthPercentChange, 100)}%` }}
                                                                 ></div>
                                                                 {/* Continuous Glowing Effect */}
@@ -426,7 +426,7 @@ function Dashboard() {
                                                         <div className="widget-progress-wrapper">
                                                             <div className="w-full bg-gray-200 rounded-full h-4 relative overflow-hidden">
                                                                 <div
-                                                                    className="bg-purple-600 h-full rounded-full transition-all duration-500"
+                                                                    className="bg-blue-600 h-full rounded-full transition-all duration-500"
                                                                     style={{ width: `${Math.min(yearPercentChange, 100)}%` }}
                                                                 ></div>
                                                                 {/* Continuous Glowing Effect */}
