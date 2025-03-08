@@ -258,10 +258,10 @@ function TabDoctorwithpatient() {
     doc.setFont("helvetica", "normal");
     doc.setFontSize(18);
   
-    doc.text(`-Tên: ${PatientName}`, patientInfoX + 10, patientDetailsY);  // Thụt đầu dòng
-    doc.text(`-Nơi ở: ${PatientAddress}`, patientInfoX + 10, patientDetailsY + 10);
-    doc.text(`-Ngày sinh: ${PatientDOB}`, patientInfoX + 10, patientDetailsY + 20);
-    doc.text(`-Chẩn đoán: ${PatientDiagnosis}`, patientInfoX + 10, patientDetailsY + 30);
+    doc.text(` -Tên: ${PatientName}`, patientInfoX + 10, patientDetailsY);  // Thụt đầu dòng
+    doc.text(` -Nơi ở: ${PatientAddress}`, patientInfoX + 10, patientDetailsY + 10);
+    doc.text(` -Ngày sinh: ${PatientDOB}`, patientInfoX + 10, patientDetailsY + 20);
+    doc.text(` -Chẩn đoán: ${PatientDiagnosis}`, patientInfoX + 10, patientDetailsY + 30);
   
     // Thêm Toa thuốc in lớn hơn
     doc.setFont("helvetica", "bold");
@@ -272,7 +272,7 @@ function TabDoctorwithpatient() {
     doc.text(Prescription, patientInfoX + 10, patientDetailsY + 60);  // Thụt đầu dòng
   
     // Tải file PDF xuống
-    doc.save("ho-so-kham-benh.pdf");
+    doc.save(`hoso${item?.patientDetails?.fullname}.pdf`);
   };
   
 
